@@ -16,7 +16,7 @@
       <button id="export-edits" type="button">Export offline edits</button>
     </header>
     <main>
-      {{ range $language, $files := .Site.Data.overlays }}
+      {{ range $language, $files := hugo.Data.overlays }}
         {{ range $fileName, $file := $files }}
           {{ range $verse := $file.verses }}
             <article class="verse" data-verse="{{ $verse.verse_ref }}">
