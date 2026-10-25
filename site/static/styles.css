@@ -49,6 +49,19 @@ header {
   font-size: 1.15rem;
 }
 
+ruby {
+  ruby-position: over;
+}
+
+rt {
+  font-size: 0.65em;
+}
+
+.dataset-attribution {
+  color: #665e50;
+  font-size: 0.8rem;
+}
+
 .edit-token,
 #export-edits {
   cursor: pointer;
