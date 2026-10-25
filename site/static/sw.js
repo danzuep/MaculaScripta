@@ -1,4 +1,4 @@
-const cacheName = "macula-scripta-v1";
+const cacheName = "macula-scripta-v2";
 
 self.addEventListener("install", (event) => {
   event.waitUntil((async () => {
@@ -19,14 +19,17 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET" || new URL(event.request.url).origin !== self.location.origin) return;
   event.respondWith((async () => {
-    const cached = await caches.match(event.request);
-    if (cached) return cached;
-
-    const response = await fetch(event.request);
-    if (response.ok) {
-      const cache = await caches.open(cacheName);
-      cache.put(event.request, response.clone());
+    const cache = await caches.open(cacheName);
+    try {
+      const response = await fetch(event.request);
+      if (response.ok) {
+        await cache.put(event.request, response.clone());
+      }
+      return response;
+    } catch (error) {
+      const cached = await cache.match(event.request);
+      if (cached) return cached;
+      throw error;
     }
-    return response;
   })());
 });
