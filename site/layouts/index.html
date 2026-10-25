@@ -31,7 +31,7 @@
                     {{ if eq (lower .scheme) "jyutping" }}{{ $jyutping = .phonetic_text }}{{ end }}
                   {{ end }}
                   <span class="token-card"
-                        data-alignment-id="{{ printf "%s-%s-%d" $language $fileName $index }}"
+                        data-alignment-id="{{ printf "%s-%s" $language $alignment.id }}"
                         data-macula-ids="{{ delimit $alignment.target_macula_ids "," }}">
                     <span class="target-text">
                       {{ if $jyutping }}
