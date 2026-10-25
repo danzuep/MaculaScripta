@@ -1,0 +1,6 @@
+baseURL = "https://example.github.io/MaculaScripta/"
+languageCode = "en"
+title = "MaculaScripta"
+
+[params]
+rawManuscriptBaseURL = ""
