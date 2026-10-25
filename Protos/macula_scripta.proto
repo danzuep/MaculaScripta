@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package macula.scripta.v1;
+
+option csharp_namespace = "MaculaScripta.V1";
+
+enum AlignmentType {
+  ALIGNMENT_TYPE_UNSPECIFIED = 0;
+  ALIGNMENT_TYPE_LITERAL = 1;           // Direct 1:1 or N:1 translation
+  ALIGNMENT_TYPE_IDIOMATIC = 2;         // Dynamic equivalence adjustment
+  ALIGNMENT_TYPE_ADDED_FOR_GRAMMAR = 3; // Target language fluency insertion (0:N)
+  ALIGNMENT_TYPE_CULTURAL_GLOSS = 4;    // Culturally adapted term with explanatory note
+}
+
+message Pronunciation {
+  string scheme = 1;                         // Erasmian, IPA, pinyin, or local phonetic scheme
+  string phonetic_text = 2;                  // Transliterated text or phonetic transcription
+  optional string audio_url = 3;             // URI to an audio sample or snippet
+  map<string, string> custom_attributes = 4; // Extensible tags such as stress or tone
+}
+
+message AlternateTranslation {
+  string text = 1;           // Alternative word or phrase
+  string category = 2;       // synonym, literal, dialect_variant, poetic, etc.
+  optional string notes = 3; // Reason for the alternative
+}
+
+message MaculaBaseToken {
+  string macula_id = 1;      // Stable identifier, e.g. "n43001001001"
+  string text = 2;           // Original Greek surface form
+  string lemma = 3;          // Dictionary form
+  string part_of_speech = 4; // Grammatical tag
+}
+
+message TranslationAlignment {
+  string id = 1;                                // Alignment block GUID
+  string target_text = 2;                       // Primary target word or phrase
+  repeated string target_macula_ids = 3;        // Associated Macula IDs
+  AlignmentType alignment_type = 4;             // Alignment classification
+  repeated AlternateTranslation alternates = 5; // Synonyms and alternate renderings
+  repeated Pronunciation pronunciations = 6;    // Target-language phonetic guide
+  string translator_notes = 7;                  // Exegetical or linguistic commentary
+  map<string, string> custom_metadata = 8;      // Extensible tags, including sense review flags
+}
+
+message ReviewMetadata {
+  string stage = 1;          // Extensible stage identifier
+  string reviewer_id = 2;    // Reviewer identifier or email
+  string timestamp = 3;      // ISO-8601 completion timestamp
+  optional string notes = 4; // Stage sign-off notes
+}
+
+message VerseTranslationOverlay {
+  string verse_ref = 1;                        // e.g. "JHN 1:1"
+  string language_code = 2;                    // e.g. "en-US"
+  string translation_id = 3;                   // Translation identifier
+  int64 revision = 4;                          // Incrementing revision
+  ReviewMetadata current_review_stage = 5;     // Active review stage
+  repeated ReviewMetadata review_history = 6;  // Full audit trail
+  repeated TranslationAlignment alignments = 7;
+}
+
+message GetVerseAlignmentRequest {
+  string verse_ref = 1;
+  string translation_id = 2;
+}
+
+service AlignmentService {
+  rpc GetVerseAlignment(GetVerseAlignmentRequest) returns (VerseTranslationOverlay);
+  rpc SaveVerseAlignment(VerseTranslationOverlay) returns (VerseTranslationOverlay);
+}
