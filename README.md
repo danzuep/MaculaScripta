@@ -39,3 +39,8 @@ rendered as Ruby text above Cantonese translation blocks.
 Use `MaculaBaseToken.DataAttribution` when publishing Macula identifiers.
 
 Offline text changes are stored in IndexedDB and can be exported as a JSON patch. The site does not store GitHub credentials or push changes directly.
+
+The service worker fetches the latest published pages and assets when online and
+falls back to cached copies when offline. If an older installation still shows
+the empty page, reload once to activate the updated worker, then reload again to
+load the current translations. Offline edits remain in IndexedDB.
