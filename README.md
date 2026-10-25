@@ -17,11 +17,11 @@ dotnet build MaculaScripta.slnx
 
 ## YAML overlays
 
-Add one file per verse under `site/data/overlays/`. Hugo loads these files at build time; use the snake_case field names from `Protos/macula_scripta.proto`. Alignment entries carry their associated `target_macula_ids`, while a target word may map to multiple IDs or none.
+Add language-specific files under `site/data/overlays/<language>/`. Each file contains an `attribution` string and a `verses` list of `VerseTranslationOverlay` records. Hugo loads these files at build time; use the snake_case field names from `Protos/macula_scripta.proto`. Alignment entries carry their associated `target_macula_ids`, while a target word may map to multiple IDs or none.
 
 Keep only supported data files in that directory, not Markdown documentation: Hugo attempts to parse every file there as data.
 
-Each file follows the `VerseTranslationOverlay` contract:
+Each item in `verses` follows the `VerseTranslationOverlay` contract:
 
 - `verse_ref`, `language_code`, `translation_id`, `revision`
 - `current_review_stage`, `review_history`
@@ -31,6 +31,10 @@ Each file follows the `VerseTranslationOverlay` contract:
 For raw manuscript retrieval, configure `params.rawManuscriptBaseURL` in `site/hugo.toml` and set `raw_manuscript_path` on an overlay to a path relative to that base URL. The browser emits the fetched text as a `manuscriptloaded` event; parsing and alignment remain the responsibility of the C# engine.
 
 Include Macula dataset attribution with published identifiers: Macula Greek dataset (SBLGNT base), CC BY 4.0.
+
+The seed data in `site/data/overlays/en/JHN_1.yaml` and
+`site/data/overlays/yue/JHN_1.yaml` covers John 1:1–5. Jyutping entries are
+rendered as Ruby text above Cantonese translation blocks.
 
 Use `MaculaBaseToken.DataAttribution` when publishing Macula identifiers.
 

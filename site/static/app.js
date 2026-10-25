@@ -35,7 +35,7 @@ async function readEdits() {
 document.querySelectorAll(".edit-token").forEach((button) => {
   button.addEventListener("click", async () => {
     const card = button.closest(".token-card");
-    const target = card.querySelector(".target-text");
+    const target = card.querySelector(".ruby-base") ?? card.querySelector(".target-text");
     const replacement = window.prompt("Edit translation token", target.textContent);
     if (replacement === null || replacement.trim() === "") return;
 
