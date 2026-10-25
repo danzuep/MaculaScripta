@@ -17,10 +17,10 @@
     </header>
     <main>
       {{ range $name, $overlay := .Site.Data.overlays }}
-        <article class="verse" data-verse="{{ $overlay.verse_reference }}">
-          <h2>{{ $overlay.verse_reference }}</h2>
+        <article class="verse" data-verse="{{ $overlay.verse_ref }}">
+          <h2>{{ $overlay.verse_ref }}</h2>
           <p class="translation-meta">
-            {{ $overlay.language_code }} · {{ $overlay.translation_id }} · revision {{ $overlay.revision_number }}
+            {{ $overlay.language_code }} · {{ $overlay.translation_id }} · revision {{ $overlay.revision }}
           </p>
           <div class="verse-flow" aria-label="Aligned translation tokens">
             {{ range $index, $alignment := $overlay.alignments }}
@@ -42,6 +42,9 @@
               <p>No alignment tokens have been added.</p>
             {{ end }}
           </div>
+          {{ with $overlay.raw_manuscript_path }}
+            <div class="manuscript-source" data-raw-path="{{ . }}"></div>
+          {{ end }}
         </article>
       {{ else }}
         <p class="empty-state">Add verse overlay YAML files under <code>data/overlays/</code> to publish translations.</p>

@@ -2,7 +2,7 @@ namespace MaculaScripta.Contracts;
 
 public sealed record MaculaBaseToken(
     string MaculaId,
-    string SurfaceText,
+    string Text,
     string Lemma,
     string PartOfSpeech)
 {

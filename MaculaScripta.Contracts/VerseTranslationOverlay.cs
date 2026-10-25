@@ -4,7 +4,7 @@ public sealed record VerseTranslationOverlay(
     string VerseReference,
     string LanguageCode,
     string TranslationId,
-    int RevisionNumber,
-    string ActiveReviewStage,
+    long Revision,
+    ReviewMetadata CurrentReviewStage,
     IReadOnlyList<ReviewMetadata> ReviewHistory,
     IReadOnlyList<TranslationAlignment> Alignments);

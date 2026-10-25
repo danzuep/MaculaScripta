@@ -66,10 +66,21 @@ document.querySelector("#export-edits")?.addEventListener("click", async () => {
 
 const rawBaseUrl = window.maculaScriptaConfig?.rawManuscriptBaseUrl;
 if (rawBaseUrl) {
-  document.querySelectorAll(".verse[data-raw-path]").forEach(async (verse) => {
-    const path = verse.dataset.rawPath.split("/").map(encodeURIComponent).join("/");
-    const response = await fetch(new URL(path, rawBaseUrl));
-    if (!response.ok) throw new Error(`Unable to fetch manuscript: ${response.status}`);
-    verse.dispatchEvent(new CustomEvent("manuscriptloaded", { detail: await response.text() }));
+  document.querySelectorAll(".manuscript-source[data-raw-path]").forEach(async (source) => {
+    try {
+      const base = new URL(rawBaseUrl);
+      const path = source.dataset.rawPath.split("/").map(encodeURIComponent).join("/");
+      const url = new URL(path, base);
+      const basePath = base.pathname.endsWith("/") ? base.pathname : `${base.pathname}/`;
+      if (url.origin !== base.origin || !url.pathname.startsWith(basePath)) {
+        throw new Error("Manuscript path must stay within the configured base URL.");
+      }
+
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`Unable to fetch manuscript: ${response.status}`);
+      source.dispatchEvent(new CustomEvent("manuscriptloaded", { detail: await response.text() }));
+    } catch (error) {
+      source.dispatchEvent(new CustomEvent("manuscriptloaderror", { detail: error.message }));
+    }
   });
 }

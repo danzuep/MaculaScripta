@@ -1,9 +1,10 @@
 namespace MaculaScripta.Contracts;
 
 public sealed record TranslationAlignment(
+    string Id,
     string TargetText,
     IReadOnlyList<string> TargetMaculaIds,
-    AlignmentType Type)
+    AlignmentType AlignmentType)
 {
     public IReadOnlyList<AlternateTranslation> Alternates { get; init; } =
         Array.Empty<AlternateTranslation>();
@@ -13,6 +14,6 @@ public sealed record TranslationAlignment(
 
     public string? TranslatorNotes { get; init; }
 
-    public IReadOnlyDictionary<string, string> Metadata { get; init; } =
+    public IReadOnlyDictionary<string, string> CustomMetadata { get; init; } =
         new Dictionary<string, string>();
 }
