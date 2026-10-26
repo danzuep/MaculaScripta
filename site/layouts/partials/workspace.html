@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0f172a">
+    <title>{{ .Site.Title }}</title>
+    <link rel="manifest" href="{{ "manifest.webmanifest" | relURL }}">
+    <link rel="stylesheet" href="{{ "styles.css" | relURL }}">
+    <link rel="stylesheet" href="{{ "transformation.css" | relURL }}">
+    <script src="{{ "transformation.js" | relURL }}" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#workspace">Skip to workspace</a>
+    <header class="workspace-header">
+      <div class="brand-row">
+        <a class="brand" href="{{ .Site.Home.RelPermalink }}">MaculaScripta<span>Language workbench</span></a>
+        <span class="local-badge">Local-first · No account needed</span>
+      </div>
+      <p class="eyebrow">READ · ALIGN · LISTEN</p>
+      <h1>Every word, connected.</h1>
+      <p class="workspace-intro">Explore the Greek. Shape the translation. Give it a voice.<br>One quiet workspace for text, pronunciation, and discovery.</p>
+      <nav class="workspace-nav" aria-label="Workspace sections">
+        <a href="#transformation">Explore John 1:1</a>
+        <a href="#translations">Edit translations</a>
+        <button id="open-recorder" type="button" aria-haspopup="dialog" aria-controls="recorder-dialog">Record &amp; dictionary</button>
+      </nav>
+      <details class="settings">
+        <summary>Settings</summary>
+        <label for="theme">Appearance
+          <select id="theme">
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+          </select>
+        </label>
+        <label>
+          <input id="apply-shared-edits" type="checkbox" checked>
+          Apply edits to cards with the same language, lemma, and word sense
+        </label>
+        <p>Updates whole cards only when their target language, lemma ID, and word sense ID all match. Cards without explicit lemma and sense metadata are edited individually. Turn off to edit only one card. Shaded cards show the most recent edit.</p>
+      </details>
+    </header>
+    <main id="workspace">
+      {{ partial "transformation-stages.html" . }}
+      <section id="translations" aria-labelledby="translations-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">TRANSLATION STUDIO</p>
+            <h2 id="translations-title">Make the words your own</h2>
+            <p>Edit a phrase or record its pronunciation. Changes stay in this browser until you export them.</p>
+          </div>
+          <button id="export-edits" type="button">Export text edits</button>
+        </div>
+        <div class="translation-toolbar" hidden>
+          <label for="verse-filter">Passage
+            <select id="verse-filter">
+              <option value="">All verses</option>
+              {{ $references := slice }}
+              {{ range hugo.Data.overlays }}{{ range . }}{{ range .verses }}
+                {{ $references = $references | append .verse_ref }}
+              {{ end }}{{ end }}{{ end }}
+              {{ range sort (uniq $references) }}<option value="{{ . }}">{{ . }}</option>{{ end }}
+            </select>
+          </label>
+          <label for="language-filter">Language
+            <select id="language-filter">
+              <option value="">All languages</option>
+              {{ range $language, $files := hugo.Data.overlays }}
+                <option value="{{ $language }}">{{ if eq $language "en" }}English{{ else if eq $language "yue" }}Cantonese{{ else }}{{ $language }}{{ end }}</option>
+              {{ end }}
+            </select>
+          </label>
+          <p id="filter-status" role="status"></p>
+        </div>
+        <p id="edit-status" role="status"></p>
+        <div class="translation-grid">
+      {{- $attributions := slice -}}
+      {{ range $language, $files := hugo.Data.overlays }}
+        {{ range $fileName, $file := $files }}
+          {{- with $file.attribution -}}{{- $attributions = $attributions | append . -}}{{- end -}}
+          {{ range $verse := $file.verses }}
+            <article class="verse" data-verse="{{ $verse.verse_ref }}" lang="{{ $verse.language_code }}">
+              <h2>{{ $verse.verse_ref }}</h2>
+              <p class="translation-meta">
+                {{ $verse.language_code }} · {{ $verse.translation_id }} · revision {{ $verse.revision }}
+              </p>
+              <div class="verse-flow" aria-label="Aligned translation tokens">
+                {{ range $index, $alignment := $verse.alignments }}
+                  {{ $jyutping := "" }}
+                  {{ range $alignment.pronunciations }}
+                    {{ if eq (lower .scheme) "jyutping" }}{{ $jyutping = .phonetic_text }}{{ end }}
+                  {{ end }}
+                  <div class="token-card"
+                        data-alignment-id="{{ printf "%s-%s" $language $alignment.id }}"
+                        data-macula-ids="{{ delimit $alignment.target_macula_ids "," }}"
+                        data-language="{{ $verse.language_code }}"
+                        data-lemma-id="{{ with $alignment.custom_metadata }}{{ .lemma_id }}{{ end }}"
+                        data-sense-id="{{ with $alignment.custom_metadata }}{{ .sense_id }}{{ end }}">
+                    <span class="target-text">
+                      {{ if $jyutping }}
+                        <ruby><span class="ruby-base">{{ $alignment.target_text }}</span><rt>{{ $jyutping }}</rt></ruby>
+                      {{ else }}
+                        {{ $alignment.target_text }}
+                      {{ end }}
+                    </span>
+                    {{- $greek := slice -}}
+                    {{- range $alignment.target_macula_ids -}}
+                      {{- with index hugo.Data.greek_tokens . -}}{{- $greek = $greek | append . -}}{{- end -}}
+                    {{- end -}}
+                    {{ with $greek }}<span class="sub-greek" lang="grc">{{ delimit . " " }}</span>{{ end }}
+                    <span class="token-actions">
+                      <button class="edit-token" type="button" aria-label="Edit {{ $alignment.target_text }}">Edit text</button>
+                      <button class="record-token" type="button" aria-label="Record pronunciation for {{ $alignment.target_text }}" aria-haspopup="dialog" aria-controls="recorder-dialog">Record</button>
+                    </span>
+                    <details class="token-details">
+                      <summary>Word details</summary>
+                      <span class="token-detail-content">
+                      <span>Macula IDs: {{ delimit $alignment.target_macula_ids ", " }}</span>
+                      {{- with $alignment.custom_metadata -}}
+                        {{- with .lemma_id }}<span>Lemma ID: {{ . }}</span>{{ end -}}
+                        {{- with .sense_id }}<span>Word sense ID: {{ . }}</span>{{ end -}}
+                      {{- end }}
+                      {{ with $alignment.translator_notes }}<span>Notes: {{ . }}</span>{{ end }}
+                      {{ range $alignment.pronunciations }}
+                        <span>{{ .scheme }}: {{ .phonetic_text }}</span>
+                        {{ with .audio_url }}<audio controls preload="none" src="{{ . }}"></audio>{{ end }}
+                      {{ end }}
+                      {{ range $alignment.alternates }}
+                        <span>{{ .category }}: {{ .text }}{{ with .notes }} ({{ . }}){{ end }}</span>
+                      {{ end }}
+                      </span>
+                    </details>
+                  </div>
+                {{ else }}
+                  <p>No alignment tokens have been added.</p>
+                {{ end }}
+              </div>
+              {{ with $verse.raw_manuscript_path }}
+                <div class="manuscript-source" data-raw-path="{{ . }}"></div>
+              {{ end }}
+            </article>
+          {{ end }}
+        {{ end }}
+      {{ else }}
+        <p class="empty-state">Add verse overlay YAML files under <code>data/overlays/</code> to publish translations.</p>
+      {{ end }}
+        </div>
+      </section>
+    </main>
+    <footer class="dataset-attribution">
+      {{ range uniq $attributions }}<p>{{ . }}</p>{{ end }}
+    </footer>
+    <dialog id="text-editor" class="text-editor" aria-labelledby="text-editor-title">
+      <form id="text-editor-form">
+        <p class="eyebrow">TRANSLATION STUDIO</p>
+        <h2 id="text-editor-title">Edit translation</h2>
+        <p id="text-editor-context"></p>
+        <label for="text-editor-value">Translation text</label>
+        <textarea id="text-editor-value" rows="3" required></textarea>
+        <p id="text-editor-scope"></p>
+        <p id="text-editor-error" role="alert"></p>
+        <div class="editor-actions">
+          <button id="cancel-text-edit" type="button">Cancel</button>
+          <button id="save-text-edit" type="submit">Save offline</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="recorder-dialog" class="recorder-dialog" aria-labelledby="recorder-title">
+      <div class="recorder-shell">
+        <div class="recorder-heading">
+          <div>
+            <p class="eyebrow">MaculaScripta</p>
+            <h2 id="recorder-title">Field recorder</h2>
+          </div>
+          <button id="close-recorder" type="button" aria-label="Close field recorder">Close</button>
+        </div>
+        <p class="recorder-intro">Record a pronunciation, trim the clip, and save it with a lexical entry. Recordings stay in this browser.</p>
+        <nav class="recorder-tabs" aria-label="Recorder sections">
+          <button id="recorder-tab-capture" type="button" aria-selected="true">Capture &amp; edit</button>
+          <button id="recorder-tab-dictionary" type="button" aria-selected="false">Dictionary (<span id="recorder-count">0</span>)</button>
+        </nav>
+        <section id="recorder-capture" class="recorder-view" aria-label="Capture and edit audio">
+          <div class="recorder-card">
+            <div class="recorder-status-row">
+              <span>Audio workbench</span>
+              <span id="recorder-status" role="status">Ready</span>
+            </div>
+            <div class="waveform-wrap">
+              <canvas id="recorder-waveform" aria-label="Audio waveform. Drag either edge to trim the clip."></canvas>
+              <p id="waveform-placeholder">Record audio to view and trim its waveform.</p>
+              <div id="trim-readout" hidden>
+                <span id="trim-start-time">Start: 0.00s</span>
+                <span id="trim-duration">Duration: 0.00s</span>
+                <span id="trim-end-time">End: 0.00s</span>
+              </div>
+            </div>
+            <div class="recorder-controls">
+              <button id="clear-recording" type="button" disabled>Clear</button>
+              <button id="record-audio" class="record-button" type="button" aria-label="Start recording">Record</button>
+              <button id="play-trim" type="button" disabled>Play clip</button>
+            </div>
+            <p class="recorder-hint">Microphone access requires a secure connection (HTTPS or localhost).</p>
+          </div>
+          <form id="recorder-entry-form" class="recorder-card">
+            <h3>Macula morphological entry</h3>
+            <label>Source word / lemma <span aria-hidden="true">*</span>
+              <input id="recorder-lemma" name="lemma" required autocomplete="off">
+            </label>
+            <label>IPA transcription
+              <input id="recorder-ipa" name="ipa" autocomplete="off">
+            </label>
+            <button id="toggle-recorder-ipa" class="ipa-toggle" type="button" aria-expanded="false">Show IPA symbols</button>
+            <div id="recorder-ipa-symbols" class="ipa-symbols" hidden aria-label="Common IPA symbols"></div>
+            <label>Translation / gloss
+              <input id="recorder-gloss" name="gloss" autocomplete="off">
+            </label>
+            <label>Syntax node
+              <select id="recorder-syntax" name="syntax">
+                <option>Noun Phrase (NP)</option>
+                <option>Verb Phrase (VP)</option>
+                <option>Prepositional (PP)</option>
+                <option>Clause (CL)</option>
+                <option>Particle (PT)</option>
+                <option>Adj Phrase (AP)</option>
+              </select>
+            </label>
+            <label>Macula reference
+              <input id="recorder-ref" name="ref" autocomplete="off">
+            </label>
+            <label>Morphology tags
+              <input id="recorder-morph" name="morph" autocomplete="off">
+            </label>
+            <button type="submit">Save entry to dictionary</button>
+          </form>
+        </section>
+        <section id="recorder-dictionary" class="recorder-view" aria-label="Recorder dictionary" hidden>
+          <div class="recorder-dictionary-tools">
+            <label class="visually-hidden" for="recorder-search">Search dictionary</label>
+            <input id="recorder-search" type="search" placeholder="Search lemma, IPA, gloss, or reference">
+            <button id="export-recorder-dictionary" type="button">Export JSON</button>
+          </div>
+          <form id="recorder-lift-form" class="recorder-card" aria-labelledby="recorder-lift-title">
+            <h3 id="recorder-lift-title">FLEx exchange · LIFT 0.13</h3>
+            <p id="recorder-lift-help" class="recorder-hint">Browser-local, limited dictionary projection, not a lossless FLEx backup. Keep the original FLEx files. Import updates matching entry/sense IDs without deleting other entries. Export includes the entire dictionary, not just search results.</p>
+            <label for="recorder-lift-language">Lexical writing system (language tag)
+              <input id="recorder-lift-language" name="vernacular" value="grc" required maxlength="80" autocomplete="off" aria-describedby="recorder-lift-help">
+            </label>
+            <label for="recorder-lift-gloss-language">Gloss writing system (language tag)
+              <input id="recorder-lift-gloss-language" name="gloss" value="en" required maxlength="80" autocomplete="off">
+            </label>
+            <label for="recorder-lift-files">LIFT file and optional matching audio files, or one ZIP
+              <input id="recorder-lift-files" name="files" type="file" multiple accept=".lift,.zip,.wav,.mp3,.ogg,.webm,.m4a,.mp4,.flac,.opus,.aac" aria-describedby="recorder-lift-help">
+            </label>
+            <div class="editor-actions">
+              <button type="submit">Import LIFT / ZIP</button>
+              <button id="export-recorder-lift" type="button">Export LIFT + audio ZIP</button>
+            </div>
+            <p id="recorder-lift-status" role="status" aria-live="polite" aria-atomic="true"></p>
+          </form>
+          <div id="recorder-entries" class="recorder-entries"></div>
+          <p id="recorder-empty" class="recorder-empty" hidden>No matching entries yet. Record a pronunciation and save a dictionary entry.</p>
+        </section>
+      </div>
+    </dialog>
+    <script>
+      window.maculaScriptaConfig = {
+        rawManuscriptBaseUrl: {{ .Site.Params.rawManuscriptBaseURL | jsonify }}
+      };
+    </script>
+    <script src="{{ "app.js" | relURL }}" defer></script>
+    <script type="module" src="{{ "audio-recorder.js" | relURL }}"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register({{ "sw.js" | relURL }});
+      }
+    </script>
+  </body>
+</html>

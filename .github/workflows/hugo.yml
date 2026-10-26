@@ -6,6 +6,12 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      publish:
+        description: "Publish the selected branch to the live GitHub Pages site (replaces the current site)"
+        type: boolean
+        required: true
+        default: false
 
 permissions:
   contents: read
@@ -55,7 +61,10 @@ jobs:
           path: ./site/public
 
   deploy:
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && inputs.publish)
+    concurrency:
+      group: github-pages-deployment
+      cancel-in-progress: false
     permissions:
       pages: write
       id-token: write

@@ -1,3 +1,5 @@
+import { writingSystems, importLift, exportLift, stableRecords, mergeLift } from "./lift-exchange.js";
+
 const databaseName = "macula-linguistic-recorder";
 const storeName = "dictionary";
 const minimumTrimRatio = 0.02;
@@ -53,6 +55,7 @@ let endRatio = 1;
 let activeHandle;
 let playbackSource;
 let savingEntry = false;
+let recorderTrigger;
 
 function openDatabase() {
   return new Promise((resolve, reject) => {
@@ -222,8 +225,13 @@ async function startRecording() {
     setStatus("Audio recording is not supported by this browser.", "error");
     return;
   }
+  ui.recordButton.disabled = true;
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    if (!ui.dialog.open) {
+      stream.getTracks().forEach((track) => track.stop());
+      return;
+    }
     audioChunks = [];
     audioBuffer = null;
     startRatio = 0;
@@ -267,12 +275,15 @@ async function startRecording() {
     setStatus("Recording…", "recording");
   } catch {
     setStatus("Microphone access was denied or is unavailable.", "error");
+  } finally {
+    ui.recordButton.disabled = false;
   }
 }
 
 function stopRecording() {
   if (!isRecording || !mediaRecorder) return;
   setRecordingUi(false);
+  ui.recordButton.disabled = true;
   mediaRecorder.stop();
 }
 
@@ -362,6 +373,10 @@ function clearRecording() {
 async function saveEntry(event) {
   event.preventDefault();
   if (savingEntry || !ui.form.reportValidity()) return;
+  if (isRecording || ui.recordButton.disabled) {
+    setStatus("Stop recording and wait for audio processing before saving.", "processing");
+    return;
+  }
   const entry = {
     lemma: ui.lemma.value.trim(),
     ipa: ui.ipa.value.trim(),
@@ -515,6 +530,44 @@ function downloadBlob(blob, filename) {
   setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
+function setupLiftExchange() {
+  const form = document.querySelector("#recorder-lift-form");
+  const status = document.querySelector("#recorder-lift-status");
+  const buttons = [...form.querySelectorAll("button")];
+  let busy = false;
+  const exchange = async (importing) => {
+    if (busy || !form.reportValidity()) return;
+    busy = true;
+    buttons.forEach((button) => { button.disabled = true; });
+    status.textContent = importing ? "Reading and validating files…" : "Preparing the full dictionary…";
+    try {
+      const languages = writingSystems(form.elements.vernacular.value.trim(), form.elements.gloss.value.trim());
+      await databaseReady;
+      if (!database) throw new Error("Local dictionary storage is unavailable.");
+      if (importing) {
+        const parsed = await importLift(form.elements.files.files, languages);
+        const warning = `Import ${parsed.records.length} dictionary records? This is a limited projection, NOT a lossless FLEx backup. Only the selected lexical/gloss languages, IPA, first audio and supported fields are kept. Other languages, examples, relations, variants, subsenses and rich formatting are discarded. Keep your original FLEx files.\n\n${parsed.missingAudio} entries have missing audio; existing audio is retained. ${parsed.missingGloss} records have no selected-language gloss. ${parsed.deleted} deletion markers are ignored. Matching entry/sense IDs will be updated; other local entries will not be deleted.`;
+        if (!window.confirm(warning)) { status.textContent = "Import cancelled. No entries changed."; return; }
+        const result = await mergeLift(database, storeName, parsed.records);
+        await loadDictionary();
+        status.textContent = `Imported: ${result.added} added, ${result.updated} updated. Missing audio: ${parsed.missingAudio}; missing gloss: ${parsed.missingGloss}. Original FLEx files remain your full backup.`;
+      } else {
+        const records = await stableRecords(database, storeName);
+        const blob = await exportLift(records, languages);
+        downloadBlob(blob, `macula_dictionary_${new Date().toISOString().slice(0, 10)}.zip`);
+        status.textContent = `Exported all ${records.length} dictionary records as LIFT 0.13 with local audio. Extract the ZIP before importing its .lift into FLEx.`;
+      }
+    } catch (error) {
+      status.textContent = `${importing ? "Import" : "Export"} failed: ${error.message || "Check browser storage and your files."}`;
+    } finally {
+      busy = false;
+      buttons.forEach((button) => { button.disabled = false; });
+    }
+  };
+  form.addEventListener("submit", (event) => { event.preventDefault(); exchange(true); });
+  document.querySelector("#export-recorder-lift").addEventListener("click", () => exchange(false));
+}
+
 function setupIpaKeyboard() {
   const fragment = document.createDocumentFragment();
   for (const symbol of ipaSymbols) {
@@ -536,10 +589,35 @@ function setupIpaKeyboard() {
 
 function initialize() {
   if (!ui.dialog || !ui.openButton) return;
-  ui.openButton.addEventListener("click", async () => {
+  const openRecorder = (trigger) => {
+    recorderTrigger = trigger;
+    document.dispatchEvent(new Event("workspaceediting"));
     ui.dialog.showModal();
     resizeCanvas();
     loadDictionary();
+  };
+  ui.openButton.addEventListener("click", () => openRecorder(ui.openButton));
+  document.querySelectorAll(".record-token").forEach((button) => {
+    button.addEventListener("click", () => {
+      if (isRecording || ui.recordButton.disabled) {
+        setView("capture");
+        openRecorder(button);
+        setStatus("Stop recording and wait for audio processing before choosing another word.", "processing");
+        return;
+      }
+      const card = button.closest(".token-card");
+      const hasDraft = audioBuffer || isRecording || [...ui.form.querySelectorAll("input")]
+        .some((input) => input.value.trim());
+      if (hasDraft && !window.confirm("Replace the current recorder draft with this word?")) return;
+      if (hasDraft) clearRecording();
+      const target = card.querySelector(".ruby-base") ?? card.querySelector(".target-text");
+      ui.form.reset();
+      ui.lemma.value = card.querySelector(".sub-greek")?.textContent.trim() || target.textContent.trim();
+      ui.gloss.value = target.textContent.trim();
+      ui.reference.value = card.dataset.maculaIds;
+      setView("capture");
+      openRecorder(button);
+    });
   });
   ui.closeButton.addEventListener("click", () => {
     if (isRecording) stopRecording();
@@ -547,7 +625,7 @@ function initialize() {
   });
   ui.dialog.addEventListener("close", () => {
     if (isRecording) stopRecording();
-    ui.openButton.focus();
+    recorderTrigger?.focus();
   });
   ui.captureTab.addEventListener("click", () => setView("capture"));
   ui.dictionaryTab.addEventListener("click", () => setView("dictionary"));
@@ -557,6 +635,7 @@ function initialize() {
   ui.form.addEventListener("submit", saveEntry);
   ui.search.addEventListener("input", loadDictionary);
   ui.exportButton.addEventListener("click", exportDictionary);
+  setupLiftExchange();
   ui.ipaToggle.addEventListener("click", () => {
     ui.ipaKeyboard.hidden = !ui.ipaKeyboard.hidden;
     ui.ipaToggle.setAttribute("aria-expanded", String(!ui.ipaKeyboard.hidden));

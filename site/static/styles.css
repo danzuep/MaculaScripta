@@ -10,6 +10,8 @@
   --cantonese-color: #fbbf24;
   --ruby-color: #f472b6;
   --edited-bg: #243e50;
+  --ipa-color: #a78bfa;
+  --grammar-color: #f472b6;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background: var(--bg-color);
   color: var(--text-primary);
@@ -27,12 +29,14 @@
   --cantonese-color: #92400e;
   --ruby-color: #a21caf;
   --edited-bg: #e0f2fe;
+  --ipa-color: #6d28d9;
+  --grammar-color: #a21caf;
 }
 
 * { box-sizing: border-box; }
 
 body {
-  max-width: 68rem;
+  max-width: 62rem;
   margin: 0 auto;
   padding: 2rem 1.25rem 4rem;
 }
@@ -142,25 +146,19 @@ button, select {
 .settings p, #edit-status { color: var(--text-muted); font-size: 0.9rem; }
 
 .token-details {
-  display: none;
-  position: absolute;
-  z-index: 1;
-  top: 100%;
-  left: 0;
-  width: min(18rem, 75vw);
-  padding: 0.75rem;
-  border: 1px solid var(--border-color);
-  border-radius: 0.4rem;
-  background: var(--card-bg);
-  box-shadow: 0 0.35rem 1rem rgb(0 0 0 / 25%);
+  width: 100%;
+  margin-top: 0.6rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
   text-align: left;
 }
 
 .token-details audio { max-width: 100%; }
-.token-card:hover .token-details,
-.token-card:focus-within .token-details {
+.token-detail-content {
   display: grid;
   gap: 0.4rem;
+  max-width: 18rem;
+  padding-top: 0.75rem;
 }
 
 .empty-state {
@@ -347,6 +345,55 @@ button, select {
   border: 0;
 }
 
+.skip-link { position: absolute; top: -5rem; }
+.skip-link:focus { top: 0.5rem; background: var(--card-bg); padding: 0.75rem; z-index: 2; }
+.brand-row, .section-heading, .workspace-nav, .translation-toolbar, .editor-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.brand { color: var(--text-primary); text-decoration: none; font-size: 1.1rem; font-weight: 750; }
+.brand span { display: block; font-size: 0.7rem; color: var(--text-muted); font-weight: 400; margin-top: 0.25rem; }
+.local-badge, .reference-badge { color: var(--text-muted); font-size: 0.75rem; }
+.local-badge { padding: 0.5rem 0.75rem; border: 1px solid var(--border-color); border-radius: 2rem; }
+.workspace-header { padding-bottom: 1rem; }
+.workspace-header > .eyebrow { margin-top: 3rem; }
+.eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; }
+.workspace-header h1 { font-size: clamp(2rem, 6vw, 3.25rem); letter-spacing: -0.04em; margin-block: 0.75rem; }
+.workspace-intro { color: var(--text-muted); }
+.workspace-nav { justify-content: flex-start; gap: 0.6rem; margin-block: 1.5rem 0.75rem; }
+.workspace-nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0.6rem 0.9rem; border: 1px solid var(--border-color); border-radius: 0.6rem; text-decoration: none; }
+.workspace-nav button, #save-text-edit { background: var(--greek-color); color: var(--bg-color); font-weight: 650; }
+.settings { color: var(--text-muted); font-size: 0.85rem; }
+.settings label { flex-wrap: wrap; }
+.section-heading { margin-bottom: 1.25rem; }
+.section-heading h2 { margin: 0.35rem 0; font-size: 1.5rem; letter-spacing: -0.02em; }
+.section-heading p:not(.eyebrow) { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; max-width: 36rem; }
+.illustration-notes { margin-top: 1rem; color: var(--text-muted); font-size: 0.8rem; line-height: 1.6; }
+.illustration-notes summary { padding-block: 0.5rem; }
+.translation-toolbar { justify-content: flex-start; padding: 1rem; border: 1px solid var(--border-color); border-radius: 0.75rem; background: var(--card-bg); }
+.translation-toolbar label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--text-muted); }
+#filter-status { margin: 0; color: var(--text-muted); font-size: 0.8rem; }
+.verse { margin-block: 1.25rem; }
+.verse h2 { margin-top: 0; }
+.translation-meta { font-size: 0.75rem; }
+.token-card { flex: 1 1 8rem; padding: 1rem 0.75rem 0.65rem; }
+.token-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.35rem; margin-top: auto; padding-top: 0.75rem; }
+.token-actions button { font-size: 0.75rem; padding-inline: 0.55rem; }
+.token-actions .edit-token { margin: 0; }
+.text-editor { width: min(32rem, calc(100% - 2rem)); padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 1rem; background: var(--card-bg); color: var(--text-primary); }
+.text-editor::backdrop { background: rgb(2 6 23 / 75%); backdrop-filter: blur(4px); }
+.text-editor label { display: block; margin-bottom: 0.5rem; }
+.text-editor textarea { width: 100%; resize: vertical; border: 1px solid var(--border-color); border-radius: 0.6rem; padding: 0.75rem; background: var(--bg-color); color: var(--text-primary); font: inherit; }
+#text-editor-context, #text-editor-scope { color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; }
+#text-editor-error { color: var(--ruby-color); }
+.editor-actions { justify-content: flex-end; }
+button:hover:not(:disabled), .workspace-nav a:hover { border-color: var(--greek-color); }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+section[id] { scroll-margin-top: 1.5rem; }
+
 @media (max-width: 35rem) {
   body {
     padding-inline: 0.85rem;
@@ -362,5 +409,8 @@ button, select {
 
   .recorder-dialog { width: calc(100% - 0.75rem); max-height: 94vh; }
   .recorder-dictionary-tools { flex-direction: column; }
+  .recorder-entry { grid-template-columns: minmax(0, 1fr); }
+  .local-badge { font-size: 0.65rem; }
+  .translation-toolbar label { flex-wrap: wrap; }
   #trim-readout { font-size: 0.6rem; }
 }
