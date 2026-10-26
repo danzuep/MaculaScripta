@@ -34,10 +34,10 @@
       <p id="edit-status" role="status"></p>
     </header>
     <main>
-      {{ $attributions := slice }}
+      {{- $attributions := slice -}}
       {{ range $language, $files := hugo.Data.overlays }}
         {{ range $fileName, $file := $files }}
-          {{ with $file.attribution }}{{ $attributions = $attributions | append . }}{{ end }}
+          {{- with $file.attribution -}}{{- $attributions = $attributions | append . -}}{{- end -}}
           {{ range $verse := $file.verses }}
             <article class="verse" data-verse="{{ $verse.verse_ref }}" lang="{{ $verse.language_code }}">
               <h2>{{ $verse.verse_ref }}</h2>
@@ -60,10 +60,10 @@
                         {{ $alignment.target_text }}
                       {{ end }}
                     </span>
-                    {{ $greek := slice }}
-                    {{ range $alignment.target_macula_ids }}
-                      {{ with index hugo.Data.greek_tokens . }}{{ $greek = $greek | append . }}{{ end }}
-                    {{ end }}
+                    {{- $greek := slice -}}
+                    {{- range $alignment.target_macula_ids -}}
+                      {{- with index hugo.Data.greek_tokens . -}}{{- $greek = $greek | append . -}}{{- end -}}
+                    {{- end -}}
                     {{ with $greek }}<span class="sub-greek" lang="grc">{{ delimit . " " }}</span>{{ end }}
                     <button class="edit-token" type="button" aria-label="Edit {{ $alignment.target_text }}">Edit</button>
                     <span class="token-details">

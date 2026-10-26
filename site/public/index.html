@@ -4,7 +4,7 @@
 	<meta name="generator" content="Hugo 0.160.1">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#f7f3eb">
+    <meta name="theme-color" content="#0f172a">
     <title>MaculaScripta</title>
     <link rel="manifest" href="/MaculaScripta/manifest.webmanifest">
     <link rel="stylesheet" href="/MaculaScripta/styles.css">
@@ -18,12 +18,25 @@
         <p><a href="/MaculaScripta/john-1-1/">Explore John 1:1: Greek → English → Cantonese</a></p>
       
       <button id="export-edits" type="button">Export offline edits</button>
+      <details class="settings">
+        <summary>Settings</summary>
+        <label for="theme">Appearance
+          <select id="theme">
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+          </select>
+        </label>
+        <label>
+          <input id="apply-shared-edits" type="checkbox" checked>
+          Apply edits to all cards with the same Macula ID
+        </label>
+        <p>Updates every card sharing any Macula ID, including other languages and larger phrases. Turn off to edit only one card. Shaded cards show the most recent edit.</p>
+      </details>
+      <p id="edit-status" role="status"></p>
     </header>
     <main>
-      
         
-          
-            <article class="verse" data-verse="JHN 1:1">
+            <article class="verse" data-verse="JHN 1:1" lang="en">
               <h2>JHN 1:1</h2>
               <p class="translation-meta">
                 en · en-demo · revision 1
@@ -41,7 +54,7 @@
                       
                         In the beginning
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">Ἐν ἀρχῇ</span>
                     <button class="edit-token" type="button" aria-label="Edit In the beginning">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001001001, n43001001002</span>
@@ -63,7 +76,7 @@
                       
                         was
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ἦν</span>
                     <button class="edit-token" type="button" aria-label="Edit was">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001001003</span>
@@ -84,7 +97,7 @@
                       
                         the Word
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ὁ λόγος</span>
                     <button class="edit-token" type="button" aria-label="Edit the Word">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001001004, n43001001005</span>
@@ -108,7 +121,7 @@
                       
                         and
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">καὶ</span>
                     <button class="edit-token" type="button" aria-label="Edit and">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001001006</span>
@@ -127,7 +140,7 @@
                       
                         the Word
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ὁ λόγος</span>
                     <button class="edit-token" type="button" aria-label="Edit the Word">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001001007, n43001001008</span>
@@ -146,7 +159,7 @@
                       
                         was
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ἦν</span>
                     <button class="edit-token" type="button" aria-label="Edit was">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001001009</span>
@@ -165,7 +178,7 @@
                       
                         with
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">πρὸς τὸν</span>
                     <button class="edit-token" type="button" aria-label="Edit with">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001001010, n43001001011</span>
@@ -184,7 +197,7 @@
                       
                         God
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">θεόν</span>
                     <button class="edit-token" type="button" aria-label="Edit God">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001001012</span>
@@ -203,7 +216,7 @@
                       
                         and
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">καὶ</span>
                     <button class="edit-token" type="button" aria-label="Edit and">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001001013</span>
@@ -222,7 +235,7 @@
                       
                         God
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">θεὸς</span>
                     <button class="edit-token" type="button" aria-label="Edit God">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001001014</span>
@@ -241,7 +254,7 @@
                       
                         was
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ἦν</span>
                     <button class="edit-token" type="button" aria-label="Edit was">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001001015</span>
@@ -260,7 +273,7 @@
                       
                         the Word
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ὁ λόγος</span>
                     <button class="edit-token" type="button" aria-label="Edit the Word">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001001016, n43001001017</span>
@@ -271,11 +284,10 @@
                   </span>
                 
               </div>
-              <p class="dataset-attribution">Macula Greek dataset (SBLGNT base), CC BY 4.0</p>
               
             </article>
           
-            <article class="verse" data-verse="JHN 1:2">
+            <article class="verse" data-verse="JHN 1:2" lang="en">
               <h2>JHN 1:2</h2>
               <p class="translation-meta">
                 en · en-demo · revision 1
@@ -291,7 +303,7 @@
                       
                         This one
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">οὗτος</span>
                     <button class="edit-token" type="button" aria-label="Edit This one">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001002001</span>
@@ -310,7 +322,7 @@
                       
                         was
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ἦν</span>
                     <button class="edit-token" type="button" aria-label="Edit was">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001002002</span>
@@ -329,7 +341,7 @@
                       
                         in
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ἐν</span>
                     <button class="edit-token" type="button" aria-label="Edit in">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001002003</span>
@@ -348,7 +360,7 @@
                       
                         the beginning
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ἀρχῇ</span>
                     <button class="edit-token" type="button" aria-label="Edit the beginning">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001002004</span>
@@ -367,7 +379,7 @@
                       
                         with
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">πρὸς τὸν</span>
                     <button class="edit-token" type="button" aria-label="Edit with">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001002005, n43001002006</span>
@@ -386,7 +398,7 @@
                       
                         God
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">θεόν</span>
                     <button class="edit-token" type="button" aria-label="Edit God">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001002007</span>
@@ -397,11 +409,10 @@
                   </span>
                 
               </div>
-              <p class="dataset-attribution">Macula Greek dataset (SBLGNT base), CC BY 4.0</p>
               
             </article>
           
-            <article class="verse" data-verse="JHN 1:3">
+            <article class="verse" data-verse="JHN 1:3" lang="en">
               <h2>JHN 1:3</h2>
               <p class="translation-meta">
                 en · en-demo · revision 1
@@ -417,7 +428,7 @@
                       
                         All things
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">πάντα</span>
                     <button class="edit-token" type="button" aria-label="Edit All things">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001003001</span>
@@ -436,7 +447,7 @@
                       
                         came into being
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">δι’ αὐτοῦ ἐγένετο</span>
                     <button class="edit-token" type="button" aria-label="Edit came into being">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001003002, n43001003003, n43001003004</span>
@@ -455,7 +466,7 @@
                       
                         through him
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">δι’ αὐτοῦ</span>
                     <button class="edit-token" type="button" aria-label="Edit through him">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001003002, n43001003003</span>
@@ -474,7 +485,7 @@
                       
                         and without him
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">καὶ χωρὶς αὐτοῦ</span>
                     <button class="edit-token" type="button" aria-label="Edit and without him">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001003005, n43001003006, n43001003007</span>
@@ -493,7 +504,7 @@
                       
                         not one thing
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ἐγένετο οὐδὲ ἕν</span>
                     <button class="edit-token" type="button" aria-label="Edit not one thing">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001003008, n43001003009, n43001003010</span>
@@ -512,7 +523,7 @@
                       
                         came into being
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ἐγένετο</span>
                     <button class="edit-token" type="button" aria-label="Edit came into being">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001003008</span>
@@ -531,7 +542,7 @@
                       
                         that has come into being
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ὃ γέγονεν</span>
                     <button class="edit-token" type="button" aria-label="Edit that has come into being">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001003011, n43001003012</span>
@@ -542,11 +553,10 @@
                   </span>
                 
               </div>
-              <p class="dataset-attribution">Macula Greek dataset (SBLGNT base), CC BY 4.0</p>
               
             </article>
           
-            <article class="verse" data-verse="JHN 1:4">
+            <article class="verse" data-verse="JHN 1:4" lang="en">
               <h2>JHN 1:4</h2>
               <p class="translation-meta">
                 en · en-demo · revision 1
@@ -562,7 +572,7 @@
                       
                         In him
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ἐν αὐτῷ</span>
                     <button class="edit-token" type="button" aria-label="Edit In him">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001004001, n43001004002</span>
@@ -581,7 +591,7 @@
                       
                         was
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ἦν</span>
                     <button class="edit-token" type="button" aria-label="Edit was">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001004004</span>
@@ -600,7 +610,7 @@
                       
                         life
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ζωὴ</span>
                     <button class="edit-token" type="button" aria-label="Edit life">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001004003</span>
@@ -619,7 +629,7 @@
                       
                         and the life
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">καὶ ἡ ζωὴ</span>
                     <button class="edit-token" type="button" aria-label="Edit and the life">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001004005, n43001004006, n43001004007</span>
@@ -638,7 +648,7 @@
                       
                         was
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ἦν</span>
                     <button class="edit-token" type="button" aria-label="Edit was">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001004008</span>
@@ -657,7 +667,7 @@
                       
                         the light
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">τὸ φῶς</span>
                     <button class="edit-token" type="button" aria-label="Edit the light">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001004009, n43001004010</span>
@@ -676,7 +686,7 @@
                       
                         of humanity
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">τῶν ἀνθρώπων</span>
                     <button class="edit-token" type="button" aria-label="Edit of humanity">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001004011, n43001004012</span>
@@ -687,11 +697,10 @@
                   </span>
                 
               </div>
-              <p class="dataset-attribution">Macula Greek dataset (SBLGNT base), CC BY 4.0</p>
               
             </article>
           
-            <article class="verse" data-verse="JHN 1:5">
+            <article class="verse" data-verse="JHN 1:5" lang="en">
               <h2>JHN 1:5</h2>
               <p class="translation-meta">
                 en · en-demo · revision 1
@@ -707,7 +716,7 @@
                       
                         and the light
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">καὶ τὸ φῶς</span>
                     <button class="edit-token" type="button" aria-label="Edit and the light">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001005001, n43001005002, n43001005003</span>
@@ -726,7 +735,7 @@
                       
                         shines
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">φαίνει</span>
                     <button class="edit-token" type="button" aria-label="Edit shines">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001005007</span>
@@ -745,7 +754,7 @@
                       
                         in the darkness
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ἐν τῇ σκοτίᾳ</span>
                     <button class="edit-token" type="button" aria-label="Edit in the darkness">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001005004, n43001005005, n43001005006</span>
@@ -764,7 +773,7 @@
                       
                         and the darkness
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">καὶ ἡ σκοτία</span>
                     <button class="edit-token" type="button" aria-label="Edit and the darkness">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001005008, n43001005009, n43001005010</span>
@@ -783,7 +792,7 @@
                       
                         did not overcome
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">οὐ κατέλαβεν</span>
                     <button class="edit-token" type="button" aria-label="Edit did not overcome">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001005012, n43001005013</span>
@@ -802,7 +811,7 @@
                       
                         it
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">αὐτὸ</span>
                     <button class="edit-token" type="button" aria-label="Edit it">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001005011</span>
@@ -813,15 +822,13 @@
                   </span>
                 
               </div>
-              <p class="dataset-attribution">Macula Greek dataset (SBLGNT base), CC BY 4.0</p>
               
             </article>
           
         
       
         
-          
-            <article class="verse" data-verse="JHN 1:1">
+            <article class="verse" data-verse="JHN 1:1" lang="yue">
               <h2>JHN 1:1</h2>
               <p class="translation-meta">
                 yue · yue-demo · revision 1
@@ -839,7 +846,7 @@
                       
                         <ruby><span class="ruby-base">太初</span><rt>taai3 co1</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">Ἐν ἀρχῇ</span>
                     <button class="edit-token" type="button" aria-label="Edit 太初">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001001001, n43001001002</span>
@@ -863,7 +870,7 @@
                       
                         <ruby><span class="ruby-base">有</span><rt>jau5</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ἦν</span>
                     <button class="edit-token" type="button" aria-label="Edit 有">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001001003</span>
@@ -887,7 +894,7 @@
                       
                         <ruby><span class="ruby-base">道，</span><rt>dou6</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ὁ λόγος</span>
                     <button class="edit-token" type="button" aria-label="Edit 道，">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001001004, n43001001005</span>
@@ -911,7 +918,7 @@
                       
                         <ruby><span class="ruby-base">道</span><rt>dou6</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">καὶ ὁ λόγος</span>
                     <button class="edit-token" type="button" aria-label="Edit 道">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001001006, n43001001007, n43001001008</span>
@@ -935,7 +942,7 @@
                       
                         <ruby><span class="ruby-base">與上帝同在，</span><rt>jyu5 soeng6 dai3 tung4 zoi6</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ἦν πρὸς τὸν θεόν καὶ</span>
                     <button class="edit-token" type="button" aria-label="Edit 與上帝同在，">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001001009, n43001001010, n43001001011, n43001001012, n43001001013</span>
@@ -959,7 +966,7 @@
                       
                         <ruby><span class="ruby-base">上帝</span><rt>soeng6 dai3</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">θεὸς</span>
                     <button class="edit-token" type="button" aria-label="Edit 上帝">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001001014</span>
@@ -983,7 +990,7 @@
                       
                         <ruby><span class="ruby-base">就是</span><rt>zau6 si6</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ἦν ὁ</span>
                     <button class="edit-token" type="button" aria-label="Edit 就是">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001001015, n43001001016</span>
@@ -1007,7 +1014,7 @@
                       
                         <ruby><span class="ruby-base">道</span><rt>dou6</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">λόγος</span>
                     <button class="edit-token" type="button" aria-label="Edit 道">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001001017</span>
@@ -1021,11 +1028,10 @@
                   </span>
                 
               </div>
-              <p class="dataset-attribution">Macula Greek dataset (SBLGNT base), CC BY 4.0</p>
               
             </article>
           
-            <article class="verse" data-verse="JHN 1:2">
+            <article class="verse" data-verse="JHN 1:2" lang="yue">
               <h2>JHN 1:2</h2>
               <p class="translation-meta">
                 yue · yue-demo · revision 1
@@ -1043,7 +1049,7 @@
                       
                         <ruby><span class="ruby-base">這道</span><rt>ze5 dou6</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">οὗτος ἦν</span>
                     <button class="edit-token" type="button" aria-label="Edit 這道">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001002001, n43001002002</span>
@@ -1067,7 +1073,7 @@
                       
                         <ruby><span class="ruby-base">在太初</span><rt>zoi6 taai3 co1</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ἐν ἀρχῇ</span>
                     <button class="edit-token" type="button" aria-label="Edit 在太初">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001002003, n43001002004</span>
@@ -1091,7 +1097,7 @@
                       
                         <ruby><span class="ruby-base">與上帝同在</span><rt>jyu5 soeng6 dai3 tung4 zoi6</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">πρὸς τὸν θεόν</span>
                     <button class="edit-token" type="button" aria-label="Edit 與上帝同在">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001002005, n43001002006, n43001002007</span>
@@ -1105,11 +1111,10 @@
                   </span>
                 
               </div>
-              <p class="dataset-attribution">Macula Greek dataset (SBLGNT base), CC BY 4.0</p>
               
             </article>
           
-            <article class="verse" data-verse="JHN 1:3">
+            <article class="verse" data-verse="JHN 1:3" lang="yue">
               <h2>JHN 1:3</h2>
               <p class="translation-meta">
                 yue · yue-demo · revision 1
@@ -1127,7 +1132,7 @@
                       
                         <ruby><span class="ruby-base">萬物</span><rt>maan6 mat6</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">πάντα</span>
                     <button class="edit-token" type="button" aria-label="Edit 萬物">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001003001</span>
@@ -1151,7 +1156,7 @@
                       
                         <ruby><span class="ruby-base">藉著他而成，</span><rt>ze6 zoek6 taa1 ji4 sing4</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">δι’ αὐτοῦ ἐγένετο καὶ</span>
                     <button class="edit-token" type="button" aria-label="Edit 藉著他而成，">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001003002, n43001003003, n43001003004, n43001003005</span>
@@ -1175,7 +1180,7 @@
                       
                         <ruby><span class="ruby-base">離了他，</span><rt>lei4 liu5 taa1</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">χωρὶς αὐτοῦ</span>
                     <button class="edit-token" type="button" aria-label="Edit 離了他，">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001003006, n43001003007</span>
@@ -1199,7 +1204,7 @@
                       
                         <ruby><span class="ruby-base">沒有一樣</span><rt>mut6 jau5 jat1 joeng6</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ἐγένετο οὐδὲ ἕν</span>
                     <button class="edit-token" type="button" aria-label="Edit 沒有一樣">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001003008, n43001003009, n43001003010</span>
@@ -1223,7 +1228,7 @@
                       
                         <ruby><span class="ruby-base">已成的事物</span><rt>ji5 sing4 dik1 si6 mat6</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ὃ γέγονεν</span>
                     <button class="edit-token" type="button" aria-label="Edit 已成的事物">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001003011, n43001003012</span>
@@ -1237,11 +1242,10 @@
                   </span>
                 
               </div>
-              <p class="dataset-attribution">Macula Greek dataset (SBLGNT base), CC BY 4.0</p>
               
             </article>
           
-            <article class="verse" data-verse="JHN 1:4">
+            <article class="verse" data-verse="JHN 1:4" lang="yue">
               <h2>JHN 1:4</h2>
               <p class="translation-meta">
                 yue · yue-demo · revision 1
@@ -1259,7 +1263,7 @@
                       
                         <ruby><span class="ruby-base">在他裏面</span><rt>zoi6 taa1 leoi5 min6</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ἐν αὐτῷ</span>
                     <button class="edit-token" type="button" aria-label="Edit 在他裏面">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001004001, n43001004002</span>
@@ -1283,7 +1287,7 @@
                       
                         <ruby><span class="ruby-base">有</span><rt>jau5</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ἦν</span>
                     <button class="edit-token" type="button" aria-label="Edit 有">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001004004</span>
@@ -1307,7 +1311,7 @@
                       
                         <ruby><span class="ruby-base">生命</span><rt>sang1 ming6</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ζωὴ</span>
                     <button class="edit-token" type="button" aria-label="Edit 生命">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001004003</span>
@@ -1331,7 +1335,7 @@
                       
                         <ruby><span class="ruby-base">而</span><rt>ji4</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">καὶ</span>
                     <button class="edit-token" type="button" aria-label="Edit 而">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001004005</span>
@@ -1355,7 +1359,7 @@
                       
                         <ruby><span class="ruby-base">這生命</span><rt>ze5 sang1 ming6</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ἡ ζωὴ</span>
                     <button class="edit-token" type="button" aria-label="Edit 這生命">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001004006, n43001004007</span>
@@ -1379,7 +1383,7 @@
                       
                         <ruby><span class="ruby-base">是</span><rt>si6</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ἦν</span>
                     <button class="edit-token" type="button" aria-label="Edit 是">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001004008</span>
@@ -1403,7 +1407,7 @@
                       
                         <ruby><span class="ruby-base">世人的光</span><rt>sai3 jan4 dik1 gwong1</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">τὸ φῶς τῶν ἀνθρώπων</span>
                     <button class="edit-token" type="button" aria-label="Edit 世人的光">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001004009, n43001004010, n43001004011, n43001004012</span>
@@ -1417,11 +1421,10 @@
                   </span>
                 
               </div>
-              <p class="dataset-attribution">Macula Greek dataset (SBLGNT base), CC BY 4.0</p>
               
             </article>
           
-            <article class="verse" data-verse="JHN 1:5">
+            <article class="verse" data-verse="JHN 1:5" lang="yue">
               <h2>JHN 1:5</h2>
               <p class="translation-meta">
                 yue · yue-demo · revision 1
@@ -1439,7 +1442,7 @@
                       
                         <ruby><span class="ruby-base">而</span><rt>ji4</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">καὶ</span>
                     <button class="edit-token" type="button" aria-label="Edit 而">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001005001</span>
@@ -1463,7 +1466,7 @@
                       
                         <ruby><span class="ruby-base">光</span><rt>gwong1</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">τὸ φῶς</span>
                     <button class="edit-token" type="button" aria-label="Edit 光">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001005002, n43001005003</span>
@@ -1487,7 +1490,7 @@
                       
                         <ruby><span class="ruby-base">在黑暗裏</span><rt>zoi6 hak1 am3 leoi5</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ἐν τῇ σκοτίᾳ</span>
                     <button class="edit-token" type="button" aria-label="Edit 在黑暗裏">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001005004, n43001005005, n43001005006</span>
@@ -1511,7 +1514,7 @@
                       
                         <ruby><span class="ruby-base">照耀</span><rt>ziu3 jiu6</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">φαίνει</span>
                     <button class="edit-token" type="button" aria-label="Edit 照耀">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001005007</span>
@@ -1535,7 +1538,7 @@
                       
                         <ruby><span class="ruby-base">但</span><rt>daan6</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">καὶ</span>
                     <button class="edit-token" type="button" aria-label="Edit 但">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001005008</span>
@@ -1559,7 +1562,7 @@
                       
                         <ruby><span class="ruby-base">黑暗</span><rt>hak1 am3</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">ἡ σκοτία</span>
                     <button class="edit-token" type="button" aria-label="Edit 黑暗">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001005009, n43001005010</span>
@@ -1583,7 +1586,7 @@
                       
                         <ruby><span class="ruby-base">沒有</span><rt>mut6 jau5</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">οὐ</span>
                     <button class="edit-token" type="button" aria-label="Edit 沒有">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001005012</span>
@@ -1607,7 +1610,7 @@
                       
                         <ruby><span class="ruby-base">勝過它</span><rt>sing3 gwo3 taa1</rt></ruby>
                       
-                    </span>
+                    </span><span class="sub-greek" lang="grc">αὐτὸ κατέλαβεν</span>
                     <button class="edit-token" type="button" aria-label="Edit 勝過它">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: n43001005011, n43001005013</span>
@@ -1621,13 +1624,15 @@
                   </span>
                 
               </div>
-              <p class="dataset-attribution">Macula Greek dataset (SBLGNT base), CC BY 4.0</p>
               
             </article>
           
         
       
     </main>
+    <footer class="dataset-attribution">
+      <p>Macula Greek dataset (SBLGNT base), CC BY 4.0</p>
+    </footer>
     <script>
       window.maculaScriptaConfig = {
         rawManuscriptBaseUrl: "\"\""
