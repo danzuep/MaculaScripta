@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#f7f3eb">
+    <meta name="theme-color" content="#0f172a">
     <title>{{ .Site.Title }}</title>
     <link rel="manifest" href="{{ "manifest.webmanifest" | relURL }}">
     <link rel="stylesheet" href="{{ "styles.css" | relURL }}">
@@ -17,12 +17,29 @@
         <p><a href="{{ .RelPermalink }}">Explore John 1:1: Greek → English → Cantonese</a></p>
       {{ end }}
       <button id="export-edits" type="button">Export offline edits</button>
+      <details class="settings">
+        <summary>Settings</summary>
+        <label for="theme">Appearance
+          <select id="theme">
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+          </select>
+        </label>
+        <label>
+          <input id="apply-shared-edits" type="checkbox" checked>
+          Apply edits to all cards with the same Macula ID
+        </label>
+        <p>Updates every card sharing any Macula ID, including other languages and larger phrases. Turn off to edit only one card. Shaded cards show the most recent edit.</p>
+      </details>
+      <p id="edit-status" role="status"></p>
     </header>
     <main>
+      {{ $attributions := slice }}
       {{ range $language, $files := hugo.Data.overlays }}
         {{ range $fileName, $file := $files }}
+          {{ with $file.attribution }}{{ $attributions = $attributions | append . }}{{ end }}
           {{ range $verse := $file.verses }}
-            <article class="verse" data-verse="{{ $verse.verse_ref }}">
+            <article class="verse" data-verse="{{ $verse.verse_ref }}" lang="{{ $verse.language_code }}">
               <h2>{{ $verse.verse_ref }}</h2>
               <p class="translation-meta">
                 {{ $verse.language_code }} · {{ $verse.translation_id }} · revision {{ $verse.revision }}
@@ -43,6 +60,11 @@
                         {{ $alignment.target_text }}
                       {{ end }}
                     </span>
+                    {{ $greek := slice }}
+                    {{ range $alignment.target_macula_ids }}
+                      {{ with index hugo.Data.greek_tokens . }}{{ $greek = $greek | append . }}{{ end }}
+                    {{ end }}
+                    {{ with $greek }}<span class="sub-greek" lang="grc">{{ delimit . " " }}</span>{{ end }}
                     <button class="edit-token" type="button" aria-label="Edit {{ $alignment.target_text }}">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: {{ delimit $alignment.target_macula_ids ", " }}</span>
@@ -60,7 +82,6 @@
                   <p>No alignment tokens have been added.</p>
                 {{ end }}
               </div>
-              <p class="dataset-attribution">{{ $file.attribution }}</p>
               {{ with $verse.raw_manuscript_path }}
                 <div class="manuscript-source" data-raw-path="{{ . }}"></div>
               {{ end }}
@@ -71,6 +92,9 @@
         <p class="empty-state">Add verse overlay YAML files under <code>data/overlays/</code> to publish translations.</p>
       {{ end }}
     </main>
+    <footer class="dataset-attribution">
+      {{ range uniq $attributions }}<p>{{ . }}</p>{{ end }}
+    </footer>
     <script>
       window.maculaScriptaConfig = {
         rawManuscriptBaseUrl: {{ .Site.Params.rawManuscriptBaseURL | jsonify }}

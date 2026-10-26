@@ -61,6 +61,18 @@ hugo --source ./site --minify
 
 Offline text changes are stored in IndexedDB and can be exported as a JSON patch. The site does not store GitHub credentials or push changes directly.
 
+The alignment page shows Greek beneath each translation using
+`site/data/greek_tokens.yaml`, keyed by Macula ID. Add source tokens there when
+adding overlays for new verses. Dataset attribution appears once in the footer.
+
+Expand **Settings** to choose light or dark appearance or disable shared-ID edits.
+Shared-ID editing is enabled by default: an edit replaces the text of every card
+sharing any of the edited card's Macula IDs, including cards in other languages
+and cards covering larger phrases. It does not follow indirect ID overlaps.
+Disable it to edit just one card. Settings are remembered in this browser.
+The latest successfully saved batch is shaded until another edit or a reload;
+all saved edits are restored on reload and included in the JSON export.
+
 The service worker fetches the latest published pages and assets when online and
 falls back to cached copies when offline. If an older installation still shows
 the empty page, reload once to activate the updated worker, then reload again to
