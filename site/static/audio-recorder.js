@@ -52,6 +52,7 @@ let startRatio = 0;
 let endRatio = 1;
 let activeHandle;
 let playbackSource;
+let savingEntry = false;
 
 function openDatabase() {
   return new Promise((resolve, reject) => {
@@ -360,7 +361,7 @@ function clearRecording() {
 
 async function saveEntry(event) {
   event.preventDefault();
-  if (!ui.form.reportValidity()) return;
+  if (savingEntry || !ui.form.reportValidity()) return;
   const entry = {
     lemma: ui.lemma.value.trim(),
     ipa: ui.ipa.value.trim(),
@@ -375,6 +376,9 @@ async function saveEntry(event) {
     ui.lemma.focus();
     return;
   }
+  const saveButton = ui.form.querySelector('button[type="submit"]');
+  savingEntry = true;
+  saveButton.disabled = true;
   try {
     await databaseReady;
     await storeRequest("readwrite", (store) => store.add(entry));
@@ -386,6 +390,9 @@ async function saveEntry(event) {
     setStatus("Entry saved", "ready");
   } catch {
     setStatus("Could not save the entry. Check browser storage and try again.", "error");
+  } finally {
+    savingEntry = false;
+    saveButton.disabled = false;
   }
 }
 
