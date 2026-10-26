@@ -84,6 +84,14 @@ function maculaIds(card) {
   return card.dataset.maculaIds.split(",").filter(Boolean);
 }
 
+function sharesTranslationSense(source, candidate) {
+  const { language, lemmaId, senseId } = source.dataset;
+  return Boolean(language?.trim() && lemmaId?.trim() && senseId?.trim())
+    && candidate.dataset.language === language
+    && candidate.dataset.lemmaId === lemmaId
+    && candidate.dataset.senseId === senseId;
+}
+
 function updateCard(card, text) {
   const target = card.querySelector(".ruby-base") ?? card.querySelector(".target-text");
   target.textContent = text;
@@ -110,9 +118,8 @@ document.querySelectorAll(".edit-token").forEach((button) => {
     const replacement = window.prompt("Edit translation token", target.textContent);
     if (replacement === null || replacement.trim() === "" || replacement.trim() === target.textContent.trim()) return;
 
-    const ids = new Set(maculaIds(card));
     const affectedCards = sharedEdits?.checked
-      ? cards.filter((candidate) => candidate === card || maculaIds(candidate).some((id) => ids.has(id)))
+      ? cards.filter((candidate) => candidate === card || sharesTranslationSense(card, candidate))
       : [card];
     const updatedAt = new Date().toISOString();
     const edits = affectedCards.map((affected) => ({
@@ -120,6 +127,9 @@ document.querySelectorAll(".edit-token").forEach((button) => {
       verseReference: affected.closest(".verse").dataset.verse,
       alignmentId: affected.dataset.alignmentId,
       targetMaculaIds: maculaIds(affected),
+      languageCode: affected.dataset.language,
+      lemmaId: affected.dataset.lemmaId,
+      senseId: affected.dataset.senseId,
       targetText: replacement.trim(),
       updatedAt
     }));

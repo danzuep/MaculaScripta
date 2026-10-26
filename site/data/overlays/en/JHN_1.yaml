@@ -25,6 +25,9 @@ verses:
         target_text: the Word
         target_macula_ids: [n43001001004, n43001001005]
         alignment_type: Literal
+        custom_metadata:
+          lemma_id: strong:G3056
+          sense_id: local:logos-divine-word
         alternates:
           - text: the Message
             category: dynamic_equivalent
@@ -40,6 +43,9 @@ verses:
         target_text: the Word
         target_macula_ids: [n43001001007, n43001001008]
         alignment_type: Literal
+        custom_metadata:
+          lemma_id: strong:G3056
+          sense_id: local:logos-divine-word
       - id: JHN_1_1_06
         target_text: was
         target_macula_ids: [n43001001009]
@@ -68,6 +74,9 @@ verses:
         target_text: the Word
         target_macula_ids: [n43001001016, n43001001017]
         alignment_type: Literal
+        custom_metadata:
+          lemma_id: strong:G3056
+          sense_id: local:logos-divine-word
   - verse_ref: JHN 1:2
     language_code: en
     translation_id: en-demo

@@ -28,6 +28,9 @@ verses:
         target_text: 道，
         target_macula_ids: [n43001001004, n43001001005]
         alignment_type: Literal
+        custom_metadata:
+          lemma_id: strong:G3056
+          sense_id: local:logos-divine-word
         pronunciations:
           - scheme: Jyutping
             phonetic_text: dou6
@@ -35,6 +38,9 @@ verses:
         target_text: 道
         target_macula_ids: [n43001001006, n43001001007, n43001001008]
         alignment_type: Literal
+        custom_metadata:
+          lemma_id: strong:G3056
+          sense_id: local:logos-divine-word
         pronunciations:
           - scheme: Jyutping
             phonetic_text: dou6
@@ -63,6 +69,9 @@ verses:
         target_text: 道
         target_macula_ids: [n43001001017]
         alignment_type: Literal
+        custom_metadata:
+          lemma_id: strong:G3056
+          sense_id: local:logos-divine-word
         pronunciations:
           - scheme: Jyutping
             phonetic_text: dou6

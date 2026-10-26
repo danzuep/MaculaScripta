@@ -27,9 +27,9 @@
         </label>
         <label>
           <input id="apply-shared-edits" type="checkbox" checked>
-          Apply edits to all cards with the same Macula ID
+          Apply edits to cards with the same language, lemma, and word sense
         </label>
-        <p>Updates every card sharing any Macula ID, including other languages and larger phrases. Turn off to edit only one card. Shaded cards show the most recent edit.</p>
+        <p>Updates whole cards only when their target language, lemma ID, and word sense ID all match. Cards without explicit lemma and sense metadata are edited individually. Turn off to edit only one card. Shaded cards show the most recent edit.</p>
       </details>
       <p id="edit-status" role="status"></p>
     </header>
@@ -52,7 +52,10 @@
                   {{ end }}
                   <span class="token-card"
                         data-alignment-id="{{ printf "%s-%s" $language $alignment.id }}"
-                        data-macula-ids="{{ delimit $alignment.target_macula_ids "," }}">
+                        data-macula-ids="{{ delimit $alignment.target_macula_ids "," }}"
+                        data-language="{{ $verse.language_code }}"
+                        data-lemma-id="{{ with $alignment.custom_metadata }}{{ .lemma_id }}{{ end }}"
+                        data-sense-id="{{ with $alignment.custom_metadata }}{{ .sense_id }}{{ end }}">
                     <span class="target-text">
                       {{ if $jyutping }}
                         <ruby><span class="ruby-base">{{ $alignment.target_text }}</span><rt>{{ $jyutping }}</rt></ruby>
@@ -68,6 +71,10 @@
                     <button class="edit-token" type="button" aria-label="Edit {{ $alignment.target_text }}">Edit</button>
                     <span class="token-details">
                       <span>Macula IDs: {{ delimit $alignment.target_macula_ids ", " }}</span>
+                      {{- with $alignment.custom_metadata -}}
+                        {{- with .lemma_id }}<span>Lemma ID: {{ . }}</span>{{ end -}}
+                        {{- with .sense_id }}<span>Word sense ID: {{ . }}</span>{{ end -}}
+                      {{- end }}
                       {{ with $alignment.translator_notes }}<span>Notes: {{ . }}</span>{{ end }}
                       {{ range $alignment.pronunciations }}
                         <span>{{ .scheme }}: {{ .phonetic_text }}</span>
