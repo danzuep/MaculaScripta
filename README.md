@@ -38,6 +38,27 @@ rendered as Ruby text above Cantonese translation blocks.
 
 Use `MaculaBaseToken.DataAttribution` when publishing Macula identifiers.
 
+## John 1:1 linguistic transformation
+
+Open `john-1-1/` from the homepage to cycle through Greek with IPA, English
+word order (including the inserted `[the]`), and Cantonese with Jyutping.
+Playback advances every seven seconds; pausing preserves the remaining time.
+Reduced-motion users start paused, and all stages remain readable without JavaScript.
+
+Maintain the demonstration text, annotations, stage labels, and playback duration
+in `site/data/john_1_1.yaml`. This illustrative data is separate from the editable
+translation overlays. Units are listed in reading order; `source_order` on the
+English final clause specifies the Greek order used as the animation's starting
+positions. Presentation lives in `site/layouts/transformation.html` and
+`site/static/transformation.css`; playback lives in `site/static/transformation.js`.
+The Hugo page metadata lives in `site/content/john-1-1.md`.
+
+Build locally with Hugo 0.160.1 (the version used by the Pages workflow):
+
+```sh
+hugo --source ./site --minify
+```
+
 Offline text changes are stored in IndexedDB and can be exported as a JSON patch. The site does not store GitHub credentials or push changes directly.
 
 The service worker fetches the latest published pages and assets when online and

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>http://localhost:8080/MaculaScripta/categories/</loc>
+  </url><url>
+    <loc>http://localhost:8080/MaculaScripta/john-1-1/</loc>
+  </url><url>
+    <loc>http://localhost:8080/MaculaScripta/</loc>
+  </url><url>
+    <loc>http://localhost:8080/MaculaScripta/tags/</loc>
+  </url>
+</urlset>

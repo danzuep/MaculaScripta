@@ -13,6 +13,9 @@
       <p class="eyebrow">MaculaScripta</p>
       <h1>Translation alignment</h1>
       <p>Browse verse translations aligned to the Macula Greek dataset.</p>
+      {{ with .Site.GetPage "/john-1-1" }}
+        <p><a href="{{ .RelPermalink }}">Explore John 1:1: Greek → English → Cantonese</a></p>
+      {{ end }}
       <button id="export-edits" type="button">Export offline edits</button>
     </header>
     <main>
