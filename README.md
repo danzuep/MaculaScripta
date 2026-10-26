@@ -56,14 +56,26 @@ and review how many cards will change before saving. **Word details** exposes
 alignment metadata, notes, pronunciation audio, and alternates on touch devices
 and with the keyboard. Filters do not restrict shared edits.
 
-Select **Record** on a card to prefill the recorder with its aligned Greek,
-translation, and Macula references, or use **Record & dictionary** to start
-independently. A draft is not replaced without confirmation. Record audio,
+Select **Edit text → Record pronunciation** to prefill the recorder with its
+aligned Greek, translation, and Macula references, or use **Record & dictionary**
+to start independently. The card's **▶** button plays its linked clip and is
+disabled when no recording is available. A draft is not replaced without confirmation. Record audio,
+watch the live microphone waveform,
 drag the waveform edges to trim, preview the clip, add IPA using the symbol
 keyboard, and save the entry locally. The dictionary supports searching,
 playback, deletion, and JSON export including WAV audio encoded as base64.
 Text edits have their own JSON export. For FLEx dictionary exchange, use the
 separate LIFT controls described below; there is no live FLEx/Language Forge connection.
+
+Each Greek source occurrence has its own card in the seed overlays. **Join next**
+combines neighboring cards; **Split** restores their constituent cards and lets
+you review each translation before saving. Joined phrases do not inherit a
+single word's lemma/sense metadata. The arrow buttons change card order within
+the same verse and language. Joins can be nested and split again; source IDs are
+preserved. Untranslated source words are shown as **∅**, not omitted.
+Arrangements persist offline and are included as `card-layout` records in text
+edit exports. Existing phrase edits remain on their original semantic-head IDs;
+review their wording after the initial word-card split.
 
 ### FLEx dictionary exchange (LIFT 0.13)
 
@@ -136,8 +148,8 @@ adding overlays for new verses. Dataset attribution appears once in the footer.
 
 ## Shared translation edits (multi-edit)
 
-Expand **Settings** to choose light or dark appearance or disable shared edits.
-Shared editing is enabled by default. Its matching key is the combination of:
+Expand **Settings** to choose light or dark appearance. In **Edit text**, shared
+editing is checked by default each time an editor opens. Its matching key is the combination of:
 
 - Target language: `language_code`
 - Dictionary word: `custom_metadata.lemma_id`
@@ -155,14 +167,23 @@ sense ID `local:logos-divine-word`. The latter is a project-local editorial sens
 label, not an external dictionary identifier. Assign both metadata values only
 after reviewing a card's meaning and suitability for whole-card replacement.
 Larger phrases should remain untagged unless replacing the entire phrase is
-intended. Shared edits replace punctuation and articles too, but preserve
-existing pronunciation annotations. Other seed cards remain untagged.
-Disable shared editing to edit just one card. Settings are remembered in this browser.
+intended. Shared edits replace the whole card's text, but preserve existing
+pronunciation annotations. Other seed cards remain untagged.
+Uncheck shared editing in the editor to edit or record just one card.
+Appearance is remembered in this browser.
 The latest successfully saved batch is shaded until another edit or a reload;
 all saved edits are restored on reload and included in the JSON export.
 New exported edits also include their target language, lemma ID, and sense ID.
 Previously saved edits are retained as-is; changing the matching rule does not
 undo earlier cross-language edits.
+
+Recordings made from the editor use that same scope: matching cards link to one
+dictionary audio entry rather than storing duplicate clips. Existing local
+recordings are linked using their source references and an unambiguous language
+match (including the seed cards' previous phrase glosses), then shared by the
+explicit language/lemma/sense key. Ambiguous recordings are not automatically
+assigned. Recordings stay in the browser where they were captured; publishing
+the site does not upload them. Use dictionary export to back up the audio.
 
 The service worker fetches the latest published pages and assets when online and
 falls back to cached copies when offline. If an older installation still shows

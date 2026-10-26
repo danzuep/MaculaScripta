@@ -48,7 +48,6 @@ let databaseReady;
 let mediaRecorder;
 let audioContext;
 let audioBuffer;
-let audioChunks = [];
 let isRecording = false;
 let startRatio = 0;
 let endRatio = 1;
@@ -56,6 +55,141 @@ let activeHandle;
 let playbackSource;
 let savingEntry = false;
 let recorderTrigger;
+let recordingCard;
+let recordingStream;
+let captureContext;
+let captureSource;
+let analyser;
+let waveformFrame;
+let liveSamples;
+let captureGeneration = 0;
+let dictionaryEntries = [];
+let cardRecordings = new Map();
+let savedPlayback;
+let dictionaryGeneration = 0;
+
+function cardId(card) {
+  const verse = card.closest(".verse")?.dataset.verse;
+  return verse && card.dataset.alignmentId ? `${verse}:${card.dataset.alignmentId}` : "";
+}
+
+function bindingKey(value) {
+  const { languageCode, lemmaId, senseId } = value;
+  return [languageCode, lemmaId, senseId].every((part) => typeof part === "string" && part.trim())
+    ? JSON.stringify([languageCode, lemmaId, senseId]) : "";
+}
+
+function cardBinding(card) {
+  return {
+    languageCode: card.dataset.language || "",
+    lemmaId: card.dataset.lemmaId || "",
+    senseId: card.dataset.senseId || ""
+  };
+}
+
+function targetText(card) {
+  return (card.querySelector(".ruby-base") ?? card.querySelector(".target-text"))?.textContent.trim() || "";
+}
+
+function referenceIds(value) {
+  return [...new Set((Array.isArray(value) ? value.join(",") : String(value || ""))
+    .split(/[,\s;]+/u).filter(Boolean))];
+}
+
+function inferBinding(entry, cards) {
+  const refs = new Set(referenceIds(entry.ref || entry.maculaIds));
+  if (!refs.size) return null;
+  // Legacy refs may cover several Greek words now represented by separate cards.
+  const matches = cards.filter((card) => {
+    const ids = referenceIds(card.dataset.maculaIds);
+    return ids.length && ids.every((id) => refs.has(id));
+  });
+  if (!matches.length) return null;
+  const normalize = (text) => String(text || "").normalize("NFC").trim().replace(/\s+/gu, " ");
+  const gloss = normalize(entry.gloss);
+  const glossMatches = gloss ? matches.filter((card) =>
+    normalize(targetText(card)) === gloss || normalize(card.dataset.legacyTargetText) === gloss) : [];
+  const targets = glossMatches.length ? glossMatches : matches;
+  const languages = new Set(targets.map((card) => card.dataset.language));
+  if (languages.size !== 1 || !targets[0].dataset.language?.trim()) return null;
+  const keys = new Set(targets.map((card) => bindingKey(cardBinding(card))));
+  if (keys.size !== 1) return null;
+  if (keys.has("") && targets.length !== 1) return null;
+  return { targets, key: bindingKey(cardBinding(targets[0])) };
+}
+
+function refreshAudioButtons() {
+  const cards = [...document.querySelectorAll(".token-card")];
+  const shared = document.querySelector("#apply-shared-edits")?.checked !== false;
+  cardRecordings = new Map();
+  for (const entry of [...dictionaryEntries].sort((left, right) => left.id - right.id)) {
+    if (!entry.audioBlob) continue;
+    const key = bindingKey(entry);
+    let targets;
+    if (Array.isArray(entry.cardIds)) {
+      const ids = new Set(entry.cardIds);
+      targets = cards.filter((card) => (ids.has(cardId(card))
+        && (!entry.languageCode || entry.languageCode === card.dataset.language))
+        || (shared && entry.sharedBinding === true && key && bindingKey(cardBinding(card)) === key));
+    } else if (key) {
+      targets = shared && entry.sharedBinding !== false
+        ? cards.filter((card) => bindingKey(cardBinding(card)) === key) : [];
+    } else {
+      const inferred = inferBinding(entry, cards);
+      if (!inferred) continue;
+      targets = cards.filter((card) => inferred.targets.includes(card)
+        || (shared && inferred.key && bindingKey(cardBinding(card)) === inferred.key));
+    }
+    for (const card of targets) {
+      if (cardId(card)) cardRecordings.set(cardId(card), entry);
+    }
+  }
+  if (savedPlayback?.card && (!savedPlayback.card.isConnected
+    || cardRecordings.get(cardId(savedPlayback.card)) !== savedPlayback.entry)) stopSavedPlayback();
+  for (const card of cards) {
+    const button = card.querySelector(".play-token");
+    if (!button) continue;
+    const available = cardRecordings.has(cardId(card));
+    button.disabled = !available;
+    button.setAttribute("aria-label", available
+      ? `Play pronunciation for ${targetText(card)}` : `No recording for ${targetText(card)}`);
+    button.title = available ? "Play pronunciation" : "No recording available";
+  }
+}
+
+function cleanupCapture() {
+  if (waveformFrame !== undefined) cancelAnimationFrame(waveformFrame);
+  waveformFrame = undefined;
+  captureSource?.disconnect();
+  analyser?.disconnect();
+  captureSource = null;
+  analyser = null;
+  liveSamples = null;
+  recordingStream?.getTracks().forEach((track) => track.stop());
+  recordingStream = null;
+  if (captureContext) captureContext.close().catch(() => {});
+  captureContext = null;
+}
+
+function stopTrimPlayback() {
+  if (playbackSource) {
+    playbackSource.onended = null;
+    try { playbackSource.stop(); } catch { /* A source that failed to start has nothing to stop. */ }
+    playbackSource.disconnect();
+    playbackSource = null;
+  }
+  ui.playButton.textContent = "Play clip";
+}
+
+function discardCapture() {
+  captureGeneration += 1;
+  if (mediaRecorder && mediaRecorder.state !== "inactive") mediaRecorder.stop();
+  mediaRecorder = null;
+  cleanupCapture();
+  setRecordingUi(false);
+  ui.recordButton.disabled = false;
+  stopTrimPlayback();
+}
 
 function openDatabase() {
   return new Promise((resolve, reject) => {
@@ -113,18 +247,34 @@ function drawWaveform() {
   if (!rect.width || !rect.height) return;
   const ratio = window.devicePixelRatio || 1;
   const context = canvas.getContext("2d");
+  const style = getComputedStyle(document.documentElement);
+  const color = (name) => style.getPropertyValue(name).trim();
   const width = canvas.width / ratio;
   const height = canvas.height / ratio;
   context.setTransform(ratio, 0, 0, ratio, 0, 0);
-  context.fillStyle = "#0f172a";
+  context.fillStyle = color("--bg-color");
   context.fillRect(0, 0, width, height);
+  if (isRecording && analyser && liveSamples) {
+    analyser.getFloatTimeDomainData(liveSamples);
+    context.strokeStyle = color("--greek-color");
+    context.lineWidth = 2;
+    context.beginPath();
+    for (let index = 0; index < liveSamples.length; index += 1) {
+      const x = index * width / (liveSamples.length - 1);
+      const y = (1 - liveSamples[index]) * height / 2;
+      if (index === 0) context.moveTo(x, y);
+      else context.lineTo(x, y);
+    }
+    context.stroke();
+    return;
+  }
   if (!audioBuffer) return;
 
   const samples = audioBuffer.getChannelData(0);
   const samplesPerPixel = Math.max(1, Math.ceil(samples.length / width));
   const amplitude = height / 2;
   context.lineWidth = 1;
-  context.strokeStyle = "#475569";
+  context.strokeStyle = color("--text-muted");
   context.beginPath();
   for (let x = 0; x < width; x += 1) {
     const [minimum, maximum] = sampleRange(samples, x * samplesPerPixel, samplesPerPixel);
@@ -135,9 +285,9 @@ function drawWaveform() {
 
   const fromX = startRatio * width;
   const toX = endRatio * width;
-  context.fillStyle = "rgb(59 130 246 / 15%)";
+  context.fillStyle = color("--edited-bg");
   context.fillRect(fromX, 0, toX - fromX, height);
-  context.strokeStyle = "#60a5fa";
+  context.strokeStyle = color("--greek-color");
   context.lineWidth = 1.5;
   context.beginPath();
   for (let x = Math.floor(fromX); x <= Math.ceil(toX); x += 1) {
@@ -146,8 +296,8 @@ function drawWaveform() {
     context.lineTo(x, (1 + maximum) * amplitude);
   }
   context.stroke();
-  drawHandle(context, fromX, height, "#10b981");
-  drawHandle(context, toX, height, "#ef4444");
+  drawHandle(context, fromX, height, color("--english-color"));
+  drawHandle(context, toX, height, color("--ruby-color"));
 }
 
 function sampleRange(samples, start, count) {
@@ -225,35 +375,57 @@ async function startRecording() {
     setStatus("Audio recording is not supported by this browser.", "error");
     return;
   }
+  const generation = ++captureGeneration;
   ui.recordButton.disabled = true;
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    if (!ui.dialog.open) {
+    if (!ui.dialog.open || generation !== captureGeneration) {
       stream.getTracks().forEach((track) => track.stop());
       return;
     }
-    audioChunks = [];
+    recordingStream = stream;
+    stopTrimPlayback();
+    stopSavedPlayback();
+    const chunks = [];
     audioBuffer = null;
     startRatio = 0;
     endRatio = 1;
     ui.clearButton.disabled = true;
     ui.playButton.disabled = true;
-    ui.placeholder.hidden = false;
+    ui.placeholder.hidden = true;
     ui.trimReadout.hidden = true;
     drawWaveform();
     const recorder = new MediaRecorder(stream);
     mediaRecorder = recorder;
+    captureContext = new (window.AudioContext || window.webkitAudioContext)();
+    const context = captureContext;
+    captureSource = context.createMediaStreamSource(stream);
+    analyser = context.createAnalyser();
+    analyser.fftSize = 2048;
+    liveSamples = new Float32Array(analyser.fftSize);
+    captureSource.connect(analyser);
+    await context.resume();
+    if (generation !== captureGeneration) return;
+    if (!ui.dialog.open) {
+      discardCapture();
+      return;
+    }
     recorder.addEventListener("dataavailable", (event) => {
-      if (event.data.size) audioChunks.push(event.data);
+      if (event.data.size) chunks.push(event.data);
     });
     recorder.addEventListener("stop", async () => {
-      stream.getTracks().forEach((track) => track.stop());
+      if (generation !== captureGeneration) return;
+      cleanupCapture();
+      mediaRecorder = null;
+      setRecordingUi(false);
       setStatus("Processing audio…", "processing");
       ui.recordButton.disabled = true;
       try {
-        const blob = new Blob(audioChunks, { type: recorder.mimeType || "audio/webm" });
+        const blob = new Blob(chunks, { type: recorder.mimeType || "audio/webm" });
         audioContext ??= new (window.AudioContext || window.webkitAudioContext)();
-        audioBuffer = await audioContext.decodeAudioData(await blob.arrayBuffer());
+        const decoded = await audioContext.decodeAudioData(await blob.arrayBuffer());
+        if (generation !== captureGeneration || !ui.dialog.open) return;
+        audioBuffer = decoded;
         startRatio = 0;
         endRatio = 1;
         ui.clearButton.disabled = false;
@@ -264,19 +436,35 @@ async function startRecording() {
         updateTrimReadout();
         setStatus("Audio ready to trim", "ready");
       } catch {
+        if (generation !== captureGeneration) return;
         setStatus("Could not process this recording. Try recording again.", "error");
         ui.placeholder.hidden = false;
       } finally {
-        ui.recordButton.disabled = false;
+        if (generation === captureGeneration) ui.recordButton.disabled = false;
       }
+    }, { once: true });
+    recorder.addEventListener("error", () => {
+      if (generation !== captureGeneration) return;
+      discardCapture();
+      ui.placeholder.hidden = false;
+      setStatus("Recording failed. Try recording again.", "error");
     }, { once: true });
     recorder.start();
     setRecordingUi(true);
+    const drawLive = () => {
+      if (!isRecording || generation !== captureGeneration) return;
+      drawWaveform();
+      waveformFrame = requestAnimationFrame(drawLive);
+    };
+    drawLive();
     setStatus("Recording…", "recording");
   } catch {
+    if (generation !== captureGeneration) return;
+    discardCapture();
+    ui.placeholder.hidden = false;
     setStatus("Microphone access was denied or is unavailable.", "error");
   } finally {
-    ui.recordButton.disabled = false;
+    if (generation === captureGeneration) ui.recordButton.disabled = false;
   }
 }
 
@@ -284,7 +472,11 @@ function stopRecording() {
   if (!isRecording || !mediaRecorder) return;
   setRecordingUi(false);
   ui.recordButton.disabled = true;
-  mediaRecorder.stop();
+  try {
+    if (mediaRecorder.state !== "inactive") mediaRecorder.stop();
+  } finally {
+    cleanupCapture();
+  }
 }
 
 function createTrimmedBuffer() {
@@ -338,25 +530,28 @@ async function playTrimmedAudio() {
   if (!trimmed) return;
   try {
     await audioContext.resume();
-    playbackSource?.stop();
-    playbackSource = audioContext.createBufferSource();
-    playbackSource.buffer = trimmed;
-    playbackSource.connect(audioContext.destination);
-    playbackSource.addEventListener("ended", () => {
+    stopSavedPlayback();
+    stopTrimPlayback();
+    const source = audioContext.createBufferSource();
+    playbackSource = source;
+    source.buffer = trimmed;
+    source.connect(audioContext.destination);
+    source.onended = () => {
+      source.disconnect();
+      if (playbackSource !== source) return;
       playbackSource = null;
       ui.playButton.textContent = "Play clip";
-    }, { once: true });
-    playbackSource.start();
+    };
+    source.start();
     ui.playButton.textContent = "Playing…";
   } catch {
+    stopTrimPlayback();
     setStatus("Unable to play this clip.", "error");
   }
 }
 
 function clearRecording() {
-  if (isRecording) stopRecording();
-  playbackSource?.stop();
-  playbackSource = null;
+  discardCapture();
   audioBuffer = null;
   startRatio = 0;
   endRatio = 1;
@@ -387,6 +582,12 @@ async function saveEntry(event) {
     audioBlob: audioBuffer ? encodeWave(createTrimmedBuffer()) : null,
     createdAt: new Date().toISOString()
   };
+  if (recordingCard) {
+    Object.assign(entry, cardBinding(recordingCard), {
+      cardIds: [cardId(recordingCard)].filter(Boolean),
+      sharedBinding: document.querySelector("#apply-shared-edits")?.checked === true
+    });
+  }
   if (!entry.lemma) {
     ui.lemma.focus();
     return;
@@ -397,7 +598,9 @@ async function saveEntry(event) {
   try {
     await databaseReady;
     await storeRequest("readwrite", (store) => store.add(entry));
+    await loadDictionary();
     ui.form.reset();
+    recordingCard = null;
     ui.ipaKeyboard.hidden = true;
     ui.ipaToggle.setAttribute("aria-expanded", "false");
     clearRecording();
@@ -412,9 +615,14 @@ async function saveEntry(event) {
 }
 
 async function loadDictionary() {
+  const generation = ++dictionaryGeneration;
   try {
     await databaseReady;
     const entries = await storeRequest("readonly", (store) => store.getAll());
+    if (generation !== dictionaryGeneration) return;
+    dictionaryEntries = entries;
+    stopSavedPlayback();
+    refreshAudioButtons();
     ui.count.textContent = String(entries.length);
     const query = ui.search.value.trim().toLocaleLowerCase();
     const filtered = entries.filter((entry) =>
@@ -452,7 +660,7 @@ function renderEntries(entries) {
       play.type = "button";
       play.textContent = "Play";
       play.setAttribute("aria-label", `Play recording for ${entry.lemma}`);
-      play.addEventListener("click", () => playSavedAudio(entry.audioBlob, play));
+      play.addEventListener("click", () => playSavedAudio(entry.audioBlob, play, entry));
       actions.append(play);
     }
     const remove = document.createElement("button");
@@ -466,24 +674,48 @@ function renderEntries(entries) {
   }
 }
 
-function playSavedAudio(blob, button) {
+function stopSavedPlayback() {
+  if (!savedPlayback) return;
+  const { audio, url, button } = savedPlayback;
+  savedPlayback = null;
+  audio.onended = null;
+  audio.onerror = null;
+  audio.pause();
+  audio.removeAttribute("src");
+  audio.load();
+  URL.revokeObjectURL(url);
+  button.disabled = false;
+}
+
+function playbackError() {
+  const message = "Unable to play this saved recording.";
+  setStatus(message, "error");
+  const status = document.querySelector("#edit-status");
+  if (status) {
+    status.textContent = message;
+    status.dataset.state = "error";
+  }
+}
+
+function playSavedAudio(blob, button, entry, card = null) {
+  stopSavedPlayback();
+  stopTrimPlayback();
   const url = URL.createObjectURL(blob);
   const audio = new Audio(url);
-  button.disabled = true;
-  audio.addEventListener("ended", () => {
-    URL.revokeObjectURL(url);
-    button.disabled = false;
-  }, { once: true });
-  audio.addEventListener("error", () => {
-    URL.revokeObjectURL(url);
-    button.disabled = false;
-    setStatus("Unable to play this saved recording.", "error");
-  }, { once: true });
-  audio.play().catch(() => {
-    URL.revokeObjectURL(url);
-    button.disabled = false;
-    setStatus("Unable to play this saved recording.", "error");
-  });
+  const playback = { audio, url, button, entry, card };
+  savedPlayback = playback;
+  const finish = (failed = false) => {
+    if (savedPlayback !== playback) return;
+    stopSavedPlayback();
+    if (failed) playbackError();
+  };
+  audio.onended = () => finish();
+  audio.onerror = () => finish(true);
+  try {
+    Promise.resolve(audio.play()).catch(() => finish(true));
+  } catch {
+    finish(true);
+  }
 }
 
 async function deleteEntry(id) {
@@ -591,40 +823,60 @@ function initialize() {
   if (!ui.dialog || !ui.openButton) return;
   const openRecorder = (trigger) => {
     recorderTrigger = trigger;
-    document.dispatchEvent(new Event("workspaceediting"));
-    ui.dialog.showModal();
+    if (!ui.dialog.open) ui.dialog.showModal();
     resizeCanvas();
     loadDictionary();
   };
-  ui.openButton.addEventListener("click", () => openRecorder(ui.openButton));
-  document.querySelectorAll(".record-token").forEach((button) => {
-    button.addEventListener("click", () => {
+  ui.openButton.addEventListener("click", () => {
+    if (!audioBuffer && !ui.lemma.value.trim()) recordingCard = null;
+    openRecorder(ui.openButton);
+  });
+  document.addEventListener("recordcard", (event) => {
+      const { card, trigger } = event.detail || {};
+      if (!card?.matches(".token-card") || !card.isConnected) return;
       if (isRecording || ui.recordButton.disabled) {
         setView("capture");
-        openRecorder(button);
+        openRecorder(trigger);
         setStatus("Stop recording and wait for audio processing before choosing another word.", "processing");
         return;
       }
-      const card = button.closest(".token-card");
       const hasDraft = audioBuffer || isRecording || [...ui.form.querySelectorAll("input")]
         .some((input) => input.value.trim());
       if (hasDraft && !window.confirm("Replace the current recorder draft with this word?")) return;
       if (hasDraft) clearRecording();
-      const target = card.querySelector(".ruby-base") ?? card.querySelector(".target-text");
+      recordingCard = card;
       ui.form.reset();
-      ui.lemma.value = card.querySelector(".sub-greek")?.textContent.trim() || target.textContent.trim();
-      ui.gloss.value = target.textContent.trim();
-      ui.reference.value = card.dataset.maculaIds;
+      ui.lemma.value = card.querySelector(".sub-greek")?.textContent.trim() || targetText(card);
+      ui.gloss.value = targetText(card);
+      ui.reference.value = card.dataset.maculaIds || "";
       setView("capture");
-      openRecorder(button);
-    });
+      openRecorder(trigger);
+  });
+  document.addEventListener("click", (event) => {
+    const button = event.target.closest?.(".play-token");
+    if (!button || button.disabled) return;
+    const card = button.closest(".token-card");
+    const entry = card && cardRecordings.get(cardId(card));
+    if (entry?.audioBlob) playSavedAudio(entry.audioBlob, button, entry, card);
+  });
+  document.addEventListener("cardschanged", refreshAudioButtons);
+  document.querySelector("#apply-shared-edits")?.addEventListener("change", refreshAudioButtons);
+  new MutationObserver(() => {
+    if (ui.dialog.open) drawWaveform();
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  window.addEventListener("pagehide", () => {
+    discardCapture();
+    stopSavedPlayback();
+    audioContext?.close().catch(() => {});
+    audioContext = null;
   });
   ui.closeButton.addEventListener("click", () => {
-    if (isRecording) stopRecording();
     ui.dialog.close();
   });
   ui.dialog.addEventListener("close", () => {
-    if (isRecording) stopRecording();
+    discardCapture();
+    stopSavedPlayback();
+    ui.placeholder.hidden = Boolean(audioBuffer);
     recorderTrigger?.focus();
   });
   ui.captureTab.addEventListener("click", () => setView("capture"));
@@ -649,6 +901,7 @@ function initialize() {
     setStatus("Local dictionary storage is unavailable.", "error");
     return null;
   });
+  loadDictionary();
 }
 
 document.addEventListener("DOMContentLoaded", initialize, { once: true });

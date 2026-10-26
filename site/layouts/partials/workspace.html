@@ -33,11 +33,6 @@
             <option value="light">Light</option>
           </select>
         </label>
-        <label>
-          <input id="apply-shared-edits" type="checkbox" checked>
-          Apply edits to cards with the same language, lemma, and word sense
-        </label>
-        <p>Updates whole cards only when their target language, lemma ID, and word sense ID all match. Cards without explicit lemma and sense metadata are edited individually. Turn off to edit only one card. Shaded cards show the most recent edit.</p>
       </details>
     </header>
     <main id="workspace">
@@ -47,7 +42,7 @@
           <div>
             <p class="eyebrow">TRANSLATION STUDIO</p>
             <h2 id="translations-title">Make the words your own</h2>
-            <p>Edit a phrase or record its pronunciation. Changes stay in this browser until you export them.</p>
+            <p>Edit words, join or split cards, and arrange them in translation order. Changes stay in this browser until you export them.</p>
           </div>
           <button id="export-edits" type="button">Export text edits</button>
         </div>
@@ -94,6 +89,7 @@
                         data-alignment-id="{{ printf "%s-%s" $language $alignment.id }}"
                         data-macula-ids="{{ delimit $alignment.target_macula_ids "," }}"
                         data-language="{{ $verse.language_code }}"
+                        data-legacy-target-text="{{ with $alignment.custom_metadata }}{{ .legacy_target_text }}{{ end }}"
                         data-lemma-id="{{ with $alignment.custom_metadata }}{{ .lemma_id }}{{ end }}"
                         data-sense-id="{{ with $alignment.custom_metadata }}{{ .sense_id }}{{ end }}">
                     <span class="target-text">
@@ -110,7 +106,13 @@
                     {{ with $greek }}<span class="sub-greek" lang="grc">{{ delimit . " " }}</span>{{ end }}
                     <span class="token-actions">
                       <button class="edit-token" type="button" aria-label="Edit {{ $alignment.target_text }}">Edit text</button>
-                      <button class="record-token" type="button" aria-label="Record pronunciation for {{ $alignment.target_text }}" aria-haspopup="dialog" aria-controls="recorder-dialog">Record</button>
+                      <button class="play-token" type="button" aria-label="Play pronunciation for {{ $alignment.target_text }}" title="No recording linked yet. Record from Edit text." disabled>▶</button>
+                    </span>
+                    <span class="card-layout-actions">
+                      <button class="move-card-earlier" type="button" aria-label="Move {{ $alignment.target_text }} earlier">←</button>
+                      <button class="move-card-later" type="button" aria-label="Move {{ $alignment.target_text }} later">→</button>
+                      <button class="join-card" type="button">Join next</button>
+                      <button class="split-card" type="button" disabled>Split</button>
                     </span>
                     <details class="token-details">
                       <summary>Word details</summary>
@@ -157,11 +159,30 @@
         <p id="text-editor-context"></p>
         <label for="text-editor-value">Translation text</label>
         <textarea id="text-editor-value" rows="3" required></textarea>
+        <label id="text-editor-shared-scope">
+          <input id="apply-shared-edits" type="checkbox" checked>
+          Apply edits to cards with the same language, lemma, and word sense
+        </label>
         <p id="text-editor-scope"></p>
+        <button id="record-editor-audio" type="button" aria-haspopup="dialog" aria-controls="recorder-dialog">Record pronunciation</button>
+        <p class="recorder-hint">Text and new recordings share this scope. Cards without explicit language, lemma, and sense metadata change individually.</p>
         <p id="text-editor-error" role="alert"></p>
         <div class="editor-actions">
           <button id="cancel-text-edit" type="button">Cancel</button>
           <button id="save-text-edit" type="submit">Save offline</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="split-editor" class="text-editor" aria-labelledby="split-editor-title">
+      <form id="split-editor-form">
+        <h2 id="split-editor-title">Split joined card</h2>
+        <p id="split-editor-context"></p>
+        <p>Review each restored translation. Changes to a joined phrase are not automatically divided between its words.</p>
+        <div id="split-editor-fields"></div>
+        <p id="split-editor-error" role="alert"></p>
+        <div class="editor-actions">
+          <button id="cancel-split" type="button">Cancel</button>
+          <button id="save-split" type="submit">Save split offline</button>
         </div>
       </form>
     </dialog>

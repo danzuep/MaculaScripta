@@ -10,9 +10,16 @@ verses:
       timestamp: "2026-10-25T00:00:00Z"
     review_history: []
     alignments:
+      - id: JHN_1_1_01-prep
+        target_text: 在
+        target_macula_ids: [n43001001001]
+        alignment_type: Literal
+        pronunciations:
+          - scheme: Jyutping
+            phonetic_text: zoi6
       - id: JHN_1_1_01
         target_text: 太初
-        target_macula_ids: [n43001001001, n43001001002]
+        target_macula_ids: [n43001001002]
         alignment_type: Literal
         pronunciations:
           - scheme: Jyutping
@@ -24,9 +31,13 @@ verses:
         pronunciations:
           - scheme: Jyutping
             phonetic_text: jau5
+      - id: JHN_1_1_03-article
+        target_text: ∅
+        target_macula_ids: [n43001001004]
+        alignment_type: Literal
       - id: JHN_1_1_03
         target_text: 道，
-        target_macula_ids: [n43001001004, n43001001005]
+        target_macula_ids: [n43001001005]
         alignment_type: Literal
         custom_metadata:
           lemma_id: strong:G3056
@@ -34,9 +45,20 @@ verses:
         pronunciations:
           - scheme: Jyutping
             phonetic_text: dou6
+      - id: JHN_1_1_04-conjunction
+        target_text: 而
+        target_macula_ids: [n43001001006]
+        alignment_type: Literal
+        pronunciations:
+          - scheme: Jyutping
+            phonetic_text: ji4
+      - id: JHN_1_1_04-article
+        target_text: ∅
+        target_macula_ids: [n43001001007]
+        alignment_type: Literal
       - id: JHN_1_1_04
         target_text: 道
-        target_macula_ids: [n43001001006, n43001001007, n43001001008]
+        target_macula_ids: [n43001001008]
         alignment_type: Literal
         custom_metadata:
           lemma_id: strong:G3056
@@ -44,13 +66,40 @@ verses:
         pronunciations:
           - scheme: Jyutping
             phonetic_text: dou6
-      - id: JHN_1_1_06
-        target_text: 與上帝同在，
-        target_macula_ids: [n43001001009, n43001001010, n43001001011, n43001001012, n43001001013]
+      - id: JHN_1_1_06-prep
+        target_text: 與
+        target_macula_ids: [n43001001010]
         alignment_type: Literal
         pronunciations:
           - scheme: Jyutping
-            phonetic_text: jyu5 soeng6 dai3 tung4 zoi6
+            phonetic_text: jyu5
+      - id: JHN_1_1_06-article
+        target_text: ∅
+        target_macula_ids: [n43001001011]
+        alignment_type: Literal
+      - id: JHN_1_1_06-god
+        target_text: 上帝
+        target_macula_ids: [n43001001012]
+        alignment_type: Literal
+        pronunciations:
+          - scheme: Jyutping
+            phonetic_text: soeng6 dai3
+      - id: JHN_1_1_06
+        target_text: 同在，
+        target_macula_ids: [n43001001009]
+        alignment_type: Literal
+        custom_metadata:
+          legacy_target_text: 與上帝同在，
+        pronunciations:
+          - scheme: Jyutping
+            phonetic_text: tung4 zoi6
+      - id: JHN_1_1_06-conjunction
+        target_text: 而
+        target_macula_ids: [n43001001013]
+        alignment_type: Literal
+        pronunciations:
+          - scheme: Jyutping
+            phonetic_text: ji4
       - id: JHN_1_1_07
         target_text: 上帝
         target_macula_ids: [n43001001014]
@@ -60,11 +109,15 @@ verses:
             phonetic_text: soeng6 dai3
       - id: JHN_1_1_08
         target_text: 就是
-        target_macula_ids: [n43001001015, n43001001016]
+        target_macula_ids: [n43001001015]
         alignment_type: Literal
         pronunciations:
           - scheme: Jyutping
             phonetic_text: zau6 si6
+      - id: JHN_1_1_08-article
+        target_text: ∅
+        target_macula_ids: [n43001001016]
+        alignment_type: Literal
       - id: JHN_1_1_09
         target_text: 道
         target_macula_ids: [n43001001017]
@@ -87,25 +140,54 @@ verses:
     alignments:
       - id: JHN_1_2_01
         target_text: 這道
-        target_macula_ids: [n43001002001, n43001002002]
+        target_macula_ids: [n43001002001]
         alignment_type: Literal
         pronunciations:
           - scheme: Jyutping
             phonetic_text: ze5 dou6
+      - id: JHN_1_2_02-prep
+        target_text: 在
+        target_macula_ids: [n43001002003]
+        alignment_type: Literal
+        pronunciations:
+          - scheme: Jyutping
+            phonetic_text: zoi6
       - id: JHN_1_2_02
-        target_text: 在太初
-        target_macula_ids: [n43001002003, n43001002004]
+        target_text: 太初
+        target_macula_ids: [n43001002004]
+        alignment_type: Literal
+        custom_metadata:
+          legacy_target_text: 在太初
+        pronunciations:
+          - scheme: Jyutping
+            phonetic_text: taai3 co1
+      - id: JHN_1_2_03-prep
+        target_text: 與
+        target_macula_ids: [n43001002005]
         alignment_type: Literal
         pronunciations:
           - scheme: Jyutping
-            phonetic_text: zoi6 taai3 co1
+            phonetic_text: jyu5
+      - id: JHN_1_2_03-article
+        target_text: ∅
+        target_macula_ids: [n43001002006]
+        alignment_type: Literal
       - id: JHN_1_2_03
-        target_text: 與上帝同在
-        target_macula_ids: [n43001002005, n43001002006, n43001002007]
+        target_text: 上帝
+        target_macula_ids: [n43001002007]
+        alignment_type: Literal
+        custom_metadata:
+          legacy_target_text: 與上帝同在
+        pronunciations:
+          - scheme: Jyutping
+            phonetic_text: soeng6 dai3
+      - id: JHN_1_2_01-verb
+        target_text: 同在
+        target_macula_ids: [n43001002002]
         alignment_type: Literal
         pronunciations:
           - scheme: Jyutping
-            phonetic_text: jyu5 soeng6 dai3 tung4 zoi6
+            phonetic_text: tung4 zoi6
   - verse_ref: JHN 1:3
     language_code: yue
     translation_id: yue-demo
@@ -123,34 +205,91 @@ verses:
         pronunciations:
           - scheme: Jyutping
             phonetic_text: maan6 mat6
+      - id: JHN_1_3_02-prep
+        target_text: 藉著
+        target_macula_ids: [n43001003002]
+        alignment_type: Literal
+        pronunciations:
+          - scheme: Jyutping
+            phonetic_text: ze6 zoek6
+      - id: JHN_1_3_02-pronoun
+        target_text: 他
+        target_macula_ids: [n43001003003]
+        alignment_type: Literal
+        pronunciations:
+          - scheme: Jyutping
+            phonetic_text: taa1
       - id: JHN_1_3_02
-        target_text: 藉著他而成，
-        target_macula_ids: [n43001003002, n43001003003, n43001003004, n43001003005]
+        target_text: 而成；
+        target_macula_ids: [n43001003004]
+        alignment_type: Literal
+        custom_metadata:
+          legacy_target_text: 藉著他而成，
+        pronunciations:
+          - scheme: Jyutping
+            phonetic_text: ji4 sing4
+      - id: JHN_1_3_02-conjunction
+        target_text: 並且
+        target_macula_ids: [n43001003005]
         alignment_type: Literal
         pronunciations:
           - scheme: Jyutping
-            phonetic_text: ze6 zoek6 taa1 ji4 sing4
+            phonetic_text: bing6 ce2
+      - id: JHN_1_3_03-prep
+        target_text: 離了
+        target_macula_ids: [n43001003006]
+        alignment_type: Literal
+        pronunciations:
+          - scheme: Jyutping
+            phonetic_text: lei4 liu5
       - id: JHN_1_3_03
-        target_text: 離了他，
-        target_macula_ids: [n43001003006, n43001003007]
+        target_text: 他，
+        target_macula_ids: [n43001003007]
         alignment_type: Literal
+        custom_metadata:
+          legacy_target_text: 離了他，
         pronunciations:
           - scheme: Jyutping
-            phonetic_text: lei4 liu5 taa1
-      - id: JHN_1_3_04
-        target_text: 沒有一樣
-        target_macula_ids: [n43001003008, n43001003009, n43001003010]
-        alignment_type: Literal
-        pronunciations:
-          - scheme: Jyutping
-            phonetic_text: mut6 jau5 jat1 joeng6
+            phonetic_text: taa1
       - id: JHN_1_3_05
-        target_text: 已成的事物
-        target_macula_ids: [n43001003011, n43001003012]
+        target_text: 已成的
+        target_macula_ids: [n43001003012]
+        alignment_type: Literal
+        custom_metadata:
+          legacy_target_text: 已成的事物
+        pronunciations:
+          - scheme: Jyutping
+            phonetic_text: ji5 sing4 dik1
+      - id: JHN_1_3_05-relative
+        target_text: 事物
+        target_macula_ids: [n43001003011]
         alignment_type: Literal
         pronunciations:
           - scheme: Jyutping
-            phonetic_text: ji5 sing4 dik1 si6 mat6
+            phonetic_text: si6 mat6
+      - id: JHN_1_3_04-negative
+        target_text: 沒有
+        target_macula_ids: [n43001003009]
+        alignment_type: Literal
+        pronunciations:
+          - scheme: Jyutping
+            phonetic_text: mut6 jau5
+      - id: JHN_1_3_04
+        target_text: 一樣
+        target_macula_ids: [n43001003010]
+        alignment_type: Literal
+        custom_metadata:
+          legacy_target_text: 沒有一樣
+        pronunciations:
+          - scheme: Jyutping
+            phonetic_text: jat1 joeng6
+      - id: JHN_1_3_04-verb
+        target_text: 成立。
+        target_macula_ids: [n43001003008]
+        alignment_type: Literal
+        pronunciations:
+          - scheme: Jyutping
+            phonetic_text: sing4 lap6
   - verse_ref: JHN 1:4
     language_code: yue
     translation_id: yue-demo
@@ -161,13 +300,22 @@ verses:
       timestamp: "2026-10-25T00:00:00Z"
     review_history: []
     alignments:
-      - id: JHN_1_4_01
-        target_text: 在他裏面
-        target_macula_ids: [n43001004001, n43001004002]
+      - id: JHN_1_4_01-prep
+        target_text: 在
+        target_macula_ids: [n43001004001]
         alignment_type: Literal
         pronunciations:
           - scheme: Jyutping
-            phonetic_text: zoi6 taa1 leoi5 min6
+            phonetic_text: zoi6
+      - id: JHN_1_4_01
+        target_text: 他裏面
+        target_macula_ids: [n43001004002]
+        alignment_type: Literal
+        custom_metadata:
+          legacy_target_text: 在他裏面
+        pronunciations:
+          - scheme: Jyutping
+            phonetic_text: taa1 leoi5 min6
       - id: JHN_1_4_02
         target_text: 有
         target_macula_ids: [n43001004004]
@@ -189,13 +337,22 @@ verses:
         pronunciations:
           - scheme: Jyutping
             phonetic_text: ji4
-      - id: JHN_1_4_05
-        target_text: 這生命
-        target_macula_ids: [n43001004006, n43001004007]
+      - id: JHN_1_4_05-article
+        target_text: 這
+        target_macula_ids: [n43001004006]
         alignment_type: Literal
         pronunciations:
           - scheme: Jyutping
-            phonetic_text: ze5 sang1 ming6
+            phonetic_text: ze5
+      - id: JHN_1_4_05
+        target_text: 生命
+        target_macula_ids: [n43001004007]
+        alignment_type: Literal
+        custom_metadata:
+          legacy_target_text: 這生命
+        pronunciations:
+          - scheme: Jyutping
+            phonetic_text: sang1 ming6
       - id: JHN_1_4_06
         target_text: 是
         target_macula_ids: [n43001004008]
@@ -203,13 +360,30 @@ verses:
         pronunciations:
           - scheme: Jyutping
             phonetic_text: si6
-      - id: JHN_1_4_07
-        target_text: 世人的光
-        target_macula_ids: [n43001004009, n43001004010, n43001004011, n43001004012]
+      - id: JHN_1_4_07-humanity-article
+        target_text: ∅
+        target_macula_ids: [n43001004011]
+        alignment_type: Literal
+      - id: JHN_1_4_07-humanity
+        target_text: 世人的
+        target_macula_ids: [n43001004012]
         alignment_type: Idiomatic
         pronunciations:
           - scheme: Jyutping
-            phonetic_text: sai3 jan4 dik1 gwong1
+            phonetic_text: sai3 jan4 dik1
+      - id: JHN_1_4_07-article
+        target_text: ∅
+        target_macula_ids: [n43001004009]
+        alignment_type: Literal
+      - id: JHN_1_4_07
+        target_text: 光
+        target_macula_ids: [n43001004010]
+        alignment_type: Idiomatic
+        custom_metadata:
+          legacy_target_text: 世人的光
+        pronunciations:
+          - scheme: Jyutping
+            phonetic_text: gwong1
   - verse_ref: JHN 1:5
     language_code: yue
     translation_id: yue-demo
@@ -227,20 +401,37 @@ verses:
         pronunciations:
           - scheme: Jyutping
             phonetic_text: ji4
+      - id: JHN_1_5_02-article
+        target_text: ∅
+        target_macula_ids: [n43001005002]
+        alignment_type: Literal
       - id: JHN_1_5_02
         target_text: 光
-        target_macula_ids: [n43001005002, n43001005003]
+        target_macula_ids: [n43001005003]
         alignment_type: Literal
         pronunciations:
           - scheme: Jyutping
             phonetic_text: gwong1
-      - id: JHN_1_5_03
-        target_text: 在黑暗裏
-        target_macula_ids: [n43001005004, n43001005005, n43001005006]
+      - id: JHN_1_5_03-prep
+        target_text: 在
+        target_macula_ids: [n43001005004]
         alignment_type: Literal
         pronunciations:
           - scheme: Jyutping
-            phonetic_text: zoi6 hak1 am3 leoi5
+            phonetic_text: zoi6
+      - id: JHN_1_5_03-article
+        target_text: ∅
+        target_macula_ids: [n43001005005]
+        alignment_type: Literal
+      - id: JHN_1_5_03
+        target_text: 黑暗裏
+        target_macula_ids: [n43001005006]
+        alignment_type: Literal
+        custom_metadata:
+          legacy_target_text: 在黑暗裏
+        pronunciations:
+          - scheme: Jyutping
+            phonetic_text: hak1 am3 leoi5
       - id: JHN_1_5_04
         target_text: 照耀
         target_macula_ids: [n43001005007]
@@ -255,9 +446,13 @@ verses:
         pronunciations:
           - scheme: Jyutping
             phonetic_text: daan6
+      - id: JHN_1_5_06-article
+        target_text: ∅
+        target_macula_ids: [n43001005009]
+        alignment_type: Literal
       - id: JHN_1_5_06
         target_text: 黑暗
-        target_macula_ids: [n43001005009, n43001005010]
+        target_macula_ids: [n43001005010]
         alignment_type: Literal
         pronunciations:
           - scheme: Jyutping
@@ -270,9 +465,18 @@ verses:
           - scheme: Jyutping
             phonetic_text: mut6 jau5
       - id: JHN_1_5_08
-        target_text: 勝過它
-        target_macula_ids: [n43001005011, n43001005013]
+        target_text: 勝過
+        target_macula_ids: [n43001005013]
+        alignment_type: Literal
+        custom_metadata:
+          legacy_target_text: 勝過它
+        pronunciations:
+          - scheme: Jyutping
+            phonetic_text: sing3 gwo3
+      - id: JHN_1_5_08-pronoun
+        target_text: 它
+        target_macula_ids: [n43001005011]
         alignment_type: Literal
         pronunciations:
           - scheme: Jyutping
-            phonetic_text: sing3 gwo3 taa1
+            phonetic_text: taa1

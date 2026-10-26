@@ -37,6 +37,7 @@ async function readEdits() {
 }
 
 const cards = Array.from(document.querySelectorAll(".token-card"));
+const cardTemplates = new Map(cards.map((card) => [cardId(card), card.cloneNode(true)]));
 const status = document.querySelector("#edit-status");
 const sharedEdits = document.querySelector("#apply-shared-edits");
 const theme = document.querySelector("#theme");
@@ -71,11 +72,6 @@ if (theme) {
   });
 }
 
-if (sharedEdits) {
-  sharedEdits.checked = readSetting("shared-edits") !== "false";
-  sharedEdits.addEventListener("change", () => saveSetting("shared-edits", String(sharedEdits.checked)));
-}
-
 function cardId(card) {
   return `${card.closest(".verse").dataset.verse}:${card.dataset.alignmentId}`;
 }
@@ -96,18 +92,114 @@ function updateCard(card, text) {
   const target = card.querySelector(".ruby-base") ?? card.querySelector(".target-text");
   target.textContent = text;
   card.querySelector(".edit-token").setAttribute("aria-label", `Edit ${text}`);
-  card.querySelector(".record-token")?.setAttribute("aria-label", `Record pronunciation for ${text}`);
+  card.querySelector(".play-token")?.setAttribute("aria-label", `Play pronunciation for ${text}`);
+}
+
+function layoutId(verse) {
+  return `layout:${verse.lang}:${verse.dataset.verse}`;
+}
+
+function cardState(card) {
+  return {
+    templateId: card.dataset.templateId || cardId(card),
+    alignmentId: card.dataset.alignmentId,
+    targetMaculaIds: maculaIds(card),
+    targetText: (card.querySelector(".ruby-base") ?? card.querySelector(".target-text")).textContent.trim(),
+    greekText: card.querySelector(".sub-greek")?.textContent.trim() || "",
+    languageCode: card.dataset.language,
+    lemmaId: card.dataset.lemmaId,
+    senseId: card.dataset.senseId,
+    members: card.joinedMembers
+  };
+}
+
+function restoreCard(state) {
+  const template = cardTemplates.get(state.templateId);
+  if (!template) throw new Error("The saved card no longer exists in this passage.");
+  const card = template.cloneNode(true);
+  card.dataset.templateId = state.templateId;
+  card.dataset.alignmentId = state.alignmentId;
+  card.dataset.maculaIds = state.targetMaculaIds.join(",");
+  card.dataset.language = state.languageCode;
+  card.dataset.lemmaId = state.lemmaId || "";
+  card.dataset.senseId = state.senseId || "";
+  card.joinedMembers = state.members;
+  if (state.members) {
+    delete card.dataset.legacyTargetText;
+    card.querySelector(".target-text").replaceChildren();
+    const details = card.querySelector(".token-detail-content");
+    details.replaceChildren();
+    const description = document.createElement("span");
+    description.textContent = `Joined card · Macula IDs: ${state.targetMaculaIds.join(", ")}. Split to edit individual word senses.`;
+    details.append(description);
+  }
+  updateCard(card, state.targetText);
+  const greek = card.querySelector(".sub-greek") || document.createElement("span");
+  greek.className = "sub-greek";
+  greek.lang = "grc";
+  greek.textContent = state.greekText;
+  if (!greek.parentNode) card.querySelector(".target-text").after(greek);
+  card.querySelector(".play-token").disabled = true;
+  return card;
+}
+
+function layoutEdit(verse, orderedCards) {
+  return {
+    id: layoutId(verse),
+    kind: "card-layout",
+    verseReference: verse.dataset.verse,
+    languageCode: verse.lang,
+    cards: orderedCards.map(cardState),
+    updatedAt: new Date().toISOString()
+  };
+}
+
+function refreshCards() {
+  cards.splice(0, cards.length, ...document.querySelectorAll(".token-card"));
+  cards.forEach((card) => {
+    card.querySelector(".move-card-earlier").disabled = !card.previousElementSibling?.matches(".token-card");
+    card.querySelector(".move-card-later").disabled = !card.nextElementSibling?.matches(".token-card");
+    card.querySelector(".join-card").disabled = !card.nextElementSibling?.matches(".token-card");
+    card.querySelector(".split-card").disabled = !card.joinedMembers;
+  });
+  document.dispatchEvent(new Event("cardschanged"));
 }
 
 const editsReady = readEdits().then((edits) => {
   const editsById = new Map(edits.map((edit) => [edit.id, edit]));
+  let skippedLayouts = 0;
+  document.querySelectorAll(".verse").forEach((verse) => {
+    const layout = editsById.get(layoutId(verse));
+    if (layout?.kind === "card-layout") {
+      try {
+        const originalIds = new Set([...verse.querySelectorAll(".token-card")].map(cardId));
+        const leafIds = (states) => states.flatMap((state) =>
+          state.members ? leafIds(state.members) : [state.templateId]);
+        const savedIds = leafIds(layout.cards);
+        if (savedIds.length !== originalIds.size || new Set(savedIds).size !== savedIds.length
+            || savedIds.some((id) => !originalIds.has(id))) {
+          throw new Error("The passage's source cards have changed.");
+        }
+        const restored = layout.cards.map(restoreCard);
+        verse.querySelector(".verse-flow").replaceChildren(...restored);
+      } catch {
+        skippedLayouts += 1;
+      }
+    }
+  });
+  refreshCards();
   cards.forEach((card) => {
     const edit = editsById.get(cardId(card));
-    if (edit) updateCard(card, edit.targetText);
+    if (typeof edit?.targetText === "string") updateCard(card, edit.targetText);
   });
+  document.dispatchEvent(new Event("cardschanged"));
+  if (skippedLayouts) {
+    status.textContent = `${skippedLayouts} saved arrangement(s) no longer match the published source cards. Original cards are shown; saved text edits still apply. Export before rearranging to retain the old layout.`;
+  }
 }).catch(() => {
   status.textContent = "Saved offline edits could not be loaded. Browser storage may be unavailable.";
 });
+refreshCards();
 
 let saving = false;
 let editingCard;
@@ -125,26 +217,40 @@ function affectedCardsFor(card) {
     : [card];
 }
 
-document.querySelectorAll(".edit-token").forEach((button) => {
-  button.addEventListener("click", async () => {
+function updateEditorScope() {
+  if (!editingCard) return;
+  const count = affectedCardsFor(editingCard).length;
+  document.querySelector("#text-editor-scope").textContent = count > 1
+    ? `This will update ${count} cards with the same language, lemma, and word sense. Pronunciation annotations are preserved.`
+    : "Only this card will change. Pronunciation annotations are preserved.";
+}
+
+sharedEdits?.addEventListener("change", updateEditorScope);
+document.querySelector("#record-editor-audio")?.addEventListener("click", (event) => {
+  if (!editingCard || saving) return;
+  document.dispatchEvent(new CustomEvent("recordcard", {
+    detail: { card: editingCard, trigger: event.currentTarget }
+  }));
+});
+
+document.addEventListener("click", async (event) => {
+    const button = event.target.closest(".edit-token");
+    if (!button) return;
     await editsReady;
-    if (saving || editor.open) return;
+    if (saving || editor.open || layoutSaving) return;
     editingCard = button.closest(".token-card");
     editTrigger = button;
+    sharedEdits.checked = true;
     const target = editingCard.querySelector(".ruby-base") ?? editingCard.querySelector(".target-text");
     editorValue.value = target.textContent.trim();
     editorError.textContent = "";
     document.querySelector("#text-editor-context").textContent =
       `${editingCard.closest(".verse").dataset.verse} · ${editingCard.dataset.language}`;
-    const count = affectedCardsFor(editingCard).length;
-    document.querySelector("#text-editor-scope").textContent = count > 1
-      ? `This will update ${count} cards with the same language, lemma, and word sense. Pronunciation annotations are preserved.`
-      : "Only this card will change. Pronunciation annotations are preserved.";
+    updateEditorScope();
     document.dispatchEvent(new Event("workspaceediting"));
     editor.showModal();
     editorValue.focus();
     editorValue.select();
-  });
 });
 
 editor?.addEventListener("cancel", (event) => {
@@ -194,6 +300,125 @@ editorForm?.addEventListener("submit", async (event) => {
     saving = false;
     saveButton.disabled = false;
     cancelButton.disabled = false;
+  }
+});
+
+let layoutSaving = false;
+let splittingCard;
+let splitTrigger;
+const splitEditor = document.querySelector("#split-editor");
+const splitFields = document.querySelector("#split-editor-fields");
+
+async function persistLayout(verse, orderedCards, extraEdits = []) {
+  if (layoutSaving || saving) return false;
+  layoutSaving = true;
+  try {
+    await saveEdits([...extraEdits, layoutEdit(verse, orderedCards)]);
+    verse.querySelector(".verse-flow").replaceChildren(...orderedCards);
+    refreshCards();
+    status.textContent = "Card arrangement saved offline. Export text edits to keep its word alignments and order.";
+    return true;
+  } catch {
+    status.textContent = "Unable to save the card arrangement. No cards were changed.";
+    return false;
+  } finally {
+    layoutSaving = false;
+  }
+}
+
+document.addEventListener("click", async (event) => {
+  const button = event.target.closest(".card-layout-actions button");
+  if (!button) return;
+  await editsReady;
+  if (layoutSaving || saving || editor.open || splitEditor.open) return;
+  const card = button.closest(".token-card");
+  const verse = card.closest(".verse");
+  const ordered = [...verse.querySelectorAll(".token-card")];
+  const index = ordered.indexOf(card);
+  document.dispatchEvent(new Event("workspaceediting"));
+  if (button.matches(".split-card")) {
+    if (!card.joinedMembers) return;
+    splittingCard = card;
+    splitTrigger = button;
+    document.querySelector("#split-editor-context").textContent = `Joined text: ${cardState(card).targetText}`;
+    document.querySelector("#split-editor-error").textContent = "";
+    splitFields.replaceChildren();
+    card.joinedMembers.forEach((member) => {
+      const label = document.createElement("label");
+      label.textContent = member.greekText || "Unaligned translation";
+      const input = document.createElement("input");
+      input.value = member.targetText;
+      input.required = true;
+      label.append(input);
+      splitFields.append(label);
+    });
+    splitEditor.showModal();
+    splitFields.querySelector("input")?.focus();
+    return;
+  }
+  if (button.matches(".join-card")) {
+    const next = ordered[index + 1];
+    if (!next) return;
+    const members = [cardState(card), cardState(next)];
+    const joined = restoreCard({
+      ...members[0],
+      alignmentId: `joined-${crypto.randomUUID()}`,
+      targetMaculaIds: [...new Set(members.flatMap((member) => member.targetMaculaIds))],
+      targetText: members.map((member) => member.targetText).join(card.dataset.language === "yue" ? "" : " "),
+      greekText: members.map((member) => member.greekText).join(" "),
+      lemmaId: "",
+      senseId: "",
+      members
+    });
+    ordered.splice(index, 2, joined);
+    if (await persistLayout(verse, ordered)) joined.querySelector(".edit-token").focus();
+    return;
+  }
+  const destination = index + (button.matches(".move-card-earlier") ? -1 : 1);
+  if (destination < 0 || destination >= ordered.length) return;
+  [ordered[index], ordered[destination]] = [ordered[destination], ordered[index]];
+  if (await persistLayout(verse, ordered)) card.querySelector(".edit-token").focus();
+});
+
+document.querySelector("#cancel-split")?.addEventListener("click", () => splitEditor.close());
+splitEditor?.addEventListener("cancel", (event) => {
+  if (layoutSaving) event.preventDefault();
+});
+splitEditor?.addEventListener("close", () => {
+  if (splitTrigger?.isConnected) splitTrigger.focus();
+});
+document.querySelector("#split-editor-form")?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (!splittingCard || layoutSaving) return;
+  const values = [...splitFields.querySelectorAll("input")].map((input) => input.value.trim());
+  if (values.some((value) => !value)) {
+    document.querySelector("#split-editor-error").textContent = "Enter text for every restored card (use ∅ for an untranslated word).";
+    return;
+  }
+  const verse = splittingCard.closest(".verse");
+  const restored = splittingCard.joinedMembers.map((member, index) => restoreCard({
+    ...member, targetText: values[index]
+  }));
+  const ordered = [...verse.querySelectorAll(".token-card")];
+  ordered.splice(ordered.indexOf(splittingCard), 1, ...restored);
+  const updatedAt = new Date().toISOString();
+  const edits = restored.map((card) => ({
+    ...cardState(card),
+    id: `${verse.dataset.verse}:${card.dataset.alignmentId}`,
+    verseReference: verse.dataset.verse,
+    updatedAt
+  }));
+  const buttons = [...event.currentTarget.querySelectorAll("button")];
+  buttons.forEach((button) => { button.disabled = true; });
+  try {
+    if (await persistLayout(verse, ordered, edits)) {
+      splitEditor.close();
+      restored[0].querySelector(".edit-token").focus();
+    } else {
+      document.querySelector("#split-editor-error").textContent = status.textContent;
+    }
+  } finally {
+    buttons.forEach((button) => { button.disabled = false; });
   }
 });
 
