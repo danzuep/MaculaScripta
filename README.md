@@ -62,8 +62,54 @@ independently. A draft is not replaced without confirmation. Record audio,
 drag the waveform edges to trim, preview the clip, add IPA using the symbol
 keyboard, and save the entry locally. The dictionary supports searching,
 playback, deletion, and JSON export including WAV audio encoded as base64.
-Text edits have their own JSON export. These exports are backups/exchange data;
-they are not LIFT packages or a live FLEx/Language Forge connection.
+Text edits have their own JSON export. For FLEx dictionary exchange, use the
+separate LIFT controls described below; there is no live FLEx/Language Forge connection.
+
+### FLEx dictionary exchange (LIFT 0.13)
+
+In **Record & dictionary → Dictionary**, enter lexical and gloss writing-system
+tags matching your FLEx project (for example `grc` and `en`, or `yue-Hant`).
+IPA uses the lexical tag plus `-fonipa`. These settings apply to new local
+records on export; imported records retain their selected writing-system tags.
+
+- **Export LIFT + audio ZIP** exports the **whole dictionary**, regardless of
+  search filters. Extract the ZIP, keep its `audio/` folder alongside
+  `macula-dictionary.lift`, and use FLEx's LIFT import. Review writing-system
+  and custom-field mappings in FLEx. The ZIP is a transport bundle, not a FLEx
+  project backup. Audio is preserved in its original format; FLEx playback
+  depends on its installed codecs. JSON export remains available.
+- **Import LIFT / ZIP** accepts one UTF-8 `.lift` document plus optional audio
+  files selected together, or one ZIP containing a single `.lift` and audio.
+  Audio matches relative paths, conventional `audio/` / `AudioVisual/` paths,
+  then an unambiguous basename (useful for individually selected audio files).
+  Missing audio is reported; existing recordings are retained on update.
+  Files stay in the browser; no uploads or external audio fetches occur.
+- Import requires confirmation of the **limited projection**. Each top-level
+  sense becomes one recorder row. The selected lexical form, selected gloss
+  (or definition fallback), IPA, first pronunciation audio, grammatical-info
+  as syntax, and `macula-reference`, `macula-morphology`, `macula-syntax`
+  custom fields are supported. Syntax exports as `macula-syntax`, not an
+  inferred FLEx part of speech. Other languages, rich formatting, additional
+  pronunciations/audio, variants, examples, relations, notes, ranges, subsenses,
+  and other FLEx metadata are **not retained or re-exported**. Keep original
+  FLEx exports/project backups: neither this projection nor its JSON export
+  can reconstruct unsupported data.
+- Entry/sense IDs (and entry GUIDs when present) survive exchange. Existing
+  recorder rows receive persistent IDs on first LIFT export. Repeat imports
+  update matching entry/sense IDs atomically; entries absent from the import
+  and FLEx deletion markers never delete local data. Entries without IDs need
+  a GUID; missing sense IDs receive deterministic, entry-local ordinal IDs.
+  Reordering such unidentified senses can change matching. Importing another
+  selected language for the same IDs replaces that local projection.
+- Validation checks XML well-formedness, LIFT 0.13 structure/identities and
+  safety constraints, not the complete LIFT Relax NG schema. Malformed XML,
+  DTD/entity declarations, external/traversing audio paths, ambiguous filenames,
+  and unsupported ZIP features are rejected before storage changes. ZIP
+  supports stored/deflated entries (deflate requires browser
+  `DecompressionStream` support); encrypted, split, ZIP64 and symlink archives
+  are unsupported. Limits: 8 MiB XML, 32 MiB per file, 128 MiB input/expanded
+  ZIP, 2,000 files, 10,000 recorder rows, 150,000 XML elements and depth 40.
+  Extract compressed ZIPs if your browser lacks raw-deflate support.
 
 Maintain the demonstration text, annotations, stage labels, and playback duration
 in `site/data/john_1_1.yaml`. This illustrative data is separate from the editable
@@ -122,3 +168,26 @@ The service worker fetches the latest published pages and assets when online and
 falls back to cached copies when offline. If an older installation still shows
 the empty page, reload once to activate the updated worker, then reload again to
 load the current translations. Offline edits remain in IndexedDB.
+
+## Deploying GitHub Pages
+
+Pushes to `main` automatically deploy the Hugo site. Pull requests build only.
+To publish another branch manually:
+
+1. Open **Actions → Deploy Hugo site to GitHub Pages → Run workflow**.
+2. Under **Use workflow from**, select the branch to publish.
+3. Enable the **publish** boolean, then select **Run workflow**.
+   Leave **publish** unchecked for a build-only artifact.
+
+**Publishing replaces the live production site; it does not create a branch
+preview.** To restore `main`, repeat these steps with `main` selected and
+**publish** enabled.
+
+The repository's **Settings → Pages → Source** must be **GitHub Actions**.
+The `github-pages` environment's deployment branch policy must allow the
+selected branch. Environment protection rules or required approvals may need
+action by a repository owner.
+
+The workflow changes defining the `publish` input must exist on the selected
+branch. Merge this PR into the default branch to make that input available in
+the default branch's **Run workflow** interface.

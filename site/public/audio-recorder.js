@@ -1,3 +1,5 @@
+import { writingSystems, importLift, exportLift, stableRecords, mergeLift } from "./lift-exchange.js";
+
 const databaseName = "macula-linguistic-recorder";
 const storeName = "dictionary";
 const minimumTrimRatio = 0.02;
@@ -528,6 +530,44 @@ function downloadBlob(blob, filename) {
   setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
+function setupLiftExchange() {
+  const form = document.querySelector("#recorder-lift-form");
+  const status = document.querySelector("#recorder-lift-status");
+  const buttons = [...form.querySelectorAll("button")];
+  let busy = false;
+  const exchange = async (importing) => {
+    if (busy || !form.reportValidity()) return;
+    busy = true;
+    buttons.forEach((button) => { button.disabled = true; });
+    status.textContent = importing ? "Reading and validating files…" : "Preparing the full dictionary…";
+    try {
+      const languages = writingSystems(form.elements.vernacular.value.trim(), form.elements.gloss.value.trim());
+      await databaseReady;
+      if (!database) throw new Error("Local dictionary storage is unavailable.");
+      if (importing) {
+        const parsed = await importLift(form.elements.files.files, languages);
+        const warning = `Import ${parsed.records.length} dictionary records? This is a limited projection, NOT a lossless FLEx backup. Only the selected lexical/gloss languages, IPA, first audio and supported fields are kept. Other languages, examples, relations, variants, subsenses and rich formatting are discarded. Keep your original FLEx files.\n\n${parsed.missingAudio} entries have missing audio; existing audio is retained. ${parsed.missingGloss} records have no selected-language gloss. ${parsed.deleted} deletion markers are ignored. Matching entry/sense IDs will be updated; other local entries will not be deleted.`;
+        if (!window.confirm(warning)) { status.textContent = "Import cancelled. No entries changed."; return; }
+        const result = await mergeLift(database, storeName, parsed.records);
+        await loadDictionary();
+        status.textContent = `Imported: ${result.added} added, ${result.updated} updated. Missing audio: ${parsed.missingAudio}; missing gloss: ${parsed.missingGloss}. Original FLEx files remain your full backup.`;
+      } else {
+        const records = await stableRecords(database, storeName);
+        const blob = await exportLift(records, languages);
+        downloadBlob(blob, `macula_dictionary_${new Date().toISOString().slice(0, 10)}.zip`);
+        status.textContent = `Exported all ${records.length} dictionary records as LIFT 0.13 with local audio. Extract the ZIP before importing its .lift into FLEx.`;
+      }
+    } catch (error) {
+      status.textContent = `${importing ? "Import" : "Export"} failed: ${error.message || "Check browser storage and your files."}`;
+    } finally {
+      busy = false;
+      buttons.forEach((button) => { button.disabled = false; });
+    }
+  };
+  form.addEventListener("submit", (event) => { event.preventDefault(); exchange(true); });
+  document.querySelector("#export-recorder-lift").addEventListener("click", () => exchange(false));
+}
+
 function setupIpaKeyboard() {
   const fragment = document.createDocumentFragment();
   for (const symbol of ipaSymbols) {
@@ -595,6 +635,7 @@ function initialize() {
   ui.form.addEventListener("submit", saveEntry);
   ui.search.addEventListener("input", loadDictionary);
   ui.exportButton.addEventListener("click", exportDictionary);
+  setupLiftExchange();
   ui.ipaToggle.addEventListener("click", () => {
     ui.ipaKeyboard.hidden = !ui.ipaKeyboard.hidden;
     ui.ipaToggle.setAttribute("aria-expanded", String(!ui.ipaKeyboard.hidden));

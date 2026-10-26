@@ -239,6 +239,24 @@
             <input id="recorder-search" type="search" placeholder="Search lemma, IPA, gloss, or reference">
             <button id="export-recorder-dictionary" type="button">Export JSON</button>
           </div>
+          <form id="recorder-lift-form" class="recorder-card" aria-labelledby="recorder-lift-title">
+            <h3 id="recorder-lift-title">FLEx exchange · LIFT 0.13</h3>
+            <p id="recorder-lift-help" class="recorder-hint">Browser-local, limited dictionary projection, not a lossless FLEx backup. Keep the original FLEx files. Import updates matching entry/sense IDs without deleting other entries. Export includes the entire dictionary, not just search results.</p>
+            <label for="recorder-lift-language">Lexical writing system (language tag)
+              <input id="recorder-lift-language" name="vernacular" value="grc" required maxlength="80" autocomplete="off" aria-describedby="recorder-lift-help">
+            </label>
+            <label for="recorder-lift-gloss-language">Gloss writing system (language tag)
+              <input id="recorder-lift-gloss-language" name="gloss" value="en" required maxlength="80" autocomplete="off">
+            </label>
+            <label for="recorder-lift-files">LIFT file and optional matching audio files, or one ZIP
+              <input id="recorder-lift-files" name="files" type="file" multiple accept=".lift,.zip,.wav,.mp3,.ogg,.webm,.m4a,.mp4,.flac,.opus,.aac" aria-describedby="recorder-lift-help">
+            </label>
+            <div class="editor-actions">
+              <button type="submit">Import LIFT / ZIP</button>
+              <button id="export-recorder-lift" type="button">Export LIFT + audio ZIP</button>
+            </div>
+            <p id="recorder-lift-status" role="status" aria-live="polite" aria-atomic="true"></p>
+          </form>
           <div id="recorder-entries" class="recorder-entries"></div>
           <p id="recorder-empty" class="recorder-empty" hidden>No matching entries yet. Record a pronunciation and save a dictionary entry.</p>
         </section>
