@@ -67,12 +67,15 @@ playback, deletion, and JSON export including WAV audio encoded as base64.
 Text edits have their own JSON export. For FLEx dictionary exchange, use the
 separate LIFT controls described below; there is no live FLEx/Language Forge connection.
 
-Each Greek source occurrence has its own card in the seed overlays. **Join next**
+Each Greek source occurrence has its own card in the seed overlays. Expand
+**Word details** for source lemma, Strong's ID, part of speech, alignment and
+translation identifiers, and arrangement controls. **Join next**
 combines neighboring cards; **Split** restores their constituent cards and lets
 you review each translation before saving. Joined phrases do not inherit a
 single word's lemma/sense metadata. The arrow buttons change card order within
 the same verse and language. Joins can be nested and split again; source IDs are
-preserved. Untranslated source words are shown as **∅**, not omitted.
+preserved. Untranslated source words have empty translation text; their Greek
+and cards remain visible. Empty text can be saved in both edit and split dialogs.
 Arrangements persist offline and are included as `card-layout` records in text
 edit exports. Existing phrase edits remain on their original semantic-head IDs;
 review their wording after the initial word-card split.

@@ -32,7 +32,7 @@ verses:
           - scheme: Jyutping
             phonetic_text: jau5
       - id: JHN_1_1_03-article
-        target_text: ∅
+        target_text: ""
         target_macula_ids: [n43001001004]
         alignment_type: Literal
       - id: JHN_1_1_03
@@ -53,7 +53,7 @@ verses:
           - scheme: Jyutping
             phonetic_text: ji4
       - id: JHN_1_1_04-article
-        target_text: ∅
+        target_text: ""
         target_macula_ids: [n43001001007]
         alignment_type: Literal
       - id: JHN_1_1_04
@@ -74,7 +74,7 @@ verses:
           - scheme: Jyutping
             phonetic_text: jyu5
       - id: JHN_1_1_06-article
-        target_text: ∅
+        target_text: ""
         target_macula_ids: [n43001001011]
         alignment_type: Literal
       - id: JHN_1_1_06-god
@@ -115,7 +115,7 @@ verses:
           - scheme: Jyutping
             phonetic_text: zau6 si6
       - id: JHN_1_1_08-article
-        target_text: ∅
+        target_text: ""
         target_macula_ids: [n43001001016]
         alignment_type: Literal
       - id: JHN_1_1_09
@@ -169,7 +169,7 @@ verses:
           - scheme: Jyutping
             phonetic_text: jyu5
       - id: JHN_1_2_03-article
-        target_text: ∅
+        target_text: ""
         target_macula_ids: [n43001002006]
         alignment_type: Literal
       - id: JHN_1_2_03
@@ -361,7 +361,7 @@ verses:
           - scheme: Jyutping
             phonetic_text: si6
       - id: JHN_1_4_07-humanity-article
-        target_text: ∅
+        target_text: ""
         target_macula_ids: [n43001004011]
         alignment_type: Literal
       - id: JHN_1_4_07-humanity
@@ -372,7 +372,7 @@ verses:
           - scheme: Jyutping
             phonetic_text: sai3 jan4 dik1
       - id: JHN_1_4_07-article
-        target_text: ∅
+        target_text: ""
         target_macula_ids: [n43001004009]
         alignment_type: Literal
       - id: JHN_1_4_07
@@ -402,7 +402,7 @@ verses:
           - scheme: Jyutping
             phonetic_text: ji4
       - id: JHN_1_5_02-article
-        target_text: ∅
+        target_text: ""
         target_macula_ids: [n43001005002]
         alignment_type: Literal
       - id: JHN_1_5_02
@@ -420,7 +420,7 @@ verses:
           - scheme: Jyutping
             phonetic_text: zoi6
       - id: JHN_1_5_03-article
-        target_text: ∅
+        target_text: ""
         target_macula_ids: [n43001005005]
         alignment_type: Literal
       - id: JHN_1_5_03
@@ -447,7 +447,7 @@ verses:
           - scheme: Jyutping
             phonetic_text: daan6
       - id: JHN_1_5_06-article
-        target_text: ∅
+        target_text: ""
         target_macula_ids: [n43001005009]
         alignment_type: Literal
       - id: JHN_1_5_06

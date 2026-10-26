@@ -71,7 +71,7 @@ verses:
         target_macula_ids: [n43001001010]
         alignment_type: Literal
       - id: JHN_1_1_07-article
-        target_text: ∅
+        target_text: ""
         target_macula_ids: [n43001001011]
         alignment_type: Literal
       - id: JHN_1_1_08
@@ -133,7 +133,7 @@ verses:
         target_macula_ids: [n43001002005]
         alignment_type: Literal
       - id: JHN_1_2_05-article
-        target_text: ∅
+        target_text: ""
         target_macula_ids: [n43001002006]
         alignment_type: Literal
       - id: JHN_1_2_06
@@ -263,7 +263,7 @@ verses:
         custom_metadata:
           legacy_target_text: the light
       - id: JHN_1_4_07-article
-        target_text: ∅
+        target_text: ""
         target_macula_ids: [n43001004011]
         alignment_type: Literal
       - id: JHN_1_4_07

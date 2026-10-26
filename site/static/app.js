@@ -177,6 +177,7 @@ function refreshCards() {
 
 function normalizeLegacyWordText(record) {
   const normalized = { ...record };
+  if (record.targetText === "∅") normalized.targetText = "";
   if (record.members) {
     normalized.members = record.members.map(normalizeLegacyWordText);
   }
@@ -195,7 +196,7 @@ function normalizeLegacyWordText(record) {
   const sourceIds = record.targetMaculaIds || [];
   if (record.members && record.languageCode === "en") {
     const joinedText = (members) => members.map((member) => member.targetText)
-      .filter((text) => text !== "∅").join(" ") || "∅";
+      .filter((text) => text && text !== "∅").join(" ");
     if (record.targetText === joinedText(record.members)) {
       normalized.targetText = joinedText(normalized.members);
     }
@@ -317,11 +318,6 @@ editorForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (saving || !editingCard) return;
   const replacement = editorValue.value.trim();
-  if (!replacement) {
-    editorError.textContent = "Enter translation text before saving.";
-    editorValue.focus();
-    return;
-  }
   const affectedCards = affectedCardsFor(editingCard);
   const updatedAt = new Date().toISOString();
   const edits = affectedCards.map((affected) => ({
@@ -403,7 +399,6 @@ document.addEventListener("click", async (event) => {
       label.textContent = member.greekText || "Unaligned translation";
       const input = document.createElement("input");
       input.value = member.targetText;
-      input.required = true;
       label.append(input);
       splitFields.append(label);
     });
@@ -419,8 +414,8 @@ document.addEventListener("click", async (event) => {
       ...members[0],
       alignmentId: `joined-${crypto.randomUUID()}`,
       targetMaculaIds: [...new Set(members.flatMap((member) => member.targetMaculaIds))],
-      targetText: members.map((member) => member.targetText).filter((text) => text !== "∅")
-        .join(card.dataset.language === "yue" ? "" : " ") || "∅",
+      targetText: members.map((member) => member.targetText).filter(Boolean)
+        .join(card.dataset.language === "yue" ? "" : " "),
       greekText: members.map((member) => member.greekText).join(" "),
       lemmaId: "",
       senseId: "",
@@ -447,10 +442,6 @@ document.querySelector("#split-editor-form")?.addEventListener("submit", async (
   event.preventDefault();
   if (!splittingCard || layoutSaving) return;
   const values = [...splitFields.querySelectorAll("input")].map((input) => input.value.trim());
-  if (values.some((value) => !value)) {
-    document.querySelector("#split-editor-error").textContent = "Enter text for every restored card (use ∅ for an untranslated word).";
-    return;
-  }
   const verse = splittingCard.closest(".verse");
   const restored = splittingCard.joinedMembers.map((member, index) => restoreCard({
     ...member, targetText: values[index]
