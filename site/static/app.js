@@ -175,18 +175,22 @@ function refreshCards() {
   document.dispatchEvent(new Event("cardschanged"));
 }
 
-function normalizeOpeningPhrase(record) {
+function normalizeLegacyWordText(record) {
   const normalized = { ...record };
   if (record.members) {
-    normalized.members = record.members.map(normalizeOpeningPhrase);
+    normalized.members = record.members.map(normalizeLegacyWordText);
   }
   if (record.cards) {
-    normalized.cards = record.cards.map(normalizeOpeningPhrase);
+    normalized.cards = record.cards.map(normalizeLegacyWordText);
   }
   const alignmentId = record.alignmentId || record.id?.split(":").at(-1);
   if (alignmentId === "en-JHN_1_1_01"
       && ["In the beginning", "the beginning"].includes(record.targetText)) {
     normalized.targetText = "[the] beginning";
+  }
+  if (["en-JHN_1_1_03", "en-JHN_1_1_05", "en-JHN_1_1_12"].includes(alignmentId)
+      && record.targetText === "the Word") {
+    normalized.targetText = "Word";
   }
   const sourceIds = record.targetMaculaIds || [];
   if (record.members && record.languageCode === "en") {
@@ -203,11 +207,18 @@ function normalizeOpeningPhrase(record) {
       && ["In In the beginning", "In the beginning"].includes(record.targetText)) {
     normalized.targetText = "In [the] beginning";
   }
+  if (sourceIds.length === 2 && record.languageCode === "en"
+      && alignmentId?.startsWith("joined-") && record.targetText === "the the Word"
+      && [["n43001001004", "n43001001005"], ["n43001001007", "n43001001008"],
+        ["n43001001016", "n43001001017"]]
+        .some((pair) => pair.every((id) => sourceIds.includes(id)))) {
+    normalized.targetText = "the Word";
+  }
   return normalized;
 }
 
 const editsReady = readEdits().then(async (savedEdits) => {
-  const edits = savedEdits.map(normalizeOpeningPhrase);
+  const edits = savedEdits.map(normalizeLegacyWordText);
   const migrated = edits.filter((edit, index) => JSON.stringify(edit) !== JSON.stringify(savedEdits[index]));
   if (migrated.length) await saveEdits(migrated);
   const editsById = new Map(edits.map((edit) => [edit.id, edit]));
