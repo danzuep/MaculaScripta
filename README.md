@@ -17,7 +17,7 @@ dotnet build MaculaScripta.slnx
 
 ## YAML overlays
 
-Add language-specific files under `site/data/overlays/<language>/`. Each file contains an `attribution` string and a `verses` list of `VerseTranslationOverlay` records. Hugo loads these files at build time; use the snake_case field names from `Protos/macula_scripta.proto`. Alignment entries carry their associated `target_macula_ids`, while a target word may map to multiple IDs or none.
+Add language-specific files under `site/data/overlays/<language>/`. Each file contains an `attribution` string and a `verses` list of `VerseTranslationOverlay` records. Hugo loads these files at build time; use the snake_case field names from `Protos/macula_scripta.proto`. Alignment entries carry their associated source-occurrence `target_macula_ids`, while a target word may map to multiple occurrences or none. These IDs are for alignment only; multi-edit matching uses target language, lemma ID, and sense ID.
 
 Keep only supported data files in that directory, not Markdown documentation: Hugo attempts to parse every file there as data.
 
@@ -26,7 +26,7 @@ Each item in `verses` follows the `VerseTranslationOverlay` contract:
 - `verse_ref`, `language_code`, `translation_id`, `revision`
 - `current_review_stage`, `review_history`
 - `alignments`, each containing `id`, `target_text`, `target_macula_ids`, and `alignment_type`
-- Optional alignment fields: `alternates`, `pronunciations`, `translator_notes`, and `metadata`
+- Optional alignment fields: `alternates`, `pronunciations`, `translator_notes`, and `custom_metadata`
 
 For raw manuscript retrieval, configure `params.rawManuscriptBaseURL` in `site/hugo.toml` and set `raw_manuscript_path` on an overlay to a path relative to that base URL. The browser emits the fetched text as a `manuscriptloaded` event; parsing and alignment remain the responsibility of the C# engine.
 
@@ -60,6 +60,40 @@ hugo --source ./site --minify
 ```
 
 Offline text changes are stored in IndexedDB and can be exported as a JSON patch. The site does not store GitHub credentials or push changes directly.
+
+The alignment page shows Greek beneath each translation using
+`site/data/greek_tokens.yaml`, keyed by Macula source-occurrence ID. Add source tokens there when
+adding overlays for new verses. Dataset attribution appears once in the footer.
+
+## Shared translation edits (multi-edit)
+
+Expand **Settings** to choose light or dark appearance or disable shared edits.
+Shared editing is enabled by default. Its matching key is the combination of:
+
+- Target language: `language_code`
+- Dictionary word: `custom_metadata.lemma_id`
+- Word sense: `custom_metadata.sense_id`
+
+An edit replaces the text of every card whose three values match exactly.
+**Macula IDs are not shared-edit keys**: they identify individual source-word
+occurrences for alignment. Matching lemma and sense IDs can link cards across
+different verses, but never across target languages. Missing or blank
+language, lemma, or sense metadata limits editing to the selected card; senses
+are never inferred from spelling, translated text, or source-occurrence IDs.
+
+The John 1:1 Word cards demonstrate this with lemma ID `strong:G3056` and
+sense ID `local:logos-divine-word`. The latter is a project-local editorial sense
+label, not an external dictionary identifier. Assign both metadata values only
+after reviewing a card's meaning and suitability for whole-card replacement.
+Larger phrases should remain untagged unless replacing the entire phrase is
+intended. Shared edits replace punctuation and articles too, but preserve
+existing pronunciation annotations. Other seed cards remain untagged.
+Disable shared editing to edit just one card. Settings are remembered in this browser.
+The latest successfully saved batch is shaded until another edit or a reload;
+all saved edits are restored on reload and included in the JSON export.
+New exported edits also include their target language, lemma ID, and sense ID.
+Previously saved edits are retained as-is; changing the matching rule does not
+undo earlier cross-language edits.
 
 The service worker fetches the latest published pages and assets when online and
 falls back to cached copies when offline. If an older installation still shows
