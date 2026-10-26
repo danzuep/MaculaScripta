@@ -38,6 +38,16 @@ async function readEdits() {
 
 const cards = Array.from(document.querySelectorAll(".token-card"));
 const cardTemplates = new Map(cards.map((card) => [cardId(card), card.cloneNode(true)]));
+window.maculaScriptaConfig ??= {};
+window.maculaScriptaConfig.sourceCards = Object.freeze(cards.map((card) => Object.freeze({
+  id: cardId(card),
+  languageCode: card.dataset.language,
+  lemmaId: card.dataset.lemmaId,
+  senseId: card.dataset.senseId,
+  targetMaculaIds: Object.freeze(maculaIds(card)),
+  targetText: (card.querySelector(".ruby-base") ?? card.querySelector(".target-text")).textContent.trim(),
+  legacyTargetText: card.dataset.legacyTargetText || ""
+})));
 const status = document.querySelector("#edit-status");
 const sharedEdits = document.querySelector("#apply-shared-edits");
 const theme = document.querySelector("#theme");
@@ -60,7 +70,7 @@ function saveSetting(key, value) {
 
 function applyTheme(value) {
   document.documentElement.dataset.theme = value;
-  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", value === "light" ? "#f1f5f9" : "#0f172a");
+  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", value === "light" ? "#f3f6fb" : "#0f172a");
 }
 
 if (theme) {
@@ -364,7 +374,8 @@ document.addEventListener("click", async (event) => {
       ...members[0],
       alignmentId: `joined-${crypto.randomUUID()}`,
       targetMaculaIds: [...new Set(members.flatMap((member) => member.targetMaculaIds))],
-      targetText: members.map((member) => member.targetText).join(card.dataset.language === "yue" ? "" : " "),
+      targetText: members.map((member) => member.targetText).filter((text) => text !== "∅")
+        .join(card.dataset.language === "yue" ? "" : " ") || "∅",
       greekText: members.map((member) => member.greekText).join(" "),
       lemmaId: "",
       senseId: "",

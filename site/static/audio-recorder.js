@@ -56,6 +56,8 @@ let playbackSource;
 let savingEntry = false;
 let recorderTrigger;
 let recordingCard;
+let recordingShared = false;
+let sourceCards = [];
 let recordingStream;
 let captureContext;
 let captureSource;
@@ -67,6 +69,7 @@ let dictionaryEntries = [];
 let cardRecordings = new Map();
 let savedPlayback;
 let dictionaryGeneration = 0;
+const bindingMigrations = new Map();
 
 function cardId(card) {
   const verse = card.closest(".verse")?.dataset.verse;
@@ -96,31 +99,90 @@ function referenceIds(value) {
     .split(/[,\s;]+/u).filter(Boolean))];
 }
 
-function inferBinding(entry, cards) {
+function inferBinding(entry, cards, currentGlosses = new Map()) {
   const refs = new Set(referenceIds(entry.ref || entry.maculaIds));
   if (!refs.size) return null;
   // Legacy refs may cover several Greek words now represented by separate cards.
   const matches = cards.filter((card) => {
-    const ids = referenceIds(card.dataset.maculaIds);
+    const ids = referenceIds(card.maculaIds);
     return ids.length && ids.every((id) => refs.has(id));
   });
   if (!matches.length) return null;
   const normalize = (text) => String(text || "").normalize("NFC").trim().replace(/\s+/gu, " ");
   const gloss = normalize(entry.gloss);
-  const glossMatches = gloss ? matches.filter((card) =>
-    normalize(targetText(card)) === gloss || normalize(card.dataset.legacyTargetText) === gloss) : [];
+  const glossMatches = gloss ? matches.filter((card) => {
+    const current = currentGlosses.get(card.cardId);
+    return normalize(card.targetText) === gloss || normalize(card.legacyTargetText) === gloss
+      || (current?.languageCode === card.languageCode && normalize(current.text) === gloss);
+  }) : [];
   const targets = glossMatches.length ? glossMatches : matches;
-  const languages = new Set(targets.map((card) => card.dataset.language));
-  if (languages.size !== 1 || !targets[0].dataset.language?.trim()) return null;
-  const keys = new Set(targets.map((card) => bindingKey(cardBinding(card))));
+  const languages = new Set(targets.map((card) => card.languageCode));
+  if (languages.size !== 1 || !targets[0].languageCode?.trim()) return null;
+  const keys = new Set(targets.map(bindingKey));
   if (keys.size !== 1) return null;
   if (keys.has("") && targets.length !== 1) return null;
-  return { targets, key: bindingKey(cardBinding(targets[0])) };
+  return { targets, key: bindingKey(targets[0]) };
+}
+
+function hasSavedBinding(entry) {
+  return Array.isArray(entry.cardIds) || Boolean(bindingKey(entry));
+}
+
+function legacyIdentity(entry) {
+  return JSON.stringify([entry.ref, entry.maculaIds, entry.gloss]);
+}
+
+function migrateBinding(entry, inferred) {
+  if (!database || bindingMigrations.has(entry.id)) return;
+  const patch = {
+    languageCode: inferred.targets[0].languageCode,
+    lemmaId: inferred.targets[0].lemmaId || "",
+    senseId: inferred.targets[0].senseId || "",
+    cardIds: inferred.targets.map((target) => target.cardId),
+    sharedBinding: Boolean(inferred.key)
+  };
+  const migration = new Promise((resolve, reject) => {
+    const transaction = database.transaction(storeName, "readwrite");
+    const store = transaction.objectStore(storeName);
+    const request = store.get(entry.id);
+    let updated;
+    request.onsuccess = () => {
+      const current = request.result;
+      // Re-read inside the write transaction so imports, deletions and newer bindings win.
+      if (!current?.audioBlob || hasSavedBinding(current)
+        || legacyIdentity(current) !== legacyIdentity(entry)) return;
+      updated = { ...current, ...patch };
+      store.put(updated);
+    };
+    transaction.oncomplete = () => resolve(updated);
+    transaction.onabort = () => reject(transaction.error);
+    transaction.onerror = () => reject(transaction.error);
+  });
+  bindingMigrations.set(entry.id, migration);
+  migration.then((updated) => {
+    if (!updated) return;
+    const index = dictionaryEntries.findIndex((candidate) => candidate.id === entry.id);
+    const candidate = dictionaryEntries[index];
+    if (candidate && !hasSavedBinding(candidate) && legacyIdentity(candidate) === legacyIdentity(entry)) {
+      dictionaryEntries[index] = updated;
+      refreshAudioButtons();
+    }
+  }).catch(() => {
+    setStatus("The recording is available, but its card binding could not be saved.", "error");
+  }).finally(() => {
+    bindingMigrations.delete(entry.id);
+    const current = dictionaryEntries.find((candidate) => candidate.id === entry.id);
+    if (current && !hasSavedBinding(current) && legacyIdentity(current) !== legacyIdentity(entry)) {
+      refreshAudioButtons();
+    }
+  });
 }
 
 function refreshAudioButtons() {
   const cards = [...document.querySelectorAll(".token-card")];
-  const shared = document.querySelector("#apply-shared-edits")?.checked !== false;
+  const currentGlosses = new Map(cards.map((card) => [
+    cardId(card), { languageCode: card.dataset.language, text: targetText(card) }
+  ]));
   cardRecordings = new Map();
   for (const entry of [...dictionaryEntries].sort((left, right) => left.id - right.id)) {
     if (!entry.audioBlob) continue;
@@ -130,15 +192,18 @@ function refreshAudioButtons() {
       const ids = new Set(entry.cardIds);
       targets = cards.filter((card) => (ids.has(cardId(card))
         && (!entry.languageCode || entry.languageCode === card.dataset.language))
-        || (shared && entry.sharedBinding === true && key && bindingKey(cardBinding(card)) === key));
+        || (entry.sharedBinding === true && key && bindingKey(cardBinding(card)) === key));
     } else if (key) {
-      targets = shared && entry.sharedBinding !== false
+      targets = entry.sharedBinding !== false
         ? cards.filter((card) => bindingKey(cardBinding(card)) === key) : [];
     } else {
-      const inferred = inferBinding(entry, cards);
+      const inferred = inferBinding(entry, sourceCards, currentGlosses);
       if (!inferred) continue;
-      targets = cards.filter((card) => inferred.targets.includes(card)
-        || (shared && inferred.key && bindingKey(cardBinding(card)) === inferred.key));
+      migrateBinding(entry, inferred);
+      const ids = new Set(inferred.targets.map((target) => target.cardId));
+      targets = cards.filter((card) => (ids.has(cardId(card))
+        && card.dataset.language === inferred.targets[0].languageCode)
+        || (inferred.key && bindingKey(cardBinding(card)) === inferred.key));
     }
     for (const card of targets) {
       if (cardId(card)) cardRecordings.set(cardId(card), entry);
@@ -585,7 +650,7 @@ async function saveEntry(event) {
   if (recordingCard) {
     Object.assign(entry, cardBinding(recordingCard), {
       cardIds: [cardId(recordingCard)].filter(Boolean),
-      sharedBinding: document.querySelector("#apply-shared-edits")?.checked === true
+      sharedBinding: recordingShared
     });
   }
   if (!entry.lemma) {
@@ -601,6 +666,7 @@ async function saveEntry(event) {
     await loadDictionary();
     ui.form.reset();
     recordingCard = null;
+    recordingShared = false;
     ui.ipaKeyboard.hidden = true;
     ui.ipaToggle.setAttribute("aria-expanded", "false");
     clearRecording();
@@ -821,6 +887,9 @@ function setupIpaKeyboard() {
 
 function initialize() {
   if (!ui.dialog || !ui.openButton) return;
+  sourceCards = (window.maculaScriptaConfig?.sourceCards || []).map((card) => ({
+    ...card, cardId: card.id, maculaIds: referenceIds(card.targetMaculaIds)
+  }));
   const openRecorder = (trigger) => {
     recorderTrigger = trigger;
     if (!ui.dialog.open) ui.dialog.showModal();
@@ -828,7 +897,10 @@ function initialize() {
     loadDictionary();
   };
   ui.openButton.addEventListener("click", () => {
-    if (!audioBuffer && !ui.lemma.value.trim()) recordingCard = null;
+    if (!audioBuffer && !ui.lemma.value.trim()) {
+      recordingCard = null;
+      recordingShared = false;
+    }
     openRecorder(ui.openButton);
   });
   document.addEventListener("recordcard", (event) => {
@@ -845,6 +917,7 @@ function initialize() {
       if (hasDraft && !window.confirm("Replace the current recorder draft with this word?")) return;
       if (hasDraft) clearRecording();
       recordingCard = card;
+      recordingShared = document.querySelector("#apply-shared-edits")?.checked === true;
       ui.form.reset();
       ui.lemma.value = card.querySelector(".sub-greek")?.textContent.trim() || targetText(card);
       ui.gloss.value = targetText(card);
@@ -877,6 +950,7 @@ function initialize() {
     discardCapture();
     stopSavedPlayback();
     ui.placeholder.hidden = Boolean(audioBuffer);
+    setStatus(audioBuffer ? "Audio ready to trim" : "Ready");
     recorderTrigger?.focus();
   });
   ui.captureTab.addEventListener("click", () => setView("capture"));
