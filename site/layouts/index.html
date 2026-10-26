@@ -16,6 +16,7 @@
       {{ with .Site.GetPage "/john-1-1" }}
         <p><a href="{{ .RelPermalink }}">Explore John 1:1: Greek → English → Cantonese</a></p>
       {{ end }}
+      <button id="open-recorder" type="button" aria-haspopup="dialog" aria-controls="recorder-dialog">Open field recorder</button>
       <button id="export-edits" type="button">Export offline edits</button>
       <details class="settings">
         <summary>Settings</summary>
@@ -102,12 +103,90 @@
     <footer class="dataset-attribution">
       {{ range uniq $attributions }}<p>{{ . }}</p>{{ end }}
     </footer>
+    <dialog id="recorder-dialog" class="recorder-dialog" aria-labelledby="recorder-title">
+      <div class="recorder-shell">
+        <div class="recorder-heading">
+          <div>
+            <p class="eyebrow">MaculaScripta</p>
+            <h2 id="recorder-title">Field recorder</h2>
+          </div>
+          <button id="close-recorder" type="button" aria-label="Close field recorder">Close</button>
+        </div>
+        <p class="recorder-intro">Record a pronunciation, trim the clip, and save it with a lexical entry. Recordings stay in this browser.</p>
+        <nav class="recorder-tabs" aria-label="Recorder sections">
+          <button id="recorder-tab-capture" type="button" aria-selected="true">Capture &amp; edit</button>
+          <button id="recorder-tab-dictionary" type="button" aria-selected="false">Dictionary (<span id="recorder-count">0</span>)</button>
+        </nav>
+        <section id="recorder-capture" class="recorder-view" aria-label="Capture and edit audio">
+          <div class="recorder-card">
+            <div class="recorder-status-row">
+              <span>Audio workbench</span>
+              <span id="recorder-status" role="status">Ready</span>
+            </div>
+            <div class="waveform-wrap">
+              <canvas id="recorder-waveform" aria-label="Audio waveform. Drag either edge to trim the clip."></canvas>
+              <p id="waveform-placeholder">Record audio to view and trim its waveform.</p>
+              <div id="trim-readout" hidden>
+                <span id="trim-start-time">Start: 0.00s</span>
+                <span id="trim-duration">Duration: 0.00s</span>
+                <span id="trim-end-time">End: 0.00s</span>
+              </div>
+            </div>
+            <div class="recorder-controls">
+              <button id="clear-recording" type="button" disabled>Clear</button>
+              <button id="record-audio" class="record-button" type="button" aria-label="Start recording">Record</button>
+              <button id="play-trim" type="button" disabled>Play clip</button>
+            </div>
+            <p class="recorder-hint">Microphone access requires a secure connection (HTTPS or localhost).</p>
+          </div>
+          <form id="recorder-entry-form" class="recorder-card">
+            <h3>Macula morphological entry</h3>
+            <label>Source word / lemma <span aria-hidden="true">*</span>
+              <input id="recorder-lemma" name="lemma" required autocomplete="off">
+            </label>
+            <label>IPA transcription
+              <input id="recorder-ipa" name="ipa" autocomplete="off">
+            </label>
+            <label>English gloss
+              <input id="recorder-gloss" name="gloss" autocomplete="off">
+            </label>
+            <label>Syntax node
+              <select id="recorder-syntax" name="syntax">
+                <option>Noun Phrase (NP)</option>
+                <option>Verb Phrase (VP)</option>
+                <option>Prepositional (PP)</option>
+                <option>Clause (CL)</option>
+                <option>Particle (PT)</option>
+                <option>Adj Phrase (AP)</option>
+              </select>
+            </label>
+            <label>Macula reference
+              <input id="recorder-ref" name="ref" autocomplete="off">
+            </label>
+            <label>Morphology tags
+              <input id="recorder-morph" name="morph" autocomplete="off">
+            </label>
+            <button type="submit">Save entry to dictionary</button>
+          </form>
+        </section>
+        <section id="recorder-dictionary" class="recorder-view" aria-label="Recorder dictionary" hidden>
+          <div class="recorder-dictionary-tools">
+            <label class="visually-hidden" for="recorder-search">Search dictionary</label>
+            <input id="recorder-search" type="search" placeholder="Search lemma, IPA, gloss, or reference">
+            <button id="export-recorder-dictionary" type="button">Export JSON</button>
+          </div>
+          <div id="recorder-entries" class="recorder-entries"></div>
+          <p id="recorder-empty" class="recorder-empty" hidden>No matching entries yet. Record a pronunciation and save a dictionary entry.</p>
+        </section>
+      </div>
+    </dialog>
     <script>
       window.maculaScriptaConfig = {
         rawManuscriptBaseUrl: {{ .Site.Params.rawManuscriptBaseURL | jsonify }}
       };
     </script>
     <script src="{{ "app.js" | relURL }}" defer></script>
+    <script type="module" src="{{ "audio-recorder.js" | relURL }}"></script>
     <script>
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register(new URL("sw.js", document.baseURI));
