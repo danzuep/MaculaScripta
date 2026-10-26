@@ -15,7 +15,7 @@ verses:
         target_macula_ids: [n43001001001]
         alignment_type: Literal
       - id: JHN_1_1_01
-        target_text: the beginning
+        target_text: "[the] beginning"
         target_macula_ids: [n43001001002]
         alignment_type: Literal
         custom_metadata:

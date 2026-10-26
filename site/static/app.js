@@ -175,7 +175,41 @@ function refreshCards() {
   document.dispatchEvent(new Event("cardschanged"));
 }
 
-const editsReady = readEdits().then((edits) => {
+function normalizeOpeningPhrase(record) {
+  const normalized = { ...record };
+  if (record.members) {
+    normalized.members = record.members.map(normalizeOpeningPhrase);
+  }
+  if (record.cards) {
+    normalized.cards = record.cards.map(normalizeOpeningPhrase);
+  }
+  const alignmentId = record.alignmentId || record.id?.split(":").at(-1);
+  if (alignmentId === "en-JHN_1_1_01"
+      && ["In the beginning", "the beginning"].includes(record.targetText)) {
+    normalized.targetText = "[the] beginning";
+  }
+  const sourceIds = record.targetMaculaIds || [];
+  if (record.members && record.languageCode === "en") {
+    const joinedText = (members) => members.map((member) => member.targetText)
+      .filter((text) => text !== "∅").join(" ") || "∅";
+    if (record.targetText === joinedText(record.members)) {
+      normalized.targetText = joinedText(normalized.members);
+    }
+  }
+  if (sourceIds.length === 2
+      && sourceIds.includes("n43001001001") && sourceIds.includes("n43001001002")
+      && record.languageCode === "en"
+      && alignmentId?.startsWith("joined-")
+      && ["In In the beginning", "In the beginning"].includes(record.targetText)) {
+    normalized.targetText = "In [the] beginning";
+  }
+  return normalized;
+}
+
+const editsReady = readEdits().then(async (savedEdits) => {
+  const edits = savedEdits.map(normalizeOpeningPhrase);
+  const migrated = edits.filter((edit, index) => JSON.stringify(edit) !== JSON.stringify(savedEdits[index]));
+  if (migrated.length) await saveEdits(migrated);
   const editsById = new Map(edits.map((edit) => [edit.id, edit]));
   let skippedLayouts = 0;
   document.querySelectorAll(".verse").forEach((verse) => {
