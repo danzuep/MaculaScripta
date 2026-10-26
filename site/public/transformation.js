@@ -48,7 +48,7 @@
       else button.removeAttribute("aria-current");
       button.style.setProperty("--progress", "0%");
     });
-    if (announce) root.querySelector(".stage-status").textContent = panels[index].querySelector("h2").textContent;
+    if (announce) root.querySelector(".stage-status").textContent = panels[index].querySelector("h3").textContent;
     animateStage();
   }
 
@@ -75,6 +75,10 @@
   buttons.forEach((button, index) => button.addEventListener("click", () => renderStage(index, true)));
   playButton.addEventListener("click", () => {
     playing = !playing;
+    updatePlayback();
+  });
+  document.addEventListener("workspaceediting", () => {
+    playing = false;
     updatePlayback();
   });
   reducedMotion.addEventListener("change", () => {

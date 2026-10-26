@@ -38,19 +38,42 @@ rendered as Ruby text above Cantonese translation blocks.
 
 Use `MaculaBaseToken.DataAttribution` when publishing Macula identifiers.
 
-## John 1:1 linguistic transformation
+## Unified language workbench
 
-Open `john-1-1/` from the homepage to cycle through Greek with IPA, English
-word order (including the inserted `[the]`), and Cantonese with Jyutping.
+The homepage combines the John 1:1 transformation, editable John 1:1–5
+translations, and the field recorder in one workspace. Existing `john-1-1/`
+links open the same workspace through a shared Hugo partial.
+
+Cycle through Greek with IPA, English word order (including the inserted
+`[the]`), and Cantonese with Jyutping.
 Playback advances every seven seconds; pausing preserves the remaining time.
 Reduced-motion users start paused, and all stages remain readable without JavaScript.
+Opening an editor or recorder, or focusing the translation studio, pauses playback
+so it does not distract from editing.
+
+In **Edit translations**, filter by passage and language, select **Edit text**,
+and review how many cards will change before saving. **Word details** exposes
+alignment metadata, notes, pronunciation audio, and alternates on touch devices
+and with the keyboard. Filters do not restrict shared edits.
+
+Select **Record** on a card to prefill the recorder with its aligned Greek,
+translation, and Macula references, or use **Record & dictionary** to start
+independently. A draft is not replaced without confirmation. Record audio,
+drag the waveform edges to trim, preview the clip, add IPA using the symbol
+keyboard, and save the entry locally. The dictionary supports searching,
+playback, deletion, and JSON export including WAV audio encoded as base64.
+Text edits have their own JSON export. These exports are backups/exchange data;
+they are not LIFT packages or a live FLEx/Language Forge connection.
 
 Maintain the demonstration text, annotations, stage labels, and playback duration
 in `site/data/john_1_1.yaml`. This illustrative data is separate from the editable
 translation overlays. Units are listed in reading order; `source_order` on the
 English final clause specifies the Greek order used as the animation's starting
 positions. Presentation lives in `site/layouts/transformation.html` and
-`site/static/transformation.css`; playback lives in `site/static/transformation.js`.
+`site/static/transformation.css`, with shared workspace markup in
+`site/layouts/partials/workspace.html` and the illustration in
+`site/layouts/partials/transformation-stages.html`; playback lives in
+`site/static/transformation.js`.
 The Hugo page metadata lives in `site/content/john-1-1.md`.
 
 Build locally with Hugo 0.160.1 (the version used by the Pages workflow):

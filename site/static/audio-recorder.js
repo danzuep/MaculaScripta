@@ -53,6 +53,7 @@ let endRatio = 1;
 let activeHandle;
 let playbackSource;
 let savingEntry = false;
+let recorderTrigger;
 
 function openDatabase() {
   return new Promise((resolve, reject) => {
@@ -222,8 +223,13 @@ async function startRecording() {
     setStatus("Audio recording is not supported by this browser.", "error");
     return;
   }
+  ui.recordButton.disabled = true;
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    if (!ui.dialog.open) {
+      stream.getTracks().forEach((track) => track.stop());
+      return;
+    }
     audioChunks = [];
     audioBuffer = null;
     startRatio = 0;
@@ -267,12 +273,15 @@ async function startRecording() {
     setStatus("Recording…", "recording");
   } catch {
     setStatus("Microphone access was denied or is unavailable.", "error");
+  } finally {
+    ui.recordButton.disabled = false;
   }
 }
 
 function stopRecording() {
   if (!isRecording || !mediaRecorder) return;
   setRecordingUi(false);
+  ui.recordButton.disabled = true;
   mediaRecorder.stop();
 }
 
@@ -362,6 +371,10 @@ function clearRecording() {
 async function saveEntry(event) {
   event.preventDefault();
   if (savingEntry || !ui.form.reportValidity()) return;
+  if (isRecording || ui.recordButton.disabled) {
+    setStatus("Stop recording and wait for audio processing before saving.", "processing");
+    return;
+  }
   const entry = {
     lemma: ui.lemma.value.trim(),
     ipa: ui.ipa.value.trim(),
@@ -536,10 +549,35 @@ function setupIpaKeyboard() {
 
 function initialize() {
   if (!ui.dialog || !ui.openButton) return;
-  ui.openButton.addEventListener("click", async () => {
+  const openRecorder = (trigger) => {
+    recorderTrigger = trigger;
+    document.dispatchEvent(new Event("workspaceediting"));
     ui.dialog.showModal();
     resizeCanvas();
     loadDictionary();
+  };
+  ui.openButton.addEventListener("click", () => openRecorder(ui.openButton));
+  document.querySelectorAll(".record-token").forEach((button) => {
+    button.addEventListener("click", () => {
+      if (isRecording || ui.recordButton.disabled) {
+        setView("capture");
+        openRecorder(button);
+        setStatus("Stop recording and wait for audio processing before choosing another word.", "processing");
+        return;
+      }
+      const card = button.closest(".token-card");
+      const hasDraft = audioBuffer || isRecording || [...ui.form.querySelectorAll("input")]
+        .some((input) => input.value.trim());
+      if (hasDraft && !window.confirm("Replace the current recorder draft with this word?")) return;
+      if (hasDraft) clearRecording();
+      const target = card.querySelector(".ruby-base") ?? card.querySelector(".target-text");
+      ui.form.reset();
+      ui.lemma.value = card.querySelector(".sub-greek")?.textContent.trim() || target.textContent.trim();
+      ui.gloss.value = target.textContent.trim();
+      ui.reference.value = card.dataset.maculaIds;
+      setView("capture");
+      openRecorder(button);
+    });
   });
   ui.closeButton.addEventListener("click", () => {
     if (isRecording) stopRecording();
@@ -547,7 +585,7 @@ function initialize() {
   });
   ui.dialog.addEventListener("close", () => {
     if (isRecording) stopRecording();
-    ui.openButton.focus();
+    recorderTrigger?.focus();
   });
   ui.captureTab.addEventListener("click", () => setView("capture"));
   ui.dictionaryTab.addEventListener("click", () => setView("dictionary"));

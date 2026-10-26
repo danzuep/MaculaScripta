@@ -96,6 +96,7 @@ function updateCard(card, text) {
   const target = card.querySelector(".ruby-base") ?? card.querySelector(".target-text");
   target.textContent = text;
   card.querySelector(".edit-token").setAttribute("aria-label", `Edit ${text}`);
+  card.querySelector(".record-token")?.setAttribute("aria-label", `Record pronunciation for ${text}`);
 }
 
 const editsReady = readEdits().then((edits) => {
@@ -109,57 +110,130 @@ const editsReady = readEdits().then((edits) => {
 });
 
 let saving = false;
+let editingCard;
+let editTrigger;
+const editor = document.querySelector("#text-editor");
+const editorForm = document.querySelector("#text-editor-form");
+const editorValue = document.querySelector("#text-editor-value");
+const editorError = document.querySelector("#text-editor-error");
+const saveButton = document.querySelector("#save-text-edit");
+const cancelButton = document.querySelector("#cancel-text-edit");
+
+function affectedCardsFor(card) {
+  return sharedEdits?.checked
+    ? cards.filter((candidate) => candidate === card || sharesTranslationSense(card, candidate))
+    : [card];
+}
+
 document.querySelectorAll(".edit-token").forEach((button) => {
   button.addEventListener("click", async () => {
     await editsReady;
-    if (saving) return;
-    const card = button.closest(".token-card");
-    const target = card.querySelector(".ruby-base") ?? card.querySelector(".target-text");
-    const replacement = window.prompt("Edit translation token", target.textContent);
-    if (replacement === null || replacement.trim() === "" || replacement.trim() === target.textContent.trim()) return;
-
-    const affectedCards = sharedEdits?.checked
-      ? cards.filter((candidate) => candidate === card || sharesTranslationSense(card, candidate))
-      : [card];
-    const updatedAt = new Date().toISOString();
-    const edits = affectedCards.map((affected) => ({
-      id: cardId(affected),
-      verseReference: affected.closest(".verse").dataset.verse,
-      alignmentId: affected.dataset.alignmentId,
-      targetMaculaIds: maculaIds(affected),
-      languageCode: affected.dataset.language,
-      lemmaId: affected.dataset.lemmaId,
-      senseId: affected.dataset.senseId,
-      targetText: replacement.trim(),
-      updatedAt
-    }));
-    saving = true;
-    try {
-      await saveEdits(edits);
-      cards.forEach((candidate) => candidate.classList.remove("recently-edited"));
-      affectedCards.forEach((affected) => {
-        updateCard(affected, replacement.trim());
-        affected.classList.add("recently-edited");
-      });
-      status.textContent = `Saved ${affectedCards.length} card${affectedCards.length === 1 ? "" : "s"} offline. Recently edited cards are shaded.`;
-    } catch {
-      status.textContent = "Unable to save this edit. No cards were changed. Check browser storage and try again.";
-    } finally {
-      saving = false;
-    }
+    if (saving || editor.open) return;
+    editingCard = button.closest(".token-card");
+    editTrigger = button;
+    const target = editingCard.querySelector(".ruby-base") ?? editingCard.querySelector(".target-text");
+    editorValue.value = target.textContent.trim();
+    editorError.textContent = "";
+    document.querySelector("#text-editor-context").textContent =
+      `${editingCard.closest(".verse").dataset.verse} · ${editingCard.dataset.language}`;
+    const count = affectedCardsFor(editingCard).length;
+    document.querySelector("#text-editor-scope").textContent = count > 1
+      ? `This will update ${count} cards with the same language, lemma, and word sense. Pronunciation annotations are preserved.`
+      : "Only this card will change. Pronunciation annotations are preserved.";
+    document.dispatchEvent(new Event("workspaceediting"));
+    editor.showModal();
+    editorValue.focus();
+    editorValue.select();
   });
 });
 
-document.querySelector("#export-edits")?.addEventListener("click", async () => {
-  const patch = new Blob([JSON.stringify(await readEdits(), null, 2)], {
-    type: "application/json"
+editor?.addEventListener("cancel", (event) => {
+  if (saving) event.preventDefault();
+});
+editor?.addEventListener("close", () => editTrigger?.focus());
+cancelButton?.addEventListener("click", () => editor.close());
+editorForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (saving || !editingCard) return;
+  const replacement = editorValue.value.trim();
+  if (!replacement) {
+    editorError.textContent = "Enter translation text before saving.";
+    editorValue.focus();
+    return;
+  }
+  const affectedCards = affectedCardsFor(editingCard);
+  const updatedAt = new Date().toISOString();
+  const edits = affectedCards.map((affected) => ({
+    id: cardId(affected),
+    verseReference: affected.closest(".verse").dataset.verse,
+    alignmentId: affected.dataset.alignmentId,
+    targetMaculaIds: maculaIds(affected),
+    languageCode: affected.dataset.language,
+    lemmaId: affected.dataset.lemmaId,
+    senseId: affected.dataset.senseId,
+    targetText: replacement,
+    updatedAt
+  }));
+  saving = true;
+  saveButton.disabled = true;
+  cancelButton.disabled = true;
+  editorError.textContent = "";
+  try {
+    await saveEdits(edits);
+    cards.forEach((candidate) => candidate.classList.remove("recently-edited"));
+    affectedCards.forEach((affected) => {
+      updateCard(affected, replacement);
+      affected.classList.add("recently-edited");
+    });
+    status.textContent = `Saved ${affectedCards.length} card${affectedCards.length === 1 ? "" : "s"} offline. Recently edited cards are shaded.`;
+    editor.close();
+  } catch {
+    status.textContent = "Unable to save this edit. No cards were changed. Check browser storage and try again.";
+    editorError.textContent = status.textContent;
+  } finally {
+    saving = false;
+    saveButton.disabled = false;
+    cancelButton.disabled = false;
+  }
+});
+
+const verseFilter = document.querySelector("#verse-filter");
+const languageFilter = document.querySelector("#language-filter");
+function filterTranslations() {
+  let visible = 0;
+  document.querySelectorAll(".verse").forEach((verse) => {
+    verse.hidden = Boolean((verseFilter.value && verse.dataset.verse !== verseFilter.value)
+      || (languageFilter.value && verse.lang !== languageFilter.value));
+    if (!verse.hidden) visible += 1;
   });
-  const url = URL.createObjectURL(patch);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "macula-scripta-edits.json";
-  link.click();
-  URL.revokeObjectURL(url);
+  document.querySelector("#filter-status").textContent = `${visible} translation${visible === 1 ? "" : "s"}`;
+}
+if (verseFilter && languageFilter) {
+  document.querySelector(".translation-toolbar").hidden = false;
+  verseFilter.addEventListener("change", filterTranslations);
+  languageFilter.addEventListener("change", filterTranslations);
+  filterTranslations();
+}
+document.querySelector("#translations")?.addEventListener("focusin", () => {
+  document.dispatchEvent(new Event("workspaceediting"));
+});
+
+document.querySelector("#export-edits")?.addEventListener("click", async () => {
+  try {
+    await editsReady;
+    const patch = new Blob([JSON.stringify(await readEdits(), null, 2)], {
+      type: "application/json"
+    });
+    const url = URL.createObjectURL(patch);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "macula-scripta-edits.json";
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 0);
+    status.textContent = "Text edits exported. Dictionary recordings can be exported from Record & dictionary.";
+  } catch {
+    status.textContent = "Unable to export edits. Check browser storage and try again.";
+  }
 });
 
 const rawBaseUrl = window.maculaScriptaConfig?.rawManuscriptBaseUrl;

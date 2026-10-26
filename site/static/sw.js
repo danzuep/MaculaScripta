@@ -1,9 +1,11 @@
-const cacheName = "macula-scripta-v2";
+const cacheName = "macula-scripta-v3";
 
 self.addEventListener("install", (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(cacheName);
-    await cache.addAll([self.registration.scope]);
+    const shell = ["", "john-1-1/", "styles.css", "transformation.css", "app.js",
+      "transformation.js", "audio-recorder.js", "manifest.webmanifest"];
+    await cache.addAll(shell.map((path) => new URL(path, self.registration.scope).href));
     await self.skipWaiting();
   })());
 });
