@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="{{ .Summary | plainify }}">
+    <title>{{ .Title }} · {{ .Site.Title }}</title>
+    <link rel="stylesheet" href="{{ "transformation.css" | relURL }}">
+    <script src="{{ "transformation.js" | relURL }}" defer></script>
+  </head>
+  <body>
+    <main class="transformation" data-step-duration="{{ hugo.Data.john_1_1.step_duration_ms }}">
+      <header>
+        <a href="{{ .Site.Home.RelPermalink }}">← Translation alignment</a>
+        <h1>{{ .Title }}</h1>
+        {{ .Content }}
+      </header>
+      <div class="paragraph-card">
+        {{ range $stage := hugo.Data.john_1_1.stages }}
+          <section class="stage-panel stage-{{ .id }}" id="stage-{{ .id }}" aria-labelledby="title-{{ .id }}">
+            <h2 id="title-{{ .id }}">{{ .title }}</h2>
+            <div class="stage-content">
+              {{ range .clauses }}
+                <div class="clause-row"{{ if .reorder }} data-reorder{{ end }}>
+                  {{ range .units }}
+                    <div class="unit{{ if .inserted }} inserted-word{{ end }}"{{ with .source_order }} data-source-order="{{ . }}"{{ end }}>
+                      <span class="primary-text" lang="{{ $stage.language }}">
+                        {{ if .pronunciation }}
+                          <ruby>{{ .text }}<rt>{{ .pronunciation }}</rt></ruby>
+                        {{ else }}
+                          {{ .text }}
+                        {{ end }}
+                      </span>
+                      {{ with .greek }}<span class="sub-greek" lang="grc">{{ . }}</span>{{ end }}
+                      {{ with .note }}<span class="alignment-note">{{ . }}</span>{{ end }}
+                      <span class="sub-grammar">{{ .grammar }}</span>
+                    </div>
+                  {{ end }}
+                </div>
+              {{ end }}
+            </div>
+          </section>
+        {{ end }}
+        <nav class="progress-nav" aria-label="Language stages" hidden>
+          {{ range $index, $stage := hugo.Data.john_1_1.stages }}
+            <button class="nav-step" type="button" aria-controls="stage-{{ .id }}">
+              <span class="nav-step-fill" aria-hidden="true"></span>
+              <span>{{ add $index 1 }}. {{ .label }}</span>
+            </button>
+          {{ end }}
+        </nav>
+      </div>
+      <div class="controls-bar" hidden>
+        <button class="play-button" type="button">Play Animation</button>
+      </div>
+      <p class="stage-status visually-hidden" role="status"></p>
+      <noscript><p>All three stages are shown. Enable JavaScript for playback and stage navigation.</p></noscript>
+      <footer>
+        <p>Illustrative pronunciation and alignment, not a reconstruction of first-century speech.
+          English retains “In [the] beginning was the Word”; the last clause demonstrates subject–verb–predicate order.</p>
+        <p>PREP: preposition · NOUN: noun · VERB: verb · ART: article · CONJ: conjunction ·
+          PRED: predicate · SUBJ: subject · TIME: time expression · PARTICLE: particle · COPULA: linking verb.</p>
+      </footer>
+    </main>
+  </body>
+</html>

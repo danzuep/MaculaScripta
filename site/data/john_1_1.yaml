@@ -1,0 +1,72 @@
+step_duration_ms: 7000
+stages:
+  - id: greek
+    label: Greek (IPA)
+    title: "Stage 1: Greek Original + Phonetic IPA Ruby"
+    language: grc
+    clauses:
+      - units:
+          - {text: Ἐν, pronunciation: /en/, grammar: PREP}
+          - {text: ἀρχῇ, pronunciation: /ar.kʰɛ̂ː/, grammar: NOUN}
+          - {text: ἦν, pronunciation: /ɛ̂ːn/, grammar: VERB}
+          - {text: ὁ, pronunciation: /ho/, grammar: ART}
+          - {text: λόγος, pronunciation: /ló.ɡos/, grammar: NOUN}
+      - units:
+          - {text: καὶ, pronunciation: /kai/, grammar: CONJ}
+          - {text: ὁ, pronunciation: /ho/, grammar: ART}
+          - {text: λόγος, pronunciation: /ló.ɡos/, grammar: NOUN}
+          - {text: ἦν, pronunciation: /ɛ̂ːn/, grammar: VERB}
+          - {text: πρὸς, pronunciation: /pros/, grammar: PREP}
+          - {text: τὸν, pronunciation: /ton/, grammar: ART}
+          - {text: θεόν, pronunciation: /tʰe.ón/, grammar: NOUN}
+      - units:
+          - {text: καὶ, pronunciation: /kai/, grammar: CONJ}
+          - {text: θεὸς, pronunciation: /tʰe.ós/, grammar: PRED}
+          - {text: ἦν, pronunciation: /ɛ̂ːn/, grammar: VERB}
+          - {text: ὁ, pronunciation: /ho/, grammar: ART}
+          - {text: λόγος, pronunciation: /ló.ɡos/, grammar: SUBJ}
+  - id: english
+    label: English (SVO)
+    title: "Stage 2: English Word Order + Added [the]"
+    language: en
+    clauses:
+      - units:
+          - {text: In, greek: Ἐν, grammar: PREP}
+          - {text: "[the]", note: added, grammar: ART, inserted: true}
+          - {text: beginning, greek: ἀρχῇ, grammar: NOUN}
+          - {text: was, greek: ἦν, grammar: VERB}
+          - {text: the, greek: ὁ, grammar: ART}
+          - {text: Word, greek: λόγος, grammar: NOUN}
+      - units:
+          - {text: and, greek: καὶ, grammar: CONJ}
+          - {text: the, greek: ὁ, grammar: ART}
+          - {text: Word, greek: λόγος, grammar: NOUN}
+          - {text: was, greek: ἦν, grammar: VERB}
+          - {text: with, greek: πρὸς, grammar: PREP}
+          - {text: God, greek: τὸν θεόν, grammar: NOUN}
+      - reorder: true
+        units:
+          - {text: and, greek: καὶ, grammar: CONJ, source_order: 1}
+          - {text: the, greek: ὁ, grammar: ART, source_order: 4}
+          - {text: Word, greek: λόγος, grammar: SUBJ, source_order: 5}
+          - {text: was, greek: ἦν, grammar: VERB, source_order: 3}
+          - {text: God, greek: θεὸς, grammar: PRED, source_order: 2}
+  - id: cantonese
+    label: Cantonese
+    title: "Stage 3: Cantonese Chinese + Jyutping Ruby"
+    language: yue
+    clauses:
+      - units:
+          - {text: 太初, pronunciation: taai3 co1, greek: Ἐν ἀρχῇ, grammar: TIME}
+          - {text: 有, pronunciation: jau5, greek: ἦν, grammar: VERB}
+          - {text: 道, pronunciation: dou6, greek: ὁ λόγος, grammar: SUBJ}
+      - units:
+          - {text: 道, pronunciation: dou6, greek: καὶ ὁ λόγος, grammar: CONJ + SUBJ}
+          - {text: 與, pronunciation: jyu5, greek: πρὸς, grammar: PREP}
+          - {text: 神, pronunciation: san4, greek: τὸν θεόν, grammar: NOUN}
+          - {text: 同在, pronunciation: tung4 zoi6, greek: ἦν, grammar: VERB}
+      - units:
+          - {text: 道, pronunciation: dou6, greek: καὶ ὁ λόγος, grammar: CONJ + SUBJ}
+          - {text: 就, pronunciation: zau6, note: filler, grammar: PARTICLE}
+          - {text: 是, pronunciation: si6, greek: ἦν, grammar: COPULA}
+          - {text: 神, pronunciation: san4, greek: θεὸς, grammar: PRED}
