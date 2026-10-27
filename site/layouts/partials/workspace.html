@@ -68,6 +68,23 @@
           <p id="filter-status" role="status"></p>
         </div>
         <p id="edit-status" role="status"></p>
+        <section id="coverage-next" class="coverage-next" data-state="loading" aria-labelledby="coverage-next-title" hidden>
+          <div class="coverage-next-body">
+            <p class="eyebrow">AUDIO COVERAGE</p>
+            <h3 id="coverage-next-title">Best next verse to record</h3>
+            <div class="coverage-next-row">
+              <span id="coverage-next-verse" class="coverage-chip">…</span>
+              <span class="coverage-preview" aria-hidden="true">
+                <span id="coverage-next-before" class="coverage-cells"></span>
+                <span class="coverage-arrow">→</span>
+                <span id="coverage-next-after" class="coverage-cells"></span>
+              </span>
+            </div>
+            <span id="coverage-next-impact" class="coverage-impact" aria-hidden="true"></span>
+            <p id="coverage-next-summary" class="coverage-next-summary">Indexing audio coverage…</p>
+          </div>
+          <button id="coverage-next-record" type="button" aria-haspopup="dialog" aria-controls="verse-clipper" disabled>Record this verse</button>
+        </section>
         <div class="translation-grid">
       {{- $attributions := slice -}}
       {{ range $language, $files := hugo.Data.overlays }}
