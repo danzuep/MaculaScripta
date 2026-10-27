@@ -427,7 +427,7 @@ input::placeholder, textarea::placeholder { color: var(--text-muted); opacity: 1
 .editor-actions { justify-content: flex-end; }
 button:hover:not(:disabled), .workspace-nav a:hover { border-color: var(--greek-color); }
 button:disabled { opacity: 0.5; cursor: not-allowed; }
-.verse h2 .record-verse { color: var(--record-bg); }
+.verse h2 :is(.play-verse, .record-verse, .trim-verse) { margin: 0 0 0 0.35rem; font-size: 0.75rem; font-weight: 400; padding-inline: 0.55rem; vertical-align: middle; }
 #verse-clipper-status { color: var(--english-color); }
 .clip-zoom, .clip-times { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
 .clip-zoom button { margin: 0; min-width: 2.75rem; }
