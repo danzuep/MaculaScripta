@@ -68,6 +68,8 @@ let captureGeneration = 0;
 let dictionaryEntries = [];
 let cardRecordings = new Map();
 let savedPlayback;
+const verseClipPauseMs = 180;
+const publishedRecordings = new WeakMap();
 let dictionaryGeneration = 0;
 const bindingMigrations = new Map();
 
@@ -184,6 +186,14 @@ function refreshAudioButtons() {
     cardId(card), { languageCode: card.dataset.language, text: targetText(card) }
   ]));
   cardRecordings = new Map();
+  for (const card of cards) {
+    const audioUrl = card.querySelector(".token-detail-content audio[src]")?.src;
+    if (!audioUrl) continue;
+    if (publishedRecordings.get(card)?.audioUrl !== audioUrl) {
+      publishedRecordings.set(card, { audioUrl });
+    }
+    cardRecordings.set(cardId(card), publishedRecordings.get(card));
+  }
   for (const entry of [...dictionaryEntries].sort((left, right) => left.id - right.id)) {
     if (!entry.audioBlob) continue;
     const key = bindingKey(entry);
@@ -209,16 +219,21 @@ function refreshAudioButtons() {
       if (cardId(card)) cardRecordings.set(cardId(card), entry);
     }
   }
-  if (savedPlayback?.card && (!savedPlayback.card.isConnected
-    || cardRecordings.get(cardId(savedPlayback.card)) !== savedPlayback.entry)) stopSavedPlayback();
+  if (savedPlayback?.clips.some(({ card, entry }) => card && (!card.isConnected
+    || cardRecordings.get(cardId(card)) !== entry))) stopSavedPlayback();
   for (const card of cards) {
     const button = card.querySelector(".play-token");
     if (!button) continue;
     const available = cardRecordings.has(cardId(card));
-    button.disabled = !available;
+    button.disabled = false;
+    button.textContent = available ? "▶" : "●";
     button.setAttribute("aria-label", available
-      ? `Play pronunciation for ${targetText(card)}` : `No recording for ${targetText(card)}`);
-    button.title = available ? "Play pronunciation" : "No recording available";
+      ? `Play pronunciation for ${targetText(card)}` : `Record pronunciation for ${targetText(card)}`);
+    button.title = available ? "Play pronunciation" : "Record pronunciation";
+  }
+  for (const verse of document.querySelectorAll(".verse")) {
+    verse.querySelector(".play-verse").hidden = ![...verse.querySelectorAll(".token-card")]
+      .some((card) => cardRecordings.has(cardId(card)));
   }
 }
 
@@ -726,7 +741,7 @@ function renderEntries(entries) {
       play.type = "button";
       play.textContent = "Play";
       play.setAttribute("aria-label", `Play recording for ${entry.lemma}`);
-      play.addEventListener("click", () => playSavedAudio(entry.audioBlob, play, entry));
+      play.addEventListener("click", () => playRecordings([{ entry }], play));
       actions.append(play);
     }
     const remove = document.createElement("button");
@@ -740,17 +755,38 @@ function renderEntries(entries) {
   }
 }
 
+function releasePlaybackAudio(playback) {
+  const { audio, url } = playback;
+  if (audio) {
+    audio.onended = null;
+    audio.onerror = null;
+    audio.pause();
+    audio.removeAttribute("src");
+    audio.load();
+  }
+  if (url) URL.revokeObjectURL(url);
+  playback.audio = null;
+  playback.url = null;
+}
+
 function stopSavedPlayback() {
   if (!savedPlayback) return;
-  const { audio, url, button } = savedPlayback;
+  const playback = savedPlayback;
   savedPlayback = null;
-  audio.onended = null;
-  audio.onerror = null;
-  audio.pause();
-  audio.removeAttribute("src");
-  audio.load();
-  URL.revokeObjectURL(url);
-  button.disabled = false;
+  clearTimeout(playback.timer);
+  releasePlaybackAudio(playback);
+  if (playback.verse) {
+    playback.button.textContent = "▶";
+    playback.button.setAttribute("aria-label", `Play recordings for ${playback.verse.dataset.verse}`);
+    playback.button.setAttribute("aria-pressed", "false");
+    playback.button.title = "Play verse recordings";
+  }
+}
+
+function pausePronunciationAudio(except = null) {
+  document.querySelectorAll(".token-detail-content audio").forEach((audio) => {
+    if (audio !== except) audio.pause();
+  });
 }
 
 function playbackError() {
@@ -763,25 +799,47 @@ function playbackError() {
   }
 }
 
-function playSavedAudio(blob, button, entry, card = null) {
+function playRecordings(clips, button, verse = null) {
   stopSavedPlayback();
   stopTrimPlayback();
-  const url = URL.createObjectURL(blob);
-  const audio = new Audio(url);
-  const playback = { audio, url, button, entry, card };
+  if (!clips.length) return;
+  document.dispatchEvent(new Event("workspaceediting"));
+  const playback = { clips, button, verse, index: 0 };
   savedPlayback = playback;
-  const finish = (failed = false) => {
-    if (savedPlayback !== playback) return;
-    stopSavedPlayback();
-    if (failed) playbackError();
-  };
-  audio.onended = () => finish();
-  audio.onerror = () => finish(true);
-  try {
-    Promise.resolve(audio.play()).catch(() => finish(true));
-  } catch {
-    finish(true);
+  if (verse) {
+    button.textContent = "■";
+    button.setAttribute("aria-label", `Stop recordings for ${verse.dataset.verse}`);
+    button.setAttribute("aria-pressed", "true");
+    button.title = "Stop verse recordings";
   }
+  const playNext = () => {
+    if (savedPlayback !== playback) return;
+    const { entry } = clips[playback.index];
+    let audio;
+    const fail = () => {
+      if (savedPlayback !== playback || playback.audio !== audio) return;
+      stopSavedPlayback();
+      playbackError();
+    };
+    try {
+      playback.url = entry.audioBlob ? URL.createObjectURL(entry.audioBlob) : null;
+      audio = new Audio(playback.url || entry.audioUrl);
+      playback.audio = audio;
+      audio.onended = () => {
+        if (savedPlayback !== playback || playback.audio !== audio) return;
+        releasePlaybackAudio(playback);
+        playback.index += 1;
+        if (playback.index === clips.length) stopSavedPlayback();
+        else playback.timer = setTimeout(playNext, verseClipPauseMs);
+      };
+      audio.onerror = fail;
+      Promise.resolve(audio.play()).catch(fail);
+    } catch {
+      stopSavedPlayback();
+      playbackError();
+    }
+  };
+  playNext();
 }
 
 async function deleteEntry(id) {
@@ -890,7 +948,9 @@ function initialize() {
   sourceCards = (window.maculaScriptaConfig?.sourceCards || []).map((card) => ({
     ...card, cardId: card.id, maculaIds: referenceIds(card.targetMaculaIds)
   }));
+  refreshAudioButtons();
   const openRecorder = (trigger) => {
+    document.dispatchEvent(new Event("workspaceediting"));
     recorderTrigger = trigger;
     if (!ui.dialog.open) ui.dialog.showModal();
     resizeCanvas();
@@ -917,7 +977,7 @@ function initialize() {
       if (hasDraft && !window.confirm("Replace the current recorder draft with this word?")) return;
       if (hasDraft) clearRecording();
       recordingCard = card;
-      recordingShared = document.querySelector("#apply-shared-edits")?.checked === true;
+      recordingShared = event.detail.shared ?? (document.querySelector("#apply-shared-edits")?.checked === true);
       ui.form.reset();
       ui.lemma.value = card.querySelector(".sub-greek")?.textContent.trim() || targetText(card);
       ui.gloss.value = targetText(card);
@@ -926,13 +986,42 @@ function initialize() {
       openRecorder(trigger);
   });
   document.addEventListener("click", (event) => {
+    const verseButton = event.target.closest?.(".play-verse");
+    if (verseButton) {
+      if (savedPlayback?.button === verseButton) {
+        stopSavedPlayback();
+        return;
+      }
+      const verse = verseButton.closest(".verse");
+      const clips = [...verse.querySelectorAll(".token-card")]
+        .map((card) => ({ card, entry: cardRecordings.get(cardId(card)) }))
+        .filter(({ entry }) => entry);
+      playRecordings(clips, verseButton, verse);
+      return;
+    }
     const button = event.target.closest?.(".play-token");
     if (!button || button.disabled) return;
     const card = button.closest(".token-card");
     const entry = card && cardRecordings.get(cardId(card));
-    if (entry?.audioBlob) playSavedAudio(entry.audioBlob, button, entry, card);
+    if (entry) playRecordings([{ entry, card }], button);
+    else document.dispatchEvent(new CustomEvent("recordcard", {
+      detail: { card, trigger: button, shared: true }
+    }));
   });
-  document.addEventListener("cardschanged", refreshAudioButtons);
+  document.addEventListener("workspaceediting", () => {
+    stopSavedPlayback();
+    pausePronunciationAudio();
+  });
+  document.addEventListener("play", (event) => {
+    if (!event.target.matches?.(".token-detail-content audio")) return;
+    stopSavedPlayback();
+    stopTrimPlayback();
+    pausePronunciationAudio(event.target);
+  }, true);
+  document.addEventListener("cardschanged", () => {
+    stopSavedPlayback();
+    refreshAudioButtons();
+  });
   document.querySelector("#apply-shared-edits")?.addEventListener("change", refreshAudioButtons);
   new MutationObserver(() => {
     if (ui.dialog.open) drawWaveform();

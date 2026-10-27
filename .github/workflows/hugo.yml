@@ -50,6 +50,7 @@ jobs:
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
         run: |
+          export HUGO_PARAMS_BUILDVERSION="$(git rev-parse --short=7 HEAD)"
           hugo \
             --source ./site \
             --destination "${GITHUB_WORKSPACE}/site/public" \

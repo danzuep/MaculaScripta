@@ -75,7 +75,7 @@
           {{- with $file.attribution -}}{{- $attributions = $attributions | append . -}}{{- end -}}
           {{ range $verse := $file.verses }}
             <article class="verse" data-verse="{{ $verse.verse_ref }}" lang="{{ $verse.language_code }}">
-              <h2>{{ $verse.verse_ref }}</h2>
+              <h2>{{ $verse.verse_ref }} <button class="play-verse" type="button" aria-label="Play recordings for {{ $verse.verse_ref }}" aria-pressed="false" title="Play verse recordings" hidden>▶</button></h2>
               <p class="translation-meta">
                 {{ $verse.language_code }} · {{ $verse.translation_id }} · revision {{ $verse.revision }}
               </p>
@@ -105,8 +105,8 @@
                     {{- end -}}
                     {{ with $greek }}<span class="sub-greek" lang="grc">{{ delimit . " " }}</span>{{ end }}
                     <span class="token-actions">
-                      <button class="edit-token" type="button" aria-label="Edit {{ $alignment.target_text }}">Edit text</button>
-                      <button class="play-token" type="button" aria-label="Play pronunciation for {{ $alignment.target_text }}" title="No recording linked yet. Record from Edit text." disabled>▶</button>
+                      <button class="edit-token" type="button" aria-label="Edit {{ $alignment.target_text }}" title="Edit text">✎</button>
+                      <button class="play-token" type="button" aria-label="Record pronunciation for {{ $alignment.target_text }}" title="Record pronunciation">●</button>
                     </span>
                     <details class="token-details">
                       <summary>Word details</summary>
@@ -117,12 +117,11 @@
                       <button class="split-card" type="button" disabled>Split</button>
                       </span>
                       <span class="token-detail-content">
-                      <span>Alignment ID: {{ $alignment.id }}</span>
-                      <span>Translation ID: {{ $verse.translation_id }}</span>
                       <span>Macula IDs: {{ delimit $alignment.target_macula_ids ", " }}</span>
                       {{ range $alignment.target_macula_ids }}
                         {{ with index hugo.Data.greek_token_details . }}
                           <span>Source lemma: {{ .lemma }}</span>
+                          {{ with index hugo.Data.greek_lemma_definitions .lemma }}<span>Definition: {{ . }}</span>{{ end }}
                           <span>Strong's ID: {{ .strong_id }}</span>
                           <span>Part of speech: {{ .part_of_speech }}</span>
                         {{ end }}
@@ -160,6 +159,7 @@
     </main>
     <footer class="dataset-attribution">
       {{ range uniq $attributions }}<p>{{ . }}</p>{{ end }}
+      <p>Build {{ .Site.Params.buildVersion }} · Built {{ now.UTC.Format "2006-01-02 15:04:05 UTC" }}</p>
     </footer>
     <dialog id="text-editor" class="text-editor" aria-labelledby="text-editor-title">
       <form id="text-editor-form">

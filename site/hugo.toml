@@ -4,3 +4,4 @@ title = "MaculaScripta"
 
 [params]
 rawManuscriptBaseURL = ""
+buildVersion = "local"

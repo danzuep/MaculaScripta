@@ -102,7 +102,6 @@ function updateCard(card, text) {
   const target = card.querySelector(".ruby-base") ?? card.querySelector(".target-text");
   target.textContent = text;
   card.querySelector(".edit-token").setAttribute("aria-label", `Edit ${text}`);
-  card.querySelector(".play-token")?.setAttribute("aria-label", `Play pronunciation for ${text}`);
 }
 
 function layoutId(verse) {
@@ -149,7 +148,6 @@ function restoreCard(state) {
   greek.lang = "grc";
   greek.textContent = state.greekText;
   if (!greek.parentNode) card.querySelector(".target-text").after(greek);
-  card.querySelector(".play-token").disabled = true;
   return card;
 }
 
@@ -342,6 +340,7 @@ editorForm?.addEventListener("submit", async (event) => {
       updateCard(affected, replacement);
       affected.classList.add("recently-edited");
     });
+    document.dispatchEvent(new Event("cardschanged"));
     status.textContent = `Saved ${affectedCards.length} card${affectedCards.length === 1 ? "" : "s"} offline. Recently edited cards are shaded.`;
     editor.close();
   } catch {
