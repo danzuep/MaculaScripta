@@ -1,4 +1,5 @@
 import { writingSystems, importLift, exportLift, stableRecords, mergeLift } from "./lift-exchange.js";
+import { setupVerseClipper } from "./verse-clipper.js";
 
 const databaseName = "macula-linguistic-recorder";
 const storeName = "dictionary";
@@ -72,6 +73,7 @@ const verseClipPauseMs = 180;
 const publishedRecordings = new WeakMap();
 let dictionaryGeneration = 0;
 const bindingMigrations = new Map();
+let verseClipper = { refresh() {}, hasSession: () => false };
 
 function cardId(card) {
   const verse = card.closest(".verse")?.dataset.verse;
@@ -94,6 +96,20 @@ function cardBinding(card) {
 
 function targetText(card) {
   return (card.querySelector(".ruby-base") ?? card.querySelector(".target-text"))?.textContent.trim() || "";
+}
+
+function sourceLemmas(card) {
+  const lemmas = window.maculaScriptaConfig?.sourceLemmas || {};
+  return referenceIds(card.dataset.maculaIds).map((id) => lemmas[id] || "");
+}
+
+// Verse clips link to every card with the same language, source lemma(s), and translated word.
+function sourceWordKey(card) {
+  const language = card.dataset.language || "";
+  const lemmas = sourceLemmas(card);
+  const text = targetText(card).normalize("NFC").replace(/\s+/gu, " ").toLowerCase();
+  return language.trim() && text && lemmas.length && lemmas.every(Boolean)
+    ? JSON.stringify([language, lemmas, text]) : "";
 }
 
 function referenceIds(value) {
@@ -198,7 +214,12 @@ function refreshAudioButtons() {
     if (!entry.audioBlob) continue;
     const key = bindingKey(entry);
     let targets;
-    if (Array.isArray(entry.cardIds)) {
+    if (typeof entry.sourceWordKey === "string" && entry.sourceWordKey) {
+      const ids = new Set(Array.isArray(entry.cardIds) ? entry.cardIds : []);
+      targets = cards.filter((card) => ids.has(cardId(card))
+        || sourceWordKey(card) === entry.sourceWordKey
+        || (entry.sharedBinding === true && key && bindingKey(cardBinding(card)) === key));
+    } else if (Array.isArray(entry.cardIds)) {
       const ids = new Set(entry.cardIds);
       targets = cards.filter((card) => (ids.has(cardId(card))
         && (!entry.languageCode || entry.languageCode === card.dataset.language))
@@ -232,9 +253,41 @@ function refreshAudioButtons() {
     button.title = available ? "Play pronunciation" : "Record pronunciation";
   }
   for (const verse of document.querySelectorAll(".verse")) {
-    verse.querySelector(".play-verse").hidden = ![...verse.querySelectorAll(".token-card")]
+    const hasAudio = [...verse.querySelectorAll(".token-card")]
       .some((card) => cardRecordings.has(cardId(card)));
+    verse.querySelector(".play-verse").hidden = !hasAudio;
+    const record = verse.querySelector(".record-verse");
+    if (record) record.hidden = hasAudio;
+    const trim = verse.querySelector(".trim-verse");
+    if (trim) trim.hidden = !hasAudio || !verseClipper.hasSession(verse);
   }
+  verseClipper.refresh();
+}
+
+async function saveVerseClip(card, audioBlob, clip) {
+  const text = targetText(card);
+  const lemmas = sourceLemmas(card);
+  const binding = cardBinding(card);
+  const entry = {
+    lemma: card.querySelector(".sub-greek")?.textContent.trim() || lemmas.filter(Boolean).join(" ") || text,
+    ipa: "",
+    gloss: text,
+    syntax: "",
+    ref: card.dataset.maculaIds || "",
+    morph: "",
+    audioBlob,
+    createdAt: new Date().toISOString(),
+    ...binding,
+    cardIds: [cardId(card)].filter(Boolean),
+    sharedBinding: Boolean(bindingKey(binding)),
+    sourceLemmas: lemmas,
+    sourceWordKey: sourceWordKey(card),
+    verseClip: clip
+  };
+  await databaseReady;
+  if (!database) throw new Error("Local dictionary storage is unavailable.");
+  await storeRequest("readwrite", (store) => store.add(entry));
+  await loadDictionary();
 }
 
 function cleanupCapture() {
@@ -948,6 +1001,20 @@ function initialize() {
   sourceCards = (window.maculaScriptaConfig?.sourceCards || []).map((card) => ({
     ...card, cardId: card.id, maculaIds: referenceIds(card.targetMaculaIds)
   }));
+  verseClipper = setupVerseClipper({
+    cardId,
+    targetText,
+    sourceLemmas: (card) => sourceLemmas(card).filter(Boolean),
+    hasRecording: (card) => cardRecordings.has(cardId(card)),
+    encodeWave,
+    saveClip: saveVerseClip,
+    stopPlayback: () => {
+      stopSavedPlayback();
+      stopTrimPlayback();
+      pausePronunciationAudio();
+    },
+    refresh: refreshAudioButtons
+  });
   refreshAudioButtons();
   const openRecorder = (trigger) => {
     document.dispatchEvent(new Event("workspaceediting"));

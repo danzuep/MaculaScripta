@@ -278,8 +278,8 @@ input::placeholder, textarea::placeholder { color: var(--text-muted); opacity: 1
   background: var(--bg-color);
 }
 
-#recorder-waveform { display: block; width: 100%; height: 100%; touch-action: none; }
-#waveform-placeholder {
+#recorder-waveform, #verse-clipper-waveform { display: block; width: 100%; height: 100%; touch-action: none; }
+#waveform-placeholder, #verse-clipper-placeholder {
   position: absolute;
   inset: 0;
   display: grid;
@@ -292,7 +292,7 @@ input::placeholder, textarea::placeholder { color: var(--text-muted); opacity: 1
   pointer-events: none;
 }
 
-#waveform-placeholder[hidden] { display: none; }
+#waveform-placeholder[hidden], #verse-clipper-placeholder[hidden] { display: none; }
 #trim-readout {
   position: absolute;
   inset: 0.5rem 0.6rem auto;
@@ -427,6 +427,22 @@ input::placeholder, textarea::placeholder { color: var(--text-muted); opacity: 1
 .editor-actions { justify-content: flex-end; }
 button:hover:not(:disabled), .workspace-nav a:hover { border-color: var(--greek-color); }
 button:disabled { opacity: 0.5; cursor: not-allowed; }
+.verse h2 .record-verse { color: var(--record-bg); }
+#verse-clipper-status { color: var(--english-color); }
+.clip-zoom, .clip-times { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.clip-zoom button { margin: 0; min-width: 2.75rem; }
+.clip-zoom label { display: flex; flex: 1 1 8rem; align-items: center; gap: 0.5rem; }
+.clip-zoom input[type="range"] { flex: 1; min-width: 4rem; padding: 0; accent-color: var(--greek-color); }
+#verse-view-range, #verse-clip-duration { color: var(--text-muted); font: 0.75rem ui-monospace, monospace; }
+.clip-times label { flex: 1 1 7rem; }
+.clip-words { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.clip-word { display: inline-flex; flex-direction: column; align-items: center; gap: 0.1rem; margin: 0; padding: 0.45rem 0.65rem; line-height: 1.3; }
+.clip-word-text { color: var(--text-primary); font-weight: 600; }
+.clip-word-greek { color: var(--greek-color); font-family: Georgia, serif; }
+.clip-word-lemma { color: var(--text-muted); font-size: 0.7rem; }
+.clip-word.has-audio:not([aria-pressed="true"]) { opacity: 0.45; filter: grayscale(1); }
+.clip-word.has-audio .clip-word-text::after { content: " ✓"; }
+.clip-word[aria-pressed="true"] { border-color: var(--greek-color); background: var(--edited-bg); }
 section[id] { scroll-margin-top: 1.5rem; }
 
 @media (max-width: 35rem) {
