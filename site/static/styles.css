@@ -440,7 +440,7 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 .clip-word-text { color: var(--text-primary); font-weight: 600; }
 .clip-word-greek { color: var(--greek-color); font-family: Georgia, serif; }
 .clip-word-lemma { color: var(--text-muted); font-size: 0.7rem; }
-.clip-word.has-audio:not([aria-pressed="true"]) { opacity: 0.45; filter: grayscale(1); }
+.clip-word[aria-disabled="true"] { cursor: default; }
 .clip-word.has-audio .clip-word-text::after { content: " ✓"; }
 .clip-word[aria-pressed="true"] { border-color: var(--greek-color); background: var(--edited-bg); }
 section[id] { scroll-margin-top: 1.5rem; }

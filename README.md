@@ -69,12 +69,13 @@ When a verse has no recordings, its title shows a **●** record button instead
 of **▶**; **●** stays beside **▶** until every translated word in the verse has audio.
 It opens **Verse clips**: record the whole verse, then select each word (shown
 with its translation, Greek source word, and source lemma) to trim its clip from
-the verse recording. Selecting the first word highlights the first 5 s; each later
-word starts where the closest earlier trimmed word ended and highlights the next
-5 s. Drag the selection edges or type start/end times, use **−**, **+**, **Fit**,
-and **Scroll** to zoom the waveform, then **Save clip** to store it and move to the
-next word. Words that already have audio are greyed out but can still be selected
-to replace their audio. Each clip is linked to every card with the same language,
+the verse recording. Selecting the first word skips the quiet audio at the start
+of the recording and highlights the next 0.5 s, zoomed to a 1 s view; each later
+word starts where the closest earlier trimmed word ended (also skipping any quiet
+gap) and highlights the next 0.5 s. Drag the selection edges or type start/end
+times, use **−**, **+**, **Fit**, and **Scroll** to zoom the waveform, then
+**Save clip** to store it and move to the next word. Words that already have audio
+are marked ✓ and can still be selected to replace their audio. Each clip is linked to every card with the same language,
 source lemma(s), and translated word (case-insensitive) in any verse, plus cards
 sharing its language/lemma/sense key, so one verse recording fills in many others.
 Untranslated cards are linked only to themselves. The verse recording is kept for

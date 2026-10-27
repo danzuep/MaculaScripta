@@ -335,11 +335,11 @@
             <button id="verse-record" class="record-button" type="button" aria-label="Start recording verse" aria-pressed="false">Record</button>
             <button id="verse-clip-save" type="button" disabled>Save clip</button>
           </div>
-          <p class="recorder-hint">Selecting a word highlights 5 seconds from the end of the previous word's clip. Microphone access requires a secure connection (HTTPS or localhost).</p>
+          <p class="recorder-hint">Selecting a word skips quiet audio after the previous word's clip, zooms to 1 second and highlights the next half second. Microphone access requires a secure connection (HTTPS or localhost).</p>
         </div>
         <div class="recorder-card">
           <h3>Words in this verse</h3>
-          <p class="recorder-hint">Greyed words already have audio. Select them to replace it.</p>
+          <p class="recorder-hint">Words marked ✓ already have audio. Select them to replace it.</p>
           <div id="verse-clip-words" class="clip-words" role="group" aria-label="Words in this verse"></div>
         </div>
       </div>

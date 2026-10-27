@@ -1,4 +1,10 @@
-const defaultClipSeconds = 5;
+const defaultClipSeconds = 0.5;
+const trimViewSeconds = 1;
+const trimViewLeadSeconds = 0.15;
+const onsetWindowSeconds = 0.01;
+const onsetLeadSeconds = 0.05;
+const onsetMinimumRms = 0.01;
+const onsetPeakRatio = 0.1;
 const minimumClipSeconds = 0.05;
 const minimumViewSeconds = 0.25;
 const zoomFactor = 2;
@@ -83,7 +89,13 @@ export function setupVerseClipper(api) {
       const lemmas = api.sourceLemmas(card);
       lemma.textContent = lemmas.length ? `lemma ${lemmas.join(" ")}` : "";
       button.append(text, greek, lemma);
-      button.addEventListener("click", () => selectCard(card));
+      button.addEventListener("click", () => {
+        if (button.getAttribute("aria-disabled") === "true") {
+          if (!session && !recording && !processing) setStatus("Record the whole verse first, then select a word.", "ready");
+          return;
+        }
+        selectCard(card);
+      });
       fragment.append(button);
     }
     ui.words.replaceChildren(fragment);
@@ -98,7 +110,8 @@ export function setupVerseClipper(api) {
       const hasAudio = api.hasRecording(card);
       const trimmed = session?.clips.get(button.dataset.cardId);
       button.classList.toggle("has-audio", hasAudio);
-      button.disabled = !session || recording || processing || saving;
+      // Words stay fully visible; the check mark, not greying, shows which have audio.
+      button.setAttribute("aria-disabled", String(!session || recording || processing || saving));
       button.setAttribute("aria-pressed", String(card === selectedCard));
       const state = hasAudio ? "has audio; select to replace it" : "no audio";
       const range = trimmed ? `, trimmed ${trimmed.start.toFixed(2)}–${trimmed.end.toFixed(2)}s` : "";
@@ -257,6 +270,31 @@ export function setupVerseClipper(api) {
     }
   }
 
+  // Find where speech begins after `from`, skipping leading quiet audio.
+  function findOnset(from) {
+    const { buffer } = session;
+    const samples = buffer.getChannelData(0);
+    const windowSize = Math.max(1, Math.round(onsetWindowSeconds * buffer.sampleRate));
+    const levels = [];
+    let peak = 0;
+    for (let offset = Math.floor(from * buffer.sampleRate); offset < samples.length; offset += windowSize) {
+      const limit = Math.min(samples.length, offset + windowSize);
+      let sum = 0;
+      for (let index = offset; index < limit; index += 1) sum += samples[index] * samples[index];
+      const level = Math.sqrt(sum / (limit - offset));
+      levels.push(level);
+      if (level > peak) peak = level;
+    }
+    const threshold = Math.max(onsetMinimumRms, peak * onsetPeakRatio);
+    const first = levels.findIndex((level) => level >= threshold);
+    if (first < 0) return from;
+    return Math.max(from, from + first * onsetWindowSeconds - onsetLeadSeconds);
+  }
+
+  function showTrimView() {
+    setView(selection.start - trimViewLeadSeconds, Math.max(trimViewSeconds, selection.end - selection.start + 2 * trimViewLeadSeconds));
+  }
+
   function setSelection(start, end) {
     const total = duration();
     const from = Math.max(0, Math.min(start, total - minimumClipSeconds));
@@ -272,14 +310,14 @@ export function setupVerseClipper(api) {
     if (saved) {
       setSelection(saved.start, saved.end);
     } else {
-      // Start where the closest earlier trimmed word ended, and offer the next few seconds.
+      // Start where the closest earlier trimmed word ended, skip any quiet gap, and offer half a second.
       const cards = verseCards();
       const previous = cards.slice(0, cards.indexOf(card)).reverse()
         .map((candidate) => session.clips.get(api.cardId(candidate))).find(Boolean);
-      const start = previous ? previous.end : 0;
+      const start = findOnset(previous ? previous.end : 0);
       setSelection(start, start + defaultClipSeconds);
     }
-    revealSelection();
+    showTrimView();
     updateControls();
     draw();
     const hint = api.hasRecording(card) ? " It already has audio; saving replaces it." : "";
