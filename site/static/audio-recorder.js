@@ -757,12 +757,13 @@ function renderEntries(entries) {
 
 function releasePlaybackAudio(playback) {
   const { audio, url } = playback;
-  if (!audio) return;
-  audio.onended = null;
-  audio.onerror = null;
-  audio.pause();
-  audio.removeAttribute("src");
-  audio.load();
+  if (audio) {
+    audio.onended = null;
+    audio.onerror = null;
+    audio.pause();
+    audio.removeAttribute("src");
+    audio.load();
+  }
   if (url) URL.revokeObjectURL(url);
   playback.audio = null;
   playback.url = null;
@@ -780,6 +781,12 @@ function stopSavedPlayback() {
     playback.button.setAttribute("aria-pressed", "false");
     playback.button.title = "Play verse recordings";
   }
+}
+
+function pausePronunciationAudio(except = null) {
+  document.querySelectorAll(".token-detail-content audio").forEach((audio) => {
+    if (audio !== except) audio.pause();
+  });
 }
 
 function playbackError() {
@@ -941,6 +948,7 @@ function initialize() {
   sourceCards = (window.maculaScriptaConfig?.sourceCards || []).map((card) => ({
     ...card, cardId: card.id, maculaIds: referenceIds(card.targetMaculaIds)
   }));
+  refreshAudioButtons();
   const openRecorder = (trigger) => {
     document.dispatchEvent(new Event("workspaceediting"));
     recorderTrigger = trigger;
@@ -1000,7 +1008,16 @@ function initialize() {
       detail: { card, trigger: button, shared: true }
     }));
   });
-  document.addEventListener("workspaceediting", stopSavedPlayback);
+  document.addEventListener("workspaceediting", () => {
+    stopSavedPlayback();
+    pausePronunciationAudio();
+  });
+  document.addEventListener("play", (event) => {
+    if (!event.target.matches?.(".token-detail-content audio")) return;
+    stopSavedPlayback();
+    stopTrimPlayback();
+    pausePronunciationAudio(event.target);
+  }, true);
   document.addEventListener("cardschanged", () => {
     stopSavedPlayback();
     refreshAudioButtons();

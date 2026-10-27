@@ -340,6 +340,7 @@ editorForm?.addEventListener("submit", async (event) => {
       updateCard(affected, replacement);
       affected.classList.add("recently-edited");
     });
+    document.dispatchEvent(new Event("cardschanged"));
     status.textContent = `Saved ${affectedCards.length} card${affectedCards.length === 1 ? "" : "s"} offline. Recently edited cards are shaded.`;
     editor.close();
   } catch {
