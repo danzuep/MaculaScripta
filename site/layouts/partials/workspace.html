@@ -159,6 +159,7 @@
     </main>
     <footer class="dataset-attribution">
       {{ range uniq $attributions }}<p>{{ . }}</p>{{ end }}
+      <p>Build {{ .Site.Params.buildVersion }} · Built {{ now.UTC.Format "2006-01-02 15:04:05 UTC" }}</p>
     </footer>
     <dialog id="text-editor" class="text-editor" aria-labelledby="text-editor-title">
       <form id="text-editor-form">
