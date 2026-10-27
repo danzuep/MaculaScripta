@@ -75,7 +75,7 @@
           {{- with $file.attribution -}}{{- $attributions = $attributions | append . -}}{{- end -}}
           {{ range $verse := $file.verses }}
             <article class="verse" data-verse="{{ $verse.verse_ref }}" lang="{{ $verse.language_code }}">
-              <h2>{{ $verse.verse_ref }} <button class="play-verse" type="button" aria-label="Play recordings for {{ $verse.verse_ref }}" aria-pressed="false" title="Play verse recordings" hidden>▶</button></h2>
+              <h2>{{ $verse.verse_ref }} <button class="play-verse" type="button" aria-label="Play recordings for {{ $verse.verse_ref }}" aria-pressed="false" title="Play verse recordings" hidden>▶</button> <button class="record-verse" type="button" aria-haspopup="dialog" aria-controls="verse-clipper" aria-label="Record {{ $verse.verse_ref }} and trim word clips" title="Record verse and trim word clips">●</button> <button class="trim-verse" type="button" aria-haspopup="dialog" aria-controls="verse-clipper" aria-label="Trim word clips from the {{ $verse.verse_ref }} recording" title="Trim word clips from this verse recording" hidden>✂</button></h2>
               <p class="translation-meta">
                 {{ $verse.language_code }} · {{ $verse.translation_id }} · revision {{ $verse.revision }}
               </p>
@@ -230,7 +230,7 @@
               <button id="record-audio" class="record-button" type="button" aria-label="Start recording">Record</button>
               <button id="play-trim" type="button" disabled>Play clip</button>
             </div>
-            <p class="recorder-hint">Microphone access requires a secure connection (HTTPS or localhost).</p>
+            <p class="recorder-hint">Your audio stays on this device: recordings are processed and stored only in this browser and are never uploaded.</p>
           </div>
           <form id="recorder-entry-form" class="recorder-card">
             <h3>Macula morphological entry</h3>
@@ -293,9 +293,65 @@
         </section>
       </div>
     </dialog>
+    <dialog id="verse-clipper" class="recorder-dialog" aria-labelledby="verse-clipper-title">
+      <div class="recorder-shell">
+        <div class="recorder-heading">
+          <div>
+            <p class="eyebrow">VERSE CLIPS</p>
+            <h2 id="verse-clipper-title">Record verse</h2>
+          </div>
+          <button id="close-verse-clipper" type="button" aria-label="Close verse clips">Close</button>
+        </div>
+        <p class="recorder-intro">Record the whole verse, select a word, trim its clip and save. Each clip is linked to every card with the same language, source lemma and translated word, in any verse. Recordings stay in this browser.</p>
+        <div class="recorder-card">
+          <div class="recorder-status-row">
+            <span id="verse-clipper-context">Audio workbench</span>
+            <span id="verse-clipper-status" role="status">Ready</span>
+          </div>
+          <div class="waveform-wrap">
+            <canvas id="verse-clipper-waveform" aria-label="Verse waveform. Drag either edge of the highlighted selection to trim the word clip."></canvas>
+            <p id="verse-clipper-placeholder">Record the verse to view its waveform.</p>
+          </div>
+          <div class="clip-zoom">
+            <button id="verse-zoom-out" type="button" aria-label="Zoom out" title="Zoom out" disabled>−</button>
+            <button id="verse-zoom-fit" type="button" title="Show the whole recording" disabled>Fit</button>
+            <button id="verse-zoom-in" type="button" aria-label="Zoom in" title="Zoom in on the selection" disabled>+</button>
+            <label for="verse-pan">Scroll
+              <input id="verse-pan" type="range" min="0" max="1000" value="0" disabled>
+            </label>
+            <span id="verse-view-range">0.00–0.00s</span>
+          </div>
+          <div class="clip-times">
+            <label for="verse-clip-start">Start (s)
+              <input id="verse-clip-start" type="number" min="0" step="0.01" value="0" disabled>
+            </label>
+            <label for="verse-clip-end">End (s)
+              <input id="verse-clip-end" type="number" min="0" step="0.01" value="0" disabled>
+            </label>
+            <span id="verse-clip-duration">Duration: 0.00s</span>
+          </div>
+          <div class="recorder-controls">
+            <button id="verse-clip-play" type="button" disabled>Play clip</button>
+            <button id="verse-record" class="record-button" type="button" aria-label="Start recording verse" aria-pressed="false">Record</button>
+            <button id="verse-clip-save" type="button" disabled>Save clip</button>
+          </div>
+          <p class="recorder-hint">Selecting a word skips quiet audio after the previous word's clip, zooms to 1 second and highlights the next half second. Your audio stays on this device: recordings are processed and stored only in this browser and are never uploaded.</p>
+        </div>
+        <div class="recorder-card">
+          <h3>Words in this verse</h3>
+          <p class="recorder-hint">Words marked ✓ already have audio. Select them to replace it.</p>
+          <div id="verse-clip-words" class="clip-words" role="group" aria-label="Words in this verse"></div>
+        </div>
+      </div>
+    </dialog>
+    {{- $sourceLemmas := dict -}}
+    {{- range $id, $detail := hugo.Data.greek_token_details -}}
+      {{- $sourceLemmas = merge $sourceLemmas (dict $id $detail.lemma) -}}
+    {{- end }}
     <script>
       window.maculaScriptaConfig = {
-        rawManuscriptBaseUrl: {{ .Site.Params.rawManuscriptBaseURL | jsonify }}
+        rawManuscriptBaseUrl: {{ .Site.Params.rawManuscriptBaseURL | jsonify }},
+        sourceLemmas: {{ $sourceLemmas }}
       };
     </script>
     <script src="{{ "app.js" | relURL }}" defer></script>
