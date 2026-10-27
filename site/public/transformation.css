@@ -5,7 +5,9 @@
 .stage-english { --stage-color: var(--english-color); }
 .stage-cantonese { --stage-color: var(--cantonese-color); }
 .stage-panel h3 { color: var(--stage-color); font-size: 1.05rem; line-height: 1.5; }
-.stage-greek h3 { color: var(--ipa-color); }
+.stage-greek h3 { color: var(--greek-color); }
+.stage-greek rt { color: var(--text-muted); }
+.stage-greek .sub-grammar { color: var(--text-muted); }
 .stage-panel + .stage-panel { margin-top: 24px; }
 .stage-panel[hidden] + .stage-panel { margin-top: 0; }
 

@@ -7,6 +7,9 @@ const onsetMinimumRms = 0.01;
 const onsetPeakRatio = 0.1;
 const minimumClipSeconds = 0.05;
 const minimumViewSeconds = 0.25;
+const edgeSearchMs = 3;
+const edgeFadeMs = 8;
+const normalizeHeadroom = 0.89;
 const zoomFactor = 2;
 const handleTolerancePx = 12;
 
@@ -520,12 +523,68 @@ export function setupVerseClipper(api) {
 
   function clipBuffer() {
     const { buffer } = session;
-    const startFrame = Math.floor(selection.start * buffer.sampleRate);
-    const endFrame = Math.min(buffer.length, Math.ceil(selection.end * buffer.sampleRate));
-    const frameCount = Math.max(1, endFrame - startFrame);
-    const trimmed = audioContext.createBuffer(buffer.numberOfChannels, frameCount, buffer.sampleRate);
+    const sampleRate = buffer.sampleRate;
+    let startFrame = Math.max(0, Math.min(buffer.length - 1, Math.floor(selection.start * sampleRate)));
+    let endFrame = Math.min(buffer.length, Math.ceil(selection.end * sampleRate));
+    if (endFrame <= startFrame) endFrame = Math.min(buffer.length, startFrame + 1);
+
+    const search = Math.max(1, Math.round(sampleRate * edgeSearchMs / 1000));
+    function nearestZeroCrossing(channelData, frame, lo, hi) {
+      let best = frame;
+      let bestDist = Infinity;
+      const from = Math.max(lo + 1, frame - search);
+      const to = Math.min(hi - 1, frame + search);
+
+      for (let index = from; index <= to; index += 1) {
+        const before = channelData[index - 1];
+        const after = channelData[index];
+        const crosses = (before <= 0 && after >= 0) || (before >= 0 && after <= 0);
+        if (!crosses) continue;
+        const distance = Math.abs(index - frame);
+        if (distance < bestDist) {
+          bestDist = distance;
+          best = index;
+        }
+      }
+      return best;
+    }
+
+    const reference = buffer.getChannelData(0);
+    startFrame = nearestZeroCrossing(reference, startFrame, 0, buffer.length);
+    endFrame = nearestZeroCrossing(reference, endFrame, startFrame + 1, buffer.length);
+    if (endFrame <= startFrame) endFrame = Math.min(buffer.length, startFrame + 1);
+
+    const frameCount = endFrame - startFrame;
+    const trimmed = audioContext.createBuffer(buffer.numberOfChannels, frameCount, sampleRate);
     for (let channel = 0; channel < buffer.numberOfChannels; channel += 1) {
-      trimmed.copyToChannel(buffer.getChannelData(channel).subarray(startFrame, startFrame + frameCount), channel);
+      trimmed.copyToChannel(buffer.getChannelData(channel).subarray(startFrame, endFrame), channel);
+    }
+
+    const fade = Math.min(
+      Math.floor(frameCount / 2),
+      Math.max(1, Math.round(sampleRate * edgeFadeMs / 1000))
+    );
+    for (let channel = 0; channel < trimmed.numberOfChannels; channel += 1) {
+      const data = trimmed.getChannelData(channel);
+      for (let index = 0; index < fade; index += 1) {
+        data[index] *= index / fade;
+        data[frameCount - 1 - index] *= (fade - index) / fade;
+      }
+    }
+
+    let peak = 0;
+    for (let channel = 0; channel < trimmed.numberOfChannels; channel += 1) {
+      const data = trimmed.getChannelData(channel);
+      for (let index = 0; index < data.length; index += 1) {
+        peak = Math.max(peak, Math.abs(data[index]));
+      }
+    }
+    if (peak > normalizeHeadroom) {
+      const gain = normalizeHeadroom / peak;
+      for (let channel = 0; channel < trimmed.numberOfChannels; channel += 1) {
+        const data = trimmed.getChannelData(channel);
+        for (let index = 0; index < data.length; index += 1) data[index] *= gain;
+      }
     }
     return trimmed;
   }
