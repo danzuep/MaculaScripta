@@ -82,6 +82,18 @@ Untranslated cards are linked only to themselves. The verse recording is kept fo
 the current page session; once the verse is complete, **✂** beside the verse title
 reopens it.
 
+Each verse title shows an audio coverage strip with one cell per card: an outlined
+cell is untranslated, a grey cell is translated but missing audio, and a green cell
+has audio (including clips shared from other verses). Select a grey cell to open
+**Verse clips** for that verse; after recording, that word is selected first. The
+**Best next verse to record** card above the verses recommends the verse whose
+missing words would fill the most gaps across all loaded verses, using the same
+clip linking as **Verse clips**. Ties go to the verse needing fewer clips, then the
+earliest verse. It shows the clips needed, the gaps they fill, and a before/after
+preview; when every translated word has audio it shows **Complete**. Coverage is
+computed in the browser during idle time from the loaded cards and saved clips,
+without decoding audio. Run its tests with `node --test tests/*.test.mjs`.
+
 In the field recorder, a draft is not replaced without confirmation. Record audio,
 watch the live microphone waveform,
 drag the waveform edges to trim, preview the clip, add IPA using the symbol

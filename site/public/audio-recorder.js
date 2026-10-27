@@ -1,5 +1,6 @@
 import { writingSystems, importLift, exportLift, stableRecords, mergeLift } from "./lift-exchange.js";
 import { setupVerseClipper } from "./verse-clipper.js";
+import { setupAudioCoverage } from "./audio-coverage.js";
 
 const databaseName = "macula-linguistic-recorder";
 const storeName = "dictionary";
@@ -73,7 +74,8 @@ const verseClipPauseMs = 180;
 const publishedRecordings = new WeakMap();
 let dictionaryGeneration = 0;
 const bindingMigrations = new Map();
-let verseClipper = { refresh() {}, hasSession: () => false };
+let verseClipper = { refresh() {}, hasSession: () => false, open() {} };
+let audioCoverage = { refresh() {} };
 
 function cardId(card) {
   const verse = card.closest(".verse")?.dataset.verse;
@@ -110,6 +112,14 @@ function sourceWordKey(card) {
   const text = targetText(card).normalize("NFC").replace(/\s+/gu, " ").toLowerCase();
   return language.trim() && text && lemmas.length && lemmas.every(Boolean)
     ? JSON.stringify([language, lemmas, text]) : "";
+}
+
+// A verse clip saved for this card (see saveVerseClip) links to every card sharing one of these keys.
+function clipKeys(card) {
+  const id = cardId(card);
+  const word = sourceWordKey(card);
+  const sense = bindingKey(cardBinding(card));
+  return [id && `card:${id}`, word && `word:${word}`, sense && `sense:${sense}`].filter(Boolean);
 }
 
 function referenceIds(value) {
@@ -265,6 +275,7 @@ function refreshAudioButtons() {
     if (trim) trim.hidden = missingAudio || !verseClipper.hasSession(verse);
   }
   verseClipper.refresh();
+  audioCoverage.refresh();
 }
 
 async function saveVerseClip(card, audioBlob, clip) {
@@ -1017,6 +1028,13 @@ function initialize() {
       pausePronunciationAudio();
     },
     refresh: refreshAudioButtons
+  });
+  audioCoverage = setupAudioCoverage({
+    cardId,
+    targetText,
+    clipKeys,
+    hasRecording: (id) => cardRecordings.has(id),
+    openVerse: (verse, card, trigger) => verseClipper.open(verse, trigger, card)
   });
   refreshAudioButtons();
   const openRecorder = (trigger) => {

@@ -15,7 +15,7 @@ const handleTolerancePx = 12;
 
 export function setupVerseClipper(api) {
   const dialog = document.querySelector("#verse-clipper");
-  if (!dialog) return { refresh() {}, hasSession: () => false };
+  if (!dialog) return { refresh() {}, hasSession: () => false, open() {} };
   const ui = {
     title: document.querySelector("#verse-clipper-title"),
     context: document.querySelector("#verse-clipper-context"),
@@ -41,6 +41,8 @@ export function setupVerseClipper(api) {
   let verse = null;
   let session = null;
   let selectedCard = null;
+  // The word to trim first once the verse is recorded, e.g. a coverage cell that was selected.
+  let preferredCard = null;
   let selection = { start: 0, end: 0 };
   let view = { start: 0, end: 0 };
   let audioContext;
@@ -466,7 +468,8 @@ export function setupVerseClipper(api) {
           processing = false;
           setView(0, buffer.duration);
           api.refresh();
-          const first = verseCards().find(hasText);
+          const cards = verseCards();
+          const first = cards.includes(preferredCard) ? preferredCard : cards.find(hasText);
           if (first) selectCard(first);
           else setStatus("Verse recorded. Select a word to trim.", "ready");
         } catch {
@@ -681,7 +684,7 @@ export function setupVerseClipper(api) {
     if (dialog.open) draw();
   }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
-  function open(targetVerse, button) {
+  function open(targetVerse, button, card = null) {
     document.dispatchEvent(new Event("workspaceediting"));
     trigger = button;
     const changed = verse !== targetVerse;
@@ -690,6 +693,7 @@ export function setupVerseClipper(api) {
       selectedCard = null;
     }
     verse = targetVerse;
+    preferredCard = card?.closest(".verse") === verse ? card : null;
     session = sessions.get(verseKey(verse)) || null;
     if (selectedCard && !selectedCard.isConnected) selectedCard = null;
     if (session && (changed || !selectedCard)) {
@@ -707,7 +711,8 @@ export function setupVerseClipper(api) {
     if (!dialog.open) dialog.showModal();
     resizeCanvas();
     updateControls();
-    setStatus(session ? "Select a word to trim its clip." : "Record the whole verse to begin.", "ready");
+    if (session && preferredCard) selectCard(preferredCard);
+    else setStatus(session ? "Select a word to trim its clip." : "Record the whole verse to begin.", "ready");
   }
 
   document.addEventListener("click", (event) => {
@@ -725,6 +730,7 @@ export function setupVerseClipper(api) {
     },
     hasSession(element) {
       return sessions.has(verseKey(element));
-    }
+    },
+    open
   };
 }
