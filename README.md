@@ -51,15 +51,19 @@ Reduced-motion users start paused, and all stages remain readable without JavaSc
 Opening an editor or recorder, or focusing the translation studio, pauses playback
 so it does not distract from editing.
 
-In **Edit translations**, filter by passage and language, select **Edit text**,
+In **Edit translations**, filter by passage and language, select the pencil icon,
 and review how many cards will change before saving. **Word details** exposes
 alignment metadata, notes, pronunciation audio, and alternates on touch devices
 and with the keyboard. Filters do not restrict shared edits.
 
-Select **Edit text → Record pronunciation** to prefill the recorder with its
+Select a word's **●** record icon (or **pencil → Record pronunciation**) to prefill the recorder with its
 aligned Greek, translation, and Macula references, or use **Record & dictionary**
-to start independently. The card's **▶** button plays its linked clip and is
-disabled when no recording is available. A draft is not replaced without confirmation. Record audio,
+to start independently. The card's **▶** button plays its linked clip; words without
+audio show the record icon instead. A **▶** button appears beside a verse title
+only when that language's verse has recordings. It plays available clips in the
+current card order, skipping unrecorded words with a 180 ms pause between clips.
+Press it again to stop; editing, rearranging cards, or starting other playback
+also stops the sequence. A draft is not replaced without confirmation. Record audio,
 watch the live microphone waveform,
 drag the waveform edges to trim, preview the clip, add IPA using the symbol
 keyboard, and save the entry locally. The dictionary supports searching,
@@ -68,8 +72,10 @@ Text edits have their own JSON export. For FLEx dictionary exchange, use the
 separate LIFT controls described below; there is no live FLEx/Language Forge connection.
 
 Each Greek source occurrence has its own card in the seed overlays. Expand
-**Word details** for source lemma, Strong's ID, part of speech, alignment and
-translation identifiers, and arrangement controls. **Join next**
+**Word details** for source lemma and a short definition, Strong's ID, part of speech,
+Macula IDs, and arrangement controls. Definitions in
+`site/data/greek_lemma_definitions.yaml` are brief English glosses of the source
+lemmas, not word-sense assignments. **Join next**
 combines neighboring cards; **Split** restores their constituent cards and lets
 you review each translation before saving. Joined phrases do not inherit a
 single word's lemma/sense metadata. The arrow buttons change card order within
