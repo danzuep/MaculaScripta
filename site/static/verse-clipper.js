@@ -587,13 +587,18 @@ export function setupVerseClipper(api) {
   function open(targetVerse, button) {
     document.dispatchEvent(new Event("workspaceediting"));
     trigger = button;
-    if (verse !== targetVerse) {
+    const changed = verse !== targetVerse;
+    if (changed) {
       stopPlayback();
       selectedCard = null;
     }
     verse = targetVerse;
     session = sessions.get(verseKey(verse)) || null;
     if (selectedCard && !selectedCard.isConnected) selectedCard = null;
+    if (session && (changed || !selectedCard)) {
+      selection = { start: 0, end: 0 };
+      view = { start: 0, end: session.buffer.duration };
+    }
     const language = verse.lang === "yue" ? "Cantonese" : verse.lang === "en" ? "English" : verse.lang;
     ui.title.textContent = `Record ${verse.dataset.verse}`;
     ui.context.textContent = `${verse.dataset.verse} · ${language}`;

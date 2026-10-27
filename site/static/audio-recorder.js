@@ -253,13 +253,16 @@ function refreshAudioButtons() {
     button.title = available ? "Play pronunciation" : "Record pronunciation";
   }
   for (const verse of document.querySelectorAll(".verse")) {
-    const hasAudio = [...verse.querySelectorAll(".token-card")]
-      .some((card) => cardRecordings.has(cardId(card)));
+    const verseCards = [...verse.querySelectorAll(".token-card")];
+    const hasAudio = verseCards.some((card) => cardRecordings.has(cardId(card)));
+    // Clips are shared across verses, so keep recording available until every translated word has audio.
+    const missingAudio = !hasAudio || verseCards
+      .some((card) => targetText(card) && !cardRecordings.has(cardId(card)));
     verse.querySelector(".play-verse").hidden = !hasAudio;
     const record = verse.querySelector(".record-verse");
-    if (record) record.hidden = hasAudio;
+    if (record) record.hidden = !missingAudio;
     const trim = verse.querySelector(".trim-verse");
-    if (trim) trim.hidden = !hasAudio || !verseClipper.hasSession(verse);
+    if (trim) trim.hidden = missingAudio || !verseClipper.hasSession(verse);
   }
   verseClipper.refresh();
 }

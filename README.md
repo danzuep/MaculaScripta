@@ -65,7 +65,8 @@ current card order, skipping unrecorded words with a 180 ms pause between clips.
 Press it again to stop; editing, rearranging cards, or starting other playback
 also stops the sequence.
 
-When a verse has no recordings, its title shows a **●** record button instead.
+When a verse has no recordings, its title shows a **●** record button instead
+of **▶**; **●** stays beside **▶** until every translated word in the verse has audio.
 It opens **Verse clips**: record the whole verse, then select each word (shown
 with its translation, Greek source word, and source lemma) to trim its clip from
 the verse recording. Selecting the first word highlights the first 5 s; each later
@@ -77,7 +78,8 @@ to replace their audio. Each clip is linked to every card with the same language
 source lemma(s), and translated word (case-insensitive) in any verse, plus cards
 sharing its language/lemma/sense key, so one verse recording fills in many others.
 Untranslated cards are linked only to themselves. The verse recording is kept for
-the current page session; while it exists, **✂** beside the verse title reopens it.
+the current page session; once the verse is complete, **✂** beside the verse title
+reopens it.
 
 In the field recorder, a draft is not replaced without confirmation. Record audio,
 watch the live microphone waveform,
