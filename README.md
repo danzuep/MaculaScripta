@@ -1,13 +1,15 @@
 # MaculaScripta
 
-MaculaScripta is a .NET 10 foundation for Git-native translation overlays aligned to Macula Greek tokens.
+MaculaScripta is a Hugo Greek New Testament reader with a .NET 10 foundation for Git-native translation overlays aligned to Macula Greek tokens.
 
 ## Projects
 
-- `MaculaScripta.Contracts` contains dependency-free domain records.
-- `MaculaScripta.Core` contains gloss resolution, lemma frequency ranking, and lemma audio binding.
-- `Protos/macula_scripta.proto` defines the versioned gRPC service contract. The schema is kept as source and is not generated during the dependency-free Contracts build.
-- `site/` is a Hugo site that renders YAML overlays and provides local offline edits with JSON patch export.
+- `source/MaculaScripta.Contracts` contains dependency-free domain records.
+- `source/MaculaScripta.Core` contains gloss resolution, lemma frequency ranking, and lemma audio binding.
+- `source/protos/macula_scripta.proto` is a proposed gRPC contract, not used by the reader or either C# project. There is deliberately no `Grpc.Tools` project or generated client/server until an actual transport implementation needs it.
+- `source/import_macula.py` imports the upstream word data without additional Python packages.
+- `data/macula-greek` is the pinned [Macula Greek](https://github.com/Clear-Bible/macula-greek) Git submodule.
+- `site/` is the Hugo reader, with the original overlay editor and recorder at `/demo/`.
 
 Build the C# projects with:
 
@@ -15,9 +17,65 @@ Build the C# projects with:
 dotnet build MaculaScripta.slnx
 ```
 
+## Greek New Testament reader
+
+The homepage and `/nt/1-john/` display all five chapters of **1 John** as continuous
+Greek text, retaining the upstream punctuation. Chapter and verse superscripts
+provide link targets. Select a Greek word to expand its complete source metadata.
+In **Settings**, choose English word glosses (the default), Chinese (Mandarin),
+any other source field, or no ruby annotation. Glosses are word-level aids, not
+a running Bible translation. The reader reuses the workbench's light/dark CSS.
+The existing John 1:1 workbench remains available at `/demo/` and `/john-1-1/`.
+
+The navigation lists all 27 New Testament books; books not yet imported are
+marked unavailable rather than linked to empty pages. To reproduce the MVP:
+
+```sh
+git submodule update --init --depth 1
+python3 source/import_macula.py
+hugo --source ./site --minify
+```
+
+To add books or import the entire New Testament:
+
+```sh
+python3 source/import_macula.py --books JHN ROM
+python3 source/import_macula.py --all
+```
+
+The importer reads `data/macula-greek/SBLGNT/tsv/macula-greek-SBLGNT.tsv` once,
+preserves **every** column as a string, and writes deterministic JSON-compatible
+YAML (YAML 1.2's JSON subset) under `site/data/nt/books/`. It also creates book
+pages under `site/content/nt/` and updates `site/data/nt/catalog.yaml`, retaining
+previously imported books. Each book records the source commit and TSV path.
+Hugo reads this checked-in data directly, so normal Pages builds need neither
+Python nor a submodule checkout. The TSV avoids the unused syntax-tree processing
+and gRPC dependencies; the derived book files avoid loading the entire upstream
+New Testament for the MVP.
+
+To update the dataset intentionally, update the submodule checkout, rerun the
+importer for all published books, and commit both the submodule pointer and
+generated files. Review upstream changes and licensing before publishing.
+Validate the import and existing browser logic with:
+
+```sh
+python3 -m unittest discover -s tests -p 'test_*.py'
+node --test tests/*.test.mjs
+```
+
+Data attribution: **MACULA Greek Linguistic Datasets**, available at
+https://github.com/Clear-Bible/macula-greek/, © 2022–2024 Biblica, Inc.,
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). The SBL Greek New
+Testament is edited by Michael W. Holmes (Society of Biblical Literature and
+Logos Bible Software), CC BY 4.0. English and Chinese Cherith glosses are
+© 2023 Andi Wu / Cherith Analytics, CC BY 4.0; Berean glosses are public domain.
+The YAML files reorganize the upstream TSV without editing its word fields.
+See the [upstream source notices and license](https://github.com/Clear-Bible/macula-greek/blob/main/LICENSE.md)
+for all included annotations and sources.
+
 ## YAML overlays
 
-Add language-specific files under `site/data/overlays/<language>/`. Each file contains an `attribution` string and a `verses` list of `VerseTranslationOverlay` records. Hugo loads these files at build time; use the snake_case field names from `Protos/macula_scripta.proto`. Alignment entries carry their associated source-occurrence `target_macula_ids`, while a target word may map to multiple occurrences or none. These IDs are for alignment only; multi-edit matching uses target language, lemma ID, and sense ID.
+Add language-specific files under `site/data/overlays/<language>/`. Each file contains an `attribution` string and a `verses` list of `VerseTranslationOverlay` records. Hugo loads these files at build time; use the snake_case field names from `source/protos/macula_scripta.proto`. Alignment entries carry their associated source-occurrence `target_macula_ids`, while a target word may map to multiple occurrences or none. These IDs are for alignment only; multi-edit matching uses target language, lemma ID, and sense ID.
 
 Keep only supported data files in that directory, not Markdown documentation: Hugo attempts to parse every file there as data.
 
@@ -40,7 +98,7 @@ Use `MaculaBaseToken.DataAttribution` when publishing Macula identifiers.
 
 ## Unified language workbench
 
-The homepage combines the John 1:1 transformation, editable John 1:1–5
+The `/demo/` page combines the John 1:1 transformation, editable John 1:1–5
 translations, and the field recorder in one workspace. Existing `john-1-1/`
 links open the same workspace through a shared Hugo partial.
 
@@ -174,7 +232,7 @@ positions. Presentation lives in `site/layouts/transformation.html` and
 `site/static/transformation.js`.
 The Hugo page metadata lives in `site/content/john-1-1.md`.
 
-Build locally with Hugo 0.160.1 (the version used by the Pages workflow):
+Build locally with Hugo:
 
 ```sh
 hugo --source ./site --minify

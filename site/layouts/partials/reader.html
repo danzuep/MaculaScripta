@@ -1,0 +1,95 @@
+{{- $code := .Params.book | default "1JN" -}}
+{{- $book := index hugo.Data.nt.books $code -}}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0f172a">
+    <title>{{ $book.title }} · {{ .Site.Title }}</title>
+    <link rel="manifest" href="{{ "manifest.webmanifest" | relURL }}">
+    <link rel="stylesheet" href="{{ "styles.css" | relURL }}">
+    <link rel="stylesheet" href="{{ "reader.css" | relURL }}">
+    <script src="{{ "reader.js" | relURL }}" defer></script>
+  </head>
+  <body class="reader-page" data-worker-url="{{ "sw.js" | relURL }}">
+    <a class="skip-link" href="#reader">Skip to Greek text</a>
+    <header class="reader-header">
+      <a class="brand" href="{{ .Site.Home.RelPermalink }}">MaculaScripta<span>Greek New Testament</span></a>
+      <nav class="reader-tools" aria-label="Reader tools">
+        <a href="{{ "demo/" | relURL }}">John 1:1 workbench demo</a>
+        <details class="settings">
+          <summary>Reader settings</summary>
+          <label for="reader-annotation">Word annotation
+            <select id="reader-annotation">
+              <option value="__english">English</option>
+              <option value="__mandarin">Chinese (Mandarin)</option>
+              <option value="__none">No annotation</option>
+            </select>
+          </label>
+          <label for="reader-theme">Appearance
+            <select id="reader-theme">
+              <option value="dark">Dark</option>
+              <option value="light">Light</option>
+            </select>
+          </label>
+        </details>
+      </nav>
+      <details class="reader-books">
+        <summary>New Testament books</summary>
+        <nav aria-label="New Testament books">
+          <ul>
+            {{ range hugo.Data.nt.catalog }}
+              <li>{{ if .available }}<a href="{{ printf "nt/%s/" .slug | relURL }}"{{ if eq .code $code }} aria-current="page"{{ end }}>{{ .title }}</a>{{ else }}<span aria-disabled="true">{{ .title }} <small>Not yet imported</small></span>{{ end }}</li>
+            {{ end }}
+          </ul>
+        </nav>
+      </details>
+      <h1>{{ $book.title }}</h1>
+      <nav class="reader-chapters" aria-label="{{ $book.title }} chapters">
+        <span>Chapters</span>
+        {{ range $book.chapters }}<a href="#chapter-{{ .number }}">{{ .number }}</a>{{ end }}
+      </nav>
+      <p class="reader-hint">Read continuously. Select any Greek word to inspect its complete source metadata.</p>
+    </header>
+    <div class="reader-layout">
+      <main id="reader" aria-label="{{ $book.title }} Greek text" tabindex="-1">
+        {{- $wordIndex := 0 -}}
+        {{ range $book.chapters }}
+          {{- $chapter := .number -}}
+          <section class="reader-chapter" aria-label="Chapter {{ $chapter }}">
+            <p class="reader-flow" lang="grc">
+              <sup class="chapter-number"><a id="chapter-{{ $chapter }}" href="#chapter-{{ $chapter }}" aria-label="Chapter {{ $chapter }}">{{ $chapter }}</a></sup>
+              {{- range .verses -}}
+                <sup class="verse-number"><a id="verse-{{ $chapter }}-{{ .number }}" href="#verse-{{ $chapter }}-{{ .number }}" aria-label="Chapter {{ $chapter }}, verse {{ .number }}">{{ .number }}</a></sup>
+                {{- range .words -}}
+                  <button class="reader-word" type="button" data-word-index="{{ $wordIndex }}" aria-controls="reader-details" aria-expanded="false"><ruby>{{ .text }}<rt lang="en">{{ .english | default .gloss }}</rt></ruby></button>{{ .after }}{{ if not (findRE "\\s$" (.after | default "")) }} {{ end }}
+                  {{- $wordIndex = add $wordIndex 1 -}}
+                {{- end -}}
+              {{- end -}}
+            </p>
+          </section>
+        {{ end }}
+      </main>
+      <aside id="reader-details" class="reader-details" aria-labelledby="reader-details-title" hidden>
+        <div class="reader-details-heading">
+          <h2 id="reader-details-title" tabindex="-1">Word details</h2>
+          <button id="reader-close-details" type="button" aria-label="Close word details">Close</button>
+        </div>
+        <p id="reader-word-reference"></p>
+        <dl id="reader-metadata"></dl>
+      </aside>
+    </div>
+    <footer class="dataset-attribution">
+      <p>MACULA Greek Linguistic Datasets © Biblica, CC BY 4.0.
+        SBLGNT by Michael W. Holmes / Society of Biblical Literature / Logos, CC BY 4.0.
+        Cherith glosses © 2023 Andi Wu / Cherith Analytics, CC BY 4.0.
+        Berean glosses are public domain.
+        <a href="https://github.com/Clear-Bible/macula-greek/blob/main/LICENSE.md">Upstream licenses and attribution</a>.
+        {{ with $book.source_commit }}Source commit: <code>{{ . }}</code>.{{ end }}</p>
+      <p><a href="{{ "john-1-1/" | relURL }}">Original John 1:1 workbench</a>.</p>
+    </footer>
+    {{/* jsonify escapes HTML characters so source fields cannot terminate the data script. */}}
+    <script id="reader-data" type="application/json">{{ $book | jsonify | safeJS }}</script>
+  </body>
+</html>

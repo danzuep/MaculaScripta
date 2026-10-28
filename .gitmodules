@@ -1,0 +1,3 @@
+[submodule "data/macula-greek"]
+	path = data/macula-greek
+	url = https://github.com/Clear-Bible/macula-greek.git

@@ -1,0 +1,191 @@
+[
+  {
+    "code": "MAT",
+    "slug": "matthew",
+    "title": "Matthew",
+    "chapters": 28,
+    "available": false
+  },
+  {
+    "code": "MRK",
+    "slug": "mark",
+    "title": "Mark",
+    "chapters": 16,
+    "available": false
+  },
+  {
+    "code": "LUK",
+    "slug": "luke",
+    "title": "Luke",
+    "chapters": 24,
+    "available": false
+  },
+  {
+    "code": "JHN",
+    "slug": "john",
+    "title": "John",
+    "chapters": 21,
+    "available": false
+  },
+  {
+    "code": "ACT",
+    "slug": "acts",
+    "title": "Acts",
+    "chapters": 28,
+    "available": false
+  },
+  {
+    "code": "ROM",
+    "slug": "romans",
+    "title": "Romans",
+    "chapters": 16,
+    "available": false
+  },
+  {
+    "code": "1CO",
+    "slug": "1-corinthians",
+    "title": "1 Corinthians",
+    "chapters": 16,
+    "available": false
+  },
+  {
+    "code": "2CO",
+    "slug": "2-corinthians",
+    "title": "2 Corinthians",
+    "chapters": 13,
+    "available": false
+  },
+  {
+    "code": "GAL",
+    "slug": "galatians",
+    "title": "Galatians",
+    "chapters": 6,
+    "available": false
+  },
+  {
+    "code": "EPH",
+    "slug": "ephesians",
+    "title": "Ephesians",
+    "chapters": 6,
+    "available": false
+  },
+  {
+    "code": "PHP",
+    "slug": "philippians",
+    "title": "Philippians",
+    "chapters": 4,
+    "available": false
+  },
+  {
+    "code": "COL",
+    "slug": "colossians",
+    "title": "Colossians",
+    "chapters": 4,
+    "available": false
+  },
+  {
+    "code": "1TH",
+    "slug": "1-thessalonians",
+    "title": "1 Thessalonians",
+    "chapters": 5,
+    "available": false
+  },
+  {
+    "code": "2TH",
+    "slug": "2-thessalonians",
+    "title": "2 Thessalonians",
+    "chapters": 3,
+    "available": false
+  },
+  {
+    "code": "1TI",
+    "slug": "1-timothy",
+    "title": "1 Timothy",
+    "chapters": 6,
+    "available": false
+  },
+  {
+    "code": "2TI",
+    "slug": "2-timothy",
+    "title": "2 Timothy",
+    "chapters": 4,
+    "available": false
+  },
+  {
+    "code": "TIT",
+    "slug": "titus",
+    "title": "Titus",
+    "chapters": 3,
+    "available": false
+  },
+  {
+    "code": "PHM",
+    "slug": "philemon",
+    "title": "Philemon",
+    "chapters": 1,
+    "available": false
+  },
+  {
+    "code": "HEB",
+    "slug": "hebrews",
+    "title": "Hebrews",
+    "chapters": 13,
+    "available": false
+  },
+  {
+    "code": "JAS",
+    "slug": "james",
+    "title": "James",
+    "chapters": 5,
+    "available": false
+  },
+  {
+    "code": "1PE",
+    "slug": "1-peter",
+    "title": "1 Peter",
+    "chapters": 5,
+    "available": false
+  },
+  {
+    "code": "2PE",
+    "slug": "2-peter",
+    "title": "2 Peter",
+    "chapters": 3,
+    "available": false
+  },
+  {
+    "code": "1JN",
+    "slug": "1-john",
+    "title": "1 John",
+    "chapters": 5,
+    "available": true
+  },
+  {
+    "code": "2JN",
+    "slug": "2-john",
+    "title": "2 John",
+    "chapters": 1,
+    "available": false
+  },
+  {
+    "code": "3JN",
+    "slug": "3-john",
+    "title": "3 John",
+    "chapters": 1,
+    "available": false
+  },
+  {
+    "code": "JUD",
+    "slug": "jude",
+    "title": "Jude",
+    "chapters": 1,
+    "available": false
+  },
+  {
+    "code": "REV",
+    "slug": "revelation",
+    "title": "Revelation",
+    "chapters": 22,
+    "available": false
+  }
+]
