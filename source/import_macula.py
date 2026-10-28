@@ -1,4 +1,4 @@
-"""Import Macula's word-level SBLGNT TSV as JSON-compatible YAML for Hugo."""
+"""Import Macula's word-level SBLGNT TSV as native YAML for Hugo."""
 
 import argparse
 import csv
@@ -6,6 +6,8 @@ import json
 import re
 import subprocess
 from pathlib import Path
+
+import yaml
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -77,8 +79,10 @@ def read_books(path, selected):
 
 def write_yaml(path, value):
     path.parent.mkdir(parents=True, exist_ok=True)
-    # JSON is a YAML 1.2 subset: quote every scalar without a YAML dependency.
-    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    path.write_text(
+        yaml.safe_dump(value, allow_unicode=True, sort_keys=False, width=1000),
+        encoding="utf-8",
+    )
 
 
 def generate(root, selected):
@@ -103,7 +107,7 @@ def generate(root, selected):
         }
         write_yaml(data / "books" / f"{code}.yaml", book)
         for chapter, verses in books[code].items():
-            write_yaml(data / "chapters" / code / f"c{chapter}.yaml", {
+            write_yaml(data / code / f"{chapter}.yaml", {
                 "number": chapter,
                 "verses": [
                     {"number": verse, "words": words}
