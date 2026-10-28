@@ -1,4 +1,4 @@
 <Solution>
-  <Project Path="MaculaScripta.Contracts/MaculaScripta.Contracts.csproj" />
-  <Project Path="MaculaScripta.Core/MaculaScripta.Core.csproj" />
+  <Project Path="source/MaculaScripta.Contracts/MaculaScripta.Contracts.csproj" />
+  <Project Path="source/MaculaScripta.Core/MaculaScripta.Core.csproj" />
 </Solution>
