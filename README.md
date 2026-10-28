@@ -19,16 +19,20 @@ dotnet build MaculaScripta.slnx
 
 ## Greek New Testament reader
 
-The homepage and `/nt/1-john/` display all five chapters of **1 John** as continuous
-Greek text, retaining the upstream punctuation. Chapter and verse superscripts
-provide link targets. Select a Greek word to expand its complete source metadata.
-In **Settings**, choose English word glosses (the default), Chinese (Mandarin),
+The homepage and `/nt/1-john/` display the first chapter of **1 John** as continuous
+Greek text, retaining the upstream punctuation. **John** is also ready at
+`/nt/john/`. Use the chapter links to navigate: each page renders and embeds
+metadata for only one chapter (for example, `/nt/john/2/`), keeping downloads small.
+Chapter and verse superscripts provide link targets. Select a Greek word to
+expand its complete source metadata; the X close button stays visible while
+the metadata scrolls.
+In **Settings**, choose Gloss (the default, from the `gloss` field), Chinese (Mandarin),
 any other source field, or no ruby annotation. Glosses are word-level aids, not
 a running Bible translation. The reader reuses the workbench's light/dark CSS.
 The existing John 1:1 workbench remains available at `/demo/` and `/john-1-1/`.
 
 The navigation lists all 27 New Testament books; books not yet imported are
-marked unavailable rather than linked to empty pages. To reproduce the MVP:
+marked unavailable rather than linked to empty pages. To reproduce the published books:
 
 ```sh
 git submodule update --init --depth 1
@@ -45,7 +49,9 @@ python3 source/import_macula.py --all
 
 The importer reads `data/macula-greek/SBLGNT/tsv/macula-greek-SBLGNT.tsv` once,
 preserves **every** column as a string, and writes deterministic JSON-compatible
-YAML (YAML 1.2's JSON subset) under `site/data/nt/books/`. It also creates book
+YAML (YAML 1.2's JSON subset): book metadata under `site/data/nt/books/` and
+word data in separate files under `site/data/nt/chapters/<book>/`.
+The default import includes both John and 1 John. It also creates book and chapter
 pages under `site/content/nt/` and updates `site/data/nt/catalog.yaml`, retaining
 previously imported books. Each book records the source commit and TSV path.
 Hugo reads this checked-in data directly, so normal Pages builds need neither

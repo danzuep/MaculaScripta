@@ -13,25 +13,31 @@ spec.loader.exec_module(importer)
 
 
 class ImportMaculaTests(unittest.TestCase):
-    def test_committed_book_matches_every_source_field(self):
+    def test_committed_books_match_every_source_field(self):
         source = importer.read_books(
-            ROOT / "data/macula-greek/SBLGNT/tsv/macula-greek-SBLGNT.tsv", ["1JN"]
-        )["1JN"]
-        book = json.loads((ROOT / "site/data/nt/books/1JN.yaml").read_text())
-        self.assertEqual(len(book["chapters"]), 5)
-        self.assertEqual([len(c["verses"]) for c in book["chapters"]], [10, 29, 24, 21, 21])
-        for chapter in book["chapters"]:
-            for verse in chapter["verses"]:
-                self.assertEqual(verse["words"], source[chapter["number"]][verse["number"]])
-        words = [w for c in source.values() for v in c.values() for w in v]
-        self.assertTrue(any(w["mandarin"] for w in words))
-        self.assertTrue(any(w["after"].strip() for w in words))
+            ROOT / "data/macula-greek/SBLGNT/tsv/macula-greek-SBLGNT.tsv", ["1JN", "JHN"]
+        )
+        for code, count in [("1JN", 5), ("JHN", 21)]:
+            book = json.loads((ROOT / f"site/data/nt/books/{code}.yaml").read_text())
+            self.assertEqual(len(book["chapters"]), count)
+            for entry in book["chapters"]:
+                number = entry["number"]
+                chapter = json.loads(
+                    (ROOT / f"site/data/nt/chapters/{code}/c{number}.yaml").read_text()
+                )
+                self.assertEqual(chapter["number"], number)
+                self.assertEqual(len(chapter["verses"]), len(source[code][number]))
+                for verse in chapter["verses"]:
+                    self.assertEqual(verse["words"], source[code][number][verse["number"]])
+            words = [w for c in source[code].values() for v in c.values() for w in v]
+            self.assertTrue(any(w["mandarin"] for w in words))
+            self.assertTrue(any(w["after"].strip() for w in words))
 
-    def test_catalog_has_all_books_and_only_mvp_available(self):
+    def test_catalog_has_all_books_and_both_john_books_available(self):
         catalog = json.loads((ROOT / "site/data/nt/catalog.yaml").read_text())
         self.assertEqual(len(catalog), 27)
         self.assertEqual(len({b["slug"] for b in catalog}), 27)
-        self.assertIn("1JN", [b["code"] for b in catalog if b["available"]])
+        self.assertEqual({"1JN", "JHN"}, {b["code"] for b in catalog if b["available"]})
         for book in catalog:
             self.assertEqual(book["available"],
                              (ROOT / f'site/data/nt/books/{book["code"]}.yaml').is_file())
@@ -53,12 +59,22 @@ class ImportMaculaTests(unittest.TestCase):
             importer.generate(root, ["1JN"])
             path = root / "site/data/nt/books/1JN.yaml"
             original = path.read_bytes()
+            chapter_path = root / "site/data/nt/chapters/1JN/c2.yaml"
+            original_chapter = chapter_path.read_bytes()
             importer.generate(root, ["1JN"])
             self.assertEqual(path.read_bytes(), original)
+            self.assertEqual(chapter_path.read_bytes(), original_chapter)
             book = json.loads(original)
             self.assertRegex(book["source_commit"], r"^[0-9a-f]{40}$")
             self.assertEqual(book["source_path"], "SBLGNT/tsv/macula-greek-SBLGNT.tsv")
             self.assertTrue((root / "site/content/nt/1-john/_index.md").is_file())
+            for number in range(2, 6):
+                page = root / f"site/content/nt/1-john/{number}.md"
+                self.assertIn(f"chapter: {number}", page.read_text())
+            importer.generate(root, ["JHN"])
+            catalog = json.loads((root / "site/data/nt/catalog.yaml").read_text())
+            self.assertEqual({"1JN", "JHN"}, {b["code"] for b in catalog if b["available"]})
+            self.assertEqual(chapter_path.read_bytes(), original_chapter)
 
     def test_invalid_headers_and_duplicate_ids_rejected(self):
         with tempfile.TemporaryDirectory() as directory:

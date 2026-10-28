@@ -37,9 +37,10 @@
 
   const fields = [...new Set(words.flatMap((word) => Object.keys(word)))].sort();
   for (const field of fields) {
+    if (field === "gloss" || field === "mandarin") continue;
     const option = document.createElement("option");
     option.value = `field:${field}`;
-    option.textContent = `Metadata: ${field}`;
+    option.textContent = field;
     annotation.append(option);
   }
 
@@ -49,19 +50,24 @@
     buttons.forEach((button) => {
       const word = words[Number(button.dataset.wordIndex)];
       const rubyText = button.querySelector("rt");
-      const value = setting === "__english" ? word.english || word.gloss
+      const value = setting === "__gloss" ? word.gloss
         : setting === "__mandarin" ? word.mandarin
           : setting === "__none" ? "" : word[setting.slice("field:".length)];
       rubyText.textContent = displayValue(value);
-      if (setting === "__english" || setting === "__mandarin") {
-        rubyText.lang = setting === "__english" ? "en" : "zh-Hans";
+      if (setting === "__gloss" || setting === "__mandarin") {
+        rubyText.lang = setting === "__gloss" ? "en" : "zh-Hans";
       } else {
         rubyText.removeAttribute("lang");
       }
     });
   }
 
-  const savedAnnotation = readSetting("reader-annotation");
+  const previousAnnotation = readSetting("reader-annotation");
+  const savedAnnotation = {
+    "__english": "__gloss",
+    "field:gloss": "__gloss",
+    "field:mandarin": "__mandarin"
+  }[previousAnnotation] || previousAnnotation;
   if ([...annotation.options].some((option) => option.value === savedAnnotation)) {
     annotation.value = savedAnnotation;
   }

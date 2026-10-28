@@ -25,7 +25,7 @@
     "slug": "john",
     "title": "John",
     "chapters": 21,
-    "available": false
+    "available": true
   },
   {
     "code": "ACT",

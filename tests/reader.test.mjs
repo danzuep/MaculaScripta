@@ -5,6 +5,8 @@ import vm from "node:vm";
 
 const script = readFileSync(new URL("../site/static/reader.js", import.meta.url), "utf8");
 const book = JSON.parse(readFileSync(new URL("../site/data/nt/books/1JN.yaml", import.meta.url), "utf8"));
+const chapter = JSON.parse(readFileSync(new URL("../site/data/nt/chapters/1JN/c1.yaml", import.meta.url), "utf8"));
+book.chapters = [chapter];
 
 class Element {
   constructor() {
@@ -33,8 +35,8 @@ function reader(source = book, stored = new Map(), storageUnavailable = false) {
   const elements = Object.fromEntries(ids.map((id) => [id, new Element()]));
   elements["reader-data"].textContent = JSON.stringify(source);
   const annotation = elements["reader-annotation"];
-  annotation.value = "__english";
-  annotation.options = ["__english", "__mandarin", "__none"].map((value) => ({ value }));
+  annotation.value = "__gloss";
+  annotation.options = ["__gloss", "__mandarin", "__none"].map((value) => ({ value }));
   const buttons = words.map((_, index) => {
     const button = new Element();
     button.dataset.wordIndex = String(index);
@@ -73,13 +75,17 @@ function reader(source = book, stored = new Map(), storageUnavailable = false) {
   };
 }
 
-test("reader initializes the imported book and offers every raw metadata field", () => {
+test("reader defaults to gloss and offers each metadata field exactly once without prefixes", () => {
   const app = reader();
-  assert.equal(app.buttons.length, 2137);
-  assert.equal(app.buttons[0].rubyText.textContent, app.words[0].english);
+  assert.equal(app.buttons.length, chapter.verses.flatMap((verse) => verse.words).length);
+  assert.equal(app.buttons[0].rubyText.textContent, app.words[0].gloss);
   for (const field of new Set(app.words.flatMap(Object.keys))) {
+    if (field === "gloss" || field === "mandarin") continue;
     assert(app.annotation.options.some((option) => option.value === `field:${field}`));
   }
+  assert(!app.annotation.options.some((option) => ["field:gloss", "field:mandarin"].includes(option.value)));
+  const generated = app.annotation.options.filter((option) => option.value.startsWith("field:"));
+  assert(generated.every((option) => option.textContent === option.value.slice(6)));
   assert.equal(app.elements["reader-details"].hidden, true);
   assert.equal(app.workerUrl(), "/MaculaScripta/sw.js");
 });
@@ -130,11 +136,17 @@ test("preferences restore safely and the reader works with unavailable local sto
   blocked.elements["reader-theme"].value = "light";
   blocked.elements["reader-theme"].events.change();
   assert.equal(blocked.document.documentElement.dataset.theme, "light");
+  for (const [oldValue, newValue] of [
+    ["__english", "__gloss"], ["field:gloss", "__gloss"], ["field:mandarin", "__mandarin"]
+  ]) {
+    const migrated = reader(book, new Map([["macula-scripta-reader-annotation", oldValue]]));
+    assert.equal(migrated.annotation.value, newValue);
+  }
 });
 
-test("English falls back to gloss and hostile metadata remains literal text", () => {
+test("gloss is used independently of english and hostile metadata remains literal text", () => {
   const payload = '</script><img src=x onerror="alert(1)">';
-  const word = { text: "λόγος", english: "", gloss: payload, ref: "TEST 1:1!1", nested: { value: payload } };
+  const word = { text: "λόγος", english: "not the gloss", gloss: payload, ref: "TEST 1:1!1", nested: { value: payload } };
   const app = reader({ chapters: [{ verses: [{ words: [word] }] }] });
   assert.equal(app.buttons[0].rubyText.textContent, payload);
   app.click(0);
@@ -150,10 +162,9 @@ test("built reader preserves every word, verse anchor, and punctuation separator
   const words = book.chapters.flatMap((chapter) => chapter.verses.flatMap((verse) => verse.words));
   const rendered = [...html.matchAll(/<button class="?reader-word"?\s[^>]*data-word-index="?(\d+)"?[^>]*>[\s\S]*?<\/button>([\s\S]*?)(?=<button class="?reader-word"?\s|<sup|<\/p>)/g)];
   assert.equal(rendered.length, words.length);
-  assert.equal(rendered.length, 2137);
   const verseAnchors = [...html.matchAll(/\bid="?verse-(\d+)-(\d+)"?[\s>]/g)];
-  assert.equal(verseAnchors.length, 105);
-  assert.equal(new Set(verseAnchors.map((match) => `${match[1]}:${match[2]}`)).size, 105);
+  assert.equal(verseAnchors.length, 10);
+  assert.equal(new Set(verseAnchors.map((match) => `${match[1]}:${match[2]}`)).size, 10);
   const escapeHtml = (text) => text.replaceAll("&", "&amp;").replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;").replaceAll('"', "&#34;").replaceAll("'", "&#39;");
   const chapterEndReferences = new Set(book.chapters.map((chapter) => chapter.verses.at(-1).words.at(-1).ref));
@@ -168,4 +179,32 @@ test("built reader preserves every word, verse anchor, and punctuation separator
     if (after && !/\s$/.test(after)) punctuationOnly++;
   }
   assert(punctuationOnly > 0, "Imported punctuation-only separators were exercised");
+});
+
+test("every published reader page renders and embeds only its selected chapter", () => {
+  const catalog = JSON.parse(readFileSync(new URL("../site/data/nt/catalog.yaml", import.meta.url)));
+  for (const entry of catalog.filter((entry) => entry.available)) {
+    for (let number = 1; number <= entry.chapters; number++) {
+      const path = `nt/${entry.slug}/${number === 1 ? "" : `${number}/`}index.html`;
+      const html = readFileSync(new URL(`../site/public/${path}`, import.meta.url), "utf8");
+      const match = html.match(/<script id="?reader-data"? type="?application\/json"?>([\s\S]*?)<\/script>/);
+      assert(match, path);
+      const data = JSON.parse(match[1]);
+      assert.equal(data.code, entry.code);
+      assert.equal(data.chapters.length, 1, path);
+      assert.equal(data.chapters[0].number, number, path);
+      const source = JSON.parse(readFileSync(new URL(
+        `../site/data/nt/chapters/${entry.code}/c${number}.yaml`, import.meta.url
+      )));
+      assert.deepEqual(data.chapters[0], source);
+      assert.equal([...html.matchAll(/class="?reader-chapter"?[\s>]/g)].length, 1);
+      assert.equal([...html.matchAll(/data-word-index=/g)].length,
+        source.verses.flatMap((verse) => verse.words).length);
+      for (let target = 1; target <= entry.chapters; target++) {
+        const href = `/MaculaScripta/nt/${entry.slug}/${target === 1 ? "" : `${target}/`}`;
+        assert(html.includes(`href=${href}`) || html.includes(`href="${href}"`), href);
+      }
+      assert(html.includes('aria-label="Close word details">×</button>'));
+    }
+  }
 });

@@ -27,9 +27,11 @@
 .chapter-number { font-size: 1rem; font-weight: 700; }
 .chapter-number a, .verse-number a { scroll-margin-top: 2rem; text-decoration: none; }
 .chapter-number a:target, .verse-number a:target { outline: 2px solid var(--greek-color); outline-offset: 3px; }
-.reader-details { position: sticky; top: 1rem; max-height: calc(100dvh - 2rem); overflow: auto; padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 1rem; background: var(--card-bg); }
+.reader-details { position: sticky; top: 1rem; display: flex; flex-direction: column; max-height: calc(100dvh - 2rem); overflow: hidden; padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 1rem; background: var(--card-bg); }
 .reader-details[hidden] { display: none; }
-.reader-details-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+.reader-details-heading { display: flex; flex-shrink: 0; align-items: baseline; justify-content: space-between; gap: 1rem; }
+.reader-details-body { min-height: 0; overflow: auto; }
+#reader-close-details { flex-shrink: 0; min-width: 44px; min-height: 44px; font-size: 1.5rem; }
 .reader-details-heading h2 { margin-top: 0; font: 1.65rem Georgia, serif; overflow-wrap: anywhere; }
 #reader-word-reference { color: var(--text-muted); overflow-wrap: anywhere; }
 .reader-details dl { margin-bottom: 0; }

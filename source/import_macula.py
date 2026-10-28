@@ -99,21 +99,32 @@ def generate(root, selected):
             "title": title,
             "source_commit": commit,
             "source_path": "SBLGNT/tsv/macula-greek-SBLGNT.tsv",
-            "chapters": [
-                {"number": chapter, "verses": [
-                    {"number": verse, "words": words}
-                    for verse, words in verses.items()
-                ]}
-                for chapter, verses in books[code].items()
-            ],
+            "chapters": [{"number": chapter} for chapter in books[code]],
         }
         write_yaml(data / "books" / f"{code}.yaml", book)
+        for chapter, verses in books[code].items():
+            write_yaml(data / "chapters" / code / f"c{chapter}.yaml", {
+                "number": chapter,
+                "verses": [
+                    {"number": verse, "words": words}
+                    for verse, words in verses.items()
+                ],
+            })
         page = root / "site/content/nt" / slug / "_index.md"
         page.parent.mkdir(parents=True, exist_ok=True)
         page.write_text(
             f'---\ntitle: "{title}"\nlayout: reader\nbook: "{code}"\n---\n',
             encoding="utf-8",
         )
+        for chapter in book["chapters"]:
+            number = chapter["number"]
+            if number == 1:
+                continue
+            (page.parent / f"{number}.md").write_text(
+                f'---\ntitle: "{title} {number}"\nlayout: reader\n'
+                f'book: "{code}"\nchapter: {number}\n---\n',
+                encoding="utf-8",
+            )
     write_yaml(data / "catalog.yaml", [
         {"code": code, "slug": slug, "title": title, "chapters": chapters,
          "available": (data / "books" / f"{code}.yaml").is_file()}
@@ -125,7 +136,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--books", nargs="+", choices=[book[0] for book in BOOKS],
-                       default=["1JN"], help="Book codes to import (default: 1JN)")
+                       default=["1JN", "JHN"], help="Book codes to import (default: 1JN JHN)")
     group.add_argument("--all", action="store_true", help="Import the whole New Testament")
     args = parser.parse_args()
     try:

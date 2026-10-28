@@ -1,12 +1,17 @@
 {{- $code := .Params.book | default "1JN" -}}
 {{- $book := index hugo.Data.nt.books $code -}}
+{{- $chapterNumber := int (.Params.chapter | default 1) -}}
+{{- $chapters := slice (index (index hugo.Data.nt.chapters $code) (printf "c%d" $chapterNumber)) -}}
+{{- $bookInfo := index (where hugo.Data.nt.catalog "code" $code) 0 -}}
+{{- $bookPath := printf "nt/%s/" $bookInfo.slug -}}
+{{- $chapterData := merge $book (dict "chapters" $chapters) -}}
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#0f172a">
-    <title>{{ $book.title }} · {{ .Site.Title }}</title>
+    <title>{{ $book.title }} {{ $chapterNumber }} · {{ .Site.Title }}</title>
     <link rel="manifest" href="{{ "manifest.webmanifest" | relURL }}">
     <link rel="stylesheet" href="{{ "styles.css" | relURL }}">
     <link rel="stylesheet" href="{{ "reader.css" | relURL }}">
@@ -22,7 +27,7 @@
           <summary>Reader settings</summary>
           <label for="reader-annotation">Word annotation
             <select id="reader-annotation">
-              <option value="__english">English</option>
+              <option value="__gloss">Gloss</option>
               <option value="__mandarin">Chinese (Mandarin)</option>
               <option value="__none">No annotation</option>
             </select>
@@ -45,17 +50,21 @@
           </ul>
         </nav>
       </details>
-      <h1>{{ $book.title }}</h1>
+      <h1>{{ $book.title }} {{ $chapterNumber }}</h1>
       <nav class="reader-chapters" aria-label="{{ $book.title }} chapters">
         <span>Chapters</span>
-        {{ range $book.chapters }}<a href="#chapter-{{ .number }}">{{ .number }}</a>{{ end }}
+        {{ range $book.chapters }}
+          {{- $path := $bookPath -}}
+          {{- if ne (int .number) 1 }}{{ $path = printf "%s%d/" $bookPath (int .number) }}{{ end -}}
+          <a href="{{ $path | relURL }}"{{ if eq (int .number) $chapterNumber }} aria-current="page"{{ end }}>{{ .number }}</a>
+        {{ end }}
       </nav>
       <p class="reader-hint">Read continuously. Select any Greek word to inspect its complete source metadata.</p>
     </header>
     <div class="reader-layout">
       <main id="reader" aria-label="{{ $book.title }} Greek text" tabindex="-1">
         {{- $wordIndex := 0 -}}
-        {{ range $book.chapters }}
+        {{ range $chapters }}
           {{- $chapter := .number -}}
           <section class="reader-chapter" aria-label="Chapter {{ $chapter }}">
             <p class="reader-flow" lang="grc">
@@ -63,7 +72,7 @@
               {{- range .verses -}}
                 <sup class="verse-number"><a id="verse-{{ $chapter }}-{{ .number }}" href="#verse-{{ $chapter }}-{{ .number }}" aria-label="Chapter {{ $chapter }}, verse {{ .number }}">{{ .number }}</a></sup>
                 {{- range .words -}}
-                  <button class="reader-word" type="button" data-word-index="{{ $wordIndex }}" aria-controls="reader-details" aria-expanded="false"><ruby>{{ .text }}<rt lang="en">{{ .english | default .gloss }}</rt></ruby></button>{{ .after }}{{ if not (findRE "\\s$" (.after | default "")) }} {{ end }}
+                  <button class="reader-word" type="button" data-word-index="{{ $wordIndex }}" aria-controls="reader-details" aria-expanded="false"><ruby>{{ .text }}<rt lang="en">{{ .gloss }}</rt></ruby></button>{{ .after }}{{ if not (findRE "\\s$" (.after | default "")) }} {{ end }}
                   {{- $wordIndex = add $wordIndex 1 -}}
                 {{- end -}}
               {{- end -}}
@@ -74,10 +83,12 @@
       <aside id="reader-details" class="reader-details" aria-labelledby="reader-details-title" hidden>
         <div class="reader-details-heading">
           <h2 id="reader-details-title" tabindex="-1">Word details</h2>
-          <button id="reader-close-details" type="button" aria-label="Close word details">Close</button>
+          <button id="reader-close-details" type="button" aria-label="Close word details">×</button>
         </div>
-        <p id="reader-word-reference"></p>
-        <dl id="reader-metadata"></dl>
+        <div class="reader-details-body">
+          <p id="reader-word-reference"></p>
+          <dl id="reader-metadata"></dl>
+        </div>
       </aside>
     </div>
     <footer class="dataset-attribution">
@@ -90,6 +101,6 @@
       <p><a href="{{ "john-1-1/" | relURL }}">Original John 1:1 workbench</a>.</p>
     </footer>
     {{/* jsonify escapes HTML characters so source fields cannot terminate the data script. */}}
-    <script id="reader-data" type="application/json">{{ $book | jsonify | safeJS }}</script>
+    <script id="reader-data" type="application/json">{{ $chapterData | jsonify | safeJS }}</script>
   </body>
 </html>
