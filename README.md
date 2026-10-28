@@ -36,11 +36,10 @@ marked unavailable rather than linked to empty pages. To reproduce the published
 
 ```sh
 git submodule update --init --depth 1
+python3 -m pip install -r requirements.txt
 python3 source/import_macula.py
 hugo --source ./site --minify
 ```
-
-Install the importer's YAML dependency first with `python3 -m pip install -r requirements.txt`.
 
 To add books or import the entire New Testament:
 

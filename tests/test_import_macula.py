@@ -1,5 +1,6 @@
 import csv
 import importlib.util
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -56,9 +57,39 @@ class ImportMaculaTests(unittest.TestCase):
     def test_generation_is_deterministic_and_records_provenance(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            (root / "data").mkdir()
-            (root / "data/macula-greek").symlink_to(ROOT / "data/macula-greek",
-                                                   target_is_directory=True)
+            submodule = root / "data/macula-greek"
+            tsv = submodule / "SBLGNT/tsv/macula-greek-SBLGNT.tsv"
+            tsv.parent.mkdir(parents=True)
+            headers = ["xml:id", "ref", "text", "after", "english", "mandarin", "gloss"]
+            with tsv.open("w", newline="", encoding="utf-8") as stream:
+                writer = csv.DictWriter(stream, fieldnames=headers, delimiter="\t")
+                writer.writeheader()
+                for code, chapters in [("1JN", 5), ("JHN", 21)]:
+                    for number in range(1, chapters + 1):
+                        writer.writerow({
+                            "xml:id": f"{code}-{number}",
+                            "ref": f"{code} {number}:1!1",
+                            "text": "λόγος",
+                            "after": " ",
+                            "english": "word",
+                            "mandarin": "道",
+                            "gloss": "word",
+                        })
+            subprocess.run(["git", "-C", str(submodule), "init"], check=True, capture_output=True)
+            subprocess.run(
+                ["git", "-C", str(submodule), "config", "user.email", "test@example.com"],
+                check=True,
+            )
+            subprocess.run(
+                ["git", "-C", str(submodule), "config", "user.name", "Test"],
+                check=True,
+            )
+            subprocess.run(["git", "-C", str(submodule), "add", "."], check=True)
+            subprocess.run(
+                ["git", "-C", str(submodule), "commit", "-m", "fixture data"],
+                check=True,
+                capture_output=True,
+            )
             importer.generate(root, ["1JN"])
             path = root / "site/data/nt/books/1JN.yaml"
             original = path.read_bytes()
@@ -80,11 +111,14 @@ class ImportMaculaTests(unittest.TestCase):
             self.assertEqual(chapter_path.read_bytes(), original_chapter)
 
     def test_native_yaml_uses_block_mappings_not_json_documents(self):
-        path = ROOT / "site/data/nt/1JN/1.yaml"
-        text = path.read_text(encoding="utf-8")
-        self.assertTrue(text.startswith("number: 1\nverses:\n"))
-        self.assertFalse(text.lstrip().startswith("{"))
-        self.assertIsInstance(read_yaml(path)["verses"], list)
+        paths = list((ROOT / "site/data/nt").rglob("*.yaml"))
+        self.assertGreater(len(paths), 0)
+        for path in paths:
+            text = path.read_text(encoding="utf-8")
+            self.assertFalse(text.lstrip().startswith(("{", "[")), path)
+            self.assertIsNotNone(read_yaml(path), path)
+        chapter = read_yaml(ROOT / "site/data/nt/1JN/1.yaml")
+        self.assertTrue(chapter["verses"])
 
     def test_invalid_headers_and_duplicate_ids_rejected(self):
         with tempfile.TemporaryDirectory() as directory:

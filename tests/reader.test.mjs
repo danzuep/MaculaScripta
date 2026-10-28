@@ -207,9 +207,15 @@ test("every published reader page renders and embeds only its selected chapter",
         const href = `/MaculaScripta/nt/${entry.slug}/${target === 1 ? "" : `${target}/`}`;
         assert(html.includes(`href=${href}`) || html.includes(`href="${href}"`), href);
       }
-      if (number < entry.chapters || entry.code === "JHN") {
-        assert.match(html, /aria-label="?Next chapter"?/);
-        assert.match(html, /Next chapter:/);
+      const nextLink = html.match(/<nav class="?reader-next-chapter"?[^>]*>\s*<a href="?([^" >]+)"?[^>]*>Next chapter: ([^<]+)/);
+      if (number < entry.chapters) {
+        assert(nextLink, path);
+        assert.equal(nextLink[1], `/MaculaScripta/nt/${entry.slug}/${number + 1}/`);
+      } else if (entry.code === "JHN") {
+        assert(nextLink, path);
+        assert.equal(nextLink[1], "/MaculaScripta/nt/1-john/");
+      } else {
+        assert.equal(nextLink, null, path);
       }
       assert(!html.includes("Read continuously"));
       assert(html.includes('aria-label="Close word details">×</button>'));
