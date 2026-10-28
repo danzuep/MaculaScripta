@@ -1,10 +1,28 @@
 {{- $code := .Params.book | default "1JN" -}}
 {{- $book := index hugo.Data.nt.books $code -}}
 {{- $chapterNumber := int (.Params.chapter | default 1) -}}
-{{- $chapters := slice (index (index hugo.Data.nt.chapters $code) (printf "c%d" $chapterNumber)) -}}
+{{- $chapters := slice (index (index hugo.Data.nt $code) (printf "%d" $chapterNumber)) -}}
 {{- $bookInfo := index (where hugo.Data.nt.catalog "code" $code) 0 -}}
 {{- $bookPath := printf "nt/%s/" $bookInfo.slug -}}
 {{- $chapterData := merge $book (dict "chapters" $chapters) -}}
+{{- $nextChapterNumber := add $chapterNumber 1 -}}
+{{- $nextChapterPath := "" -}}
+{{- $nextChapterTitle := "" -}}
+{{- if le $nextChapterNumber $bookInfo.chapters -}}
+  {{- $nextChapterPath = printf "%s%d/" $bookPath $nextChapterNumber -}}
+  {{- $nextChapterTitle = printf "%s %d" $bookInfo.title $nextChapterNumber -}}
+{{- else -}}
+  {{- $bookIndex := 0 -}}
+  {{- range $index, $entry := hugo.Data.nt.catalog -}}
+    {{- if eq $entry.code $code -}}{{ $bookIndex = $index }}{{ end -}}
+  {{- end -}}
+  {{- $nextBook := first 1 (where (after (add $bookIndex 1) hugo.Data.nt.catalog) "available" true) -}}
+  {{- if gt (len $nextBook) 0 -}}
+    {{- $nextBookInfo := index $nextBook 0 -}}
+    {{- $nextChapterPath = printf "nt/%s/" $nextBookInfo.slug -}}
+    {{- $nextChapterTitle = printf "%s 1" $nextBookInfo.title -}}
+  {{- end -}}
+{{- end -}}
 <!doctype html>
 <html lang="en">
   <head>
@@ -59,7 +77,7 @@
           <a href="{{ $path | relURL }}"{{ if eq (int .number) $chapterNumber }} aria-current="page"{{ end }}>{{ .number }}</a>
         {{ end }}
       </nav>
-      <p class="reader-hint">Read continuously. Select any Greek word to inspect its complete source metadata.</p>
+      <p class="reader-hint">Select any Greek word to inspect its complete source metadata.</p>
     </header>
     <div class="reader-layout">
       <main id="reader" aria-label="{{ $book.title }} Greek text" tabindex="-1">
@@ -91,6 +109,11 @@
         </div>
       </aside>
     </div>
+    {{ with $nextChapterPath }}
+      <nav class="reader-next-chapter" aria-label="Next chapter">
+        <a href="{{ . | relURL }}">Next chapter: {{ $nextChapterTitle }} →</a>
+      </nav>
+    {{ end }}
     <footer class="dataset-attribution">
       <p>MACULA Greek Linguistic Datasets © Biblica, CC BY 4.0.
         SBLGNT by Michael W. Holmes / Society of Biblical Literature / Logos, CC BY 4.0.

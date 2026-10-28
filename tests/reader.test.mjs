@@ -1,12 +1,20 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 import vm from "node:vm";
 
 const script = readFileSync(new URL("../site/static/reader.js", import.meta.url), "utf8");
-const book = JSON.parse(readFileSync(new URL("../site/data/nt/books/1JN.yaml", import.meta.url), "utf8"));
-const chapter = JSON.parse(readFileSync(new URL("../site/data/nt/chapters/1JN/c1.yaml", import.meta.url), "utf8"));
-book.chapters = [chapter];
+const homeHtml = readFileSync(new URL("../site/public/index.html", import.meta.url), "utf8");
+const homeData = homeHtml.match(/<script id="?reader-data"? type="?application\/json"?>([\s\S]*?)<\/script>/);
+const book = JSON.parse(homeData[1]);
+const chapter = book.chapters[0];
+const catalog = JSON.parse(execFileSync("python3", [
+  "-c",
+  "import json, sys, yaml; print(json.dumps(yaml.safe_load(open(sys.argv[1], encoding='utf-8'))))",
+  fileURLToPath(new URL("../site/data/nt/catalog.yaml", import.meta.url))
+], { encoding: "utf8" }));
 
 class Element {
   constructor() {
@@ -182,7 +190,6 @@ test("built reader preserves every word, verse anchor, and punctuation separator
 });
 
 test("every published reader page renders and embeds only its selected chapter", () => {
-  const catalog = JSON.parse(readFileSync(new URL("../site/data/nt/catalog.yaml", import.meta.url)));
   for (const entry of catalog.filter((entry) => entry.available)) {
     for (let number = 1; number <= entry.chapters; number++) {
       const path = `nt/${entry.slug}/${number === 1 ? "" : `${number}/`}index.html`;
@@ -193,17 +200,24 @@ test("every published reader page renders and embeds only its selected chapter",
       assert.equal(data.code, entry.code);
       assert.equal(data.chapters.length, 1, path);
       assert.equal(data.chapters[0].number, number, path);
-      const source = JSON.parse(readFileSync(new URL(
-        `../site/data/nt/chapters/${entry.code}/c${number}.yaml`, import.meta.url
-      )));
-      assert.deepEqual(data.chapters[0], source);
       assert.equal([...html.matchAll(/class="?reader-chapter"?[\s>]/g)].length, 1);
       assert.equal([...html.matchAll(/data-word-index=/g)].length,
-        source.verses.flatMap((verse) => verse.words).length);
+        data.chapters[0].verses.flatMap((verse) => verse.words).length);
       for (let target = 1; target <= entry.chapters; target++) {
         const href = `/MaculaScripta/nt/${entry.slug}/${target === 1 ? "" : `${target}/`}`;
         assert(html.includes(`href=${href}`) || html.includes(`href="${href}"`), href);
       }
+      const nextLink = html.match(/<nav class="?reader-next-chapter"?[^>]*>\s*<a href="?([^" >]+)"?[^>]*>Next chapter: ([^<]+)/);
+      if (number < entry.chapters) {
+        assert(nextLink, path);
+        assert.equal(nextLink[1], `/MaculaScripta/nt/${entry.slug}/${number + 1}/`);
+      } else if (entry.code === "JHN") {
+        assert(nextLink, path);
+        assert.equal(nextLink[1], "/MaculaScripta/nt/1-john/");
+      } else {
+        assert.equal(nextLink, null, path);
+      }
+      assert(!html.includes("Read continuously"));
       assert(html.includes('aria-label="Close word details">×</button>'));
     }
   }

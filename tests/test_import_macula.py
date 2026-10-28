@@ -1,9 +1,11 @@
 import csv
 import importlib.util
-import json
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+
+import yaml
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -12,19 +14,21 @@ importer = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(importer)
 
 
+def read_yaml(path):
+    return yaml.safe_load(path.read_text(encoding="utf-8"))
+
+
 class ImportMaculaTests(unittest.TestCase):
     def test_committed_books_match_every_source_field(self):
         source = importer.read_books(
             ROOT / "data/macula-greek/SBLGNT/tsv/macula-greek-SBLGNT.tsv", ["1JN", "JHN"]
         )
         for code, count in [("1JN", 5), ("JHN", 21)]:
-            book = json.loads((ROOT / f"site/data/nt/books/{code}.yaml").read_text())
+            book = read_yaml(ROOT / f"site/data/nt/books/{code}.yaml")
             self.assertEqual(len(book["chapters"]), count)
             for entry in book["chapters"]:
                 number = entry["number"]
-                chapter = json.loads(
-                    (ROOT / f"site/data/nt/chapters/{code}/c{number}.yaml").read_text()
-                )
+                chapter = read_yaml(ROOT / f"site/data/nt/{code}/{number}.yaml")
                 self.assertEqual(chapter["number"], number)
                 self.assertEqual(len(chapter["verses"]), len(source[code][number]))
                 for verse in chapter["verses"]:
@@ -34,7 +38,7 @@ class ImportMaculaTests(unittest.TestCase):
             self.assertTrue(any(w["after"].strip() for w in words))
 
     def test_catalog_has_all_books_and_both_john_books_available(self):
-        catalog = json.loads((ROOT / "site/data/nt/catalog.yaml").read_text())
+        catalog = read_yaml(ROOT / "site/data/nt/catalog.yaml")
         self.assertEqual(len(catalog), 27)
         self.assertEqual(len({b["slug"] for b in catalog}), 27)
         self.assertEqual({"1JN", "JHN"}, {b["code"] for b in catalog if b["available"]})
@@ -53,18 +57,48 @@ class ImportMaculaTests(unittest.TestCase):
     def test_generation_is_deterministic_and_records_provenance(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            (root / "data").mkdir()
-            (root / "data/macula-greek").symlink_to(ROOT / "data/macula-greek",
-                                                   target_is_directory=True)
+            submodule = root / "data/macula-greek"
+            tsv = submodule / "SBLGNT/tsv/macula-greek-SBLGNT.tsv"
+            tsv.parent.mkdir(parents=True)
+            headers = ["xml:id", "ref", "text", "after", "english", "mandarin", "gloss"]
+            with tsv.open("w", newline="", encoding="utf-8") as stream:
+                writer = csv.DictWriter(stream, fieldnames=headers, delimiter="\t")
+                writer.writeheader()
+                for code, chapters in [("1JN", 5), ("JHN", 21)]:
+                    for number in range(1, chapters + 1):
+                        writer.writerow({
+                            "xml:id": f"{code}-{number}",
+                            "ref": f"{code} {number}:1!1",
+                            "text": "λόγος",
+                            "after": " ",
+                            "english": "word",
+                            "mandarin": "道",
+                            "gloss": "word",
+                        })
+            subprocess.run(["git", "-C", str(submodule), "init"], check=True, capture_output=True)
+            subprocess.run(
+                ["git", "-C", str(submodule), "config", "user.email", "test@example.com"],
+                check=True,
+            )
+            subprocess.run(
+                ["git", "-C", str(submodule), "config", "user.name", "Test"],
+                check=True,
+            )
+            subprocess.run(["git", "-C", str(submodule), "add", "."], check=True)
+            subprocess.run(
+                ["git", "-C", str(submodule), "commit", "-m", "fixture data"],
+                check=True,
+                capture_output=True,
+            )
             importer.generate(root, ["1JN"])
             path = root / "site/data/nt/books/1JN.yaml"
             original = path.read_bytes()
-            chapter_path = root / "site/data/nt/chapters/1JN/c2.yaml"
+            chapter_path = root / "site/data/nt/1JN/2.yaml"
             original_chapter = chapter_path.read_bytes()
             importer.generate(root, ["1JN"])
             self.assertEqual(path.read_bytes(), original)
             self.assertEqual(chapter_path.read_bytes(), original_chapter)
-            book = json.loads(original)
+            book = yaml.safe_load(original)
             self.assertRegex(book["source_commit"], r"^[0-9a-f]{40}$")
             self.assertEqual(book["source_path"], "SBLGNT/tsv/macula-greek-SBLGNT.tsv")
             self.assertTrue((root / "site/content/nt/1-john/_index.md").is_file())
@@ -72,9 +106,19 @@ class ImportMaculaTests(unittest.TestCase):
                 page = root / f"site/content/nt/1-john/{number}.md"
                 self.assertIn(f"chapter: {number}", page.read_text())
             importer.generate(root, ["JHN"])
-            catalog = json.loads((root / "site/data/nt/catalog.yaml").read_text())
+            catalog = read_yaml(root / "site/data/nt/catalog.yaml")
             self.assertEqual({"1JN", "JHN"}, {b["code"] for b in catalog if b["available"]})
             self.assertEqual(chapter_path.read_bytes(), original_chapter)
+
+    def test_native_yaml_uses_block_mappings_not_json_documents(self):
+        paths = list((ROOT / "site/data/nt").rglob("*.yaml"))
+        self.assertGreater(len(paths), 0)
+        for path in paths:
+            text = path.read_text(encoding="utf-8")
+            self.assertFalse(text.lstrip().startswith(("{", "[")), path)
+            self.assertIsNotNone(read_yaml(path), path)
+        chapter = read_yaml(ROOT / "site/data/nt/1JN/1.yaml")
+        self.assertTrue(chapter["verses"])
 
     def test_invalid_headers_and_duplicate_ids_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -91,12 +135,13 @@ class ImportMaculaTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "duplicate"):
                 importer.read_books(path, ["1JN"])
 
-    def test_yaml_subset_preserves_unicode_and_unsafe_scalars(self):
+    def test_native_yaml_preserves_unicode_and_unsafe_scalars(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "book.yaml"
             value = {"text": "Ὃ", "after": "· ", "english": 'yes: "word"\nnext'}
             importer.write_yaml(path, value)
-            self.assertEqual(json.loads(path.read_text()), value)
+            self.assertEqual(yaml.safe_load(path.read_text()), value)
+            self.assertFalse(path.read_text().lstrip().startswith("{"))
 
 
 if __name__ == "__main__":

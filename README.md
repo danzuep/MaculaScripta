@@ -36,6 +36,7 @@ marked unavailable rather than linked to empty pages. To reproduce the published
 
 ```sh
 git submodule update --init --depth 1
+python3 -m pip install -r requirements.txt
 python3 source/import_macula.py
 hugo --source ./site --minify
 ```
@@ -49,8 +50,9 @@ python3 source/import_macula.py --all
 
 The importer reads `data/macula-greek/SBLGNT/tsv/macula-greek-SBLGNT.tsv` once,
 preserves **every** column as a string, and writes deterministic JSON-compatible
-YAML (YAML 1.2's JSON subset): book metadata under `site/data/nt/books/` and
-word data in separate files under `site/data/nt/chapters/<book>/`.
+native YAML: book metadata under `site/data/nt/books/` and word data in separate
+files under `site/data/nt/<book>/<chapter>.yaml` (for example,
+`site/data/nt/1JN/1.yaml`).
 The default import includes both John and 1 John. It also creates book and chapter
 pages under `site/content/nt/` and updates `site/data/nt/catalog.yaml`, retaining
 previously imported books. Each book records the source commit and TSV path.
