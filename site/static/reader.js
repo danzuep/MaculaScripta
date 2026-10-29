@@ -16,7 +16,7 @@
 
   const copy = document.querySelector(".reader-copy");
   copy?.addEventListener("click", async () => {
-    const verse = location.hash.startsWith("#verse-") ? document.getElementById(location.hash.slice(1)) : null;
+    const verse = /^#\d+$/.test(location.hash) ? document.getElementById(location.hash.slice(1)) : null;
     try {
       await navigator.clipboard.writeText(verse?.dataset.text || copy.dataset.text);
     } catch { return; }
