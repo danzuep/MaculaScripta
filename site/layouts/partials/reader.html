@@ -3,8 +3,7 @@
 {{- $chapterNumber := int (.Params.chapter | default 1) -}}
 {{- $chapters := slice (index (index hugo.Data.nt $code) (printf "%d" $chapterNumber)) -}}
 {{- $bookInfo := index (where hugo.Data.nt.catalog "code" $code) 0 -}}
-{{- $bookPath := printf "nt/%s/" $bookInfo.slug -}}
-{{- $chapterData := merge $book (dict "chapters" $chapters) -}}
+{{- $bookPath := printf "nt/%s/" $code -}}
 {{- $nextChapterNumber := add $chapterNumber 1 -}}
 {{- $nextChapterPath := "" -}}
 {{- $nextChapterTitle := "" -}}
@@ -19,10 +18,13 @@
   {{- $nextBook := first 1 (where (after (add $bookIndex 1) hugo.Data.nt.catalog) "available" true) -}}
   {{- if gt (len $nextBook) 0 -}}
     {{- $nextBookInfo := index $nextBook 0 -}}
-    {{- $nextChapterPath = printf "nt/%s/" $nextBookInfo.slug -}}
+    {{- $nextChapterPath = printf "nt/%s/" $nextBookInfo.code -}}
     {{- $nextChapterTitle = printf "%s 1" $nextBookInfo.title -}}
   {{- end -}}
 {{- end -}}
+{{- $plain := "" -}}
+{{- range $chapters }}{{ range .verses }}{{ range .words }}{{ $plain = printf "%s%s%s " $plain .text (.after | default "") }}{{ end }}{{ end }}{{ end -}}
+{{- $plain = trim $plain " " -}}
 <!doctype html>
 <html lang="en">
   <head>
@@ -45,9 +47,8 @@
           <summary>Reader settings</summary>
           <label for="reader-annotation">Word annotation
             <select id="reader-annotation">
-              <option value="__gloss">Gloss</option>
-              <option value="__mandarin">Chinese (Mandarin)</option>
-              <option value="__none">No annotation</option>
+              <option value="gloss">Gloss</option>
+              <option value="mandarin">Chinese (Mandarin)</option>
             </select>
           </label>
           <label for="reader-theme">Appearance
@@ -63,7 +64,7 @@
         <nav aria-label="New Testament books">
           <ul>
             {{ range hugo.Data.nt.catalog }}
-              <li>{{ if .available }}<a href="{{ printf "nt/%s/" .slug | relURL }}"{{ if eq .code $code }} aria-current="page"{{ end }}>{{ .title }}</a>{{ else }}<span aria-disabled="true">{{ .title }} <small>Not yet imported</small></span>{{ end }}</li>
+              <li>{{ if .available }}<a href="{{ printf "nt/%s/" .code | relURL }}"{{ if eq .code $code }} aria-current="page"{{ end }}>{{ .title }}</a>{{ else }}<span aria-disabled="true">{{ .title }} <small>Not yet imported</small></span>{{ end }}</li>
             {{ end }}
           </ul>
         </nav>
@@ -78,10 +79,15 @@
         {{ end }}
       </nav>
       <p class="reader-hint">Select any Greek word to inspect its complete source metadata.</p>
+      <div class="reader-controls">
+        <input type="checkbox" id="reader-ruby" class="reader-ruby-input" checked>
+        <label class="reader-switch" for="reader-ruby"><span class="reader-switch-track" aria-hidden="true"></span>Annotations</label>
+        <button type="button" class="reader-copy" data-text="{{ $plain }}" aria-label="Copy plain Greek text" title="Copy plain text"
+          onclick="var b=this;navigator.clipboard.writeText(b.dataset.text).then(function(){b.classList.add('is-copied');setTimeout(function(){b.classList.remove('is-copied')},1500)})">⧉ <span>Copy</span></button>
+      </div>
     </header>
     <div class="reader-layout">
       <main id="reader" aria-label="{{ $book.title }} Greek text" tabindex="-1">
-        {{- $wordIndex := 0 -}}
         {{ range $chapters }}
           {{- $chapter := .number -}}
           <section class="reader-chapter" aria-label="Chapter {{ $chapter }}">
@@ -90,24 +96,32 @@
               {{- range .verses -}}
                 <sup class="verse-number"><a id="verse-{{ $chapter }}-{{ .number }}" href="#verse-{{ $chapter }}-{{ .number }}" aria-label="Chapter {{ $chapter }}, verse {{ .number }}">{{ .number }}</a></sup>
                 {{- range .words -}}
-                  <button class="reader-word" type="button" data-word-index="{{ $wordIndex }}" aria-controls="reader-details" aria-expanded="false"><ruby>{{ .text }}<rt lang="en">{{ .gloss }}</rt></ruby></button>{{ .after }}{{ if not (findRE "\\s$" (.after | default "")) }} {{ end }}
-                  {{- $wordIndex = add $wordIndex 1 -}}
+                  <ruby class="reader-word"><a id="word-{{ index . "xml:id" }}" href="#def-{{ index . "xml:id" }}" data-tip="{{ .gloss }}" aria-label="{{ .text }}: {{ .gloss }}">{{ .text }}</a><rt class="rt-gloss" lang="en">{{ .gloss }}</rt><rt class="rt-mandarin" lang="zh-Hans">{{ .mandarin }}</rt></ruby>{{ .after }}{{ if not (findRE "\\s$" (.after | default "")) }} {{ end }}
                 {{- end -}}
               {{- end -}}
             </p>
           </section>
         {{ end }}
       </main>
-      <aside id="reader-details" class="reader-details" aria-labelledby="reader-details-title" hidden>
-        <div class="reader-details-heading">
-          <h2 id="reader-details-title" tabindex="-1">Word details</h2>
-          <button id="reader-close-details" type="button" aria-label="Close word details">×</button>
-        </div>
-        <div class="reader-details-body">
-          <p id="reader-word-reference"></p>
-          <dl id="reader-metadata"></dl>
-        </div>
-      </aside>
+    </div>
+    <div class="reader-defs">
+      {{- range $chapters }}{{ range .verses }}{{ range .words -}}
+        {{- $id := index . "xml:id" -}}
+        {{- $word := . -}}
+        <aside class="reader-def" id="def-{{ $id }}" aria-label="Word details for {{ .text }}">
+          <a class="reader-close" href="#word-{{ $id }}" aria-label="Close word details">×</a>
+          <h2 lang="grc">{{ .text }}</h2>
+          <p class="reader-def-ref">{{ .ref }}</p>
+          {{ with .ipa }}<p class="reader-def-ipa">{{ . }}</p>{{ end }}
+          {{ with .syllables }}<p class="reader-def-syllables">{{ delimit . " · " }}</p>{{ end }}
+          <div class="reader-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <dl>
+            {{ with index hugo.Data.greek_token_details $id }}<dt>part_of_speech</dt><dd>{{ .part_of_speech }}</dd>{{ end }}
+            {{ with index hugo.Data.greek_lemma_definitions .lemma }}<dt>definition</dt><dd>{{ . }}</dd>{{ end }}
+            {{ range $field, $value := . }}{{ if ne $value "" }}<dt>{{ $field }}</dt><dd>{{ $value }}</dd>{{ end }}{{ end }}
+          </dl>
+        </aside>
+      {{- end }}{{ end }}{{ end -}}
     </div>
     {{ with $nextChapterPath }}
       <nav class="reader-next-chapter" aria-label="Next chapter">
@@ -123,7 +137,5 @@
         {{ with $book.source_commit }}Source commit: <code>{{ . }}</code>.{{ end }}</p>
       <p><a href="{{ "john-1-1/" | relURL }}">Original John 1:1 workbench</a>.</p>
     </footer>
-    {{/* jsonify escapes HTML characters so source fields cannot terminate the data script. */}}
-    <script id="reader-data" type="application/json">{{ $chapterData | jsonify | safeJS }}</script>
   </body>
 </html>

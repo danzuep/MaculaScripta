@@ -3,7 +3,7 @@ const cacheName = "macula-scripta-v9";
 self.addEventListener("install", (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(cacheName);
-    const shell = ["", "demo/", "nt/1-john/", "nt/john/", "john-1-1/", "reader.css", "reader.js", "styles.css", "transformation.css", "app.js",
+    const shell = ["", "demo/", "nt/1JN/", "nt/JHN/", "john-1-1/", "reader.css", "reader.js", "styles.css", "transformation.css", "app.js",
       "transformation.js", "audio-recorder.js", "verse-clipper.js", "audio-coverage.js", "lift-exchange.js", "manifest.webmanifest"];
     await cache.addAll(shell.map((path) => new URL(path, self.registration.scope).href));
     await self.skipWaiting();

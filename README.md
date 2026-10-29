@@ -19,13 +19,16 @@ dotnet build MaculaScripta.slnx
 
 ## Greek New Testament reader
 
-The homepage and `/nt/1-john/` display the first chapter of **1 John** as continuous
+The homepage and `/nt/1JN/` display the first chapter of **1 John** as continuous
 Greek text, retaining the upstream punctuation. **John** is also ready at
-`/nt/john/`. Use the chapter links to navigate: each page renders and embeds
-metadata for only one chapter (for example, `/nt/john/2/`), keeping downloads small.
-Chapter and verse superscripts provide link targets. Select a Greek word to
-expand its complete source metadata; the X close button stays visible while
-the metadata scrolls.
+`/nt/JHN/`. Use the chapter links to navigate: each page renders and embeds
+metadata for only one chapter (for example, `/nt/JHN/2/`), keeping downloads small.
+Chapter and verse superscripts provide link targets. Every page is generated from
+`site/data/nt` by Hugo and works without JavaScript: each Greek word is a link to a
+CSS `:target` details pane holding its full source metadata, hovering shows a
+gloss tooltip, a switch hides the ruby annotations, and a copy button copies the
+plain Greek text. A few lines of JavaScript only persist the theme and register
+the service worker.
 In **Settings**, choose Gloss (the default, from the `gloss` field), Chinese (Mandarin),
 any other source field, or no ruby annotation. Glosses are word-level aids, not
 a running Bible translation. The reader reuses the workbench's light/dark CSS.

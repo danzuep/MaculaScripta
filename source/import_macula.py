@@ -11,33 +11,33 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 BOOKS = [
-    ("MAT", "matthew", "Matthew", 28),
-    ("MRK", "mark", "Mark", 16),
-    ("LUK", "luke", "Luke", 24),
-    ("JHN", "john", "John", 21),
-    ("ACT", "acts", "Acts", 28),
-    ("ROM", "romans", "Romans", 16),
-    ("1CO", "1-corinthians", "1 Corinthians", 16),
-    ("2CO", "2-corinthians", "2 Corinthians", 13),
-    ("GAL", "galatians", "Galatians", 6),
-    ("EPH", "ephesians", "Ephesians", 6),
-    ("PHP", "philippians", "Philippians", 4),
-    ("COL", "colossians", "Colossians", 4),
-    ("1TH", "1-thessalonians", "1 Thessalonians", 5),
-    ("2TH", "2-thessalonians", "2 Thessalonians", 3),
-    ("1TI", "1-timothy", "1 Timothy", 6),
-    ("2TI", "2-timothy", "2 Timothy", 4),
-    ("TIT", "titus", "Titus", 3),
-    ("PHM", "philemon", "Philemon", 1),
-    ("HEB", "hebrews", "Hebrews", 13),
-    ("JAS", "james", "James", 5),
-    ("1PE", "1-peter", "1 Peter", 5),
-    ("2PE", "2-peter", "2 Peter", 3),
-    ("1JN", "1-john", "1 John", 5),
-    ("2JN", "2-john", "2 John", 1),
-    ("3JN", "3-john", "3 John", 1),
-    ("JUD", "jude", "Jude", 1),
-    ("REV", "revelation", "Revelation", 22),
+    ("MAT", "Matthew", 28),
+    ("MRK", "Mark", 16),
+    ("LUK", "Luke", 24),
+    ("JHN", "John", 21),
+    ("ACT", "Acts", 28),
+    ("ROM", "Romans", 16),
+    ("1CO", "1 Corinthians", 16),
+    ("2CO", "2 Corinthians", 13),
+    ("GAL", "Galatians", 6),
+    ("EPH", "Ephesians", 6),
+    ("PHP", "Philippians", 4),
+    ("COL", "Colossians", 4),
+    ("1TH", "1 Thessalonians", 5),
+    ("2TH", "2 Thessalonians", 3),
+    ("1TI", "1 Timothy", 6),
+    ("2TI", "2 Timothy", 4),
+    ("TIT", "Titus", 3),
+    ("PHM", "Philemon", 1),
+    ("HEB", "Hebrews", 13),
+    ("JAS", "James", 5),
+    ("1PE", "1 Peter", 5),
+    ("2PE", "2 Peter", 3),
+    ("1JN", "1 John", 5),
+    ("2JN", "2 John", 1),
+    ("3JN", "3 John", 1),
+    ("JUD", "Jude", 1),
+    ("REV", "Revelation", 22),
 ]
 REFERENCE = re.compile(r"(\w+) (\d+):(\d+)!(\d+)")
 
@@ -70,7 +70,7 @@ def read_books(path, selected):
             chapters = books[code]
             chapters.setdefault(int(chapter), {}).setdefault(int(verse), []).append(row)
     for code, chapters in books.items():
-        expected = next(book[3] for book in BOOKS if book[0] == code)
+        expected = next(book[2] for book in BOOKS if book[0] == code)
         if list(chapters) != list(range(1, expected + 1)):
             raise ValueError(f"{code}: expected all {expected} chapters")
     return books
@@ -94,7 +94,7 @@ def generate(root, selected):
         ["git", "-C", str(submodule), "rev-parse", "HEAD"], text=True
     ).strip()
     data = root / "site/data/nt"
-    for code, slug, title, _ in BOOKS:
+    for code, title, _ in BOOKS:
         if code not in books:
             continue
         book = {
@@ -113,25 +113,10 @@ def generate(root, selected):
                     for verse, words in verses.items()
                 ],
             })
-        page = root / "site/content/nt" / slug / "_index.md"
-        page.parent.mkdir(parents=True, exist_ok=True)
-        page.write_text(
-            f'---\ntitle: "{title}"\nlayout: reader\nbook: "{code}"\n---\n',
-            encoding="utf-8",
-        )
-        for chapter in book["chapters"]:
-            number = chapter["number"]
-            if number == 1:
-                continue
-            (page.parent / f"{number}.md").write_text(
-                f'---\ntitle: "{title} {number}"\nlayout: reader\n'
-                f'book: "{code}"\nchapter: {number}\n---\n',
-                encoding="utf-8",
-            )
     write_yaml(data / "catalog.yaml", [
-        {"code": code, "slug": slug, "title": title, "chapters": chapters,
+        {"code": code, "title": title, "chapters": chapters,
          "available": (data / "books" / f"{code}.yaml").is_file()}
-        for code, slug, title, chapters in BOOKS
+        for code, title, chapters in BOOKS
     ])
 
 
