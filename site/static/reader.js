@@ -24,13 +24,9 @@
     setTimeout(() => copy.classList.remove("is-copied"), 1500);
   });
 
+  // The close link scrolls to its word; then the fragment is dropped without another navigation.
   document.addEventListener("click", (event) => {
-    if (!event.target.closest(".reader-close")) return;
-    event.preventDefault();
-    const { scrollX, scrollY } = window;
-    location.hash = "";
-    history.replaceState(null, "", location.pathname + location.search);
-    window.scrollTo(scrollX, scrollY);
+    if (event.target.closest(".reader-close")) setTimeout(() => history.replaceState(null, "", location.pathname + location.search));
   });
 
   if ("serviceWorker" in navigator) {
