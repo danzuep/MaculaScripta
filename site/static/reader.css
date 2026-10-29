@@ -25,7 +25,7 @@
 /* Ruby clearance: tall line boxes plus rt padding keep annotations off the base text. */
 .reader-flow { margin: 0 0 1rem; font: 1.65rem / 1.6 Georgia, "Times New Roman", serif; overflow-wrap: anywhere; }
 .reader-word { ruby-position: over; }
-.reader-word rt { padding-bottom: 0.2em; color: var(--english-color); font-size: 0.6em; line-height: normal; white-space: nowrap; }
+.reader-word rt { padding-bottom: 0.35em; color: var(--english-color); font-size: 0.6em; line-height: normal; white-space: nowrap; }
 .reader-word rt.rt-mandarin { display: none; }
 :root:has(#reader-annotation option[value="mandarin"]:checked) .rt-gloss { display: none; }
 :root:has(#reader-annotation option[value="mandarin"]:checked) .rt-mandarin { display: ruby-text; }
@@ -42,7 +42,6 @@
 .reader-ruby-input:focus-visible + .reader-switch { outline: 2px solid var(--greek-color); outline-offset: 3px; }
 .reader-copy { min-height: 44px; padding-inline: 0.8rem; border: 1px solid var(--border-color); border-radius: 0.5rem; background: var(--card-bg); color: var(--text-primary); font: inherit; font-size: 0.85rem; cursor: pointer; }
 
-:root:has(.reader-ruby-input:not(:checked)) 
 /* Details pane driven by the URL fragment. */
 .reader-def { display: none; position: fixed; z-index: 20; right: 1rem; bottom: 1rem; left: 1rem; max-width: 28rem; max-height: min(60dvh, 34rem); margin-left: auto; overflow: auto; padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 1rem; background: var(--card-bg); box-shadow: var(--panel-shadow); }
 .reader-def:target { display: block; }
