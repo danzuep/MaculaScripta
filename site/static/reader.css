@@ -55,8 +55,8 @@
 .reader-def dl { margin: 1rem 0 0; }
 .reader-def dt { margin-top: 0.9rem; color: var(--greek-color); font-size: 0.85rem; font-weight: 600; overflow-wrap: anywhere; }
 .reader-def dd { margin: 0.3rem 0 0; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 0.9rem; }
-.reader-def:target @media (prefers-reduced-motion: reduce) {
-  .reader-def:target   .reader-switch-track::after { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reader-switch-track::after { transition: none; }
 }
 /* Keep the last lines reachable while the fixed pane is open. */
 body:has(.reader-def:target) .reader-next-chapter { margin-bottom: min(60dvh, 34rem); }
