@@ -141,6 +141,8 @@ ruby {
 }
 
 rt {
+  padding-bottom: 0.3em;
+  line-height: 1.4;
   font-size: 0.65em;
   color: var(--ruby-color);
 }

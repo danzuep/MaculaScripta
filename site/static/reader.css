@@ -20,7 +20,8 @@
 .reader-flow { margin: 0; font: 1.65rem / 3.3 Georgia, "Times New Roman", serif; overflow-wrap: anywhere; }
 .reader-word { display: inline; padding: 0.25rem 0.08rem; min-height: 44px; border: 0; border-radius: 0.2rem; background: transparent; color: var(--text-primary); font: inherit; line-height: inherit; vertical-align: baseline; }
 .reader-word:hover, .reader-word[aria-expanded="true"] { background: var(--edited-bg); box-shadow: 0 2px var(--greek-color); }
-.reader-word rt { color: var(--english-color); font: 0.65rem / 1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+.reader-word ruby { ruby-position: over; line-height: 1; }
+.reader-word rt { padding-bottom: 0.35em; color: var(--english-color); font: 0.65rem / 1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
 [data-reader-annotation="none"] .reader-word rt { display: none; }
 [data-reader-annotation="none"] .reader-flow { line-height: 2.3; }
 .chapter-number, .verse-number { display: inline; margin-inline: 0.35rem 0.2rem; font: 0.7rem / 1 sans-serif; vertical-align: super; }

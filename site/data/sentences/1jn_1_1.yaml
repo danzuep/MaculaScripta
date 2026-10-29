@@ -1,0 +1,143 @@
+# Schema: one sentence per file, looked up by file name via .Site.Data.sentences.
+# words[].id reuses the Macula xml:id from data/nt/1JN/1.yaml (verse 1).
+# words[].lemma points at an entry in `lexicon`, which holds the shared dictionary fields.
+ref: 1JN 1:1
+lang: grc
+translation: "That which was from the beginning, which we have heard, which we have seen with our eyes, which we have gazed upon and our hands have handled, concerning the Word of life."
+words:
+  - {id: n62001001001, text: "Ὃ", ipa: "/ho/", syllables: ["Ὃ"], lemma: hos, morph: R-NSN, gloss: That which}
+  - {id: n62001001002, text: "ἦν", ipa: "/ɛ̂ːn/", syllables: ["ἦν"], lemma: eimi, morph: V-IAI-3S, gloss: was}
+  - {id: n62001001003, text: "ἀπ’", ipa: "/ap/", syllables: ["ἀπ’"], lemma: apo, morph: PREP, gloss: from}
+  - {id: n62001001004, text: "ἀρχῆς", after: ",", ipa: "/ar.kʰɛ̂ːs/", syllables: ["ἀρ", "χῆς"], lemma: arche, morph: N-GSF, gloss: "[the] beginning"}
+  - {id: n62001001005, text: "ὃ", ipa: "/ho/", syllables: ["ὃ"], lemma: hos, morph: R-ASN, gloss: that which}
+  - {id: n62001001006, text: "ἀκηκόαμεν", after: ",", ipa: "/a.kɛː.kó.a.men/", syllables: ["ἀ", "κη", "κό", "α", "μεν"], lemma: akouo, morph: V-2RAI-1P-ATT, gloss: we have heard}
+  - {id: n62001001007, text: "ὃ", ipa: "/ho/", syllables: ["ὃ"], lemma: hos, morph: R-ASN, gloss: that which}
+  - {id: n62001001008, text: "ἑωράκαμεν", ipa: "/he.ɔː.rá.ka.men/", syllables: ["ἑ", "ω", "ρά", "κα", "μεν"], lemma: horao, morph: V-RAI-1P-ATT, gloss: we have seen}
+  - {id: n62001001009, text: "τοῖς", ipa: "/toîs/", syllables: ["τοῖς"], lemma: ho, morph: T-DPM, gloss: with the}
+  - {id: n62001001010, text: "ὀφθαλμοῖς", ipa: "/o.pʰtʰal.moîs/", syllables: ["ὀ", "φθαλ", "μοῖς"], lemma: ophthalmos, morph: N-DPM, gloss: eyes}
+  - {id: n62001001011, text: "ἡμῶν", after: ",", ipa: "/hɛː.mɔ̂ːn/", syllables: ["ἡ", "μῶν"], lemma: ego, morph: P-1GP, gloss: of us}
+  - {id: n62001001012, text: "ὃ", ipa: "/ho/", syllables: ["ὃ"], lemma: hos, morph: R-ASN, gloss: that which}
+  - {id: n62001001013, text: "ἐθεασάμεθα", ipa: "/e.tʰe.a.sá.me.tʰa/", syllables: ["ἐ", "θε", "α", "σά", "με", "θα"], lemma: theaomai, morph: V-ADI-1P, gloss: we have gazed upon}
+  - {id: n62001001014, text: "καὶ", ipa: "/kai/", syllables: ["καὶ"], lemma: kai, morph: CONJ, gloss: and}
+  - {id: n62001001015, text: "αἱ", ipa: "/hai/", syllables: ["αἱ"], lemma: ho, morph: T-NPF, gloss: the}
+  - {id: n62001001016, text: "χεῖρες", ipa: "/kʰêː.res/", syllables: ["χεῖ", "ρες"], lemma: cheir, morph: N-NPF, gloss: hands}
+  - {id: n62001001017, text: "ἡμῶν", ipa: "/hɛː.mɔ̂ːn/", syllables: ["ἡ", "μῶν"], lemma: ego, morph: P-1GP, gloss: of us}
+  - {id: n62001001018, text: "ἐψηλάφησαν", after: ",", ipa: "/e.psɛː.lá.pʰɛː.san/", syllables: ["ἐ", "ψη", "λά", "φη", "σαν"], lemma: psilaphao, morph: V-AAI-3P, gloss: have handled}
+  - {id: n62001001019, text: "περὶ", ipa: "/pe.rí/", syllables: ["πε", "ρὶ"], lemma: peri, morph: PREP, gloss: concerning}
+  - {id: n62001001020, text: "τοῦ", ipa: "/toû/", syllables: ["τοῦ"], lemma: ho, morph: T-GSM, gloss: the}
+  - {id: n62001001021, text: "λόγου", ipa: "/ló.ɡu/", syllables: ["λό", "γου"], lemma: logos, morph: N-GSM, gloss: Word}
+  - {id: n62001001022, text: "τῆς", ipa: "/tɛ̂ːs/", syllables: ["τῆς"], lemma: ho, morph: T-GSF, gloss: "-"}
+  - {id: n62001001023, text: "ζωῆς", ipa: "/zɔː.ɛ̂ːs/", syllables: ["ζω", "ῆς"], lemma: zoe, morph: N-GSF, gloss: of life}
+lexicon:
+  hos:
+    lemma: "ὅς"
+    pos: Relative pronoun
+    definition: who, which, what, that
+    etymology: From Proto-Indo-European *yos, the relative pronoun.
+    examples:
+      - {text: "ὃς ἦν ἀπ᾽ ἀρχῆς", ref: 1JN 2:13, note: "the one who was from the beginning (cf. ἀπ᾽ ἀρχῆς)"}
+  eimi:
+    lemma: "εἰμί"
+    pos: Verb
+    definition: to be, to exist
+    etymology: From Proto-Indo-European *h₁es- "to be".
+    examples:
+      - {text: "ἐν ἀρχῇ ἦν ὁ λόγος", ref: JHN 1:1, note: In the beginning was the Word}
+  apo:
+    lemma: "ἀπό"
+    pos: Preposition
+    definition: from, away from (with the genitive)
+    etymology: From Proto-Indo-European *h₂epo "off, away".
+    examples:
+      - {text: "ὃ ἦν ἀπ᾽ ἀρχῆς", ref: 1JN 1:1, note: this very verse}
+  arche:
+    lemma: "ἀρχή"
+    pos: Noun, feminine
+    definition: beginning, origin, first place
+    etymology: From ἄρχω "to be first, to rule".
+    examples:
+      - {text: "ἐν ἀρχῇ ἦν ὁ λόγος", ref: JHN 1:1, note: In the beginning was the Word}
+  akouo:
+    lemma: "ἀκούω"
+    pos: Verb
+    definition: to hear, to listen
+    etymology: From Proto-Indo-European *h₂kows- "to perceive, hear".
+    examples:
+      - {text: "τὰ πρόβατα τὰ ἐμὰ τῆς φωνῆς μου ἀκούουσιν", ref: JHN 10:27, note: My sheep hear my voice}
+  horao:
+    lemma: "ὁράω"
+    pos: Verb
+    definition: to see, to perceive
+    etymology: From Proto-Indo-European *wer- "to perceive"; perfect stems use ἑώρακα.
+    examples:
+      - {text: "ὅτι ἑώρακάς με πεπίστευκας", ref: JHN 20:29, note: Because you have seen me you have believed}
+  ho:
+    lemma: "ὁ"
+    pos: Article
+    definition: the (definite article)
+    etymology: From Proto-Indo-European demonstrative *so, *seh₂, *tod.
+    examples:
+      - {text: "ὁ λόγος", ref: JHN 1:1, note: the Word}
+  ophthalmos:
+    lemma: "ὀφθαλμός"
+    pos: Noun, masculine
+    definition: eye
+    etymology: From Proto-Indo-European *h₃okʷ- "to see" (compare ὄψομαι).
+    examples:
+      - {text: "ὁ λύχνος τοῦ σώματός ἐστιν ὁ ὀφθαλμός", ref: MAT 6:22, note: The eye is the lamp of the body}
+  ego:
+    lemma: "ἐγώ"
+    pos: Personal pronoun
+    definition: I; plural forms mean we, us, our
+    etymology: From Proto-Indo-European *h₁eǵ(oH).
+    examples:
+      - {text: "ἐκ τοῦ πληρώματος αὐτοῦ ἡμεῖς πάντες ἐλάβομεν", ref: JHN 1:16, note: From his fullness we have all received}
+  theaomai:
+    lemma: "θεάομαι"
+    pos: Verb
+    definition: to behold, to gaze upon
+    etymology: From θέα "a view, sight"; related to θαῦμα "wonder".
+    examples:
+      - {text: "ἐθεασάμεθα τὴν δόξαν αὐτοῦ", ref: JHN 1:14, note: We have beheld his glory}
+  kai:
+    lemma: "καί"
+    pos: Conjunction
+    definition: and, also, even
+    etymology: Of uncertain origin; possibly related to Cypriot κάς.
+    examples:
+      - {text: "καὶ ὁ λόγος ἦν πρὸς τὸν θεόν", ref: JHN 1:1, note: and the Word was with God}
+  cheir:
+    lemma: "χείρ"
+    pos: Noun, feminine
+    definition: hand
+    etymology: From Proto-Indo-European *ǵʰesr- "hand".
+    examples:
+      - {text: "ἐκτείνας τὴν χεῖρα ἥψατο αὐτοῦ", ref: MAT 8:3, note: He stretched out his hand and touched him}
+  psilaphao:
+    lemma: "ψηλαφάω"
+    pos: Verb
+    definition: to touch, to feel, to handle
+    etymology: From ψάω "to rub, touch" with ἁφή "touch".
+    examples:
+      - {text: "ψηλαφήσατέ με καὶ ἴδετε", ref: LUK 24:39, note: Touch me and see}
+  peri:
+    lemma: "περί"
+    pos: Preposition
+    definition: concerning, about (with the genitive)
+    etymology: From Proto-Indo-European *per- "around".
+    examples:
+      - {text: "ἵνα μαρτυρήσῃ περὶ τοῦ φωτός", ref: JHN 1:7, note: to bear witness about the light}
+  logos:
+    lemma: "λόγος"
+    pos: Noun, masculine
+    definition: word, message, reason
+    etymology: From λέγω "to say, to gather"; Proto-Indo-European *leǵ-.
+    examples:
+      - {text: "ἐν ἀρχῇ ἦν ὁ λόγος", ref: JHN 1:1, note: In the beginning was the Word}
+  zoe:
+    lemma: "ζωή"
+    pos: Noun, feminine
+    definition: life
+    etymology: From ζάω "to live"; Proto-Indo-European *gʷih₃- "to live".
+    examples:
+      - {text: "ἐν αὐτῷ ζωὴ ἦν", ref: JHN 1:4, note: In him was life}
