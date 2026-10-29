@@ -29,8 +29,8 @@
 .reader-word rt.rt-mandarin { display: none; }
 :root:has(#reader-annotation option[value="mandarin"]:checked) .rt-gloss { display: none; }
 :root:has(#reader-annotation option[value="mandarin"]:checked) .rt-mandarin { display: ruby-text; }
-.reader-word a { position: relative; display: inline-block; padding-inline: 0.05em; border-radius: 0.2rem; color: var(--text-primary); text-decoration: none; }
-.reader-word a:hover, .reader-word a:focus-visible, .reader-word a:target { background: var(--edited-bg); box-shadow: 0 2px var(--greek-color); outline: none; }
+.reader-word a { color: var(--text-primary); text-decoration: none; }
+.reader-word a:hover, .reader-word a:focus-visible { text-decoration: underline; text-decoration-color: var(--greek-color); outline: none; }
 .reader-ruby-input { position: absolute; opacity: 0; pointer-events: none; }
 :root:has(.reader-ruby-input:not(:checked)) .reader-word rt { display: none; }
 .reader-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1rem; }
