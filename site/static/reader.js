@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  // Word details, tooltips, annotations and the copy button are pure HTML/CSS; this only persists the theme.
+  // Word details, tooltips, annotations and the copy button are pure HTML/CSS; this persists the theme and copies the selected verse.
   const theme = document.querySelector("#reader-theme");
   if (theme) {
     let saved = null;
@@ -13,6 +13,16 @@
       try { localStorage.setItem("macula-scripta-theme", theme.value); } catch { /* applies for this visit only */ }
     });
   }
+
+  const copy = document.querySelector(".reader-copy");
+  copy?.addEventListener("click", async () => {
+    const verse = location.hash.startsWith("#verse-") ? document.getElementById(location.hash.slice(1)) : null;
+    try {
+      await navigator.clipboard.writeText(verse?.dataset.text || copy.dataset.text);
+    } catch { return; }
+    copy.classList.add("is-copied");
+    setTimeout(() => copy.classList.remove("is-copied"), 1500);
+  });
 
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register(document.body.dataset.workerUrl).catch(() => {

@@ -82,8 +82,7 @@
       <div class="reader-controls">
         <input type="checkbox" id="reader-ruby" class="reader-ruby-input" checked>
         <label class="reader-switch" for="reader-ruby"><span class="reader-switch-track" aria-hidden="true"></span>Annotations</label>
-        <button type="button" class="reader-copy" data-text="{{ $plain }}" aria-label="Copy plain Greek text" title="Copy plain text"
-          onclick="var b=this;navigator.clipboard.writeText(b.dataset.text).then(function(){b.classList.add('is-copied');setTimeout(function(){b.classList.remove('is-copied')},1500)})">⧉ <span>Copy</span></button>
+        <button type="button" class="reader-copy" data-text="{{ $plain }}" aria-label="Copy plain Greek text" title="Copy plain text (the selected verse, if any)">⧉ <span>Copy</span></button>
       </div>
     </header>
     <div class="reader-layout">
@@ -94,7 +93,9 @@
             <p class="reader-flow" lang="grc">
               <sup class="chapter-number"><a id="chapter-{{ $chapter }}" href="#chapter-{{ $chapter }}" aria-label="Chapter {{ $chapter }}">{{ $chapter }}</a></sup>
               {{- range .verses -}}
-                <sup class="verse-number"><a id="verse-{{ $chapter }}-{{ .number }}" href="#verse-{{ $chapter }}-{{ .number }}" aria-label="Chapter {{ $chapter }}, verse {{ .number }}">{{ .number }}</a></sup>
+                {{- $verseText := "" -}}
+                {{- range .words }}{{ $verseText = printf "%s%s%s " $verseText .text (.after | default "") }}{{ end -}}
+                <sup class="verse-number"><a id="verse-{{ $chapter }}-{{ .number }}" href="#verse-{{ $chapter }}-{{ .number }}" data-text="{{ trim $verseText " " }}" aria-label="Chapter {{ $chapter }}, verse {{ .number }}">{{ .number }}</a></sup>
                 {{- range .words -}}
                   <ruby class="reader-word"><a id="word-{{ index . "xml:id" }}" href="#def-{{ index . "xml:id" }}" data-tip="{{ .gloss }}" aria-label="{{ .text }}: {{ .gloss }}">{{ .text }}</a><rt class="rt-gloss" lang="en">{{ .gloss }}</rt><rt class="rt-mandarin" lang="zh-Hans">{{ .mandarin }}</rt></ruby>{{ .after }}{{ if not (findRE "\\s$" (.after | default "")) }} {{ end }}
                 {{- end -}}
@@ -109,12 +110,13 @@
         {{- $id := index . "xml:id" -}}
         {{- $word := . -}}
         <aside class="reader-def" id="def-{{ $id }}" aria-label="Word details for {{ .text }}">
-          <a class="reader-close" href="#word-{{ $id }}" aria-label="Close word details">×</a>
-          <h2 lang="grc">{{ .text }}</h2>
+          <header class="reader-def-head">
+            <h2 lang="grc">{{ .text }}</h2>
+            <a class="reader-close" href="#word-{{ $id }}" aria-label="Close word details">×</a>
+          </header>
           <p class="reader-def-ref">{{ .ref }}</p>
           {{ with .ipa }}<p class="reader-def-ipa">{{ . }}</p>{{ end }}
           {{ with .syllables }}<p class="reader-def-syllables">{{ delimit . " · " }}</p>{{ end }}
-          <div class="reader-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
           <dl>
             {{ with index hugo.Data.greek_token_details $id }}<dt>part_of_speech</dt><dd>{{ .part_of_speech }}</dd>{{ end }}
             {{ with index hugo.Data.greek_lemma_definitions .lemma }}<dt>definition</dt><dd>{{ . }}</dd>{{ end }}
