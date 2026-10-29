@@ -113,7 +113,7 @@
         <aside class="reader-def" id="{{ $verse }}!{{ index (split .ref "!") 1 }}" aria-label="Word details for {{ .text }}">
           <header class="reader-def-head">
             <h2 lang="grc">{{ .text }}</h2>
-            <a class="reader-close" href="#w{{ $verse }}!{{ index (split .ref "!") 1 }}" aria-label="Close word details">×</a>
+            <a class="reader-close" href="#_" aria-label="Close word details">×</a>
           </header>
           <p class="reader-def-ref">{{ .ref }}</p>
           {{ with .ipa }}<p class="reader-def-ipa">{{ . }}</p>{{ end }}

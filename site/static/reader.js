@@ -24,7 +24,7 @@
     setTimeout(() => copy.classList.remove("is-copied"), 1500);
   });
 
-  // The close link scrolls to its word; then the fragment is dropped without another navigation.
+  // The close link targets a missing id, so :target clears without scrolling; then the URL is tidied.
   document.addEventListener("click", (event) => {
     if (event.target.closest(".reader-close")) setTimeout(() => history.replaceState(null, "", location.pathname + location.search));
   });

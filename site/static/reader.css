@@ -23,9 +23,9 @@
 .chapter-number a:target, .verse-number a:target { outline: 2px solid var(--greek-color); outline-offset: 3px; }
 .reader-page .dataset-attribution code { overflow-wrap: anywhere; }
 /* Ruby clearance: tall line boxes plus rt padding keep annotations off the base text. */
-.reader-flow { margin: 0 0 1rem; font: 1.65rem / 2.2 Georgia, "Times New Roman", serif; overflow-wrap: anywhere; }
+.reader-flow { margin: 0 0 1rem; font: 1.65rem / 1.5 Georgia, "Times New Roman", serif; overflow-wrap: anywhere; }
 .reader-word { ruby-position: over; }
-.reader-word rt { color: var(--english-color); font-size: 0.6em; white-space: nowrap; }
+.reader-word rt { color: var(--english-color); font-size: 0.6em; line-height: normal; white-space: nowrap; }
 .reader-word rt.rt-mandarin { display: none; }
 :root:has(#reader-annotation option[value="mandarin"]:checked) .rt-gloss { display: none; }
 :root:has(#reader-annotation option[value="mandarin"]:checked) .rt-mandarin { display: ruby-text; }
@@ -33,7 +33,7 @@
 .reader-word a:hover, .reader-word a:focus-visible, .reader-word a:target { background: var(--edited-bg); box-shadow: 0 2px var(--greek-color); outline: none; }
 .reader-ruby-input { position: absolute; opacity: 0; pointer-events: none; }
 :root:has(.reader-ruby-input:not(:checked)) .reader-word rt { display: none; }
-:root:has(.reader-ruby-input:not(:checked)) .reader-flow { line-height: 2.3; }
+:root:has(.reader-ruby-input:not(:checked)) .reader-flow { line-height: 1.7; }
 .reader-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1rem; }
 .reader-switch { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; cursor: pointer; font-size: 0.85rem; }
 .reader-switch-track { position: relative; width: 2.5rem; height: 1.4rem; border: 1px solid var(--border-color); border-radius: 1rem; background: var(--card-bg); }
