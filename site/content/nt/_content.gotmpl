@@ -1,0 +1,21 @@
+{{/* One reader page per available book and chapter, generated from data/nt. */}}
+{{- range hugo.Data.nt.catalog -}}
+  {{- if .available -}}
+    {{- $code := .code -}}
+    {{- $title := .title -}}
+    {{- range $n := seq .chapters -}}
+      {{- $params := dict "book" $code "chapter" $n -}}
+      {{- $content := "" -}}
+      {{- if and (eq $code "1JN") (eq $n 1) -}}
+        {{- $content = `{{< interactive-sentence book="1JN" chapter="1" verse="1" >}}` -}}
+      {{- end -}}
+      {{- $page := dict "title" (printf "%s %d" $title $n) "layout" "reader" "params" $params "content" (dict "mediaType" "text/markdown" "value" $content) -}}
+      {{- if eq $n 1 -}}
+        {{- $page = merge $page (dict "path" (printf "%s/_index" $code) "kind" "section" "title" $title "url" (printf "/nt/%s/" $code)) -}}
+      {{- else -}}
+        {{- $page = merge $page (dict "path" (printf "%s/%d" $code $n) "url" (printf "/nt/%s/%d/" $code $n)) -}}
+      {{- end -}}
+      {{- $.AddPage $page -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

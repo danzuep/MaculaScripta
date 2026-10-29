@@ -40,7 +40,7 @@ class ImportMaculaTests(unittest.TestCase):
     def test_catalog_has_all_books_and_both_john_books_available(self):
         catalog = read_yaml(ROOT / "site/data/nt/catalog.yaml")
         self.assertEqual(len(catalog), 27)
-        self.assertEqual(len({b["slug"] for b in catalog}), 27)
+        self.assertNotIn("slug", catalog[0])
         self.assertEqual({"1JN", "JHN"}, {b["code"] for b in catalog if b["available"]})
         for book in catalog:
             self.assertEqual(book["available"],
@@ -101,10 +101,6 @@ class ImportMaculaTests(unittest.TestCase):
             book = yaml.safe_load(original)
             self.assertRegex(book["source_commit"], r"^[0-9a-f]{40}$")
             self.assertEqual(book["source_path"], "SBLGNT/tsv/macula-greek-SBLGNT.tsv")
-            self.assertTrue((root / "site/content/nt/1-john/_index.md").is_file())
-            for number in range(2, 6):
-                page = root / f"site/content/nt/1-john/{number}.md"
-                self.assertIn(f"chapter: {number}", page.read_text())
             importer.generate(root, ["JHN"])
             catalog = read_yaml(root / "site/data/nt/catalog.yaml")
             self.assertEqual({"1JN", "JHN"}, {b["code"] for b in catalog if b["available"]})

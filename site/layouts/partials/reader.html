@@ -3,7 +3,7 @@
 {{- $chapterNumber := int (.Params.chapter | default 1) -}}
 {{- $chapters := slice (index (index hugo.Data.nt $code) (printf "%d" $chapterNumber)) -}}
 {{- $bookInfo := index (where hugo.Data.nt.catalog "code" $code) 0 -}}
-{{- $bookPath := printf "nt/%s/" $bookInfo.slug -}}
+{{- $bookPath := printf "nt/%s/" $code -}}
 {{- $chapterData := merge $book (dict "chapters" $chapters) -}}
 {{- $nextChapterNumber := add $chapterNumber 1 -}}
 {{- $nextChapterPath := "" -}}
@@ -19,7 +19,7 @@
   {{- $nextBook := first 1 (where (after (add $bookIndex 1) hugo.Data.nt.catalog) "available" true) -}}
   {{- if gt (len $nextBook) 0 -}}
     {{- $nextBookInfo := index $nextBook 0 -}}
-    {{- $nextChapterPath = printf "nt/%s/" $nextBookInfo.slug -}}
+    {{- $nextChapterPath = printf "nt/%s/" $nextBookInfo.code -}}
     {{- $nextChapterTitle = printf "%s 1" $nextBookInfo.title -}}
   {{- end -}}
 {{- end -}}
@@ -63,7 +63,7 @@
         <nav aria-label="New Testament books">
           <ul>
             {{ range hugo.Data.nt.catalog }}
-              <li>{{ if .available }}<a href="{{ printf "nt/%s/" .slug | relURL }}"{{ if eq .code $code }} aria-current="page"{{ end }}>{{ .title }}</a>{{ else }}<span aria-disabled="true">{{ .title }} <small>Not yet imported</small></span>{{ end }}</li>
+              <li>{{ if .available }}<a href="{{ printf "nt/%s/" .code | relURL }}"{{ if eq .code $code }} aria-current="page"{{ end }}>{{ .title }}</a>{{ else }}<span aria-disabled="true">{{ .title }} <small>Not yet imported</small></span>{{ end }}</li>
             {{ end }}
           </ul>
         </nav>

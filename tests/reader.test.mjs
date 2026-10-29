@@ -192,7 +192,7 @@ test("built reader preserves every word, verse anchor, and punctuation separator
 test("every published reader page renders and embeds only its selected chapter", () => {
   for (const entry of catalog.filter((entry) => entry.available)) {
     for (let number = 1; number <= entry.chapters; number++) {
-      const path = `nt/${entry.slug}/${number === 1 ? "" : `${number}/`}index.html`;
+      const path = `nt/${entry.code}/${number === 1 ? "" : `${number}/`}index.html`;
       const html = readFileSync(new URL(`../site/public/${path}`, import.meta.url), "utf8");
       const match = html.match(/<script id="?reader-data"? type="?application\/json"?>([\s\S]*?)<\/script>/);
       assert(match, path);
@@ -204,16 +204,16 @@ test("every published reader page renders and embeds only its selected chapter",
       assert.equal([...html.matchAll(/data-word-index=/g)].length,
         data.chapters[0].verses.flatMap((verse) => verse.words).length);
       for (let target = 1; target <= entry.chapters; target++) {
-        const href = `/MaculaScripta/nt/${entry.slug}/${target === 1 ? "" : `${target}/`}`;
+        const href = `/MaculaScripta/nt/${entry.code}/${target === 1 ? "" : `${target}/`}`;
         assert(html.includes(`href=${href}`) || html.includes(`href="${href}"`), href);
       }
       const nextLink = html.match(/<nav class="?reader-next-chapter"?[^>]*>\s*<a href="?([^" >]+)"?[^>]*>Next chapter: ([^<]+)/);
       if (number < entry.chapters) {
         assert(nextLink, path);
-        assert.equal(nextLink[1], `/MaculaScripta/nt/${entry.slug}/${number + 1}/`);
+        assert.equal(nextLink[1], `/MaculaScripta/nt/${entry.code}/${number + 1}/`);
       } else if (entry.code === "JHN") {
         assert(nextLink, path);
-        assert.equal(nextLink[1], "/MaculaScripta/nt/1-john/");
+        assert.equal(nextLink[1], "/MaculaScripta/nt/1JN/");
       } else {
         assert.equal(nextLink, null, path);
       }

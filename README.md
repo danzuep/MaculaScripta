@@ -19,10 +19,10 @@ dotnet build MaculaScripta.slnx
 
 ## Greek New Testament reader
 
-The homepage and `/nt/1-john/` display the first chapter of **1 John** as continuous
+The homepage and `/nt/1JN/` display the first chapter of **1 John** as continuous
 Greek text, retaining the upstream punctuation. **John** is also ready at
-`/nt/john/`. Use the chapter links to navigate: each page renders and embeds
-metadata for only one chapter (for example, `/nt/john/2/`), keeping downloads small.
+`/nt/JHN/`. Use the chapter links to navigate: each page renders and embeds
+metadata for only one chapter (for example, `/nt/JHN/2/`), keeping downloads small.
 Chapter and verse superscripts provide link targets. Select a Greek word to
 expand its complete source metadata; the X close button stays visible while
 the metadata scrolls.
