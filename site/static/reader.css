@@ -23,7 +23,7 @@
 .chapter-number a:target, .verse-number a:target { outline: 2px solid var(--greek-color); outline-offset: 3px; }
 .reader-page .dataset-attribution code { overflow-wrap: anywhere; }
 /* Ruby clearance: tall line boxes plus rt padding keep annotations off the base text. */
-.reader-flow { margin: 0 0 1rem; font: 1.65rem / 1.7 Georgia, "Times New Roman", serif; overflow-wrap: anywhere; }
+.reader-flow { margin: 0 0 1rem; font: 1.65rem / 1.6 Georgia, "Times New Roman", serif; overflow-wrap: anywhere; }
 .reader-word { ruby-position: over; }
 .reader-word rt { padding-bottom: 0.2em; color: var(--english-color); font-size: 0.6em; line-height: normal; white-space: nowrap; }
 .reader-word rt.rt-mandarin { display: none; }
@@ -42,10 +42,7 @@
 .reader-ruby-input:focus-visible + .reader-switch { outline: 2px solid var(--greek-color); outline-offset: 3px; }
 .reader-copy { min-height: 44px; padding-inline: 0.8rem; border: 1px solid var(--border-color); border-radius: 0.5rem; background: var(--card-bg); color: var(--text-primary); font: inherit; font-size: 0.85rem; cursor: pointer; }
 
-/* Tooltip above the word, clear of the ruby row. */
-.reader-word a::after { content: attr(data-tip); position: absolute; left: 50%; bottom: calc(100% + 0.2em); z-index: 5; padding: 0.3rem 0.6rem; border: 1px solid var(--border-color); border-radius: 0.4rem; background: var(--card-bg); color: var(--text-primary); font: 400 0.8rem / 1.3 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; white-space: nowrap; transform: translate(-50%, 4px); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.15s, transform 0.15s; }
-:root:has(.reader-ruby-input:not(:checked)) .reader-word a:hover::after, :root:has(.reader-ruby-input:not(:checked)) .reader-word a:focus-visible::after { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
-
+:root:has(.reader-ruby-input:not(:checked)) 
 /* Details pane driven by the URL fragment. */
 .reader-def { display: none; position: fixed; z-index: 20; right: 1rem; bottom: 1rem; left: 1rem; max-width: 28rem; max-height: min(60dvh, 34rem); margin-left: auto; overflow: auto; padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 1rem; background: var(--card-bg); box-shadow: var(--panel-shadow); }
 .reader-def:target { display: block; }
@@ -59,7 +56,7 @@
 .reader-def dt { margin-top: 0.9rem; color: var(--greek-color); font-size: 0.85rem; font-weight: 600; overflow-wrap: anywhere; }
 .reader-def dd { margin: 0.3rem 0 0; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 0.9rem; }
 .reader-def:target @media (prefers-reduced-motion: reduce) {
-  .reader-def:target   .reader-word a::after, .reader-switch-track::after { transition: none; }
+  .reader-def:target   .reader-switch-track::after { transition: none; }
 }
 /* Keep the last lines reachable while the fixed pane is open. */
 body:has(.reader-def:target) .reader-next-chapter { margin-bottom: min(60dvh, 34rem); }

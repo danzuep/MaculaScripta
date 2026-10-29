@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  // Word details, tooltips, annotations and the copy button are pure HTML/CSS; this persists the theme and copies the selected verse.
+  // Word details, annotations and the copy button are pure HTML/CSS; this persists the theme and copies the selected verse.
   const theme = document.querySelector("#reader-theme");
   if (theme) {
     let saved = null;
