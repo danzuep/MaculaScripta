@@ -16,12 +16,21 @@
 
   const copy = document.querySelector(".reader-copy");
   copy?.addEventListener("click", async () => {
-    const verse = /^#\d+$/.test(location.hash) ? document.getElementById(location.hash.slice(1)) : null;
+    const verse = document.getElementById(/^#(\d+)(?:!\d+)?$/.exec(location.hash)?.[1] ?? "");
     try {
       await navigator.clipboard.writeText(verse?.dataset.text || copy.dataset.text);
     } catch { return; }
     copy.classList.add("is-copied");
     setTimeout(() => copy.classList.remove("is-copied"), 1500);
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest(".reader-close")) return;
+    event.preventDefault();
+    const { scrollX, scrollY } = window;
+    location.hash = "";
+    history.replaceState(null, "", location.pathname + location.search);
+    window.scrollTo(scrollX, scrollY);
   });
 
   if ("serviceWorker" in navigator) {

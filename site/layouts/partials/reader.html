@@ -23,7 +23,7 @@
   {{- end -}}
 {{- end -}}
 {{- $plain := "" -}}
-{{- range $chapters }}{{ range .verses }}{{ range .words }}{{ $plain = printf "%s%s%s " $plain .text (.after | default "") }}{{ end }}{{ end }}{{ end -}}
+{{- range $chapters }}{{ range .verses }}{{ range .words }}{{ $plain = printf "%s%s%s" $plain .text (cond (findRE "\\s$" (.after | default "")) .after (printf "%s " (.after | default ""))) }}{{ end }}{{ end }}{{ end -}}
 {{- $plain = trim $plain " " -}}
 <!doctype html>
 <html lang="en">
@@ -91,11 +91,11 @@
           {{- $chapter := .number -}}
           <section class="reader-chapter" aria-label="Chapter {{ $chapter }}">
             <p class="reader-flow" lang="grc">
-              <sup class="chapter-number"><a id="chapter-{{ $chapter }}" href="#chapter-{{ $chapter }}" aria-label="Chapter {{ $chapter }}">{{ $chapter }}</a></sup>
+              <sup class="chapter-number"><a href="#" aria-label="Chapter {{ $chapter }}">{{ $chapter }}</a></sup>
               {{- range .verses -}}
                 {{- $verse := .number -}}
                 {{- $verseText := "" -}}
-                {{- range .words }}{{ $verseText = printf "%s%s%s " $verseText .text (.after | default "") }}{{ end -}}
+                {{- range .words }}{{ $verseText = printf "%s%s%s" $verseText .text (cond (findRE "\\s$" (.after | default "")) .after (printf "%s " (.after | default ""))) }}{{ end -}}
                 <sup class="verse-number"><a id="{{ .number }}" href="#{{ .number }}" data-text="{{ trim $verseText " " }}" aria-label="Chapter {{ $chapter }}, verse {{ .number }}">{{ .number }}</a></sup>
                 {{- range .words -}}
                   <ruby class="reader-word"><a id="w{{ $verse }}!{{ index (split .ref "!") 1 }}" href="#{{ $verse }}!{{ index (split .ref "!") 1 }}" data-tip="{{ .gloss }}" aria-label="{{ .text }}: {{ .gloss }}">{{ .text }}</a><rt class="rt-gloss" lang="en">{{ .gloss }}</rt><rt class="rt-mandarin" lang="zh-Hans">{{ .mandarin }}</rt></ruby>{{ .after }}{{ if not (findRE "\\s$" (.after | default "")) }} {{ end }}
@@ -113,7 +113,7 @@
         <aside class="reader-def" id="{{ $verse }}!{{ index (split .ref "!") 1 }}" aria-label="Word details for {{ .text }}">
           <header class="reader-def-head">
             <h2 lang="grc">{{ .text }}</h2>
-            <a class="reader-close" href="#{{ $verse }}" aria-label="Close word details">×</a>
+            <a class="reader-close" href="#" aria-label="Close word details">×</a>
           </header>
           <p class="reader-def-ref">{{ .ref }}</p>
           {{ with .ipa }}<p class="reader-def-ipa">{{ . }}</p>{{ end }}

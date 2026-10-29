@@ -23,9 +23,9 @@
 .chapter-number a:target, .verse-number a:target { outline: 2px solid var(--greek-color); outline-offset: 3px; }
 .reader-page .dataset-attribution code { overflow-wrap: anywhere; }
 /* Ruby clearance: tall line boxes plus rt padding keep annotations off the base text. */
-.reader-flow { margin: 0 0 1rem; font: 1.65rem / 2.6 Georgia, "Times New Roman", serif; overflow-wrap: anywhere; }
+.reader-flow { margin: 0 0 1rem; font: 1.65rem / 2.4 Georgia, "Times New Roman", serif; overflow-wrap: anywhere; }
 .reader-word { ruby-position: over; ruby-align: center; line-height: 1; }
-.reader-word rt { padding-bottom: 0.4em; color: var(--english-color); font: 0.65rem / 1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; white-space: nowrap; }
+.reader-word rt { color: var(--english-color); font: 0.65rem / 1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; white-space: nowrap; }
 .reader-word rt.rt-mandarin { display: none; }
 :root:has(#reader-annotation option[value="mandarin"]:checked) .rt-gloss { display: none; }
 :root:has(#reader-annotation option[value="mandarin"]:checked) .rt-mandarin { display: ruby-text; }
