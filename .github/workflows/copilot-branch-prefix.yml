@@ -1,0 +1,37 @@
+name: Enforce copilot/ branch prefix
+
+# Renames agent-created branches that lack the copilot/ prefix. Human branches
+# are left alone: a branch is treated as agent-created only when its tip commit
+# carries a Copilot Co-authored-by trailer.
+on:
+  push:
+    branches-ignore:
+      - main
+      - "copilot/**"
+
+permissions:
+  contents: write
+
+jobs:
+  rename:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Rename agent-created branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
+          MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          if ! grep -qiE '^Co-authored-by: .*copilot' <<<"$MESSAGE"; then
+            echo "Not agent-initiated; leaving '$BRANCH' as is."
+            exit 0
+          fi
+          # Renaming a head branch closes its open pull request, so skip those.
+          open=$(gh api "repos/$REPO/pulls?state=open&head=${REPO%%/*}:$BRANCH" --jq length)
+          if [ "$open" != "0" ]; then
+            echo "::warning::'$BRANCH' has an open pull request; not renaming."
+            exit 0
+          fi
+          gh api -X POST "repos/$REPO/branches/$BRANCH/rename" -f new_name="copilot/$BRANCH"
+          echo "Renamed '$BRANCH' to 'copilot/$BRANCH'."
