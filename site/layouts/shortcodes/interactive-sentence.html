@@ -1,54 +1,54 @@
-{{- $key := .Get "key" | default (.Get 0) -}}
-{{- $data := index hugo.Data.sentences $key -}}
-{{- if not $data -}}
-  {{- errorf "interactive-sentence: no data/sentences/%s.yaml (%s)" $key .Position -}}
+{{- $book := .Get "book" | default "1JN" -}}
+{{- $chapter := printf "%d" (int (.Get "chapter" | default 1)) -}}
+{{- $verse := int (.Get "verse" | default 1) -}}
+{{- $chapterData := index (index hugo.Data.nt $book) $chapter -}}
+{{- $words := slice -}}
+{{- range $chapterData.verses }}{{ if eq (int .number) $verse }}{{ $words = .words }}{{ end }}{{ end -}}
+{{- if not $words -}}
+  {{- errorf "interactive-sentence: no data for %s %s:%d (%s)" $book $chapter $verse .Position -}}
 {{- end -}}
+{{- $key := printf "%s-%s-%d" $book $chapter $verse -}}
 {{- $plain := "" -}}
-{{- range $data.words -}}
+{{- range $words -}}
   {{- $plain = printf "%s%s%s " $plain .text (.after | default "") -}}
 {{- end -}}
 {{- $plain = trim $plain " " -}}
-<section class="is-root" id="is-{{ $key }}" aria-label="{{ $data.ref }}">
+<section class="is-root" id="is-{{ $key }}" aria-label="{{ $book }} {{ $chapter }}:{{ $verse }}">
   <input type="checkbox" class="is-ipa-input" id="is-ipa-{{ $key }}" checked>
   <header class="is-header">
-    <h2 class="is-ref">{{ $data.ref }}</h2>
+    <h2 class="is-ref">{{ $book }} {{ $chapter }}:{{ $verse }}</h2>
     <label class="is-switch" for="is-ipa-{{ $key }}">
       <span class="is-switch-track" aria-hidden="true"></span>
-      <span class="is-switch-label">IPA</span>
+      <span class="is-switch-label">Ruby</span>
     </label>
     <button type="button" class="is-copy" data-text="{{ $plain }}" aria-label="Copy plain sentence text" title="Copy plain text"
       onclick="var b=this;navigator.clipboard.writeText(b.dataset.text).then(function(){b.classList.add('is-copied');setTimeout(function(){b.classList.remove('is-copied')},1500)})">
       <span aria-hidden="true">⧉</span><span class="is-copy-text">Copy</span>
     </button>
   </header>
-  <p class="is-sentence" lang="{{ $data.lang | default "grc" }}">
-    {{- range $data.words -}}
-      <ruby class="is-word"><a href="#def-{{ .id }}" data-tip="{{ .gloss }}" aria-label="{{ .text }}: {{ .gloss }}">{{ .text }}</a><rt>{{ .ipa }}</rt></ruby>{{ .after }}{{ " " }}
+  <p class="is-sentence" lang="grc">
+    {{- range $words -}}
+      <ruby class="is-word"><a href="#def-{{ index . "xml:id" }}" data-tip="{{ .gloss }}" aria-label="{{ .text }}: {{ .gloss }}">{{ .text }}</a><rt>{{ .ipa | default .gloss }}</rt></ruby>{{ .after }}{{ if not (findRE "\\s$" (.after | default "")) }} {{ end }}
     {{- end -}}
   </p>
-  {{ with $data.translation }}<p class="is-translation">{{ . }}</p>{{ end }}
   <div class="is-defs">
-    {{- range $data.words -}}
-      {{- $entry := index $data.lexicon .lemma -}}
-      <aside class="is-def" id="def-{{ .id }}" aria-label="Dictionary entry for {{ .text }}">
+    {{- range $words -}}
+      {{- $id := index . "xml:id" -}}
+      {{- $detail := index hugo.Data.greek_token_details $id -}}
+      <aside class="is-def" id="def-{{ $id }}" aria-label="Dictionary entry for {{ .text }}">
         <a class="is-close" href="#is-{{ $key }}" aria-label="Close dictionary entry">×</a>
-        <h3 class="is-def-word" lang="{{ $data.lang | default "grc" }}">{{ .text }}</h3>
-        <p class="is-def-ipa">{{ .ipa }}</p>
-        <p class="is-def-syllables" aria-label="Syllables">{{ delimit .syllables " · " }}</p>
+        <h3 class="is-def-word" lang="grc">{{ .text }}</h3>
+        {{ with .ipa }}<p class="is-def-ipa">{{ . }}</p>{{ end }}
+        {{ with .syllables }}<p class="is-def-syllables" aria-label="Syllables">{{ delimit . " · " }}</p>{{ end }}
         <div class="is-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
         <dl>
           <dt>Gloss</dt><dd>{{ .gloss }}</dd>
-          {{ with $entry }}
-            <dt>Lemma</dt><dd lang="{{ $data.lang | default "grc" }}">{{ .lemma }}</dd>
-            <dt>Part of speech</dt><dd>{{ .pos }}</dd>
-          {{ end }}
+          <dt>Lemma</dt><dd lang="grc">{{ .lemma }}</dd>
+          <dt>Part of speech</dt><dd>{{ with $detail }}{{ .part_of_speech }}{{ else }}{{ .class }}{{ end }}</dd>
           <dt>Morphology</dt><dd>{{ .morph }}</dd>
-          {{ with $entry }}
-            <dt>Definition</dt><dd>{{ .definition }}</dd>
-            <dt>Etymology</dt><dd>{{ .etymology }}</dd>
-            <dt>Examples</dt>
-            {{ range .examples }}<dd><span lang="{{ $data.lang | default "grc" }}">{{ .text }}</span> <small>({{ .ref }}) {{ .note }}</small></dd>{{ end }}
-          {{ end }}
+          {{ with index hugo.Data.greek_lemma_definitions .lemma }}<dt>Definition</dt><dd>{{ . }}</dd>{{ end }}
+          {{ with .etymology }}<dt>Etymology</dt><dd>{{ . }}</dd>{{ end }}
+          {{ with .examples }}<dt>Examples</dt>{{ range . }}<dd>{{ . }}</dd>{{ end }}{{ end }}
         </dl>
       </aside>
     {{- end -}}
