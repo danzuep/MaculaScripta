@@ -76,6 +76,15 @@ test("chapterModel groups published rows by verse and rebuilds the plain text", 
   assert.match(model.verses[0].plain, /^Ἐν ἀρχῇ ἦν ὁ λόγος,/);
 });
 
+test("nextChapter continues through chapters, into the next book, and stops after Revelation", () => {
+  const { nextChapter } = runScript().context.MaculaReader;
+  const catalog = "JHN:21 ACT:28 REV:22";
+  assert.equal(JSON.stringify(nextChapter(catalog, "JHN", 3)), JSON.stringify({ code: "JHN", number: 4 }));
+  assert.equal(JSON.stringify(nextChapter(catalog, "JHN", 21)), JSON.stringify({ code: "ACT", number: 1 }));
+  assert.equal(nextChapter(catalog, "REV", 22), null);
+  assert.equal(nextChapter(catalog, "XXX", 1), null);
+});
+
 test("parseTsv reads a published chapter file", () => {
   const { parseTsv } = runScript().context.MaculaReader;
   const parsed = parseTsv("a\tb\n1\t\n2\tx\n");
@@ -89,10 +98,10 @@ test("John is preloaded as complete HTML, other books are client-loaded", { skip
     assert.equal([...html.matchAll(/<ruby class="?reader-word"?>/g)].length, rows.length);
     assert.equal([...html.matchAll(/<aside class="?reader-def"? /g)].length, rows.length);
     assert.equal([...html.matchAll(/<span class="?reader-token"?>/g)].length, rows.length);
-    assert(!html.includes("data-chapter-url"));
+    assert(!html.includes("data-chapter-url="));
   }
   const shell = page("nt/1JN/2/index.html");
-  assert(shell.includes("data-chapter-url=/MaculaScripta/nt-data/1JN/2.tsv") || shell.includes('data-chapter-url="/MaculaScripta/nt-data/1JN/2.tsv"'));
+  assert.match(shell, /data-chapter-url="?\/MaculaScripta\/nt-data\/1JN\/2\.tsv"?[ >]/);
   assert(!shell.includes("reader-word"));
   assert.match(page("nt/JHN/21/index.html"), /Next chapter: Acts 1/);
   assert.match(page("nt/1JN/5/index.html"), /Next chapter: 2 John 1/);
@@ -106,4 +115,11 @@ test("every chapter is published as the original TSV plus lookup columns", { ski
   }
   const [, first] = readFileSync(root("site/public/nt-data/JHN/1.tsv"), "utf8").split("\n");
   assert.equal(first.split("\t").at(-2), "Preposition");
+});
+
+test("verse numbers sit in one flowing paragraph per chapter, and words are inline-block tokens", { skip: !built && "run hugo --source ./site first" }, () => {
+  const html = page("nt/JHN/index.html");
+  assert.equal([...html.matchAll(/<p class="?reader-flow"?/g)].length, 1);
+  assert.equal([...html.matchAll(/<sup class="?verse-number"?>/g)].length, 51);
+  assert.match(readFileSync(root("site/static/reader.css"), "utf8"), /\.reader-token \{ display: inline-block;/);
 });

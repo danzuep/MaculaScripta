@@ -36,8 +36,15 @@ There is no import step and no generated data is committed. `site/hugo.toml` mou
 `site/layouts/partials/nt-data.html` reads `macula-greek-SBLGNT.tsv` with
 `transform.Unmarshal`, grouping words by book and chapter. `nt-publish.html` writes one TSV file
 per chapter at build time: the original Macula header and rows, plus `part_of_speech`
-and `definition` columns from `site/data`. Words stay on one line; a word wraps
-only when it cannot fit on a line. To change which books are
+and `definition` columns from `site/data`. Each word (with its trailing
+punctuation) is an inline-block token, so words stay whole and only wrap when wider than
+the line, while verses still flow together in one paragraph per chapter (the TSV carries
+no paragraph-break data).
+
+Reading is continuous: as the "Next chapter" link nears the viewport, `reader.js`
+fetches and appends the following chapter's TSV, continuing into the next book. Appended
+chapters get a heading and ids prefixed `<book>.<chapter>.`; the link remains a plain
+fallback link without JavaScript. To change which books are
 preloaded, edit `preloadedBooks` in `site/hugo.toml`. `site/data/nt/catalog.yaml`
 lists the books and chapter counts.
 

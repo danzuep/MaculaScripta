@@ -99,7 +99,7 @@
       </div>
     </header>
     <div class="reader-layout">
-      <main id="reader" aria-label="{{ $book.title }} Greek text" tabindex="-1"{{ if not $preloaded }} data-chapter-url="{{ printf "nt-data/%s/%d.tsv" $code $chapterNumber | relURL }}" data-book="{{ $book.title }}" data-chapter="{{ $chapterNumber }}"{{ end }}>
+      <main id="reader" aria-label="{{ $book.title }} Greek text" tabindex="-1" data-book-code="{{ $code }}" data-chapter="{{ $chapterNumber }}" data-data-url="{{ "nt-data/" | relURL }}" data-catalog="{{ range $index, $entry := hugo.Data.nt.catalog }}{{ if $index }} {{ end }}{{ $entry.code }}:{{ $entry.chapters }}{{ end }}"{{ if not $preloaded }} data-chapter-url="{{ printf "nt-data/%s/%d.tsv" $code $chapterNumber | relURL }}" data-book="{{ $book.title }}"{{ end }}>
         {{ if $preloaded }}
           <section class="reader-chapter" aria-label="Chapter {{ $chapterNumber }}">
             <p class="reader-flow" lang="grc">
