@@ -1,4 +1,4 @@
-const cacheName = "macula-scripta-v9";
+const cacheName = "macula-scripta-v10";
 
 self.addEventListener("install", (event) => {
   event.waitUntil((async () => {

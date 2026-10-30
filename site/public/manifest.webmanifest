@@ -1,8 +1,0 @@
-{
-  "name": "MaculaScripta",
-  "short_name": "MaculaScripta",
-  "start_url": "./",
-  "display": "standalone",
-  "background_color": "#f7f3eb",
-  "theme_color": "#f7f3eb"
-}

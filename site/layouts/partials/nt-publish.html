@@ -1,0 +1,17 @@
+{{- /* Publishes nt-data/<BOOK>/<chapter>.json for client-side loading. Rows are arrays aligned with "fields";
+       "details" and "definitions" carry the optional lookups from site/data. */ -}}
+{{- $data := partialCached "nt-data.html" "nt" -}}
+{{- range $key, $rows := $data.chapters -}}
+  {{- $parts := split $key "/" -}}
+  {{- $details := dict -}}
+  {{- $definitions := dict -}}
+  {{- range $rows -}}
+    {{- $id := index . 0 -}}
+    {{- $lemma := index . 10 -}}
+    {{- with index hugo.Data.greek_token_details $id -}}{{- $details = merge $details (dict $id .part_of_speech) -}}{{- end -}}
+    {{- with index hugo.Data.greek_lemma_definitions $lemma -}}{{- $definitions = merge $definitions (dict $lemma .) -}}{{- end -}}
+  {{- end -}}
+  {{- $json := dict "book" (index $parts 0) "chapter" (int (index $parts 1)) "fields" $data.fields "words" $rows "details" $details "definitions" $definitions | jsonify -}}
+  {{- $file := resources.FromString (printf "nt-data/%s/%s.json" (index $parts 0) (index $parts 1)) $json -}}
+  {{- $_ := $file.RelPermalink -}}
+{{- end -}}

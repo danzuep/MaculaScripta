@@ -61,3 +61,4 @@
 body:has(.reader-def:target) .reader-next-chapter { margin-bottom: min(60dvh, 34rem); }
 .reader-copy.is-copied span { display: none; }
 .reader-copy.is-copied::after { content: "Copied ✓"; }
+.reader-loading { margin: 2rem 0; color: var(--text-muted); }
