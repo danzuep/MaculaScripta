@@ -29,7 +29,7 @@
   }
 
   if (settingsPanel && settingsButton) {
-    settingsPanel.hidden = settingValue("macula-scripta-settings-open") !== "0";
+    settingsPanel.hidden = settingValue("macula-scripta-settings-open") === "0";
     const updateSettingsLayout = () => {
       const floating = !settingsPanel.hidden && globalThis.scrollY > 24;
       settingsPanel.classList.toggle("is-floating", floating);
@@ -135,18 +135,32 @@
   const main = document.querySelector("main#reader[data-catalog]");
   const picker = document.querySelector(".reader-picker");
   const pickerButton = document.querySelector(".reader-picker-index");
+  const pickerIndex = pickerButton?.querySelector("span");
+  const bookTitles = new Map([...document.querySelectorAll(".reader-book-tile")].map((tile) => [tile.dataset.bookCode, tile.dataset.bookTitle]));
   if (picker && main) {
     const pickerContent = picker.querySelector(".reader-picker-content");
     const bookGrid = picker.querySelector(".reader-book-grid");
     const chapterPicker = picker.querySelector(".reader-chapter-picker");
     const chapterGrid = picker.querySelector(".reader-chapter-grid");
     const instruction = picker.querySelector(".reader-picker-instruction");
-    const pickerIndex = pickerButton.querySelector("span");
+    const fullNameToggle = picker.querySelector("#reader-full-book-names");
+    const applyBookNamePreference = () => {
+      for (const tile of bookGrid.querySelectorAll(".reader-book-tile")) {
+        tile.dataset.fullName = String(fullNameToggle.checked);
+        tile.textContent = fullNameToggle.checked ? tile.dataset.bookTitle : tile.dataset.bookCode;
+      }
+    };
+    fullNameToggle.checked = settingValue("macula-scripta-full-book-names") === "true";
+    applyBookNamePreference();
+    fullNameToggle.addEventListener("change", () => {
+      saveSetting("macula-scripta-full-book-names", String(fullNameToggle.checked));
+      applyBookNamePreference();
+    });
     const showBooks = () => {
       bookGrid.hidden = false;
       chapterPicker.hidden = true;
       instruction.textContent = "1. Choose a book";
-      pickerIndex.textContent = `${main.dataset.bookCode} · ${main.dataset.chapter}`;
+      pickerIndex.textContent = `${main.dataset.bookTitle} · ${main.dataset.chapter}`;
     };
     pickerButton.addEventListener("click", () => {
       pickerContent.hidden = !pickerContent.hidden;
@@ -159,7 +173,7 @@
       bookGrid.hidden = true;
       chapterPicker.hidden = false;
       instruction.textContent = `2. Choose a chapter in ${bookTitle}`;
-      pickerIndex.textContent = `${bookCode} · ${bookTitle}`;
+      pickerIndex.textContent = `${bookTitle} · Select chapter`;
       chapterGrid.replaceChildren(...Array.from({ length: Number(chapters) }, (_, index) => {
         const number = index + 1;
         const path = `${main.dataset.readerBase}${bookCode}/${number === 1 ? "" : `${number}/`}`;
@@ -181,6 +195,19 @@
       try { sessionStorage.setItem("macula-scripta-reader-navigation", new URL(link.href).pathname); } catch { /* resume remains available next visit */ }
     });
   }
+
+  const updateStickyIndex = () => {
+    if (!main || !pickerIndex) return;
+    const sections = main.querySelectorAll(".reader-chapter");
+    let activeSection = sections[0];
+    for (const section of sections) {
+      if (section.getBoundingClientRect().top <= 96) activeSection = section;
+      else break;
+    }
+    const code = activeSection?.dataset.bookCode || main.dataset.bookCode;
+    const chapter = activeSection?.dataset.chapter || main.dataset.chapter;
+    pickerIndex.textContent = `${bookTitles.get(code) ?? main.dataset.bookTitle ?? code} · ${chapter}`;
+  };
 
   let redirectingToSavedPosition = false;
   let savedPosition = null;
@@ -233,7 +260,10 @@
     if (globalThis.requestAnimationFrame) globalThis.requestAnimationFrame(saveVisibleVerse);
     else saveVisibleVerse();
   };
-  globalThis.addEventListener?.("scroll", schedulePositionSave, { passive: true });
+  globalThis.addEventListener?.("scroll", () => {
+    updateStickyIndex();
+    schedulePositionSave();
+  }, { passive: true });
 
   const restorePosition = () => {
     if (globalThis.location?.hash?.length > 1 || !savedPosition
@@ -282,7 +312,7 @@
   // chapter (continuing into the next book) is appended, and the link is retargeted. Without JavaScript it stays a plain link.
   const sentinel = document.querySelector(".reader-next-chapter");
   if (!redirectingToSavedPosition && main && sentinel && "IntersectionObserver" in globalThis) {
-    const titles = Object.fromEntries([...document.querySelectorAll(".reader-book-tile")].map((tile) => [tile.dataset.bookCode, tile.dataset.bookTitle]));
+    const titles = Object.fromEntries(bookTitles);
     let upcoming = nextChapter(main.dataset.catalog, main.dataset.bookCode, Number(main.dataset.chapter));
     let loading = false;
     const label = (next) => `${titles[next.code] ?? next.code} ${next.number}`;
@@ -297,6 +327,7 @@
         });
         main.append(section);
         document.querySelector(".reader-defs")?.append(defs);
+        updateStickyIndex();
         schedulePositionSave();
         upcoming = nextChapter(main.dataset.catalog, next.code, next.number);
         if (upcoming) {

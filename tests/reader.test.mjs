@@ -27,6 +27,7 @@ function runScript(stored = new Map(), storageUnavailable = false) {
     documentElement: { dataset: {} },
     addEventListener() {},
     body: { dataset: { workerUrl: "/MaculaScripta/sw.js" } },
+    querySelectorAll: () => [],
     querySelector: (selector) => (selector === "#reader-theme" ? theme : null)
   };
   let workerUrl;
@@ -132,9 +133,13 @@ test("reader includes the two-step book picker, settings tiles, and verse refere
   const html = page("nt/JHN/index.html");
   assert.equal([...html.matchAll(/reader-book-tile/g)].length, 27);
   assert.match(html, /class="?settings-toggle"?[^>]+aria-expanded="?true"?/);
+  assert.match(html, /class="?settings-icon"?[^>]*>∴<\/span>/);
   assert.match(html, /class="?reader-settings-grid"?/);
   assert.match(html, /reader-demo-tile/);
   assert.match(html, /class="?reader-picker-index"?/);
+  assert.match(html, /id="?reader-full-book-names"?[^>]+type=checkbox/);
+  assert.match(html, /id="?reader-offline"?[^>]+class=reader-toggle-input/);
+  assert.match(html, /<span>John · 1<\/span>/);
   assert.match(html, /data-ref="?JHN\/1:1"?/);
   assert.match(readFileSync(root("site/static/reader.css"), "utf8"), /\.reader-grid-tile \{[^}]*aspect-ratio: 1;/);
   assert.match(readFileSync(root("site/static/sw.js"), "utf8"), /maxCachedChapters = 3/);

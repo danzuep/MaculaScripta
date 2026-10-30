@@ -53,7 +53,7 @@
   <body class="reader-page" data-worker-url="{{ "sw.js" | relURL }}">
     <a class="skip-link" href="#reader">Skip to Greek text</a>
     <button type="button" class="settings-toggle" aria-controls="reader-settings" aria-expanded="true" aria-label="Close reader settings" title="Reader settings">
-      <span aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="settings-icon" aria-hidden="true">∴</span>
     </button>
     <header class="reader-header">
       <section class="reader-settings" id="reader-settings" aria-label="Reader settings">
@@ -73,7 +73,7 @@
           </label>
           <label class="reader-setting-tile reader-offline-tile" for="reader-offline">
             <span>Offline reading</span>
-            <input id="reader-offline" type="checkbox">
+            <input id="reader-offline" class="reader-toggle-input" type="checkbox">
           </label>
           <a class="reader-setting-tile reader-demo-tile" href="{{ "demo/" | relURL }}">John 1:1 demo</a>
         </div>
@@ -89,10 +89,14 @@
     </header>
     <div class="reader-content">
       <button type="button" class="reader-picker-index" aria-controls="reader-picker-panel" aria-expanded="false">
-        Choose book and chapter <span>{{ $code }} · {{ $chapterNumber }}</span>
+        Choose book and chapter <span>{{ $book.title }} · {{ $chapterNumber }}</span>
       </button>
       <section class="reader-picker" aria-label="Choose a book and chapter">
         <div class="reader-picker-content" id="reader-picker-panel" hidden>
+          <label class="reader-full-name-option" for="reader-full-book-names">
+            <input id="reader-full-book-names" class="reader-toggle-input" type="checkbox">
+            <span>Show full book names</span>
+          </label>
           <p class="reader-picker-instruction" id="reader-picker-instruction">1. Choose a book</p>
           <div class="reader-book-grid" role="group" aria-label="Choose a New Testament book">
             {{ range hugo.Data.nt.catalog }}
@@ -108,9 +112,9 @@
         </div>
       </section>
     <div class="reader-layout">
-      <main id="reader" aria-label="{{ $book.title }} Greek text" tabindex="-1" data-book-code="{{ $code }}" data-chapter="{{ $chapterNumber }}" data-data-url="{{ "nt-data/" | relURL }}" data-reader-base="{{ "nt/" | relURL }}" data-catalog="{{ range $index, $entry := hugo.Data.nt.catalog }}{{ if $index }} {{ end }}{{ $entry.code }}:{{ $entry.chapters }}{{ end }}"{{ if not $preloaded }} data-chapter-url="{{ printf "nt-data/%s/%d.tsv" $code $chapterNumber | relURL }}" data-book="{{ $book.title }}"{{ end }}>
+      <main id="reader" aria-label="{{ $book.title }} Greek text" tabindex="-1" data-book-code="{{ $code }}" data-book-title="{{ $book.title }}" data-chapter="{{ $chapterNumber }}" data-data-url="{{ "nt-data/" | relURL }}" data-reader-base="{{ "nt/" | relURL }}" data-catalog="{{ range $index, $entry := hugo.Data.nt.catalog }}{{ if $index }} {{ end }}{{ $entry.code }}:{{ $entry.chapters }}{{ end }}"{{ if not $preloaded }} data-chapter-url="{{ printf "nt-data/%s/%d.tsv" $code $chapterNumber | relURL }}" data-book="{{ $book.title }}"{{ end }}>
         {{ if $preloaded }}
-          <section class="reader-chapter" aria-label="Chapter {{ $chapterNumber }}">
+          <section class="reader-chapter" aria-label="Chapter {{ $chapterNumber }}" data-book-code="{{ $code }}" data-chapter="{{ $chapterNumber }}">
             <p class="reader-flow" lang="grc">
               <sup class="chapter-number"><a href="#" aria-label="Chapter {{ $chapterNumber }}">{{ $chapterNumber }}</a></sup>
               {{- $previous := 0 -}}
