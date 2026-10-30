@@ -43,8 +43,10 @@ jobs:
           echo "${RUNNER_TEMP}/hugo-bin" >> "${GITHUB_PATH}"
       - name: Checkout source
         uses: actions/checkout@v7
-        with:
-          submodules: true
+      - name: Check out Macula Greek TSV (shallow, sparse)
+        run: |
+          git submodule update --init --depth 1 data/macula-greek
+          git -C data/macula-greek sparse-checkout set SBLGNT/tsv
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v6

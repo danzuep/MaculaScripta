@@ -23,7 +23,8 @@
 .chapter-number a:target, .verse-number a:target { outline: 2px solid var(--greek-color); outline-offset: 3px; }
 .reader-page .dataset-attribution code { overflow-wrap: anywhere; }
 /* Ruby clearance: tall line boxes plus rt padding keep annotations off the base text. */
-.reader-flow { margin: 0 0 1rem; font: 1.65rem / 1.6 Georgia, "Times New Roman", serif; overflow-wrap: anywhere; }
+.reader-flow { margin: 0 0 1rem; font: 1.65rem / 1.6 Georgia, "Times New Roman", serif; overflow-wrap: break-word; }
+.reader-token { white-space: nowrap; }
 .reader-word { ruby-position: over; }
 .reader-word rt { padding-bottom: 0.35em; color: var(--english-color); font-size: 0.6em; line-height: normal; white-space: nowrap; }
 .reader-word rt.rt-mandarin { display: none; }

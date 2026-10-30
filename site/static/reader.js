@@ -16,7 +16,13 @@
 
   const separated = (word) => word.text + (/\s$/.test(word.after) ? word.after : word.after + " ");
 
-  // Turns a published chapter file (rows aligned with "fields") into words grouped by verse.
+  // Parses a published chapter TSV (the Macula header and rows, plus part_of_speech and definition columns).
+  function parseTsv(text) {
+    const [header, ...lines] = text.split("\n").filter(Boolean).map((line) => line.split("\t"));
+    return { fields: header, words: lines };
+  }
+
+  // Turns parsed chapter rows (aligned with "fields") into words grouped by verse.
   function chapterModel(chapter) {
     const words = chapter.words.map((row) => Object.fromEntries(chapter.fields.map((field, index) => [field, row[index] ?? ""])));
     const verses = [];
@@ -42,7 +48,7 @@
 
   function renderChapter(chapter, main) {
     const model = chapterModel(chapter);
-    const number = chapter.chapter;
+    const number = Number(model.verses[0]?.words[0].ref.split(" ")[1].split(":")[0]);
     const flow = element("p", { class: "reader-flow", lang: "grc" },
       element("sup", { class: "chapter-number" }, element("a", { href: "#", "aria-label": `Chapter ${number}`, text: number })));
     const defs = document.createDocumentFragment();
@@ -53,14 +59,14 @@
       })));
       for (const word of verse.words) {
         const key = `${verse.number}!${word.position}`;
-        const ruby = element("ruby", { class: "reader-word" },
+        const ruby = element("span", { class: "reader-token" }, element("ruby", { class: "reader-word" },
           element("a", { id: `w${key}`, href: `#${key}`, "aria-label": `${word.text}: ${word.gloss}`, text: word.text }),
           element("rt", { class: "rt-gloss", lang: "en", text: word.gloss }),
-          element("rt", { class: "rt-mandarin", lang: "zh-Hans", text: word.mandarin }));
-        flow.append(ruby, word.after + (/\s$/.test(word.after) ? "" : " "));
+          element("rt", { class: "rt-mandarin", lang: "zh-Hans", text: word.mandarin })), word.after.trim());
+        flow.append(ruby, " ");
         const list = element("dl");
-        const extra = [["part_of_speech", chapter.details?.[word["xml:id"]]], ["definition", chapter.definitions?.[word.lemma]]];
-        for (const [name, value] of [...extra, ...Object.entries(word).filter(([name]) => !["position", "verse"].includes(name))]) {
+        const { part_of_speech, definition, position, verse: verseNumber, ...source } = word;
+        for (const [name, value] of Object.entries({ part_of_speech, definition, ...source })) {
           if (value) list.append(element("dt", { text: name }), element("dd", { text: value }));
         }
         defs.append(element("aside", { class: "reader-def", id: key, "aria-label": `Word details for ${word.text}` },
@@ -78,16 +84,16 @@
     if (hash.length > 1) location.replace(location.pathname + location.search + hash);
   }
 
-  globalThis.MaculaReader = { chapterModel };
+  globalThis.MaculaReader = { chapterModel, parseTsv };
 
   const chapterMain = document.querySelector("main[data-chapter-url]");
   if (chapterMain) {
     fetch(chapterMain.dataset.chapterUrl)
       .then((response) => {
         if (!response.ok) throw new Error(response.statusText);
-        return response.json();
+        return response.text();
       })
-      .then((chapter) => renderChapter(chapter, chapterMain))
+      .then((text) => renderChapter(parseTsv(text), chapterMain))
       .catch(() => {
         chapterMain.replaceChildren(element("p", { class: "reader-loading", role: "alert",
           text: `Unable to load ${chapterMain.dataset.book} ${chapterMain.dataset.chapter}. Check your connection and reload.` }));
