@@ -43,10 +43,17 @@ jobs:
           echo "${RUNNER_TEMP}/hugo-bin" >> "${GITHUB_PATH}"
       - name: Checkout source
         uses: actions/checkout@v7
-      - name: Check out Macula Greek TSV (shallow, sparse)
+      - name: Check out Macula Greek TSV (pinned commit, partial and sparse)
         run: |
-          git submodule update --init --depth 1 data/macula-greek
+          # Fetching without blobs and sparsifying before checkout downloads only SBLGNT/tsv.
+          commit="$(git rev-parse HEAD:data/macula-greek)"
+          url="$(git config -f .gitmodules submodule.data/macula-greek.url)"
+          git init -q data/macula-greek
+          git -C data/macula-greek remote add origin "${url}"
+          git -C data/macula-greek config extensions.partialClone origin
           git -C data/macula-greek sparse-checkout set SBLGNT/tsv
+          git -C data/macula-greek fetch -q --depth 1 --filter=blob:none origin "${commit}"
+          git -C data/macula-greek checkout -q FETCH_HEAD
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v6
