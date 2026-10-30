@@ -27,6 +27,7 @@ function runScript(stored = new Map(), storageUnavailable = false) {
     documentElement: { dataset: {} },
     addEventListener() {},
     body: { dataset: { workerUrl: "/MaculaScripta/sw.js" } },
+    querySelectorAll: () => [],
     querySelector: (selector) => (selector === "#reader-theme" ? theme : null)
   };
   let workerUrl;
@@ -36,7 +37,11 @@ function runScript(stored = new Map(), storageUnavailable = false) {
       getItem(key) { if (storageUnavailable) throw new Error("blocked"); return stored.get(key); },
       setItem(key, value) { if (storageUnavailable) throw new Error("blocked"); stored.set(key, value); }
     },
-    navigator: { serviceWorker: { register(url) { workerUrl = url; return Promise.resolve(); } } }
+    navigator: { serviceWorker: {
+      register(url) { workerUrl = url; return Promise.resolve(); },
+      ready: Promise.resolve({ active: { postMessage() {} } }),
+      addEventListener() {}
+    } }
   };
   vm.runInNewContext(script, context);
   return { theme, document, stored, context, workerUrl: () => workerUrl };
@@ -122,4 +127,22 @@ test("verse numbers sit in one flowing paragraph per chapter, and words are inli
   assert.equal([...html.matchAll(/<p class="?reader-flow"?/g)].length, 1);
   assert.equal([...html.matchAll(/<sup class="?verse-number"?>/g)].length, 51);
   assert.match(readFileSync(root("site/static/reader.css"), "utf8"), /\.reader-token \{ display: inline-block;/);
+});
+
+test("reader includes the two-step book picker, settings tiles, and verse references", { skip: !built && "run hugo --source ./site first" }, () => {
+  const html = page("nt/JHN/index.html");
+  assert.equal([...html.matchAll(/reader-book-tile/g)].length, 27);
+  assert.match(html, /class="?reader-settings-switch"?/);
+  assert.match(html, />⋯<\/span>/);
+  assert.match(html, /class="?reader-settings-columns"?/);
+  assert.match(html, /reader-setting-link/);
+  assert.match(html, /class="?reader-picker-index"?/);
+  assert.match(html, /id="?reader-full-book-names"?[^>]+class=reader-toggle-input/);
+  assert.match(html, /id="?reader-offline"?[^>]+class=reader-toggle-input/);
+  assert.match(html, /class="?reader-book-title"?[^>]*>John 1<\/h1>/);
+  assert.match(html, /class="?reader-picker-bar"?/);
+  assert.match(html, /data-ref="?JHN\/1:1"?/);
+  assert.match(readFileSync(root("site/static/reader.css"), "utf8"), /\.reader-grid-tile \{[^}]*aspect-ratio: 1;/);
+  assert.match(readFileSync(root("site/static/reader.css"), "utf8"), /\.reader-picker-bar\.is-floating/);
+  assert.match(readFileSync(root("site/static/sw.js"), "utf8"), /maxCachedChapters = 3/);
 });
