@@ -1,8 +1,24 @@
 {{- $code := .Params.book | default "1JN" -}}
-{{- $book := index hugo.Data.nt.books $code -}}
 {{- $chapterNumber := int (.Params.chapter | default 1) -}}
-{{- $chapters := slice (index (index hugo.Data.nt $code) (printf "%d" $chapterNumber)) -}}
 {{- $bookInfo := index (where hugo.Data.nt.catalog "code" $code) 0 -}}
+{{- $book := dict "title" $bookInfo.title "chapters" (seq $bookInfo.chapters) -}}
+{{- $preloaded := in (site.Params.preloadedBooks | default (slice "1JN")) $code -}}
+{{- $words := slice -}}
+{{- $plain := "" -}}
+{{- $verseText := newScratch -}}
+{{- if $preloaded -}}
+  {{- $data := partialCached "nt-data.html" "nt" -}}
+  {{- range index $data.chapters (printf "%s/%d" $code $chapterNumber) -}}
+    {{- $row := . -}}
+    {{- $word := dict -}}
+    {{- range $i, $field := $data.fields }}{{ $word = merge $word (dict $field (index $row $i)) }}{{ end -}}
+    {{- $words = $words | append $word -}}
+    {{- $piece := printf "%s%s" $word.text (cond (findRE "\\s$" $word.after) $word.after (printf "%s " $word.after)) -}}
+    {{- $plain = printf "%s%s" $plain $piece -}}
+    {{- $verseText.Add (index (split (index (split $word.ref ":") 1) "!") 0) $piece -}}
+  {{- end -}}
+{{- end -}}
+{{- $plain = trim $plain " " -}}
 {{- $bookPath := printf "nt/%s/" $code -}}
 {{- $nextChapterNumber := add $chapterNumber 1 -}}
 {{- $nextChapterPath := "" -}}
@@ -22,9 +38,6 @@
     {{- $nextChapterTitle = printf "%s 1" $nextBookInfo.title -}}
   {{- end -}}
 {{- end -}}
-{{- $plain := "" -}}
-{{- range $chapters }}{{ range .verses }}{{ range .words }}{{ $plain = printf "%s%s%s" $plain .text (cond (findRE "\\s$" (.after | default "")) .after (printf "%s " (.after | default ""))) }}{{ end }}{{ end }}{{ end -}}
-{{- $plain = trim $plain " " -}}
 <!doctype html>
 <html lang="en">
   <head>
@@ -74,8 +87,8 @@
         <span>Chapters</span>
         {{ range $book.chapters }}
           {{- $path := $bookPath -}}
-          {{- if ne (int .number) 1 }}{{ $path = printf "%s%d/" $bookPath (int .number) }}{{ end -}}
-          <a href="{{ $path | relURL }}"{{ if eq (int .number) $chapterNumber }} aria-current="page"{{ end }}>{{ .number }}</a>
+          {{- if ne . 1 }}{{ $path = printf "%s%d/" $bookPath . }}{{ end -}}
+          <a href="{{ $path | relURL }}"{{ if eq . $chapterNumber }} aria-current="page"{{ end }}>{{ . }}</a>
         {{ end }}
       </nav>
       <p class="reader-hint">Select any Greek word to inspect its complete source metadata.</p>
@@ -86,28 +99,30 @@
       </div>
     </header>
     <div class="reader-layout">
-      <main id="reader" aria-label="{{ $book.title }} Greek text" tabindex="-1">
-        {{ range $chapters }}
-          {{- $chapter := .number -}}
-          <section class="reader-chapter" aria-label="Chapter {{ $chapter }}">
+      <main id="reader" aria-label="{{ $book.title }} Greek text" tabindex="-1"{{ if not $preloaded }} data-chapter-url="{{ printf "nt-data/%s/%d.json" $code $chapterNumber | relURL }}" data-book="{{ $book.title }}" data-chapter="{{ $chapterNumber }}"{{ end }}>
+        {{ if $preloaded }}
+          <section class="reader-chapter" aria-label="Chapter {{ $chapterNumber }}">
             <p class="reader-flow" lang="grc">
-              <sup class="chapter-number"><a href="#" aria-label="Chapter {{ $chapter }}">{{ $chapter }}</a></sup>
-              {{- range .verses -}}
-                {{- $verse := .number -}}
-                {{- $verseText := "" -}}
-                {{- range .words }}{{ $verseText = printf "%s%s%s" $verseText .text (cond (findRE "\\s$" (.after | default "")) .after (printf "%s " (.after | default ""))) }}{{ end -}}
-                <sup class="verse-number"><a id="{{ .number }}" href="#{{ .number }}" data-text="{{ trim $verseText " " }}" aria-label="Chapter {{ $chapter }}, verse {{ .number }}">{{ .number }}</a></sup>
-                {{- range .words -}}
-                  <ruby class="reader-word"><a id="w{{ $verse }}!{{ index (split .ref "!") 1 }}" href="#{{ $verse }}!{{ index (split .ref "!") 1 }}" aria-label="{{ .text }}: {{ .gloss }}">{{ .text }}</a><rt class="rt-gloss" lang="en">{{ .gloss }}</rt><rt class="rt-mandarin" lang="zh-Hans">{{ .mandarin }}</rt></ruby>{{ .after }}{{ if not (findRE "\\s$" (.after | default "")) }} {{ end }}
+              <sup class="chapter-number"><a href="#" aria-label="Chapter {{ $chapterNumber }}">{{ $chapterNumber }}</a></sup>
+              {{- $previous := 0 -}}
+              {{- range $words -}}
+                {{- $verse := int (index (split (index (split .ref ":") 1) "!") 0) -}}
+                {{- if ne $verse $previous -}}
+                  {{- $previous = $verse -}}
+                  <sup class="verse-number"><a id="{{ $verse }}" href="#{{ $verse }}" data-text="{{ trim ($verseText.Get (string $verse)) " " }}" aria-label="Chapter {{ $chapterNumber }}, verse {{ $verse }}">{{ $verse }}</a></sup>
                 {{- end -}}
+                <ruby class="reader-word"><a id="w{{ $verse }}!{{ index (split .ref "!") 1 }}" href="#{{ $verse }}!{{ index (split .ref "!") 1 }}" aria-label="{{ .text }}: {{ .gloss }}">{{ .text }}</a><rt class="rt-gloss" lang="en">{{ .gloss }}</rt><rt class="rt-mandarin" lang="zh-Hans">{{ .mandarin }}</rt></ruby>{{ .after }}{{ if not (findRE "\\s$" .after) }} {{ end }}
               {{- end -}}
             </p>
           </section>
+        {{ else }}
+          <p class="reader-loading" role="status">Loading {{ $book.title }} {{ $chapterNumber }}…</p>
+          <noscript><p>JavaScript is required to load this chapter. The preloaded <a href="{{ "nt/1JN/" | relURL }}">1 John</a> works without it.</p></noscript>
         {{ end }}
       </main>
     </div>
     <div class="reader-defs">
-      {{- range $chapters }}{{ range .verses }}{{ range .words -}}
+      {{- range $words -}}
         {{- $id := index . "xml:id" -}}
         {{- $verse := index (split (index (split .ref ":") 1) "!") 0 -}}
         <aside class="reader-def" id="{{ $verse }}!{{ index (split .ref "!") 1 }}" aria-label="Word details for {{ .text }}">
@@ -116,15 +131,13 @@
             <a class="reader-close" href="#_" aria-label="Close word details">×</a>
           </header>
           <p class="reader-def-ref">{{ .ref }}</p>
-          {{ with .ipa }}<p class="reader-def-ipa">{{ . }}</p>{{ end }}
-          {{ with .syllables }}<p class="reader-def-syllables">{{ delimit . " · " }}</p>{{ end }}
           <dl>
             {{ with index hugo.Data.greek_token_details $id }}<dt>part_of_speech</dt><dd>{{ .part_of_speech }}</dd>{{ end }}
             {{ with index hugo.Data.greek_lemma_definitions .lemma }}<dt>definition</dt><dd>{{ . }}</dd>{{ end }}
             {{ range $field, $value := . }}{{ if ne $value "" }}<dt>{{ $field }}</dt><dd>{{ $value }}</dd>{{ end }}{{ end }}
           </dl>
         </aside>
-      {{- end }}{{ end }}{{ end -}}
+      {{- end -}}
     </div>
     {{ with $nextChapterPath }}
       <nav class="reader-next-chapter" aria-label="Next chapter">
@@ -137,7 +150,7 @@
         Cherith glosses © 2023 Andi Wu / Cherith Analytics, CC BY 4.0.
         Berean glosses are public domain.
         <a href="https://github.com/Clear-Bible/macula-greek/blob/main/LICENSE.md">Upstream licenses and attribution</a>.
-        {{ with $book.source_commit }}Source commit: <code>{{ . }}</code>.{{ end }}</p>
+        Source: <code>macula-greek</code> SBLGNT TSV, read directly at build time.</p>
     </footer>
   </body>
 </html>

@@ -5,3 +5,20 @@ title = "MaculaScripta"
 [params]
 rawManuscriptBaseURL = ""
 buildVersion = "local"
+preloadedBooks = ["1JN"]
+
+[[module.mounts]]
+source = "content"
+target = "content"
+[[module.mounts]]
+source = "data"
+target = "data"
+[[module.mounts]]
+source = "layouts"
+target = "layouts"
+[[module.mounts]]
+source = "static"
+target = "static"
+[[module.mounts]]
+source = "../data/macula-greek/SBLGNT/tsv"
+target = "assets/macula"

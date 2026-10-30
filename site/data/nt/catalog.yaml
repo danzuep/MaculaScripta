@@ -1,15 +1,15 @@
 - code: MAT
   title: Matthew
   chapters: 28
-  available: false
+  available: true
 - code: MRK
   title: Mark
   chapters: 16
-  available: false
+  available: true
 - code: LUK
   title: Luke
   chapters: 24
-  available: false
+  available: true
 - code: JHN
   title: John
   chapters: 21
@@ -17,75 +17,75 @@
 - code: ACT
   title: Acts
   chapters: 28
-  available: false
+  available: true
 - code: ROM
   title: Romans
   chapters: 16
-  available: false
+  available: true
 - code: 1CO
   title: 1 Corinthians
   chapters: 16
-  available: false
+  available: true
 - code: 2CO
   title: 2 Corinthians
   chapters: 13
-  available: false
+  available: true
 - code: GAL
   title: Galatians
   chapters: 6
-  available: false
+  available: true
 - code: EPH
   title: Ephesians
   chapters: 6
-  available: false
+  available: true
 - code: PHP
   title: Philippians
   chapters: 4
-  available: false
+  available: true
 - code: COL
   title: Colossians
   chapters: 4
-  available: false
+  available: true
 - code: 1TH
   title: 1 Thessalonians
   chapters: 5
-  available: false
+  available: true
 - code: 2TH
   title: 2 Thessalonians
   chapters: 3
-  available: false
+  available: true
 - code: 1TI
   title: 1 Timothy
   chapters: 6
-  available: false
+  available: true
 - code: 2TI
   title: 2 Timothy
   chapters: 4
-  available: false
+  available: true
 - code: TIT
   title: Titus
   chapters: 3
-  available: false
+  available: true
 - code: PHM
   title: Philemon
   chapters: 1
-  available: false
+  available: true
 - code: HEB
   title: Hebrews
   chapters: 13
-  available: false
+  available: true
 - code: JAS
   title: James
   chapters: 5
-  available: false
+  available: true
 - code: 1PE
   title: 1 Peter
   chapters: 5
-  available: false
+  available: true
 - code: 2PE
   title: 2 Peter
   chapters: 3
-  available: false
+  available: true
 - code: 1JN
   title: 1 John
   chapters: 5
@@ -93,16 +93,16 @@
 - code: 2JN
   title: 2 John
   chapters: 1
-  available: false
+  available: true
 - code: 3JN
   title: 3 John
   chapters: 1
-  available: false
+  available: true
 - code: JUD
   title: Jude
   chapters: 1
-  available: false
+  available: true
 - code: REV
   title: Revelation
   chapters: 22
-  available: false
+  available: true

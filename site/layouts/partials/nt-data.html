@@ -1,0 +1,12 @@
+{{- /* Groups the upstream Macula SBLGNT TSV (mounted at assets/macula) into "BOOK/chapter" => word rows. Cached for the whole build. */ -}}
+{{- $rows := resources.Get "macula/macula-greek-SBLGNT.tsv" | transform.Unmarshal (dict "format" "csv" "delimiter" "\t") -}}
+{{- $s := newScratch -}}
+{{- range after 1 $rows -}}
+  {{- $parts := split (index . 1) " " -}}
+  {{- $s.Add (printf "%s/%s" (index $parts 0) (index (split (index $parts 1) ":") 0)) (slice (dict "row" .)) -}}
+{{- end -}}
+{{- $chapters := dict -}}
+{{- range $key, $entries := $s.Values -}}
+  {{- $chapters = merge $chapters (dict $key (apply $entries "index" "." "row")) -}}
+{{- end -}}
+{{- return (dict "fields" (index $rows 0) "chapters" $chapters) -}}

@@ -7,7 +7,6 @@ MaculaScripta is a Hugo Greek New Testament reader with a .NET 10 foundation for
 - `source/MaculaScripta.Contracts` contains dependency-free domain records.
 - `source/MaculaScripta.Core` contains gloss resolution, lemma frequency ranking, and lemma audio binding.
 - `source/protos/macula_scripta.proto` is a proposed gRPC contract, not used by the reader or either C# project. There is deliberately no `Grpc.Tools` project or generated client/server until an actual transport implementation needs it.
-- `source/import_macula.py` imports the upstream word data without additional Python packages.
 - `data/macula-greek` is the pinned [Macula Greek](https://github.com/Clear-Bible/macula-greek) Git submodule.
 - `site/` is the Hugo reader, with the original overlay editor and recorder at `/demo/`.
 
@@ -20,57 +19,39 @@ dotnet build MaculaScripta.slnx
 ## Greek New Testament reader
 
 The homepage and `/nt/1JN/` display the first chapter of **1 John** as continuous
-Greek text, retaining the upstream punctuation. **John** is also ready at
-`/nt/JHN/`. Use the chapter links to navigate: each page renders and embeds
-metadata for only one chapter (for example, `/nt/JHN/2/`), keeping downloads small.
-Chapter and verse superscripts provide link targets. Every page is generated from
-`site/data/nt` by Hugo and works without JavaScript: each Greek word is a link to a
-CSS `:target` details pane holding its full source metadata, hovering shows a
-gloss tooltip, a switch hides the ruby annotations, and a copy button copies the
-plain Greek text. A few lines of JavaScript only persist the theme and register
-the service worker.
-In **Settings**, choose Gloss (the default, from the `gloss` field), Chinese (Mandarin),
-any other source field, or no ruby annotation. Glosses are word-level aids, not
-a running Bible translation. The reader reuses the workbench's light/dark CSS.
-The existing John 1:1 workbench remains available at `/demo/` and `/john-1-1/`.
+Greek text, retaining the upstream punctuation. All 27 books are navigable, one
+chapter per page (for example, `/nt/JHN/2/`). **1 John is preloaded**: Hugo renders
+its HTML from the upstream TSV, so it works without JavaScript. Every other chapter
+is a small page shell; `site/static/reader.js` fetches that chapter's JSON
+(`/nt-data/<book>/<chapter>.json`) when the page opens and renders it with the same
+markup. Each Greek word is a link to a CSS `:target` details pane holding its full
+source metadata, hovering shows a gloss tooltip, a switch hides the ruby
+annotations, and a copy button copies the plain Greek text.
+Glosses are word-level aids, not a running Bible translation. The reader reuses
+the workbench's light/dark CSS. The existing John 1:1 workbench remains available
+at `/demo/` and `/john-1-1/`.
 
-The navigation lists all 27 New Testament books; books not yet imported are
-marked unavailable rather than linked to empty pages. To reproduce the published books:
+There is no import step and no generated data is committed. `site/hugo.toml` mounts
+`data/macula-greek/SBLGNT/tsv` (the git submodule) as Hugo assets, and
+`site/layouts/partials/nt-data.html` reads `macula-greek-SBLGNT.tsv` with
+`transform.Unmarshal`, grouping words by book and chapter. `nt-publish.html` writes one JSON file
+per chapter at build time (rows aligned with a `fields` header, plus the optional
+`details` and `definitions` lookups from `site/data`). To change which books are
+preloaded, edit `preloadedBooks` in `site/hugo.toml`. `site/data/nt/catalog.yaml`
+lists the books and chapter counts.
 
 ```sh
 git submodule update --init --depth 1
-python3 -m pip install -r requirements.txt
-python3 source/import_macula.py
 hugo --source ./site --minify
 ```
 
-To add books or import the entire New Testament:
+Dependabot proposes weekly submodule updates (`.github/dependabot.yml`), so the
+published data tracks upstream through reviewed pull requests; the submodule pointer
+pins the exact upstream commit. Review upstream changes and licensing before merging.
+`site/public/` is build output and is not committed. Validate with:
 
 ```sh
-python3 source/import_macula.py --books JHN ROM
-python3 source/import_macula.py --all
-```
-
-The importer reads `data/macula-greek/SBLGNT/tsv/macula-greek-SBLGNT.tsv` once,
-preserves **every** column as a string, and writes deterministic JSON-compatible
-native YAML: book metadata under `site/data/nt/books/` and word data in separate
-files under `site/data/nt/<book>/<chapter>.yaml` (for example,
-`site/data/nt/1JN/1.yaml`).
-The default import includes both John and 1 John. It also creates book and chapter
-pages under `site/content/nt/` and updates `site/data/nt/catalog.yaml`, retaining
-previously imported books. Each book records the source commit and TSV path.
-Hugo reads this checked-in data directly, so normal Pages builds need neither
-Python nor a submodule checkout. The TSV avoids the unused syntax-tree processing
-and gRPC dependencies; the derived book files avoid loading the entire upstream
-New Testament for the MVP.
-
-To update the dataset intentionally, update the submodule checkout, rerun the
-importer for all published books, and commit both the submodule pointer and
-generated files. Review upstream changes and licensing before publishing.
-Validate the import and existing browser logic with:
-
-```sh
-python3 -m unittest discover -s tests -p 'test_*.py'
+hugo --source ./site --minify
 node --test tests/*.test.mjs
 ```
 
@@ -80,7 +61,7 @@ https://github.com/Clear-Bible/macula-greek/, © 2022–2024 Biblica, Inc.,
 Testament is edited by Michael W. Holmes (Society of Biblical Literature and
 Logos Bible Software), CC BY 4.0. English and Chinese Cherith glosses are
 © 2023 Andi Wu / Cherith Analytics, CC BY 4.0; Berean glosses are public domain.
-The YAML files reorganize the upstream TSV without editing its word fields.
+The site reorganizes the upstream TSV without editing its word fields.
 See the [upstream source notices and license](https://github.com/Clear-Bible/macula-greek/blob/main/LICENSE.md)
 for all included annotations and sources.
 
