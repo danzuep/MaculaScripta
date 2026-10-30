@@ -52,45 +52,34 @@
   </head>
   <body class="reader-page" data-worker-url="{{ "sw.js" | relURL }}">
     <a class="skip-link" href="#reader">Skip to Greek text</a>
+    <button type="button" class="settings-toggle" aria-controls="reader-settings" aria-expanded="true" aria-label="Close reader settings" title="Reader settings">
+      <span aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
     <header class="reader-header">
-      <a class="brand" href="{{ .Site.Home.RelPermalink }}">MaculaScripta<span>Greek New Testament</span></a>
-      <nav class="reader-tools" aria-label="Reader tools">
-        <a href="{{ "demo/" | relURL }}">John 1:1 audio translation workbench demo</a>
-        <details class="settings">
-          <summary>Reader settings</summary>
-          <label for="reader-annotation">Word annotation
+      <section class="reader-settings" id="reader-settings" aria-label="Reader settings">
+        <h2>Reader settings</h2>
+        <div class="reader-settings-grid">
+          <label class="reader-setting-tile" for="reader-annotation"><span>Annotations</span>
             <select id="reader-annotation">
               <option value="gloss">Gloss</option>
-              <option value="mandarin">Chinese (Mandarin)</option>
+              <option value="mandarin">Chinese</option>
             </select>
           </label>
-          <label for="reader-theme">Appearance
+          <label class="reader-setting-tile" for="reader-theme"><span>Appearance</span>
             <select id="reader-theme">
               <option value="dark">Dark</option>
               <option value="light">Light</option>
             </select>
           </label>
-        </details>
-      </nav>
-      <details class="reader-books">
-        <summary>New Testament books</summary>
-        <nav aria-label="New Testament books">
-          <ul>
-            {{ range hugo.Data.nt.catalog }}
-              <li>{{ if .available }}<a href="{{ printf "nt/%s/" .code | relURL }}"{{ if eq .code $code }} aria-current="page"{{ end }}>{{ .title }}</a>{{ else }}<span aria-disabled="true">{{ .title }} <small>Not yet imported</small></span>{{ end }}</li>
-            {{ end }}
-          </ul>
-        </nav>
-      </details>
+          <label class="reader-setting-tile reader-offline-tile" for="reader-offline">
+            <span>Offline reading</span>
+            <input id="reader-offline" type="checkbox">
+          </label>
+          <a class="reader-setting-tile reader-demo-tile" href="{{ "demo/" | relURL }}">John 1:1 demo</a>
+        </div>
+      </section>
+      <a class="brand" href="{{ .Site.Home.RelPermalink }}">MaculaScripta<span>Greek New Testament</span></a>
       <h1>{{ $book.title }} {{ $chapterNumber }}</h1>
-      <nav class="reader-chapters" aria-label="{{ $book.title }} chapters">
-        <span>Chapters</span>
-        {{ range $book.chapters }}
-          {{- $path := $bookPath -}}
-          {{- if ne . 1 }}{{ $path = printf "%s%d/" $bookPath . }}{{ end -}}
-          <a href="{{ $path | relURL }}"{{ if eq . $chapterNumber }} aria-current="page"{{ end }}>{{ . }}</a>
-        {{ end }}
-      </nav>
       <p class="reader-hint">Select any Greek word to inspect its complete source metadata.</p>
       <div class="reader-controls">
         <input type="checkbox" id="reader-ruby" class="reader-ruby-input" checked>
@@ -98,8 +87,28 @@
         <button type="button" class="reader-copy" data-text="{{ $plain }}" aria-label="Copy plain Greek text" title="Copy plain text (the selected verse, if any)">⧉ <span>Copy</span></button>
       </div>
     </header>
+    <div class="reader-content">
+      <button type="button" class="reader-picker-index" aria-controls="reader-picker-panel" aria-expanded="false">
+        Choose book and chapter <span>{{ $code }} · {{ $chapterNumber }}</span>
+      </button>
+      <section class="reader-picker" aria-label="Choose a book and chapter">
+        <div class="reader-picker-content" id="reader-picker-panel" hidden>
+          <p class="reader-picker-instruction" id="reader-picker-instruction">1. Choose a book</p>
+          <div class="reader-book-grid" role="group" aria-label="Choose a New Testament book">
+            {{ range hugo.Data.nt.catalog }}
+              {{ if .available }}
+                <button type="button" class="reader-grid-tile reader-book-tile" data-book-code="{{ .code }}" data-book-title="{{ .title }}" data-chapters="{{ .chapters }}" aria-label="{{ .title }}">{{ .code }}</button>
+              {{ end }}
+            {{ end }}
+          </div>
+          <div class="reader-chapter-picker" hidden>
+            <button type="button" class="reader-picker-back">← Books</button>
+            <div class="reader-chapter-grid" role="group" aria-label="Choose a chapter"></div>
+          </div>
+        </div>
+      </section>
     <div class="reader-layout">
-      <main id="reader" aria-label="{{ $book.title }} Greek text" tabindex="-1" data-book-code="{{ $code }}" data-chapter="{{ $chapterNumber }}" data-data-url="{{ "nt-data/" | relURL }}" data-catalog="{{ range $index, $entry := hugo.Data.nt.catalog }}{{ if $index }} {{ end }}{{ $entry.code }}:{{ $entry.chapters }}{{ end }}"{{ if not $preloaded }} data-chapter-url="{{ printf "nt-data/%s/%d.tsv" $code $chapterNumber | relURL }}" data-book="{{ $book.title }}"{{ end }}>
+      <main id="reader" aria-label="{{ $book.title }} Greek text" tabindex="-1" data-book-code="{{ $code }}" data-chapter="{{ $chapterNumber }}" data-data-url="{{ "nt-data/" | relURL }}" data-reader-base="{{ "nt/" | relURL }}" data-catalog="{{ range $index, $entry := hugo.Data.nt.catalog }}{{ if $index }} {{ end }}{{ $entry.code }}:{{ $entry.chapters }}{{ end }}"{{ if not $preloaded }} data-chapter-url="{{ printf "nt-data/%s/%d.tsv" $code $chapterNumber | relURL }}" data-book="{{ $book.title }}"{{ end }}>
         {{ if $preloaded }}
           <section class="reader-chapter" aria-label="Chapter {{ $chapterNumber }}">
             <p class="reader-flow" lang="grc">
@@ -109,7 +118,7 @@
                 {{- $verse := int (index (split (index (split .ref ":") 1) "!") 0) -}}
                 {{- if ne $verse $previous -}}
                   {{- $previous = $verse -}}
-                  <sup class="verse-number"><a id="{{ $verse }}" href="#{{ $verse }}" data-text="{{ trim ($verseText.Get (string $verse)) " " }}" aria-label="Chapter {{ $chapterNumber }}, verse {{ $verse }}">{{ $verse }}</a></sup>
+                  <sup class="verse-number"><a id="{{ $verse }}" href="#{{ $verse }}" data-ref="{{ $code }}/{{ $chapterNumber }}:{{ $verse }}" data-text="{{ trim ($verseText.Get (string $verse)) " " }}" aria-label="Chapter {{ $chapterNumber }}, verse {{ $verse }}">{{ $verse }}</a></sup>
                 {{- end -}}
                 <span class="reader-token"><ruby class="reader-word"><a id="w{{ $verse }}!{{ index (split .ref "!") 1 }}" href="#{{ $verse }}!{{ index (split .ref "!") 1 }}" aria-label="{{ .text }}: {{ .gloss }}">{{ .text }}</a><rt class="rt-gloss" lang="en">{{ .gloss }}</rt><rt class="rt-mandarin" lang="zh-Hans">{{ .mandarin }}</rt></ruby>{{ trim .after " " }}</span>{{ " " }}
               {{- end -}}
@@ -144,6 +153,7 @@
         <a href="{{ . | relURL }}">Next chapter: {{ $nextChapterTitle }} →</a>
       </nav>
     {{ end }}
+    </div>
     <footer class="dataset-attribution">
       <p>MACULA Greek Linguistic Datasets © Biblica, CC BY 4.0.
         SBLGNT by Michael W. Holmes / Society of Biblical Literature / Logos, CC BY 4.0.

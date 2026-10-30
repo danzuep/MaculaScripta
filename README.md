@@ -48,6 +48,14 @@ fallback link without JavaScript. To change which books are
 preloaded, edit `preloadedBooks` in `site/hugo.toml`. `site/data/nt/catalog.yaml`
 lists the books and chapter counts.
 
+The sticky book index uses three-letter tiles: choose a book, then a chapter. The
+three-dot settings control opens the settings grid (including the demo and offline
+reading mode) and collapses after a chapter is chosen. The reader saves the last
+visible verse in browser storage and resumes there on return. By default, the service
+worker keeps the three most recently read chapter files; enabling **Offline reading**
+retains opened reader pages and chapter files as they are accessed, without
+downloading the entire New Testament.
+
 ```sh
 git submodule update --init --depth 1 data/macula-greek
 git -C data/macula-greek sparse-checkout set SBLGNT/tsv
