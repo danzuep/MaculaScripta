@@ -19,7 +19,7 @@ for (const line of tsv.slice(1)) {
   if (!chapterRows.has(key)) chapterRows.set(key, []);
   chapterRows.get(key).push(row);
 }
-const built = existsSync(root("site/public/nt-data/1JN/1.json"));
+const built = existsSync(root("site/public/nt-data/JHN/1.tsv"));
 
 function runScript(stored = new Map(), storageUnavailable = false) {
   const theme = { value: "", events: {}, addEventListener(name, handler) { this.events[name] = handler; } };
@@ -66,37 +66,60 @@ test("the TSV covers every catalog chapter", () => {
 
 test("chapterModel groups published rows by verse and rebuilds the plain text", () => {
   const { chapterModel } = runScript().context.MaculaReader;
-  const rows = chapterRows.get("1JN/1");
+  const rows = chapterRows.get("JHN/1");
   const model = chapterModel({ fields, words: rows });
-  assert.equal(model.verses.length, 10);
+  assert.equal(model.verses.length, 51);
   assert.equal(model.verses.flatMap((verse) => verse.words).length, rows.length);
   assert.equal(model.verses[0].words[0].text, rows[0][fields.indexOf("text")]);
   assert.equal(model.verses[0].words[0].verse, "1");
   assert.equal(model.verses[0].words[0].position, "1");
-  assert.match(model.verses[0].plain, /^Ὃ ἦν ἀπ’ ἀρχῆς,/);
+  assert.match(model.verses[0].plain, /^Ἐν ἀρχῇ ἦν ὁ λόγος,/);
 });
 
-test("1 John is preloaded as complete HTML, other books are client-loaded", { skip: !built && "run hugo --source ./site first" }, () => {
-  for (let number = 1; number <= 5; number++) {
-    const html = page(`nt/1JN/${number === 1 ? "" : `${number}/`}index.html`);
-    const rows = chapterRows.get(`1JN/${number}`);
+test("nextChapter continues through chapters, into the next book, and stops after Revelation", () => {
+  const { nextChapter } = runScript().context.MaculaReader;
+  const catalog = "JHN:21 ACT:28 REV:22";
+  assert.equal(JSON.stringify(nextChapter(catalog, "JHN", 3)), JSON.stringify({ code: "JHN", number: 4 }));
+  assert.equal(JSON.stringify(nextChapter(catalog, "JHN", 21)), JSON.stringify({ code: "ACT", number: 1 }));
+  assert.equal(nextChapter(catalog, "REV", 22), null);
+  assert.equal(nextChapter(catalog, "XXX", 1), null);
+});
+
+test("parseTsv reads a published chapter file", () => {
+  const { parseTsv } = runScript().context.MaculaReader;
+  const parsed = parseTsv("a\tb\n1\t\n2\tx\n");
+  assert.equal(JSON.stringify(parsed), JSON.stringify({ fields: ["a", "b"], words: [["1", ""], ["2", "x"]] }));
+});
+
+test("John is preloaded as complete HTML, other books are client-loaded", { skip: !built && "run hugo --source ./site first" }, () => {
+  for (let number = 1; number <= 21; number++) {
+    const html = page(`nt/JHN/${number === 1 ? "" : `${number}/`}index.html`);
+    const rows = chapterRows.get(`JHN/${number}`);
     assert.equal([...html.matchAll(/<ruby class="?reader-word"?>/g)].length, rows.length);
     assert.equal([...html.matchAll(/<aside class="?reader-def"? /g)].length, rows.length);
-    assert(!html.includes("data-chapter-url"));
+    assert.equal([...html.matchAll(/<span class="?reader-token"?>/g)].length, rows.length);
+    assert(!html.includes("data-chapter-url="));
   }
-  const shell = page("nt/JHN/2/index.html");
-  assert(shell.includes("data-chapter-url=/MaculaScripta/nt-data/JHN/2.json") || shell.includes('data-chapter-url="/MaculaScripta/nt-data/JHN/2.json"'));
+  const shell = page("nt/1JN/2/index.html");
+  assert.match(shell, /data-chapter-url="?\/MaculaScripta\/nt-data\/1JN\/2\.tsv"?[ >]/);
   assert(!shell.includes("reader-word"));
   assert.match(page("nt/JHN/21/index.html"), /Next chapter: Acts 1/);
   assert.match(page("nt/1JN/5/index.html"), /Next chapter: 2 John 1/);
 });
 
-test("every chapter is published as JSON matching the TSV", { skip: !built && "run hugo --source ./site first" }, () => {
+test("every chapter is published as the original TSV plus lookup columns", { skip: !built && "run hugo --source ./site first" }, () => {
   for (const [key, rows] of chapterRows) {
-    const json = JSON.parse(readFileSync(root(`site/public/nt-data/${key}.json`), "utf8"));
-    assert.deepEqual(json.fields, fields, key);
-    assert.deepEqual(json.words, rows, key);
+    const [header, ...lines] = readFileSync(root(`site/public/nt-data/${key}.tsv`), "utf8").replace(/\n$/, "").split("\n");
+    assert.deepEqual(header.split("\t"), [...fields, "part_of_speech", "definition"], key);
+    assert.deepEqual(lines.map((line) => line.split("\t").slice(0, fields.length)), rows, key);
   }
-  const john = JSON.parse(readFileSync(root("site/public/nt-data/JHN/1.json"), "utf8"));
-  assert.equal(john.details.n43001001001, "Preposition");
+  const [, first] = readFileSync(root("site/public/nt-data/JHN/1.tsv"), "utf8").split("\n");
+  assert.equal(first.split("\t").at(-2), "Preposition");
+});
+
+test("verse numbers sit in one flowing paragraph per chapter, and words are inline-block tokens", { skip: !built && "run hugo --source ./site first" }, () => {
+  const html = page("nt/JHN/index.html");
+  assert.equal([...html.matchAll(/<p class="?reader-flow"?/g)].length, 1);
+  assert.equal([...html.matchAll(/<sup class="?verse-number"?>/g)].length, 51);
+  assert.match(readFileSync(root("site/static/reader.css"), "utf8"), /\.reader-token \{ display: inline-block;/);
 });

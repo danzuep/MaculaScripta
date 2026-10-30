@@ -1,8 +1,8 @@
-{{- $code := .Params.book | default "1JN" -}}
+{{- $code := .Params.book | default "JHN" -}}
 {{- $chapterNumber := int (.Params.chapter | default 1) -}}
 {{- $bookInfo := index (where hugo.Data.nt.catalog "code" $code) 0 -}}
 {{- $book := dict "title" $bookInfo.title "chapters" (seq $bookInfo.chapters) -}}
-{{- $preloaded := in (site.Params.preloadedBooks | default (slice "1JN")) $code -}}
+{{- $preloaded := in (site.Params.preloadedBooks | default (slice "JHN")) $code -}}
 {{- $words := slice -}}
 {{- $plain := "" -}}
 {{- $verseText := newScratch -}}
@@ -99,7 +99,7 @@
       </div>
     </header>
     <div class="reader-layout">
-      <main id="reader" aria-label="{{ $book.title }} Greek text" tabindex="-1"{{ if not $preloaded }} data-chapter-url="{{ printf "nt-data/%s/%d.json" $code $chapterNumber | relURL }}" data-book="{{ $book.title }}" data-chapter="{{ $chapterNumber }}"{{ end }}>
+      <main id="reader" aria-label="{{ $book.title }} Greek text" tabindex="-1" data-book-code="{{ $code }}" data-chapter="{{ $chapterNumber }}" data-data-url="{{ "nt-data/" | relURL }}" data-catalog="{{ range $index, $entry := hugo.Data.nt.catalog }}{{ if $index }} {{ end }}{{ $entry.code }}:{{ $entry.chapters }}{{ end }}"{{ if not $preloaded }} data-chapter-url="{{ printf "nt-data/%s/%d.tsv" $code $chapterNumber | relURL }}" data-book="{{ $book.title }}"{{ end }}>
         {{ if $preloaded }}
           <section class="reader-chapter" aria-label="Chapter {{ $chapterNumber }}">
             <p class="reader-flow" lang="grc">
@@ -111,13 +111,13 @@
                   {{- $previous = $verse -}}
                   <sup class="verse-number"><a id="{{ $verse }}" href="#{{ $verse }}" data-text="{{ trim ($verseText.Get (string $verse)) " " }}" aria-label="Chapter {{ $chapterNumber }}, verse {{ $verse }}">{{ $verse }}</a></sup>
                 {{- end -}}
-                <ruby class="reader-word"><a id="w{{ $verse }}!{{ index (split .ref "!") 1 }}" href="#{{ $verse }}!{{ index (split .ref "!") 1 }}" aria-label="{{ .text }}: {{ .gloss }}">{{ .text }}</a><rt class="rt-gloss" lang="en">{{ .gloss }}</rt><rt class="rt-mandarin" lang="zh-Hans">{{ .mandarin }}</rt></ruby>{{ .after }}{{ if not (findRE "\\s$" .after) }} {{ end }}
+                <span class="reader-token"><ruby class="reader-word"><a id="w{{ $verse }}!{{ index (split .ref "!") 1 }}" href="#{{ $verse }}!{{ index (split .ref "!") 1 }}" aria-label="{{ .text }}: {{ .gloss }}">{{ .text }}</a><rt class="rt-gloss" lang="en">{{ .gloss }}</rt><rt class="rt-mandarin" lang="zh-Hans">{{ .mandarin }}</rt></ruby>{{ trim .after " " }}</span>{{ " " }}
               {{- end -}}
             </p>
           </section>
         {{ else }}
           <p class="reader-loading" role="status">Loading {{ $book.title }} {{ $chapterNumber }}…</p>
-          <noscript><p>JavaScript is required to load this chapter. The preloaded <a href="{{ "nt/1JN/" | relURL }}">1 John</a> works without it.</p></noscript>
+          <noscript><p>JavaScript is required to load this chapter. The preloaded <a href="{{ "nt/JHN/" | relURL }}">John</a> works without it.</p></noscript>
         {{ end }}
       </main>
     </div>

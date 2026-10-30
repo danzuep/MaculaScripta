@@ -16,7 +16,13 @@
 
   const separated = (word) => word.text + (/\s$/.test(word.after) ? word.after : word.after + " ");
 
-  // Turns a published chapter file (rows aligned with "fields") into words grouped by verse.
+  // Parses a published chapter TSV (the Macula header and rows, plus part_of_speech and definition columns).
+  function parseTsv(text) {
+    const [header, ...lines] = text.split("\n").filter(Boolean).map((line) => line.split("\t"));
+    return { fields: header, words: lines };
+  }
+
+  // Turns parsed chapter rows (aligned with "fields") into words grouped by verse.
   function chapterModel(chapter) {
     const words = chapter.words.map((row) => Object.fromEntries(chapter.fields.map((field, index) => [field, row[index] ?? ""])));
     const verses = [];
@@ -40,27 +46,28 @@
     return node;
   };
 
-  function renderChapter(chapter, main) {
+  // Builds one chapter's section and word-detail panes. Appended chapters get a heading and "<book>.<chapter>." id prefix.
+  function renderChapter(chapter, { prefix = "", title = "" } = {}) {
     const model = chapterModel(chapter);
-    const number = chapter.chapter;
+    const number = Number(model.verses[0]?.words[0].ref.split(" ")[1].split(":")[0]);
     const flow = element("p", { class: "reader-flow", lang: "grc" },
       element("sup", { class: "chapter-number" }, element("a", { href: "#", "aria-label": `Chapter ${number}`, text: number })));
     const defs = document.createDocumentFragment();
     for (const verse of model.verses) {
       flow.append(element("sup", { class: "verse-number" }, element("a", {
-        id: verse.number, href: `#${verse.number}`, "data-text": verse.plain,
+        id: prefix + verse.number, href: `#${prefix}${verse.number}`, "data-text": verse.plain,
         "aria-label": `Chapter ${number}, verse ${verse.number}`, text: verse.number
       })));
       for (const word of verse.words) {
-        const key = `${verse.number}!${word.position}`;
-        const ruby = element("ruby", { class: "reader-word" },
+        const key = `${prefix}${verse.number}!${word.position}`;
+        const ruby = element("span", { class: "reader-token" }, element("ruby", { class: "reader-word" },
           element("a", { id: `w${key}`, href: `#${key}`, "aria-label": `${word.text}: ${word.gloss}`, text: word.text }),
           element("rt", { class: "rt-gloss", lang: "en", text: word.gloss }),
-          element("rt", { class: "rt-mandarin", lang: "zh-Hans", text: word.mandarin }));
-        flow.append(ruby, word.after + (/\s$/.test(word.after) ? "" : " "));
+          element("rt", { class: "rt-mandarin", lang: "zh-Hans", text: word.mandarin })), word.after.trim());
+        flow.append(ruby, " ");
         const list = element("dl");
-        const extra = [["part_of_speech", chapter.details?.[word["xml:id"]]], ["definition", chapter.definitions?.[word.lemma]]];
-        for (const [name, value] of [...extra, ...Object.entries(word).filter(([name]) => !["position", "verse"].includes(name))]) {
+        const { part_of_speech, definition, position, verse: verseNumber, ...source } = word;
+        for (const [name, value] of Object.entries({ part_of_speech, definition, ...source })) {
           if (value) list.append(element("dt", { text: name }), element("dd", { text: value }));
         }
         defs.append(element("aside", { class: "reader-def", id: key, "aria-label": `Word details for ${word.text}` },
@@ -69,34 +76,88 @@
           element("p", { class: "reader-def-ref", text: word.ref }), list));
       }
     }
-    main.replaceChildren(element("section", { class: "reader-chapter", "aria-label": `Chapter ${number}` }, flow));
-    document.querySelector(".reader-defs")?.replaceChildren(defs);
-    const copyButton = document.querySelector(".reader-copy");
-    if (copyButton) copyButton.dataset.text = model.plain;
-    // :target is not re-evaluated for elements added after load, so re-navigate to any word or verse in the URL.
-    const hash = location.hash;
-    if (hash.length > 1) location.replace(location.pathname + location.search + hash);
+    const section = element("section", { class: "reader-chapter", "aria-label": title || `Chapter ${number}` });
+    if (title) section.append(element("h2", { class: "reader-chapter-title", text: title }));
+    section.append(flow);
+    return { section, defs, plain: model.plain };
   }
 
-  globalThis.MaculaReader = { chapterModel };
+  // Next chapter after "code number" in the catalog ("MAT:28 MRK:16 ..."), continuing into the next book.
+  function nextChapter(catalog, code, number) {
+    const books = catalog.trim().split(/\s+/).map((entry) => entry.split(":"));
+    const index = books.findIndex(([bookCode]) => bookCode === code);
+    if (index < 0) return null;
+    if (number < Number(books[index][1])) return { code, number: number + 1 };
+    return books[index + 1] ? { code: books[index + 1][0], number: 1 } : null;
+  }
 
-  const chapterMain = document.querySelector("main[data-chapter-url]");
-  if (chapterMain) {
-    fetch(chapterMain.dataset.chapterUrl)
-      .then((response) => {
-        if (!response.ok) throw new Error(response.statusText);
-        return response.json();
+  globalThis.MaculaReader = { chapterModel, parseTsv, nextChapter };
+
+  const main = document.querySelector("main#reader[data-catalog]");
+  const fetchChapter = async (url) => {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(response.statusText);
+    return parseTsv(await response.text());
+  };
+
+  if (main?.dataset.chapterUrl) {
+    fetchChapter(main.dataset.chapterUrl)
+      .then((chapter) => {
+        const { section, defs, plain } = renderChapter(chapter);
+        main.replaceChildren(section);
+        document.querySelector(".reader-defs")?.replaceChildren(defs);
+        const copyButton = document.querySelector(".reader-copy");
+        if (copyButton) copyButton.dataset.text = plain;
+        // :target is not re-evaluated for elements added after load, so re-navigate to any word or verse in the URL.
+        if (location.hash.length > 1) location.replace(location.pathname + location.search + location.hash);
       })
-      .then((chapter) => renderChapter(chapter, chapterMain))
       .catch(() => {
-        chapterMain.replaceChildren(element("p", { class: "reader-loading", role: "alert",
-          text: `Unable to load ${chapterMain.dataset.book} ${chapterMain.dataset.chapter}. Check your connection and reload.` }));
+        main.replaceChildren(element("p", { class: "reader-loading", role: "alert",
+          text: `Unable to load ${main.dataset.book} ${main.dataset.chapter}. Check your connection and reload.` }));
       });
+  }
+
+  // Infinite scroll: the "next chapter" link doubles as the sentinel; as it nears the viewport the following
+  // chapter (continuing into the next book) is appended, and the link is retargeted. Without JavaScript it stays a plain link.
+  const sentinel = document.querySelector(".reader-next-chapter");
+  if (main && sentinel && "IntersectionObserver" in globalThis) {
+    const titles = Object.fromEntries([...document.querySelectorAll(".reader-books a")].map((link) => [link.getAttribute("href").split("/").filter(Boolean).pop(), link.textContent.trim()]));
+    let upcoming = nextChapter(main.dataset.catalog, main.dataset.bookCode, Number(main.dataset.chapter));
+    let loading = false;
+    const label = (next) => `${titles[next.code] ?? next.code} ${next.number}`;
+    const load = async () => {
+      if (loading || !upcoming) return;
+      loading = true;
+      const next = upcoming;
+      try {
+        const chapter = await fetchChapter(`${main.dataset.dataUrl}${next.code}/${next.number}.tsv`);
+        const { section, defs } = renderChapter(chapter, { prefix: `${next.code}.${next.number}.`, title: label(next) });
+        main.append(section);
+        document.querySelector(".reader-defs")?.append(defs);
+        upcoming = nextChapter(main.dataset.catalog, next.code, next.number);
+        if (upcoming) {
+          sentinel.querySelector("a").textContent = `Next chapter: ${label(upcoming)} →`;
+          sentinel.querySelector("a").href = `${main.dataset.dataUrl.replace(/nt-data\/$/, "")}nt/${upcoming.code}/${upcoming.number === 1 ? "" : `${upcoming.number}/`}`;
+        } else {
+          sentinel.remove();
+        }
+      } catch {
+        upcoming = null; // leave the plain link in place so the reader can continue manually
+      } finally {
+        loading = false;
+      }
+    };
+    const observer = new IntersectionObserver(async (entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      await load();
+      if (upcoming && sentinel.isConnected) { observer.unobserve(sentinel); observer.observe(sentinel); }
+    }, { rootMargin: "800px 0px" });
+    observer.observe(sentinel);
   }
 
   const copy = document.querySelector(".reader-copy");
   copy?.addEventListener("click", async () => {
-    const verse = document.getElementById(/^#(\d+)(?:!\d+)?$/.exec(location.hash)?.[1] ?? "");
+    const verse = document.getElementById(/^#([\w.]*\d)(?:!\d+)?$/.exec(location.hash)?.[1] ?? "");
     try {
       await navigator.clipboard.writeText(verse?.dataset.text || copy.dataset.text);
     } catch { return; }

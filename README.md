@@ -18,12 +18,12 @@ dotnet build MaculaScripta.slnx
 
 ## Greek New Testament reader
 
-The homepage and `/nt/1JN/` display the first chapter of **1 John** as continuous
+The homepage and `/nt/JHN/` display the first chapter of **John** as continuous
 Greek text, retaining the upstream punctuation. All 27 books are navigable, one
-chapter per page (for example, `/nt/JHN/2/`). **1 John is preloaded**: Hugo renders
+chapter per page (for example, `/nt/JHN/2/`). **John is preloaded**: Hugo renders
 its HTML from the upstream TSV, so it works without JavaScript. Every other chapter
-is a small page shell; `site/static/reader.js` fetches that chapter's JSON
-(`/nt-data/<book>/<chapter>.json`) when the page opens and renders it with the same
+is a small page shell; `site/static/reader.js` fetches that chapter's TSV
+(`/nt-data/<book>/<chapter>.tsv`) when the page opens and renders it with the same
 markup. Each Greek word is a link to a CSS `:target` details pane holding its full
 source metadata, hovering shows a gloss tooltip, a switch hides the ruby
 annotations, and a copy button copies the plain Greek text.
@@ -34,14 +34,23 @@ at `/demo/` and `/john-1-1/`.
 There is no import step and no generated data is committed. `site/hugo.toml` mounts
 `data/macula-greek/SBLGNT/tsv` (the git submodule) as Hugo assets, and
 `site/layouts/partials/nt-data.html` reads `macula-greek-SBLGNT.tsv` with
-`transform.Unmarshal`, grouping words by book and chapter. `nt-publish.html` writes one JSON file
-per chapter at build time (rows aligned with a `fields` header, plus the optional
-`details` and `definitions` lookups from `site/data`). To change which books are
+`transform.Unmarshal`, grouping words by book and chapter. `nt-publish.html` writes one TSV file
+per chapter at build time: the original Macula header and rows, plus `part_of_speech`
+and `definition` columns from `site/data`. Each word (with its trailing
+punctuation) is an inline-block token, so words stay whole and only wrap when wider than
+the line, while verses still flow together in one paragraph per chapter (the TSV carries
+no paragraph-break data).
+
+Reading is continuous: as the "Next chapter" link nears the viewport, `reader.js`
+fetches and appends the following chapter's TSV, continuing into the next book. Appended
+chapters get a heading and ids prefixed `<book>.<chapter>.`; the link remains a plain
+fallback link without JavaScript. To change which books are
 preloaded, edit `preloadedBooks` in `site/hugo.toml`. `site/data/nt/catalog.yaml`
 lists the books and chapter counts.
 
 ```sh
-git submodule update --init --depth 1
+git submodule update --init --depth 1 data/macula-greek
+git -C data/macula-greek sparse-checkout set SBLGNT/tsv
 hugo --source ./site --minify
 ```
 
