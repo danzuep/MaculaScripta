@@ -48,14 +48,14 @@ fallback link without JavaScript. To change which books are
 preloaded, edit `preloadedBooks` in `site/hugo.toml`. `site/data/nt/catalog.yaml`
 lists the books and chapter counts.
 
-The sticky book index shows the full name of the chapter currently in view. Its book
-picker uses three-letter tiles by default; a toggle shows full names when desired.
-Choose a book, then a chapter. The `∴` settings control rotates as it opens and closes
-the settings grid (including the demo and offline reading mode), and settings collapse
-after a chapter is chosen. The reader saves the last visible verse in browser storage
-and resumes there on return. By default, the service worker keeps the three most
-recently read chapter files; enabling **Offline reading** retains opened reader pages
-and chapter files as they are accessed, without downloading the entire New Testament.
+The sticky book bar keeps the current full book title and a `⋯` settings menu in reach
+while scrolling. Open the bar to choose a book, then a chapter; book tiles use
+three-letter abbreviations by default. The settings view uses a two-column layout and
+includes a full-name tile toggle, reading controls, demo, and offline mode. The reader
+saves the last visible verse in browser storage and resumes there on return. By default,
+the service worker keeps the three most recently read chapter files; enabling
+**Offline reading** retains opened reader pages and chapter files as they are accessed,
+without downloading the entire New Testament.
 
 ```sh
 git submodule update --init --depth 1 data/macula-greek

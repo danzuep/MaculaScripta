@@ -5,8 +5,6 @@
   const theme = document.querySelector("#reader-theme");
   const annotation = document.querySelector("#reader-annotation");
   const offlineToggle = document.querySelector("#reader-offline");
-  const settingsPanel = document.querySelector("#reader-settings");
-  const settingsButton = document.querySelector(".settings-toggle");
   const settingValue = (key) => {
     try { return localStorage.getItem(key); } catch { return null; }
   };
@@ -26,26 +24,6 @@
     const saved = settingValue("macula-scripta-annotation");
     if (saved === "mandarin") annotation.value = saved;
     annotation.addEventListener("change", () => saveSetting("macula-scripta-annotation", annotation.value));
-  }
-
-  if (settingsPanel && settingsButton) {
-    settingsPanel.hidden = settingValue("macula-scripta-settings-open") === "0";
-    const updateSettingsLayout = () => {
-      const floating = !settingsPanel.hidden && globalThis.scrollY > 24;
-      settingsPanel.classList.toggle("is-floating", floating);
-      document.body.classList.toggle("reader-settings-shifted", floating);
-      if (floating) document.body.style.setProperty("--reader-settings-space", `${settingsPanel.offsetHeight + 16}px`);
-      else document.body.style.removeProperty("--reader-settings-space");
-      settingsButton.setAttribute("aria-expanded", String(!settingsPanel.hidden));
-      settingsButton.setAttribute("aria-label", settingsPanel.hidden ? "Open reader settings" : "Close reader settings");
-    };
-    settingsButton.addEventListener("click", () => {
-      settingsPanel.hidden = !settingsPanel.hidden;
-      saveSetting("macula-scripta-settings-open", settingsPanel.hidden ? "0" : "1");
-      updateSettingsLayout();
-    });
-    globalThis.addEventListener?.("scroll", updateSettingsLayout, { passive: true });
-    updateSettingsLayout();
   }
 
   const separated = (word) => word.text + (/\s$/.test(word.after) ? word.after : word.after + " ");
@@ -135,10 +113,14 @@
   const main = document.querySelector("main#reader[data-catalog]");
   const picker = document.querySelector(".reader-picker");
   const pickerButton = document.querySelector(".reader-picker-index");
-  const pickerIndex = pickerButton?.querySelector("span");
+  const settingsSwitch = document.querySelector(".reader-settings-switch");
+  const readerTitle = document.querySelector("#reader-book-title");
+  const pickerBar = document.querySelector(".reader-picker-bar");
+  const pickerBarTop = pickerBar ? pickerBar.getBoundingClientRect().top + globalThis.scrollY : 0;
   const bookTitles = new Map([...document.querySelectorAll(".reader-book-tile")].map((tile) => [tile.dataset.bookCode, tile.dataset.bookTitle]));
   if (picker && main) {
-    const pickerContent = picker.querySelector(".reader-picker-content");
+    const bookView = picker.querySelector(".reader-book-picker-view");
+    const settingsView = picker.querySelector(".reader-settings-view");
     const bookGrid = picker.querySelector(".reader-book-grid");
     const chapterPicker = picker.querySelector(".reader-chapter-picker");
     const chapterGrid = picker.querySelector(".reader-chapter-grid");
@@ -157,14 +139,33 @@
       applyBookNamePreference();
     });
     const showBooks = () => {
+      bookView.hidden = false;
+      settingsView.hidden = true;
       bookGrid.hidden = false;
       chapterPicker.hidden = true;
       instruction.textContent = "1. Choose a book";
-      pickerIndex.textContent = `${main.dataset.bookTitle} · ${main.dataset.chapter}`;
+      settingsSwitch.setAttribute("aria-expanded", "false");
+      settingsSwitch.setAttribute("aria-label", "Open reader settings");
     };
     pickerButton.addEventListener("click", () => {
-      pickerContent.hidden = !pickerContent.hidden;
-      pickerButton.setAttribute("aria-expanded", String(!pickerContent.hidden));
+      picker.hidden = !picker.hidden;
+      pickerButton.setAttribute("aria-expanded", String(!picker.hidden));
+      if (!picker.hidden) showBooks();
+      updatePickerPosition();
+    });
+    settingsSwitch.addEventListener("click", () => {
+      const showSettings = settingsView.hidden;
+      picker.hidden = false;
+      if (showSettings) {
+        bookView.hidden = true;
+        settingsView.hidden = false;
+      } else {
+        showBooks();
+      }
+      pickerButton.setAttribute("aria-expanded", "true");
+      settingsSwitch.setAttribute("aria-expanded", String(showSettings));
+      settingsSwitch.setAttribute("aria-label", showSettings ? "Return to book selection" : "Open reader settings");
+      updatePickerPosition();
     });
     bookGrid.addEventListener("click", (event) => {
       const button = event.target.closest("[data-book-code]");
@@ -173,7 +174,6 @@
       bookGrid.hidden = true;
       chapterPicker.hidden = false;
       instruction.textContent = `2. Choose a chapter in ${bookTitle}`;
-      pickerIndex.textContent = `${bookTitle} · Select chapter`;
       chapterGrid.replaceChildren(...Array.from({ length: Number(chapters) }, (_, index) => {
         const number = index + 1;
         const path = `${main.dataset.readerBase}${bookCode}/${number === 1 ? "" : `${number}/`}`;
@@ -191,13 +191,12 @@
     chapterGrid.addEventListener("click", (event) => {
       const link = event.target.closest("a[href]");
       if (!link) return;
-      saveSetting("macula-scripta-settings-open", "0");
       try { sessionStorage.setItem("macula-scripta-reader-navigation", new URL(link.href).pathname); } catch { /* resume remains available next visit */ }
     });
   }
 
   const updateStickyIndex = () => {
-    if (!main || !pickerIndex) return;
+    if (!main) return;
     const sections = main.querySelectorAll(".reader-chapter");
     let activeSection = sections[0];
     for (const section of sections) {
@@ -206,8 +205,17 @@
     }
     const code = activeSection?.dataset.bookCode || main.dataset.bookCode;
     const chapter = activeSection?.dataset.chapter || main.dataset.chapter;
-    pickerIndex.textContent = `${bookTitles.get(code) ?? main.dataset.bookTitle ?? code} · ${chapter}`;
+    const title = bookTitles.get(code) ?? main.dataset.bookTitle ?? code;
+    if (readerTitle) readerTitle.textContent = `${title} ${chapter}`;
   };
+
+  const updatePickerPosition = () => {
+    if (!pickerBar) return;
+    const floating = globalThis.scrollY >= pickerBarTop - 8;
+    pickerBar.classList.toggle("is-floating", floating);
+    picker?.classList.toggle("is-floating", floating && !picker.hidden);
+  };
+  updatePickerPosition();
 
   let redirectingToSavedPosition = false;
   let savedPosition = null;
@@ -262,6 +270,7 @@
   };
   globalThis.addEventListener?.("scroll", () => {
     updateStickyIndex();
+    updatePickerPosition();
     schedulePositionSave();
   }, { passive: true });
 
@@ -364,10 +373,7 @@
   document.addEventListener("click", (event) => {
     if (event.target.closest(".reader-close")) setTimeout(() => history.replaceState(null, "", location.pathname + location.search));
     const nextLink = event.target.closest(".reader-next-chapter a");
-    if (nextLink) {
-      saveSetting("macula-scripta-settings-open", "0");
-      try { sessionStorage.setItem("macula-scripta-reader-navigation", new URL(nextLink.href).pathname); } catch { /* resume remains available next visit */ }
-    }
+    if (nextLink) try { sessionStorage.setItem("macula-scripta-reader-navigation", new URL(nextLink.href).pathname); } catch { /* resume remains available next visit */ }
   });
 
   if (!redirectingToSavedPosition && main && !main.dataset.chapterUrl) {
