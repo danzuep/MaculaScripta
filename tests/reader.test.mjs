@@ -141,3 +141,7 @@ test("reader includes the two-step book picker, settings tiles, and verse refere
   assert.match(readFileSync(root("site/static/reader.css"), "utf8"), /\.reader-grid-tile \{[^}]*aspect-ratio: 1;/);
   assert.match(readFileSync(root("site/static/reader.css"), "utf8"), /\.reader-picker-bar \{ position: fixed;/);
 });
+
+test("data-site-base keeps the baseURL subpath so chapter links work on project pages", { skip: !existsSync(root("site/public/nt/JHN/index.html")) }, () => {
+  assert.match(page("nt/JHN/index.html"), /data-site-base="?\/MaculaScripta\/"?[ >]/);
+});
