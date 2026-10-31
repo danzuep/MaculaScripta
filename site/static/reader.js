@@ -13,11 +13,14 @@
   };
 
   if (theme) {
-    theme.value = settingValue("macula-scripta-theme") === "light" ? "light" : "dark";
-    document.documentElement.dataset.theme = theme.value;
+    const saved = settingValue("macula-scripta-theme");
+    const systemLight = globalThis.matchMedia?.("(prefers-color-scheme: light)").matches;
+    const applyTheme = () => { document.documentElement.dataset.theme = theme.checked ? "dark" : "light"; };
+    theme.checked = saved === "light" || saved === "dark" ? saved === "dark" : !systemLight;
+    applyTheme();
     theme.addEventListener("change", () => {
-      document.documentElement.dataset.theme = theme.value;
-      saveSetting("macula-scripta-theme", theme.value);
+      applyTheme();
+      saveSetting("macula-scripta-theme", theme.checked ? "dark" : "light");
     });
   }
   if (annotation) {
@@ -287,6 +290,7 @@
     return parseTsv(await response.text());
   };
 
+  let recheckTop = null;
   if (!redirectingToSavedPosition && main?.dataset.chapterUrl) {
     fetchChapter(main.dataset.chapterUrl)
       .then((chapter) => {
@@ -299,6 +303,7 @@
         if (copyButton) copyButton.dataset.text = plain;
         restorePosition();
         schedulePositionSave();
+        recheckTop?.();
         // :target is not re-evaluated for elements added after load, so re-navigate to any word or verse in the URL.
         if (location.hash.length > 1) location.replace(location.pathname + location.search + location.hash);
       })
@@ -348,6 +353,43 @@
       if (upcoming && sentinel.isConnected) { observer.unobserve(sentinel); observer.observe(sentinel); }
     }, { rootMargin: "800px 0px" });
     observer.observe(sentinel);
+  }
+
+  // Upward infinite scroll: a sentinel above the text prepends the previous chapter of the same book (none before chapter 1)
+  // and compensates the scroll offset so the text being read does not jump.
+  const topSentinel = document.querySelector(".reader-prev-sentinel");
+  if (!redirectingToSavedPosition && main && topSentinel && "IntersectionObserver" in globalThis) {
+    let loadingPrevious = false;
+    const loadPrevious = async () => {
+      const first = main.querySelector(".reader-chapter");
+      const code = first?.dataset.bookCode;
+      const number = Number(first?.dataset.chapter);
+      if (loadingPrevious || !first || !code || !(number > 1)) return false;
+      loadingPrevious = true;
+      try {
+        const previous = number - 1;
+        const chapter = await fetchChapter(`${main.dataset.dataUrl}${code}/${previous}.tsv`);
+        const { section, defs } = renderChapter(chapter, {
+          prefix: `${code}.${previous}.`, title: `${bookTitles.get(code) ?? code} ${previous}`, code, chapterNumber: previous
+        });
+        const before = first.getBoundingClientRect().top;
+        first.before(section);
+        document.querySelector(".reader-defs")?.append(defs);
+        globalThis.scrollBy(0, first.getBoundingClientRect().top - before);
+        updateStickyIndex();
+        return previous > 1;
+      } catch {
+        return false;
+      } finally {
+        loadingPrevious = false;
+      }
+    };
+    const topObserver = new IntersectionObserver(async (entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      if (await loadPrevious()) { topObserver.unobserve(topSentinel); topObserver.observe(topSentinel); }
+    }, { rootMargin: "800px 0px" });
+    topObserver.observe(topSentinel);
+    recheckTop = () => { topObserver.unobserve(topSentinel); topObserver.observe(topSentinel); };
   }
 
   const copy = document.querySelector(".reader-copy");
