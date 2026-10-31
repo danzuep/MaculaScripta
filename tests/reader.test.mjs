@@ -9,10 +9,12 @@ const page = (path) => readFileSync(root(`site/public/${path}`), "utf8");
 const script = readFileSync(root("site/static/reader.js"), "utf8");
 const catalog = [...readFileSync(root("site/data/nt/catalog.yaml"), "utf8").matchAll(/- code: (\w+)\n {2}title: (.+)\n {2}chapters: (\d+)/g)]
   .map(([, code, title, chapters]) => ({ code, title, chapters: Number(chapters) }));
-const tsvPath = root("data/macula-greek/SBLGNT/tsv/macula-greek-SBLGNT.tsv");
-const hasData = existsSync(tsvPath);
-const noData = !hasData && "run git submodule update --init first";
-const tsv = hasData ? readFileSync(tsvPath, "utf8").replace(/\n$/, "").split("\n") : [""];
+// A full build (HUGO_PARAMS_SAMPLE=false) covers every chapter of the submodule TSV; the default sample build only
+// John 1 and Haggai 1, from the committed excerpts in site/sample.
+const full = existsSync(root("site/public/nt/MRK/index.html"));
+const tsvPath = root(full ? "data/macula-greek/SBLGNT/tsv/macula-greek-SBLGNT.tsv" : "site/sample/macula-greek-SBLGNT.tsv");
+const noData = !full && "needs a full build: HUGO_PARAMS_SAMPLE=false hugo --source ./site";
+const tsv = readFileSync(tsvPath, "utf8").replace(/\n$/, "").split("\n");
 const fields = tsv[0].split("\t");
 const chapterRows = new Map();
 for (const line of tsv.slice(1)) {
@@ -22,7 +24,7 @@ for (const line of tsv.slice(1)) {
   if (!chapterRows.has(key)) chapterRows.set(key, []);
   chapterRows.get(key).push(row);
 }
-const built = hasData && existsSync(root("site/public/nt/JHN/index.html"));
+const built = existsSync(root("site/public/nt/JHN/index.html"));
 
 function runScript(stored = new Map(), storageUnavailable = false, systemLight = false) {
   const theme = { checked: false, events: {}, addEventListener(name, handler) { this.events[name] = handler; } };
@@ -102,17 +104,28 @@ test("every chapter is a static page with one flowing paragraph and a pane per w
     const ids = [...html.matchAll(/ id="?([^" >]+)/g)].map((m) => m[1]);
     assert.equal(new Set(ids).size, ids.length, `${key} has duplicate ids`);
   }
-  assert.match(page("nt/JHN/21/index.html"), /Next chapter: Acts 1/);
-  assert.match(page("nt/1JN/5/index.html"), /Next chapter: 2 John 1/);
+  if (full) {
+    assert.match(page("nt/JHN/21/index.html"), /Next chapter: Acts 1/);
+    assert.match(page("nt/1JN/5/index.html"), /Next chapter: 2 John 1/);
+  }
   assert.doesNotMatch(page("nt/JHN/index.html"), /<dt>(part_of_speech|definition)<\/dt>/);
 });
 
-test("Hebrew chapters render right-to-left, continuing from Malachi into Matthew", { skip: !built && "run hugo --source ./site first" }, () => {
+test("Hebrew chapters render right-to-left with a pane per word and continue into the New Testament", { skip: !built && "run hugo --source ./site first" }, () => {
   const html = page("ot/HAG/index.html");
   assert.match(html, /<p class="?reader-flow"? lang=hbo dir=rtl>/);
-  assert.match(html, /Next chapter: Haggai 2/);
-  assert.match(page("ot/HAG/2/index.html"), /Next chapter: (Zechariah|Matthew) 1/);
-  assert.match(page("nt/MAT/index.html"), /data-book-code=MAT/);
+  const hebrew = readFileSync(root("site/sample/macula-hebrew.tsv"), "utf8").trim().split("\n").slice(1);
+  assert.equal(count(html, /<ruby class="?reader-word"?>/g), hebrew.length);
+  assert.equal(count(html, /<aside class="?reader-def"? /g), hebrew.length);
+  const ids = [...html.matchAll(/ id="?([^" >]+)/g)].map((m) => m[1]);
+  assert.equal(new Set(ids).size, ids.length, "Hebrew ids are unique");
+  if (full) {
+    assert.match(html, /Next chapter: Haggai 2/);
+    assert.match(page("ot/HAG/2/index.html"), /Next chapter: Zechariah 1/);
+    assert.match(page("ot/MAL/3/index.html"), /Next chapter: Matthew 1/);
+  } else {
+    assert.match(html, /Next chapter: John 1/);
+  }
 });
 
 test("verse numbers sit in one flowing paragraph per chapter, and words are inline-block tokens", { skip: !built && "run hugo --source ./site first" }, () => {
@@ -124,7 +137,7 @@ test("verse numbers sit in one flowing paragraph per chapter, and words are inli
 
 test("reader includes the two-step book picker, settings tiles, and verse references", { skip: !built && "run hugo --source ./site first" }, () => {
   const html = page("nt/JHN/index.html");
-  assert.ok([...html.matchAll(/reader-book-tile/g)].length >= 28);
+  assert.ok(count(html, /reader-book-tile/g) >= (full ? 66 : 2));
   assert.match(html, /<details class="?reader-testament"? data-testament=ot>/);
   assert.match(html, /<details class="?reader-testament"? data-testament=nt open>/);
   assert.match(html, /data-book-code=JHN[^>]*aria-current=true/);

@@ -8,7 +8,7 @@ n43001001002:
   part_of_speech: Noun
 n43001001003:
   lemma: εἰμί
-  strong_id: strong:G1510
+  strong_id: strong:G2258
   part_of_speech: Verb
 n43001001004:
   lemma: ὁ
@@ -32,7 +32,7 @@ n43001001008:
   part_of_speech: Noun
 n43001001009:
   lemma: εἰμί
-  strong_id: strong:G1510
+  strong_id: strong:G2258
   part_of_speech: Verb
 n43001001010:
   lemma: πρός
@@ -56,7 +56,7 @@ n43001001014:
   part_of_speech: Noun
 n43001001015:
   lemma: εἰμί
-  strong_id: strong:G1510
+  strong_id: strong:G2258
   part_of_speech: Verb
 n43001001016:
   lemma: ὁ
@@ -72,7 +72,7 @@ n43001002001:
   part_of_speech: Demonstrative pronoun
 n43001002002:
   lemma: εἰμί
-  strong_id: strong:G1510
+  strong_id: strong:G2258
   part_of_speech: Verb
 n43001002003:
   lemma: ἐν
@@ -129,11 +129,11 @@ n43001003008:
 n43001003009:
   lemma: οὐδέ
   strong_id: strong:G3761
-  part_of_speech: Conjunction
+  part_of_speech: Adverb
 n43001003010:
   lemma: εἷς
   strong_id: strong:G1520
-  part_of_speech: Numeral
+  part_of_speech: Adjective
 n43001003011:
   lemma: ὅς
   strong_id: strong:G3739
@@ -156,7 +156,7 @@ n43001004003:
   part_of_speech: Noun
 n43001004004:
   lemma: εἰμί
-  strong_id: strong:G1510
+  strong_id: strong:G2258
   part_of_speech: Verb
 n43001004005:
   lemma: καί
@@ -172,7 +172,7 @@ n43001004007:
   part_of_speech: Noun
 n43001004008:
   lemma: εἰμί
-  strong_id: strong:G1510
+  strong_id: strong:G2258
   part_of_speech: Verb
 n43001004009:
   lemma: ὁ
