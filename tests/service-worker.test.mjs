@@ -55,7 +55,7 @@ function createWorker() {
     async fetchChapter(number) {
       let response;
       listeners.get("fetch")({
-        request: new Request(`https://example.test/MaculaScripta/nt-data/JHN/${number}.tsv`),
+        request: new Request(`https://example.test/MaculaScripta/nt-data/JHN/${number}.html`),
         respondWith(value) { response = value; }
       });
       return response;
@@ -90,7 +90,7 @@ test("reader page and chapter caches keep three recent entries unless offline mo
     await worker.fetchPage(number);
   }
   let cache = worker.cacheStorage.get("macula-scripta-v12-chapters");
-  assert.deepEqual((await cache.keys()).map((request) => request.url.split("/").at(-1)), ["2.tsv", "3.tsv", "4.tsv"]);
+  assert.deepEqual((await cache.keys()).map((request) => request.url.split("/").at(-1)), ["2.html", "3.html", "4.html"]);
   let pages = worker.cacheStorage.get("macula-scripta-v12-pages");
   assert.deepEqual((await pages.keys()).map((request) => request.url.split("/").filter(Boolean).at(-1)), ["2", "3", "4"]);
 
@@ -103,6 +103,6 @@ test("reader page and chapter caches keep three recent entries unless offline mo
   assert.equal((await pages.keys()).length, 6);
 
   await worker.setOfflineMode(false);
-  assert.deepEqual((await cache.keys()).map((request) => request.url.split("/").at(-1)), ["5.tsv", "6.tsv", "7.tsv"]);
+  assert.deepEqual((await cache.keys()).map((request) => request.url.split("/").at(-1)), ["5.html", "6.html", "7.html"]);
   assert.deepEqual((await pages.keys()).map((request) => request.url.split("/").filter(Boolean).at(-1)), ["5", "6", "7"]);
 });

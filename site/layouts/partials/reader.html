@@ -2,23 +2,6 @@
 {{- $chapterNumber := int (.Params.chapter | default 1) -}}
 {{- $bookInfo := index (where hugo.Data.nt.catalog "code" $code) 0 -}}
 {{- $book := dict "title" $bookInfo.title "chapters" (seq $bookInfo.chapters) -}}
-{{- $preloaded := in (site.Params.preloadedBooks | default (slice "JHN")) $code -}}
-{{- $words := slice -}}
-{{- $plain := "" -}}
-{{- $verseText := newScratch -}}
-{{- if $preloaded -}}
-  {{- $data := partialCached "nt-data.html" "nt" -}}
-  {{- range index $data.chapters (printf "%s/%d" $code $chapterNumber) -}}
-    {{- $row := . -}}
-    {{- $word := dict -}}
-    {{- range $i, $field := $data.fields }}{{ $word = merge $word (dict $field (index $row $i)) }}{{ end -}}
-    {{- $words = $words | append $word -}}
-    {{- $piece := printf "%s%s" $word.text (cond (findRE "\\s$" $word.after) $word.after (printf "%s " $word.after)) -}}
-    {{- $plain = printf "%s%s" $plain $piece -}}
-    {{- $verseText.Add (index (split (index (split $word.ref ":") 1) "!") 0) $piece -}}
-  {{- end -}}
-{{- end -}}
-{{- $plain = trim $plain " " -}}
 {{- $bookPath := printf "nt/%s/" $code -}}
 {{- $nextChapterNumber := add $chapterNumber 1 -}}
 {{- $nextChapterPath := "" -}}
@@ -58,7 +41,7 @@
       <div class="reader-picker-bar-wrap">
         <div class="reader-picker-bar">
           <button type="button" class="reader-picker-index" id="reader-picker-reference" aria-controls="reader-picker-panel" aria-expanded="false">{{ $book.title }} {{ $chapterNumber }}</button>
-          <button type="button" class="reader-copy" data-text="{{ $plain }}" aria-label="Copy plain Greek text" title="Copy plain text (the selected verse, if any)"><span aria-hidden="true">⧉</span></button>
+          <button type="button" class="reader-copy" aria-label="Copy plain Greek text" title="Copy plain text (the selected verse, if any)"><span aria-hidden="true">⧉</span></button>
           <button type="button" class="reader-settings-switch" aria-label="Reader settings" aria-controls="reader-settings-view" aria-expanded="false">
             <span aria-hidden="true">⋯</span>
           </button>
@@ -111,47 +94,9 @@
       </section>
     <div class="reader-layout">
       <div class="reader-prev-sentinel" aria-hidden="true"></div>
-      <main id="reader" aria-label="{{ $book.title }} Greek text" tabindex="-1" data-book-code="{{ $code }}" data-book-title="{{ $book.title }}" data-chapter="{{ $chapterNumber }}" data-data-url="{{ "nt-data/" | relURL }}" data-reader-base="{{ "nt/" | relURL }}" data-catalog="{{ range $index, $entry := hugo.Data.nt.catalog }}{{ if $index }} {{ end }}{{ $entry.code }}:{{ $entry.chapters }}{{ end }}"{{ if not $preloaded }} data-chapter-url="{{ printf "nt-data/%s/%d.tsv" $code $chapterNumber | relURL }}" data-book="{{ $book.title }}"{{ end }}>
-        {{ if $preloaded }}
-          <section class="reader-chapter" aria-label="Chapter {{ $chapterNumber }}" data-book-code="{{ $code }}" data-chapter="{{ $chapterNumber }}">
-            <p class="reader-flow" lang="grc">
-              <sup class="chapter-number"><a href="#" aria-label="Chapter {{ $chapterNumber }}">{{ $chapterNumber }}</a></sup>
-              {{- $previous := 0 -}}
-              {{- range $words -}}
-                {{- $verse := int (index (split (index (split .ref ":") 1) "!") 0) -}}
-                {{- if ne $verse $previous -}}
-                  {{- $previous = $verse -}}
-                  <sup class="verse-number"><a id="{{ $verse }}" href="#{{ $verse }}" data-ref="{{ $code }}/{{ $chapterNumber }}:{{ $verse }}" data-text="{{ trim ($verseText.Get (string $verse)) " " }}" aria-label="Chapter {{ $chapterNumber }}, verse {{ $verse }}">{{ $verse }}</a></sup>
-                {{- end -}}
-                <span class="reader-token"><ruby class="reader-word"><a id="w{{ $verse }}!{{ index (split .ref "!") 1 }}" href="#{{ $verse }}!{{ index (split .ref "!") 1 }}" aria-label="{{ .text }}: {{ .gloss }}">{{ .text }}</a><rt class="rt-gloss" lang="en">{{ .gloss }}</rt><rt class="rt-mandarin" lang="zh-Hans">{{ .mandarin }}</rt></ruby>{{ trim .after " " }}</span>{{ " " }}
-              {{- end -}}
-            </p>
-          </section>
-        {{ else }}
-          <p class="reader-loading" role="status">Loading {{ $book.title }} {{ $chapterNumber }}…</p>
-          <noscript><p>JavaScript is required to load this chapter. The preloaded <a href="{{ "nt/JHN/" | relURL }}">John</a> works without it.</p></noscript>
-        {{ end }}
+      <main id="reader" aria-label="{{ $book.title }} Greek text" tabindex="-1" data-book-code="{{ $code }}" data-book-title="{{ $book.title }}" data-chapter="{{ $chapterNumber }}" data-data-url="{{ "nt-data/" | relURL }}" data-reader-base="{{ "nt/" | relURL }}" data-catalog="{{ range $index, $entry := hugo.Data.nt.catalog }}{{ if $index }} {{ end }}{{ $entry.code }}:{{ $entry.chapters }}{{ end }}">
+        {{ partial "reader-chapter.html" (dict "code" $code "number" $chapterNumber "prefix" "" "title" "") }}
       </main>
-    </div>
-    <div class="reader-defs">
-      {{- range $words -}}
-        {{- $id := index . "xml:id" -}}
-        {{- $verse := index (split (index (split .ref ":") 1) "!") 0 -}}
-        <aside class="reader-def" id="{{ $verse }}!{{ index (split .ref "!") 1 }}" aria-label="Word details for {{ .text }}">
-          <header class="reader-def-head">
-            <h2 lang="grc">{{ .text }}</h2>
-            <a class="reader-close" href="#_" aria-label="Close word details">×</a>
-          </header>
-          <div class="reader-def-body">
-          <p class="reader-def-ref">{{ .ref }}</p>
-          <dl>
-            {{ with index hugo.Data.greek_token_details $id }}<dt>part_of_speech</dt><dd>{{ .part_of_speech }}</dd>{{ end }}
-            {{ with index hugo.Data.greek_lemma_definitions .lemma }}<dt>definition</dt><dd>{{ . }}</dd>{{ end }}
-            {{ range $field, $value := . }}{{ if ne $value "" }}<dt>{{ $field }}</dt><dd>{{ $value }}</dd>{{ end }}{{ end }}
-          </dl>
-          </div>
-        </aside>
-      {{- end -}}
     </div>
     {{ with $nextChapterPath }}
       <nav class="reader-next-chapter" aria-label="Next chapter">
@@ -165,7 +110,7 @@
         Cherith glosses © 2023 Andi Wu / Cherith Analytics, CC BY 4.0.
         Berean glosses are public domain.
         <a href="https://github.com/Clear-Bible/macula-greek/blob/main/LICENSE.md">Upstream licenses and attribution</a>.
-        Source: <code>macula-greek</code> SBLGNT TSV, read directly at build time.</p>
+        Source: <code>macula-greek</code> SBLGNT TSV, rendered to static HTML at build time.</p>
     </footer>
   </body>
 </html>

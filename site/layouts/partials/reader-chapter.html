@@ -1,0 +1,52 @@
+{{- /* One chapter as static HTML: the text, plus each word's details pane inside the same section so the whole
+       chapter can be inserted as one unit. Used by reader pages (prefix "") and by the nt-data/<BOOK>/<chapter>.html
+       fragments (prefix "<BOOK>.<chapter>." and a heading), which reader.js inserts while scrolling.
+       Expects: code, number, prefix, title. */ -}}
+{{- $code := .code -}}
+{{- $number := .number -}}
+{{- $prefix := .prefix -}}
+{{- $data := partialCached "nt-data.html" "nt" -}}
+{{- $words := slice -}}
+{{- $verseText := newScratch -}}
+{{- range index $data.chapters (printf "%s/%d" $code $number) -}}
+  {{- $row := . -}}
+  {{- $word := dict -}}
+  {{- range $i, $field := $data.fields }}{{ $word = merge $word (dict $field (index $row $i)) }}{{ end -}}
+  {{- $words = $words | append $word -}}
+  {{- $piece := printf "%s%s" $word.text (cond (findRE "\\s$" $word.after) $word.after (printf "%s " $word.after)) -}}
+  {{- $verseText.Add (index (split (index (split $word.ref ":") 1) "!") 0) $piece -}}
+{{- end -}}
+<section class="reader-chapter" aria-label="{{ .title | default (printf "Chapter %d" $number) }}" data-book-code="{{ $code }}" data-chapter="{{ $number }}">
+  {{- with .title }}<h2 class="reader-chapter-title">{{ . }}</h2>{{ end }}
+  <p class="reader-flow" lang="grc">
+    <sup class="chapter-number"><a href="#" aria-label="Chapter {{ $number }}">{{ $number }}</a></sup>
+    {{- $previous := 0 -}}
+    {{- range $words -}}
+      {{- $verse := int (index (split (index (split .ref ":") 1) "!") 0) -}}
+      {{- $position := index (split .ref "!") 1 -}}
+      {{- if ne $verse $previous -}}
+        {{- $previous = $verse -}}
+        <sup class="verse-number"><a id="{{ $prefix }}{{ $verse }}" href="#{{ $prefix }}{{ $verse }}" data-ref="{{ $code }}/{{ $number }}:{{ $verse }}" data-text="{{ trim ($verseText.Get (string $verse)) " " }}" aria-label="Chapter {{ $number }}, verse {{ $verse }}">{{ $verse }}</a></sup>
+      {{- end -}}
+      <span class="reader-token"><ruby class="reader-word"><a id="w{{ $prefix }}{{ $verse }}!{{ $position }}" href="#{{ $prefix }}{{ $verse }}!{{ $position }}" aria-label="{{ .text }}: {{ .gloss }}">{{ .text }}</a><rt class="rt-gloss" lang="en">{{ .gloss }}</rt><rt class="rt-mandarin" lang="zh-Hans">{{ .mandarin }}</rt></ruby>{{ trim .after " " }}</span>{{ " " }}
+    {{- end -}}
+  </p>
+  {{- range $words }}
+    {{- $id := index . "xml:id" -}}
+    {{- $verse := index (split (index (split .ref ":") 1) "!") 0 }}
+  <aside class="reader-def" id="{{ $prefix }}{{ $verse }}!{{ index (split .ref "!") 1 }}" aria-label="Word details for {{ .text }}">
+    <header class="reader-def-head">
+      <h2 lang="grc">{{ .text }}</h2>
+      <a class="reader-close" href="#_" aria-label="Close word details">×</a>
+    </header>
+    <div class="reader-def-body">
+      <p class="reader-def-ref">{{ .ref }}</p>
+      <dl>
+        {{ with index hugo.Data.greek_token_details $id }}<dt>part_of_speech</dt><dd>{{ .part_of_speech }}</dd>{{ end }}
+        {{ with index hugo.Data.greek_lemma_definitions .lemma }}<dt>definition</dt><dd>{{ . }}</dd>{{ end }}
+        {{ range $field, $value := . }}{{ if ne $value "" }}<dt>{{ $field }}</dt><dd>{{ $value }}</dd>{{ end }}{{ end }}
+      </dl>
+    </div>
+  </aside>
+  {{- end }}
+</section>

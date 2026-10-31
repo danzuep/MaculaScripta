@@ -48,7 +48,7 @@ self.addEventListener("message", (event) => {
   })());
 });
 
-const isChapterData = (url) => /\/nt-data\/[A-Z0-9]{3}\/\d+\.tsv$/.test(url.pathname);
+const isChapterData = (url) => /\/nt-data\/[A-Z0-9]{3}\/\d+\.html$/.test(url.pathname);
 
 async function trimChapterCache() {
   await trimCache(chapterCacheName);
