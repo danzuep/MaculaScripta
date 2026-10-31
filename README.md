@@ -8,6 +8,7 @@ MaculaScripta is a Hugo Greek New Testament reader with a .NET 10 foundation for
 - `source/MaculaScripta.Core` contains gloss resolution, lemma frequency ranking, and lemma audio binding.
 - `source/protos/macula_scripta.proto` is a proposed gRPC contract, not used by the reader or either C# project. There is deliberately no `Grpc.Tools` project or generated client/server until an actual transport implementation needs it.
 - `data/macula-greek` is the pinned [Macula Greek](https://github.com/Clear-Bible/macula-greek) Git submodule.
+- `data/macula-hebrew` is the pinned [Macula Hebrew](https://github.com/Clear-Bible/macula-hebrew) Git submodule (Old Testament, `/ot/`, rendered the same way, right-to-left).
 - `site/` is the Hugo reader, with the original overlay editor and recorder at `/demo/`.
 
 Build the C# projects with:
@@ -30,9 +31,9 @@ at `/demo/` and `/john-1-1/`.
 
 There is no import step and no generated data is committed. `site/hugo.toml` mounts
 `data/macula-greek/SBLGNT/tsv` (the git submodule) as Hugo assets, and
-`site/layouts/partials/nt-data.html` reads `macula-greek-SBLGNT.tsv` with
+`site/layouts/partials/testament-data.html` reads `macula-greek-SBLGNT.tsv` with
 `transform.Unmarshal`, grouping words by book and chapter. `reader-chapter.html` renders a
-chapter (text plus each word's details pane listing every TSV field unchanged); `nt-publish.html` also writes it as `nt-data/<book>/<chapter>.html`. Each word (with its trailing
+chapter (text plus each word's details pane listing every TSV field unchanged); `testament-publish.html` also writes it as `nt-data/<book>/<chapter>.html`. Each word (with its trailing
 punctuation) is an inline-block token, so words stay whole and only wrap when wider than
 the line, while verses still flow together in one paragraph per chapter (the TSV carries
 no paragraph-break data).
@@ -56,6 +57,10 @@ without downloading the entire New Testament.
 ```sh
 git submodule update --init --depth 1 data/macula-greek
 git -C data/macula-greek sparse-checkout set SBLGNT/tsv
+# Hebrew Old Testament (the TSV is in Git LFS: needs git-lfs)
+git submodule update --init --depth 1 data/macula-hebrew
+git -C data/macula-hebrew sparse-checkout set WLC/tsv
+git -C data/macula-hebrew lfs pull --include=WLC/tsv/macula-hebrew.tsv
 hugo --source ./site --minify
 ```
 

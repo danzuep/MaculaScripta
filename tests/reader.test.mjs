@@ -108,6 +108,15 @@ test("every chapter is a static page and an insertable fragment with the same wo
   assert.doesNotMatch(page("nt-data/JHN/1.html"), /<dt>(part_of_speech|definition)<\/dt>/);
 });
 
+test("Hebrew chapters render right-to-left as pages and fragments, continuing from Malachi into Matthew", { skip: !built && "run hugo --source ./site first" }, () => {
+  const html = page("ot/GEN/index.html");
+  assert.match(html, /<p class="?reader-flow"? lang=hbo dir=rtl>/);
+  assert.match(html, /Next chapter: Genesis 2/);
+  assert.match(page("ot-data/GEN/1.html"), /<h2 class="?reader-chapter-title"?>Genesis 1</);
+  assert.match(page("ot/MAL/3/index.html"), /Next chapter: Matthew 1/);
+  assert.match(page("nt/MAT/index.html"), /data-book-code=MAT/);
+});
+
 test("verse numbers sit in one flowing paragraph per chapter, and words are inline-block tokens", { skip: !built && "run hugo --source ./site first" }, () => {
   const html = page("nt/JHN/index.html");
   assert.equal([...html.matchAll(/<p class="?reader-flow"?/g)].length, 1);
@@ -117,7 +126,10 @@ test("verse numbers sit in one flowing paragraph per chapter, and words are inli
 
 test("reader includes the two-step book picker, settings tiles, and verse references", { skip: !built && "run hugo --source ./site first" }, () => {
   const html = page("nt/JHN/index.html");
-  assert.equal([...html.matchAll(/reader-book-tile/g)].length, 27);
+  assert.equal([...html.matchAll(/reader-book-tile/g)].length, 66);
+  assert.match(html, /<details class="?reader-testament"? data-testament=ot>/);
+  assert.match(html, /<details class="?reader-testament"? data-testament=nt open>/);
+  assert.match(html, /data-book-code=JHN[^>]*aria-current=true/);
   assert.match(html, /class="?reader-settings-switch"?/);
   assert.match(html, />⋯<\/span>/);
   assert.match(html, /class="?reader-settings-columns"?/);

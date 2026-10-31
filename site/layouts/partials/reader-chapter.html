@@ -1,11 +1,12 @@
 {{- /* One chapter as static HTML: the text, plus each word's details pane inside the same section so the whole
-       chapter can be inserted as one unit. Used by reader pages (prefix "") and by the nt-data/<BOOK>/<chapter>.html
+       chapter can be inserted as one unit. Used by reader pages (prefix "") and by the <testament>-data/<BOOK>/<chapter>.html
        fragments (prefix "<BOOK>.<chapter>." and a heading), which reader.js inserts while scrolling.
-       Expects: code, number, prefix, title. */ -}}
+       Expects: testament, code, number, prefix, title. */ -}}
 {{- $code := .code -}}
 {{- $number := .number -}}
 {{- $prefix := .prefix -}}
-{{- $data := partialCached "nt-data.html" "nt" -}}
+{{- $data := partialCached "testament-data.html" .testament .testament -}}
+{{- $hebrew := eq .testament "ot" -}}
 {{- $words := slice -}}
 {{- $verseText := newScratch -}}
 {{- range index $data.chapters (printf "%s/%d" $code $number) -}}
@@ -18,7 +19,7 @@
 {{- end -}}
 <section class="reader-chapter" aria-label="{{ .title | default (printf "Chapter %d" $number) }}" data-book-code="{{ $code }}" data-chapter="{{ $number }}">
   {{- with .title }}<h2 class="reader-chapter-title">{{ . }}</h2>{{ end }}
-  <p class="reader-flow" lang="grc">
+  <p class="reader-flow" lang="{{ cond $hebrew "hbo" "grc" }}"{{ if $hebrew }} dir="rtl"{{ end }}>
     <sup class="chapter-number"><a href="#" aria-label="Chapter {{ $number }}">{{ $number }}</a></sup>
     {{- $previous := 0 -}}
     {{- range $words -}}
@@ -35,7 +36,7 @@
     {{- $verse := index (split (index (split .ref ":") 1) "!") 0 }}
   <aside class="reader-def" id="{{ $prefix }}{{ $verse }}!{{ index (split .ref "!") 1 }}" aria-label="Word details for {{ .text }}">
     <header class="reader-def-head">
-      <h2 lang="grc">{{ .text }}</h2>
+      <h2 lang="{{ cond $hebrew "hbo" "grc" }}"{{ if $hebrew }} dir="rtl"{{ end }}>{{ .text }}</h2>
       <a class="reader-close" href="#_" aria-label="Close word details">×</a>
     </header>
     <div class="reader-def-body">

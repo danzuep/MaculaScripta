@@ -55,13 +55,17 @@
   const pickerButton = document.querySelector(".reader-picker-index");
   const settingsSwitch = document.querySelector(".reader-settings-switch");
   const readerTitle = document.querySelector("#reader-book-title");
+  const bookTestaments = new Map([...document.querySelectorAll(".reader-book-tile")].map((tile) => [tile.dataset.bookCode, tile.dataset.testament]));
+  const chapterPath = (code, number) => `${main.dataset.siteBase}${bookTestaments.get(code)}/${code}/${number === 1 ? "" : `${number}/`}`;
   const bookTitles = new Map([...document.querySelectorAll(".reader-book-tile")].map((tile) => [tile.dataset.bookCode, tile.dataset.bookTitle]));
   if (picker && main) {
     const bookView = picker.querySelector(".reader-book-picker-view");
     const settingsView = picker.querySelector(".reader-settings-view");
-    const bookGrid = picker.querySelector(".reader-book-grid");
+    const bookGrid = picker.querySelector(".reader-book-list");
     const chapterPicker = picker.querySelector(".reader-chapter-picker");
     const chapterGrid = picker.querySelector(".reader-chapter-grid");
+    const backButton = element("button", { type: "button", class: "reader-picker-back", text: "← Books" });
+    backButton.addEventListener("click", () => showBooks());
     const instruction = picker.querySelector(".reader-picker-instruction");
     const fullNameToggle = picker.querySelector("#reader-full-book-names");
     const applyBookNamePreference = () => {
@@ -76,6 +80,14 @@
       saveSetting("macula-scripta-full-book-names", String(fullNameToggle.checked));
       applyBookNamePreference();
     });
+    // Old Testament starts collapsed (unless it holds the open book); each choice is remembered.
+    for (const details of bookGrid.querySelectorAll(".reader-testament")) {
+      const key = `macula-scripta-testament-${details.dataset.testament}`;
+      const saved = settingValue(key);
+      if (saved === "open" || saved === "closed") details.open = saved === "open";
+      else if (details.dataset.testament === "ot") details.open = bookTestaments.get(main.dataset.bookCode) === "ot";
+      details.addEventListener("toggle", () => saveSetting(key, details.open ? "open" : "closed"));
+    }
     const showBooks = () => {
       bookGrid.hidden = false;
       chapterPicker.hidden = true;
@@ -121,7 +133,7 @@
       instruction.textContent = `2. Choose a chapter in ${bookTitle}`;
       chapterGrid.replaceChildren(...Array.from({ length: Number(chapters) }, (_, index) => {
         const number = index + 1;
-        const path = `${main.dataset.readerBase}${bookCode}/${number === 1 ? "" : `${number}/`}`;
+        const path = chapterPath(bookCode, number);
         const link = element("a", {
           class: "reader-grid-tile",
           href: path,
@@ -130,9 +142,8 @@
           text: number
         });
         return link;
-      }));
+      }), backButton);
     });
-    picker.querySelector(".reader-picker-back").addEventListener("click", showBooks);
     chapterGrid.addEventListener("click", (event) => {
       const link = event.target.closest("a[href]");
       if (!link) return;
@@ -161,6 +172,9 @@
     const title = bookTitles.get(code) ?? main.dataset.bookTitle ?? code;
     if (readerTitle) readerTitle.textContent = `${title} ${chapter}`;
     if (pickerButton) pickerButton.textContent = `${title} ${chapter}`;
+    for (const tile of document.querySelectorAll(".reader-book-tile")) {
+      tile.setAttribute("aria-current", String(tile.dataset.bookCode === code));
+    }
   };
 
 
@@ -179,13 +193,13 @@
     const sameDestination = navigationIntent === globalThis.location?.pathname;
     const hasHash = globalThis.location?.hash?.length > 1;
     // Resuming only applies on the home page; an explicit book or chapter URL opens at that chapter's start.
-    const onHome = globalThis.location?.pathname === main.dataset.readerBase.replace(/nt\/$/, "");
+    const onHome = globalThis.location?.pathname === main.dataset.siteBase;
     if (savedPosition && onHome && !sameDestination && !hasHash
       && (savedPosition.book !== main.dataset.bookCode || Number(savedPosition.chapter) !== Number(main.dataset.chapter))
       && /^[A-Z0-9]{3}$/.test(savedPosition.book)
       && Number.isInteger(Number(savedPosition.chapter)) && Number(savedPosition.chapter) > 0) {
       const chapter = Number(savedPosition.chapter);
-      const path = `${main.dataset.readerBase}${savedPosition.book}/${chapter === 1 ? "" : `${chapter}/`}`;
+      const path = bookTestaments.has(savedPosition.book) ? chapterPath(savedPosition.book, chapter) : main.dataset.siteBase;
       globalThis.location.replace(path);
       redirectingToSavedPosition = true;
     }
@@ -223,7 +237,7 @@
   }, { passive: true });
 
   const restorePosition = () => {
-    if (globalThis.location?.hash?.length > 1 || !savedPosition || globalThis.location?.pathname !== main?.dataset.readerBase.replace(/nt\/$/, "")
+    if (globalThis.location?.hash?.length > 1 || !savedPosition || globalThis.location?.pathname !== main?.dataset.siteBase
       || savedPosition.book !== main?.dataset.bookCode
       || Number(savedPosition.chapter) !== Number(main?.dataset.chapter)) return;
     const ref = `${savedPosition.book}/${Number(savedPosition.chapter)}:${Number(savedPosition.verse)}`;
@@ -240,7 +254,7 @@
 
   // Each chapter is a static HTML fragment (one <section>, with its word-detail panes) published by Hugo.
   const fetchChapter = async (code, number) => {
-    const response = await fetch(`${main.dataset.dataUrl}${code}/${number}.html`);
+    const response = await fetch(`${main.dataset.siteBase}${bookTestaments.get(code)}-data/${code}/${number}.html`);
     if (!response.ok) throw new Error(response.statusText);
     const template = document.createElement("template");
     template.innerHTML = await response.text();
@@ -266,7 +280,7 @@
         upcoming = nextChapter(main.dataset.catalog, next.code, next.number);
         if (upcoming) {
           sentinel.querySelector("a").textContent = `Next chapter: ${label(upcoming)} →`;
-          sentinel.querySelector("a").href = `${main.dataset.dataUrl.replace(/nt-data\/$/, "")}nt/${upcoming.code}/${upcoming.number === 1 ? "" : `${upcoming.number}/`}`;
+          sentinel.querySelector("a").href = chapterPath(upcoming.code, upcoming.number);
         } else {
           sentinel.remove();
         }

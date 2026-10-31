@@ -21,3 +21,6 @@ target = "static"
 [[module.mounts]]
 source = "../data/macula-greek/SBLGNT/tsv"
 target = "assets/macula"
+[[module.mounts]]
+source = "../data/macula-hebrew/WLC/tsv"
+target = "assets/macula-hebrew"

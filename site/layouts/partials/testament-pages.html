@@ -1,0 +1,18 @@
+{{- /* Content-adapter helper: one reader page per available book and chapter of a testament ("nt" or "ot"),
+       generated from data/<testament>/catalog.yaml. Expects: page (the adapter's $), testament. */ -}}
+{{- $testament := .testament -}}
+{{- range index hugo.Data $testament "catalog" -}}
+  {{- if .available -}}
+    {{- $code := .code -}}
+    {{- $title := .title -}}
+    {{- range $n := seq .chapters -}}
+      {{- $page := dict "title" (printf "%s %d" $title $n) "layout" "reader" "params" (dict "book" $code "chapter" $n) -}}
+      {{- if eq $n 1 -}}
+        {{- $page = merge $page (dict "path" (printf "%s/_index" $code) "kind" "section" "title" $title "url" (printf "/%s/%s/" $testament $code) "aliases" (slice (printf "/%s/%s/1/" $testament $code))) -}}
+      {{- else -}}
+        {{- $page = merge $page (dict "path" (printf "%s/%d" $code $n) "url" (printf "/%s/%s/%d/" $testament $code $n)) -}}
+      {{- end -}}
+      {{- $.page.AddPage $page -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

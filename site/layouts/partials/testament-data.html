@@ -1,5 +1,6 @@
-{{- /* Groups the upstream Macula SBLGNT TSV (mounted at assets/macula) into "BOOK/chapter" => word rows. Cached for the whole build. */ -}}
-{{- $rows := resources.Get "macula/macula-greek-SBLGNT.tsv" | transform.Unmarshal (dict "format" "csv" "delimiter" "\t") -}}
+{{- /* Groups a testament's upstream Macula TSV (nt: Greek SBLGNT, ot: Hebrew WLC; mounted under assets/) into "BOOK/chapter" => word rows. Expects "nt" or "ot"; cache per testament. */ -}}
+{{- $file := cond (eq . "ot") "macula-hebrew/macula-hebrew.tsv" "macula/macula-greek-SBLGNT.tsv" -}}
+{{- $rows := resources.Get $file | transform.Unmarshal (dict "format" "csv" "delimiter" "\t") -}}
 {{- $s := newScratch -}}
 {{- range after 1 $rows -}}
   {{- $parts := split (index . 1) " " -}}
