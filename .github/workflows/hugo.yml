@@ -36,7 +36,8 @@ jobs:
     env:
       HUGO_VERSION: 0.169.0
       HUGO_ENVIRONMENT: production
-      # Only main and publish runs build the whole Old Testament; everything else builds a sample of it.
+      # Only main and publish runs build the whole Bible; everything else builds the committed John 1 / Haggai 1 sample
+      # (site/sample), which needs no submodule checkout.
       HUGO_PARAMS_SAMPLE: ${{ !(github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.publish)) }}
     steps:
       - name: Install Hugo CLI
@@ -49,6 +50,7 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v7
       - name: Check out Macula Greek TSV (pinned commit, partial and sparse)
+        if: env.HUGO_PARAMS_SAMPLE != 'true'
         run: |
           # Fetching without blobs and sparsifying before checkout downloads only SBLGNT/tsv.
           commit="$(git rev-parse HEAD:data/macula-greek)"
@@ -60,6 +62,7 @@ jobs:
           git -C data/macula-greek fetch -q --depth 1 --filter=blob:none origin "${commit}"
           git -C data/macula-greek checkout -q FETCH_HEAD
       - name: Check out Macula Hebrew TSV (pinned commit, partial and sparse, LFS)
+        if: env.HUGO_PARAMS_SAMPLE != 'true'
         run: |
           commit="$(git rev-parse HEAD:data/macula-hebrew)"
           url="$(git config -f .gitmodules submodule.data/macula-hebrew.url)"

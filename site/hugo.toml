@@ -5,10 +5,11 @@ title = "MaculaScripta"
 [params]
 rawManuscriptBaseURL = ""
 buildVersion = "local"
-# The Old Testament is large, so by default only sampleBooks of it are built; the New Testament is always complete.
-# CI sets HUGO_PARAMS_SAMPLE=false for the main branch and for publishing.
+# Sample builds (the default) read the small TSVs in sample/ (John 1 and Haggai 1, see scripts/extract-sample-tsv.mjs)
+# and need no submodule. CI sets HUGO_PARAMS_SAMPLE=false for the main branch and for publishing.
 sample = true
-sampleBooks = ["HAG"]
+sampleBooks = ["HAG", "JHN"]
+sampleChapters = 1
 
 [[module.mounts]]
 source = "content"
@@ -22,6 +23,9 @@ target = "layouts"
 [[module.mounts]]
 source = "static"
 target = "static"
+[[module.mounts]]
+source = "sample"
+target = "assets/sample"
 [[module.mounts]]
 source = "../data/macula-greek/SBLGNT/tsv"
 target = "assets/macula"
