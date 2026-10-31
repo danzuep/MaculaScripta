@@ -124,9 +124,7 @@
       anchor = null;
       setMode(null);
     });
-    bookGrid.addEventListener("click", (event) => {
-      const button = event.target.closest("[data-book-code]");
-      if (!button) return;
+    const showChapters = (button) => {
       const { bookCode, bookTitle, chapters } = button.dataset;
       bookGrid.hidden = true;
       chapterPicker.hidden = false;
@@ -143,7 +141,28 @@
         });
         return link;
       }), backButton);
+    };
+    // Choosing a book opens it straight away; the next page reopens its chapter list for a later chapter.
+    bookGrid.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-book-code]");
+      if (!button) return;
+      const path = chapterPath(button.dataset.bookCode, 1);
+      if (new URL(path, globalThis.location.href).pathname === globalThis.location.pathname) {
+        showChapters(button);
+        return;
+      }
+      try {
+        sessionStorage.setItem("macula-scripta-open-chapters", button.dataset.bookCode);
+        sessionStorage.setItem("macula-scripta-reader-navigation", path);
+      } catch { /* the chapter list simply stays closed */ }
+      globalThis.location.assign(path);
     });
+    try {
+      const pending = sessionStorage.getItem("macula-scripta-open-chapters");
+      sessionStorage.removeItem("macula-scripta-open-chapters");
+      const button = pending === main.dataset.bookCode && bookGrid.querySelector(`[data-book-code="${pending}"]`);
+      if (button) { setMode("books"); showChapters(button); }
+    } catch { /* storage blocked */ }
     chapterGrid.addEventListener("click", (event) => {
       const link = event.target.closest("a[href]");
       if (!link) return;
