@@ -1,0 +1,365 @@
+xml:id	ref	class	text	transliteration	after	strongnumberx	stronglemma	sensenumber	greek	greekstrong	gloss	english	mandarin	stem	morph	lang	lemma	pos	person	gender	number	state	type	lexdomain	contextualdomain	coredomain	sdbh	extends	frame	subjref	participantref
+o370010010011	HAG 1:1!1	prep	בִּ	bi		0871a	בְּ		ἐν	1722	in	in	在		R	H	בְּ	preposition													
+o370010010012	HAG 1:1!1	noun	שְׁנַ֤ת	šənaṯ	 	8141	שָׁנָה	1			year	year	年		Ncfsc	H	שָׁנָה	noun		feminine	singular	construct	common								
+o370010010021	HAG 1:1!2	num	שְׁתַּ֨יִם֙	šətayim	 	8147	שְׁנַיִם				two	second	第二		Acfda	H	שְׁנַיִם	adjective		feminine	dual	absolute	cardinal number	002001001042 002001003009		138	007529001001000				
+o370010010031	HAG 1:1!3	prep	לְ	lə		3807a	לְ		ἐπὶ	1909	of	of	在		R	H	לְ	preposition													
+o370010010032	HAG 1:1!3	noun	דָרְיָ֣וֶשׁ	ḏārəyāweš	 	1867	דָּרְיָוֶשׁ		δαρείου		Darius	Darius	大流士		Np	H	דָּרְיָוֶשׁ	noun					proper	003001007			001717001001000				
+o370010010041	HAG 1:1!4	art	הַ	ha		1886a	הַ		τοῦ	3588	the	the			Td	H	הַ	particle					definite article								
+o370010010042	HAG 1:1!4	noun	מֶּ֔לֶךְ	mmeleḵ	 	4428	מֶלֶךְ	1	βασιλέως	935	king	king	王		Ncmsa	H	מֶלֶךְ	noun		masculine	singular	absolute	common	001001002003005		015 170 095	004048001001000				
+o370010010051	HAG 1:1!5	prep	בַּ	ba		0871a	בְּ		ἐν	1722	in	in			Rd	H	בְּ	preposition													
+o370010010051ה	HAG 1:1!5	art		–		1886a	הַ				the	the			Td	H	הַ	particle					definite article								
+o370010010052	HAG 1:1!5	noun	חֹ֨דֶשׁ֙	ḥōḏeš	 	2320	חֹדֶשׁ	1	μηνὶ	3376	month	month	月		Ncmsa	H	חֹדֶשׁ	noun		masculine	singular	absolute	common	002002002010		180	002145001001000				
+o370010010061	HAG 1:1!6	art	הַ	ha		1886a	הַ		τῷ	3588	(the)	the			Td	H	הַ	particle					definite article								
+o370010010062	HAG 1:1!6	num	שִּׁשִּׁ֔י	ššiššiy	 	8345	שִׁשִּׁי		ἕκτῳ	1623	sixth	sixth	六		Aomsa	H	שִׁשִּׁי	adjective		masculine	singular	absolute	ordinal number	002001001042 002001003009		138	007659001001000				
+o370010010071	HAG 1:1!7	prep	בְּ	bə		0871a	בְּ				on	on	在		R	H	בְּ	preposition													
+o370010010072	HAG 1:1!7	noun	י֥וֹם	yôm	 	3117	יוֹם	1			day	day	日		Ncmsa	H	יוֹם	noun		masculine	singular	absolute	common	002002002010		180	002854001002000				
+o370010010081	HAG 1:1!8	num	אֶחָ֖ד	ʾeḥāḏ	 	0259	אֶחָד		μιᾷ	3391	one	first	一		Acmsa	H	אֶחָד	adjective		masculine	singular	absolute	cardinal number	002001001042 002001003009		138	000244001004000				
+o370010010091	HAG 1:1!9	prep	לַ	la		3807a	לְ		τοῦ	3588	of	of	于		Rd	H	לְ	preposition													
+o370010010091ה	HAG 1:1!9	art		–		1886a	הַ				the	the			Td	H	הַ	particle					definite article								
+o370010010092	HAG 1:1!9	noun	חֹ֑דֶשׁ	ḥōḏeš	 	2320	חֹדֶשׁ	1	μηνὸς	3376	month	month	那月		Ncmsa	H	חֹדֶשׁ	noun		masculine	singular	absolute	common	002002002010		180	002145001001000				
+o370010010101	HAG 1:1!10	verb	הָיָ֨ה	hāyāh	 	1961	הָיָה		ἐγένετο	1096	it.came	came	有	qal	Vqp3ms	H	הָיָה	verb	third	masculine	singular		qatal						A0:370010010111;		
+o370010010111	HAG 1:1!11	noun	דְבַר	ḏəḇar-	־	1697	דָּבָר	1	λόγος	3056	the.word	word	话		Ncmsc	H	דָּבָר	noun		masculine	singular	construct	common								
+o370010010121	HAG 1:1!12	noun	יְהוָ֜ה	yəhwāh	 	3068	יהוה		κύριου	2962	of.Yahweh	LORD	耶和华		Np	H	יהוה	noun					proper	003001004			002823001001000				
+o370010010131	HAG 1:1!13	prep	בְּ	bə		0871a	בְּ		ἐν	1722	by	by	藉着		R	H	בְּ	preposition													
+o370010010132	HAG 1:1!13	noun	יַד	yaḏ-	־	3027	יָד	1	ξειρὶ	5495	the.hand	hand	经手		Ncbsc	H	יָד	noun		both	singular	construct	common	002002003003			002787001017000				
+o370010010141	HAG 1:1!14	noun	חַגַּ֣י	ḥaggay	 	2292	חַגַּי		αγγαιου		of.Haggai	Haggai	哈该		Np	H	חַגַּי	noun					proper	003001007			002121001001000				
+o370010010151	HAG 1:1!15	art	הַ	ha		1886a	הַ		τοῦ	3588	the	the			Td	H	הַ	particle					definite article								
+o370010010152	HAG 1:1!15	noun	נָּבִ֗יא	nnāḇiyʾ	 	5030	נָבִיא	1	προφήτου	4396	prophet	prophet	先知		Ncmsa	H	נָבִיא	noun		masculine	singular	absolute	common	001001002003010		041 134	004611001001000				
+o370010010161	HAG 1:1!16	prep	אֶל	ʾel-	־	0413	אֶל		πρὸς	4314	to	to	向		R	H	אֶל	preposition													
+o370010010171	HAG 1:1!17	noun	זְרֻבָּבֶ֤ל	zərubbāḇel	 	2216	זְרֻבָּבֶל		ζοροβαβελ	2216	Zerubbabel	Zerubbabel	所罗巴伯		Np	H	זְרֻבָּבֶל	noun					proper	003001007			002044001001000				
+o370010010181	HAG 1:1!18	noun	בֶּן	ben-	־	1121	בֵּן	1			the.son	son	儿子		Ncmsc	H	בֵּן	noun		masculine	singular	construct	common	001001002003012		062 121 129	001040001001000				
+o370010010191	HAG 1:1!19	noun	שְׁאַלְתִּיאֵל֙	šəʾaltîʾēl	 	7597	שְׁאַלְתִּיאֵל		σαλαθιηλ		of.Shealtiel	Shealtiel	撒拉铁		Np	H	שְׁאַלְתִּיאֵל	noun					proper	003001007			007134001001000				
+o370010010201	HAG 1:1!20	noun	פַּחַ֣ת	paḥaṯ	 	6346	פֶּחָה	1	φυλῆς	5443	the.governor	governor	省长		Ncmsc	H	פֶּחָה	noun		masculine	singular	construct	common	001001002003005 001001002003007		015	005828001001000				
+o370010010211	HAG 1:1!21	noun	יְהוּדָ֔ה	yəhûḏāh	 	3063	יְהוּדָה		ιουδα	2448	of.Judah	Judah	犹大		Np	H	יְהוּדָה	noun					proper	003001007 003001006 003001010			002819001001000				
+o370010010221	HAG 1:1!22	cj	וְ	wə		2050b	וְ		καὶ	2532	and	and	并		C	H	וְ	conjunction													
+o370010010222	HAG 1:1!22	prep	אֶל	ʾel-	־	0413	אֶל		πρὸς	4314	to	to	到		R	H	אֶל	preposition													
+o370010010231	HAG 1:1!23	noun	יְהוֹשֻׁ֧עַ	yəhôšuᵃʿ	 	3091	יְהֹושֻׁעַ		ἰησοῦν	2424	Joshua	Joshua	约书亚		Np	H	יְהֹושֻׁעַ	noun					proper	003001007			002839001004000				
+o370010010241	HAG 1:1!24	noun	בֶּן	ben-	־	1121	בֵּן	1			the.son	son	儿子		Ncmsc	H	בֵּן	noun		masculine	singular	construct	common	001001002003012		062 121 129	001040001001000				
+o370010010251	HAG 1:1!25	noun	יְהוֹצָדָ֛ק	yəhôṣāḏāq	 	3087	יְהוֹצָדָק		ιωσεδεκ		of.Jehozadak	Jehozadak	约撒答		Np	H	יְהוֹצָדָק	noun					proper	003001007			002836001001000				
+o370010010261	HAG 1:1!26	art	הַ	ha		1886a	הַ		τὸν	3588	the	the			Td	H	הַ	particle					definite article								
+o370010010262	HAG 1:1!26	noun	כֹּהֵ֥ן	kōhēn	 	3548	כֹּהֵן	1	ἱερέα	2409	priest	priest	祭司		Ncmsa	H	כֹּהֵן	noun		masculine	singular	absolute	common	001001002003008		132	003253001001000				
+o370010010271	HAG 1:1!27	art	הַ	ha		1886a	הַ		τὸν	3588	(the)	the			Td	H	הַ	particle					definite article								
+o370010010272	HAG 1:1!27	adj	גָּד֖וֹל	gāḏôl	 	1419	גָּדוֹל	4	μέγαν	3173	great	high	大		Aamsa	H	גָּדוֹל	adjective		masculine	singular	absolute	adjective	002001002012		170	001299001003000				
+o370010010281	HAG 1:1!28	prep	לֵ	lē		3807a	לְ				(cmp)	to			R	H	לְ	preposition													
+o370010010282	HAG 1:1!28	verb	אמֹֽר	ʾmōr:	׃	0559	אָמַר	1	λέγων	3004		saying	说	qal	Vqc	H	אָמַר	verb					infinitive construct	002004001009008		041	000512001001000		A0:370010010111;	370010010111	
+o370010020011	HAG 1:2!1	adv	כֹּ֥ה	kōh	 	3541	כֹּה		τάδε	3592	thus	thus	如此		D	H	כֹּה	adverb													
+o370010020021	HAG 1:2!2	verb	אָמַ֛ר	ʾāmar	 	0559	אָמַר	1	λέγει	3004	he.says	says	说	qal	Vqp3ms	H	אָמַר	verb	third	masculine	singular		qatal	002004001009008		041	000512001001000		A0:370010020031;		
+o370010020031	HAG 1:2!3	noun	יְהוָ֥ה	yəhwāh	 	3068	יהוה		κύριος	2962	Yahweh	LORD	耶和华		Np	H	יהוה	noun					proper	003001004			002823001001000				
+o370010020041	HAG 1:2!4	noun	צְבָא֖וֹת	ṣəḇāʾôṯ	 	6635	צָבָא	1	παντοκράτωρ	3841	of.hosts	hosts	万军		Ncbpa	H	צָבָא	noun		both	plural	absolute	common	001001001		055	006101001007000				
+o370010020051	HAG 1:2!5	prep	לֵ	lē		3807a	לְ				(cmp)	to			R	H	לְ	preposition													
+o370010020052	HAG 1:2!5	verb	אמֹ֑ר	ʾmōr	 	0559	אָמַר	1	λέγων	3004		say	说	qal	Vqc	H	אָמַר	verb					infinitive construct	002004001009008		041	000512001001000		A0:370010020031;	370010020031	
+o370010020061	HAG 1:2!6	art	הָ	hā		1886a	הַ		ὁ	3588	the	the			Td	H	הַ	particle					definite article								
+o370010020062	HAG 1:2!6	noun	עָ֤ם	ʿām	 	5971	עַם	1	λαὸς	2992	people	people	人民		Ncmsa	H	עַם	noun		masculine	singular	absolute	common								
+o370010020071	HAG 1:2!7	art	הַ	ha		1886a	הַ				(the)	the			Td	H	הַ	particle					definite article								
+o370010020072	HAG 1:2!7	adj	זֶּה֙	zzeh	 	2088	זֶה		οὗτος	3778	this	these	这		Pdxms	H	זֶה	pronoun	unknown: x	masculine	singular		demonstrative								
+o370010020081	HAG 1:2!8	verb	אָֽמְר֔וּ	ʾāmərû	 	0559	אָמַר	1	λέγουσιν	3004	they.have.said	say	说	qal	Vqp3cp	H	אָמַר	verb	third	common	plural		qatal	002004001009008		041	000512001001000		A0:370010020062;		
+o370010020091	HAG 1:2!9	adv	לֹ֥א	lōʾ	 	3808	לֹא		οὐξ	3756	not	not	没有		Tn	H	לֹא	particle					negative								
+o370010020101	HAG 1:2!10	noun	עֶת	ʿeṯ-	־	6256	עֵת	1			a.time	time	时候		Ncbsc	H	עֵת	noun		both	singular	construct	common	002002002010		180	005738001001000				
+o370010020111	HAG 1:2!11	verb	בֹּ֛א	bōʾ	 	0935	בּוֹא	1	ἥκει	2240	to.come	come	到	qal	Vqc	H	בּוֹא	verb					infinitive construct						A0:370010020101;	370010020101	
+o370010020121	HAG 1:2!12	noun	עֶת	ʿeṯ-	־	6256	עֵת	1	καιρὸς	2540	the.time	time	时候		Ncbsc	H	עֵת	noun		both	singular	construct	common	002002002010		180	005738001001000				
+o370010020131	HAG 1:2!13	noun	בֵּ֥ית	bēyṯ	 	1004	בַּיִת	1	οἶκον	3624	of.the.house	house	殿		Ncmsc	H	בַּיִת	noun		masculine	singular	construct	common	001005001001		020	000931001001000				
+o370010020141	HAG 1:2!14	noun	יְהוָ֖ה	yəhwāh	 	3068	יהוה		κυρίου	2962	of.Yahweh	LORD	耶和华		Np	H	יהוה	noun					proper	003001004			002823001001000				
+o370010020151	HAG 1:2!15	prep	לְ	lə		3807a	לְ				to	to	以		R	H	לְ	preposition													
+o370010020152	HAG 1:2!15	verb	הִבָּנֽוֹת	hibbānôṯ:	׃פ	1129	בָּנָה	2			be.rebuilt	rebuild	重建	niphal	VNc	H	בָּנָה	verb					infinitive construct	002002002005		045	001053001001000		A1:370010020131;	370010020131	
+o370010030011	HAG 1:3!1	cj	וַֽ	wa		2050b	וְ		καὶ	2532	and	then	就		C	H	וְ	conjunction													
+o370010030012	HAG 1:3!1	verb	יְהִי֙	yəhî	 	1961	הָיָה		ἐγένετο	1096	it.came	came	临到	qal	Vqw3ms	H	הָיָה	verb	third	masculine	singular		wayyiqtol						A0:370010030021;		
+o370010030021	HAG 1:3!2	noun	דְּבַר	dəḇar-	־	1697	דָּבָר	1	λόγος	3056	the.word	word	话		Ncmsc	H	דָּבָר	noun		masculine	singular	construct	common								
+o370010030031	HAG 1:3!3	noun	יְהוָ֔ה	yəhwāh	 	3068	יהוה		κυρίου	2962	of.Yahweh	LORD	耶和华		Np	H	יהוה	noun					proper	003001004			002823001001000				
+o370010030041	HAG 1:3!4	prep	בְּ	bə		0871a	בְּ		ἐν	1722	by	by	藉着		R	H	בְּ	preposition													
+o370010030042	HAG 1:3!4	noun	יַד	yaḏ-	־	3027	יָד	1	ξειρὶ	5495	the.hand	hand	经手		Ncbsc	H	יָד	noun		both	singular	construct	common	002002003003			002787001017000				
+o370010030051	HAG 1:3!5	noun	חַגַּ֥י	ḥaggay	 	2292	חַגַּי		αγγαιου		of.Haggai	Haggai	哈该		Np	H	חַגַּי	noun					proper	003001007			002121001001000				
+o370010030061	HAG 1:3!6	art	הַ	ha		1886a	הַ		τοῦ	3588	the	the			Td	H	הַ	particle					definite article								
+o370010030062	HAG 1:3!6	noun	נָּבִ֖יא	nnāḇiyʾ	 	5030	נָבִיא	1	προφήτου	4396	prophet	prophet	先知		Ncmsa	H	נָבִיא	noun		masculine	singular	absolute	common	001001002003010		041 134	004611001001000				
+o370010030071	HAG 1:3!7	prep	לֵ	lē		3807a	לְ				(cmp)	to			R	H	לְ	preposition													
+o370010030072	HAG 1:3!7	verb	אמֹֽר	ʾmōr:	׃	0559	אָמַר	1	λέγων	3004		saying	说	qal	Vqc	H	אָמַר	verb					infinitive construct	002004001009008		041	000512001001000		A0:370010030021;	370010030021	
+o370010040011	HAG 1:4!1	ptcl	הַ	ha		1886b	הֲ		εἰ	1487	[does].a	?	难道		Ti	H	הֲ	particle					interrogative	004001			001736001001000				
+o370010040012	HAG 1:4!1	noun	עֵ֤ת	ʿēṯ	 	6256	עֵת	1	καιρὸς	2540	time?	time	时候		Ncbsa	H	עֵת	noun		both	singular	absolute	common	002002002010		180	005738001001000				
+o370010040021	HAG 1:4!2	prep	לָ			3807a	לְ				[belong].to	for			R	H	לְ	preposition													
+o370010040022	HAG 1:4!2	pron	כֶם֙		 	3641b	הוּא		ὑμῖν	5213	you	you	你们		Sp2mp	H	הוּא	suffix	second	masculine	plural		pronominal								370010020062
+o370010040031	HAG 1:4!3	pron	אַתֶּ֔ם	ʾattem	 	0859a	אַתֶּם				you	yourselves	你们		Pp2mp	H	אַתֶּם	pronoun	second	masculine	plural		personal								370010020062
+o370010040041	HAG 1:4!4	prep	לָ	lā		3807a	לְ		τοῦ	3588	to	to	以		R	H	לְ	preposition													
+o370010040042	HAG 1:4!4	verb	שֶׁ֖בֶת	šeḇeṯ	 	3427	יָשַׁב	1	οἰκεῖν	3611	dwell	dwell	住	qal	Vqc	H	יָשַׁב	verb					infinitive construct	002002001005		166 081	003136001011000		A0:370010020062;	370010020062	
+o370010040051	HAG 1:4!5	prep	בְּ	bə		0871a	בְּ		ἐν	1722	in	in	在		R	H	בְּ	preposition													
+o370010040052	HAG 1:4!5	noun	בָתֵּי			1004	בַּיִת	3	οἴκοις	3624	houses	houses	房屋		Ncmpc	H	בַּיִת	noun		masculine	plural	construct	common	001005001001		020	000931001001000				
+o370010040053	HAG 1:4!5	pron	כֶ֣ם		 	3641b	הוּא		ὑμῶν	5216	your	your	你们		Sp2mp	H	הוּא	suffix	second	masculine	plural		pronominal	001005001001		020	000931001001000				370010020062
+o370010040061	HAG 1:4!6	verb	סְפוּנִ֑ים	səp̄ûniym	 	5603	סָפַן	1	κοιλοστάθμοις		paneled	paneled	天花板	qal	Vqsmpa	H	סָפַן	verb		masculine	plural	absolute	participle passive	002003001005		020	005143001001000		A1:370010040052;	370010040052	
+o370010040071	HAG 1:4!7	cj	וְ	wə		2050b	וְ		ὁ	3588	and	while	而		C	H	וְ	conjunction													
+o370010040072	HAG 1:4!7	art	הַ	ha		1886a	הַ		δὲ	1161	the	the			Td	H	הַ	particle					definite article								
+o370010040073	HAG 1:4!7	noun	בַּ֥יִת	bayiṯ	 	1004	בַּיִת	1	οἶκος	3624	house	house	殿		Ncmsa	H	בַּיִת	noun		masculine	singular	absolute	common	001005001001		020	000931001001000				
+o370010040081	HAG 1:4!8	art	הַ	ha		1886a	הַ				(the)	the			Td	H	הַ	particle					definite article								
+o370010040082	HAG 1:4!8	adj	זֶּ֖ה	zzeh	 	2088	זֶה		οὗτος	3778	this	this	这		Pdxms	H	זֶה	pronoun	unknown: x	masculine	singular		demonstrative								
+o370010040091	HAG 1:4!9	adj	חָרֵֽב	ḥārēḇ:	׃	2720	חָרֵב	1	ἐχηρήμωται		[is].desolate	lies in ruins	荒废		Aamsa	H	חָרֵב	adjective		masculine	singular	absolute	adjective	002001001023		052	002506001002000				
+o370010050011	HAG 1:5!1	cj	וְ	wə		2050b	וְ		καὶ	2532	and	and	而		C	H	וְ	conjunction													
+o370010050012	HAG 1:5!1	adv	עַתָּ֕ה	ʿattāh	 	6258	עַתָּה		νῦν	3568	therefore	now	现在		D	H	עַתָּה	adverb						004003			005741001002000				
+o370010050021	HAG 1:5!2	adv	כֹּ֥ה	kōh	 	3541	כֹּה		τάδε	3592	thus	thus	如此		D	H	כֹּה	adverb													
+o370010050031	HAG 1:5!3	verb	אָמַ֖ר	ʾāmar	 	0559	אָמַר	1	λέγει	3004	he.says	says	说	qal	Vqp3ms	H	אָמַר	verb	third	masculine	singular		qatal	002004001009008		041	000512001001000		A0:370010050041;		
+o370010050041	HAG 1:5!4	noun	יְהוָ֣ה	yəhwāh	 	3068	יהוה		κύριος	2962	Yahweh	LORD	耶和华		Np	H	יהוה	noun					proper	003001004			002823001001000				
+o370010050051	HAG 1:5!5	noun	צְבָא֑וֹת	ṣəḇāʾôṯ	 	6635	צָבָא	1	παντοκράτωρ	3841	of.hosts	hosts	万军		Ncbpa	H	צָבָא	noun		both	plural	absolute	common	001001001		055	006101001007000				
+o370010050061	HAG 1:5!6	verb	שִׂ֥ימוּ	śiymû	 	7760	שׂים	14	τάχατε	5021	set	make careful!	定	qal	Vqv2mp	H	שׂים	verb	second	masculine	plural		imperative	002004002014		106	007028001028000		A0:370010020062; A1:370010050071;	370010020062	
+o370010050071	HAG 1:5!7	noun	לְבַבְ			3824	לֵבָב	2	καρδίας	2588	heart	thought of	心		Ncmsc	H	לֵבָב	noun		masculine	singular	construct	common	002004002014		106	003500001002000				
+o370010050072	HAG 1:5!7	pron	כֶ֖ם		 	3641b	הוּא		ὑμῶν	5216	your	you	你们		Sp2mp	H	הוּא	suffix	second	masculine	plural		pronominal	002004002014		106	003500001002000				370010020062
+o370010050081	HAG 1:5!8	prep	עַל	ʿal-	־	5921	עַל		εἰς	1519	on	about	于		R	H	עַל	preposition													
+o370010050091	HAG 1:5!9	noun	דַּרְכֵי			1870	דֶּרֶךְ	1	ὁδοὺς	3598	ways	ways	行为		Ncbpc	H	דֶּרֶךְ	noun		both	plural	construct	common	002002002001		017	001719001005000				
+o370010050092	HAG 1:5!9	pron	כֶֽם		׃	3641b	הוּא		ὑμῶν	5216	your	your	自己		Sp2mp	H	הוּא	suffix	second	masculine	plural		pronominal	002002002001		017	001719001005000				370010020062
+o370010060011	HAG 1:6!1	verb	זְרַעְתֶּ֨ם	zəraʿtem	 	2232	זָרַע	1	ἐσπείρατε		you.have.sown	sown	撒~种	qal	Vqp2mp	H	זָרַע	verb	second	masculine	plural		qatal	002002001014		125 007	002058001001000		A0:370010020062;	370010020062	
+o370010060021	HAG 1:6!2	adv	הַרְבֵּ֜ה	harbēh	 	7235b	רָבָה		πολλὰ	4183	much	much	多	hiphil	Vha	H	רָבָה	verb					infinitive absolute								
+o370010060031	HAG 1:6!3	cj	וְ	wə		2050b	וְ		καὶ	2532	and	but	却		C	H	וְ	conjunction													
+o370010060032	HAG 1:6!3	verb	הָבֵ֣א	hāḇēʾ	 	0935	בּוֹא	2	εἰσηνέγκατε	1533	you.have.brought	harvested	收	hiphil	Vha	H	בּוֹא	verb					infinitive absolute						A0:370010020062;	370010020062	
+o370010060041	HAG 1:6!4	adj	מְעָ֗ט	məʿāṭ	 	4592	מְעַט	2	ὀλίγα	3641	little	little	少		Aamsa	H	מְעַט	adjective		masculine	singular	absolute	adjective	002001001042			004204001001000				
+o370010060051	HAG 1:6!5	verb	אָכ֤וֹל	ʾāḵôl	 	0398	אָכַל	1	ἐφάγετε	5315	you.have.eaten	eat	吃	qal	Vqa	H	אָכַל	verb					infinitive absolute	002001001024		069	000373001001000		A0:370010020062;	370010020062	
+o370010060061	HAG 1:6!6	cj	וְ	wə		2050b	וְ		καὶ	2532	and	but	却		C	H	וְ	conjunction													
+o370010060062	HAG 1:6!6	adv	אֵין	ʾên-	־	0369	אַיִן		οὐκ	3756	not	never	不		Tn	H	אַיִן	particle					negative								
+o370010060071	HAG 1:6!7	prep	לְ	lə		3807a	לְ		εἰς	1519	[it	to	致		R	H	לְ	preposition													
+o370010060072	HAG 1:6!7	noun	שָׂבְעָה֙	śāḇʿāh	 	7654	שׇׂבְעָה	1	πλησμονήν	4140	was].to.be.satisfied	satisfied	饱		Ncfsa	H	שׇׂבְעָה	noun		feminine	singular	absolute	common	002001001024		069	006972001001000				
+o370010060081	HAG 1:6!8	verb	שָׁת֣וֹ	šāṯô	 	8354	שָׁתָה	1	ἐπίετε		you.have.drunk	drink	喝	qal	Vqa	H	שָׁתָה	verb					infinitive absolute						A0:370010020062;	370010020062	
+o370010060091	HAG 1:6!9	cj	וְ	wə		2050b	וְ		καὶ	2532	and	but	却		C	H	וְ	conjunction													
+o370010060092	HAG 1:6!9	adv	אֵין	ʾên-	־	0369	אַיִן		οὐκ	3756	not	never	不		Tn	H	אַיִן	particle					negative								
+o370010060101	HAG 1:6!10	prep	לְ	lə		3807a	לְ		εἰς	1519	[it	to	到		R	H	לְ	preposition													
+o370010060102	HAG 1:6!10	verb	שָׁכְרָ֔ה	šāḵərāh	 	7937	שָׁכַר	1			was].to.become.drunk	have ~ fill	醉	qal	Vqc	H	שָׁכַר	verb					infinitive construct	002001001024		069 008	007362001001000		A0:370010020062;	370010020062	
+o370010060111	HAG 1:6!11	verb	לָב֖וֹשׁ	lāḇôš	 	3847	לָבֵשׁ	1	περιεβάλεσθε		you.have.dressed	put on clothes	穿	qal	Vqa	H	לָבֵשׁ	verb					infinitive absolute	002003001007		019 033	003516001002000		A0:370010020062;	370010020062	
+o370010060121	HAG 1:6!12	cj	וְ	wə		2050b	וְ		καὶ	2532	and	but	却		C	H	וְ	conjunction													
+o370010060122	HAG 1:6!12	adv	אֵין	ʾên-	־	0369	אַיִן		οὐκ	3756	not	no	不		Tn	H	אַיִן	particle					negative								
+o370010060131	HAG 1:6!13	prep	לְ	lə		3807a	לְ				[it	to	致		R	H	לְ	preposition													
+o370010060132	HAG 1:6!13	verb	חֹ֣ם	ḥōm	 	2552	חמם	1	ἐθερμάνθητε		was].to.be.warm	warm	暖	qal	Vqc	H	חמם	verb					infinitive construct	002001001031		177	002355001001000		A0:;		
+o370010060141	HAG 1:6!14	prep	ל֑			3807a	לְ		ἐν	1722	to	have	于		R	H	לְ	preposition													
+o370010060142	HAG 1:6!14	pron	וֹ		 	2050c	הוּא		αὐτοῖς	846	him	him	它		Sp3ms	H	הוּא	suffix	third	masculine	singular		pronominal								370010020062
+o370010060151	HAG 1:6!15	cj	וְ	wə		2050b	וְ		καὶ	2532	and	and	而		C	H	וְ	conjunction													
+o370010060152	HAG 1:6!15	art	הַ֨	ha		1886a	הַ		ὁ	3588	the.[one	the			Td	H	הַ	particle					definite article								
+o370010060153	HAG 1:6!15	verb	מִּשְׂתַּכֵּ֔ר	mmiśtakkēr	 	7936	שָׂכַר	2			who].earns.wages	earns	得工钱	hithpael	Vtrmsa	H	שָׂכַר	verb		masculine	singular	absolute	participle active	002003002016		200 140	007041001001000				
+o370010060161	HAG 1:6!16	verb	מִשְׂתַּכֵּ֖ר	miśtakkēr	 	7936	שָׂכַר	2	συνήγαγεν	4863	[is].earning.wages	wages	工钱	hithpael	Vtrmsa	H	שָׂכַר	verb		masculine	singular	absolute	participle active	002003002016		200 140	007041001001000		A0:370010060153;		
+o370010060171	HAG 1:6!17	prep	אֶל	ʾel-	־	0413	אֶל		εἰς	1519	to	into	在~里		R	H	אֶל	preposition													
+o370010060181	HAG 1:6!18	noun	צְר֥וֹר	ṣərôr	 	6872	צְרוֹר	1	δεσμὸν	1199	a.bag	bag	口袋		Ncmsa	H	צְרוֹר	noun		masculine	singular	absolute	common	001004001003		027 171	006324001001000				
+o370010060191	HAG 1:6!19	verb	נָקֽוּב	nāqûḇ:	׃פ	5344	נָקַב	6	τετρυπημένον		pierced	with holes	有破洞的	qal	Vqsmsa	H	נָקַב	verb		masculine	singular	absolute	participle passive	002001001023			004896001001000		A1:370010060181;	370010060181	
+o370010070011	HAG 1:7!1	adv	כֹּ֥ה	kōh	 	3541	כֹּה		τάδε	3592	thus	thus	如此		D	H	כֹּה	adverb													
+o370010070021	HAG 1:7!2	verb	אָמַ֖ר	ʾāmar	 	0559	אָמַר	1	λέγει	3004	he.says	says	说	qal	Vqp3ms	H	אָמַר	verb	third	masculine	singular		qatal	002004001009008		041	000512001001000		A0:370010070031;		
+o370010070031	HAG 1:7!3	noun	יְהוָ֣ה	yəhwāh	 	3068	יהוה		κύριος	2962	Yahweh	LORD	耶和华		Np	H	יהוה	noun					proper	003001004			002823001001000				
+o370010070041	HAG 1:7!4	noun	צְבָא֑וֹת	ṣəḇāʾôṯ	 	6635	צָבָא	1	παντοκράτωρ	3841	of.hosts	hosts	万军		Ncbpa	H	צָבָא	noun		both	plural	absolute	common	001001001		055	006101001007000				
+o370010070051	HAG 1:7!5	verb	שִׂ֥ימוּ	śiymû	 	7760	שׂים	14	θέσθε	5087	set	make careful!	定	qal	Vqv2mp	H	שׂים	verb	second	masculine	plural		imperative	002004002014		106	007028001028000		A0:370010020062; A1:370010070061;	370010020062	
+o370010070061	HAG 1:7!6	noun	לְבַבְ			3824	לֵבָב	2	καρδίας	2588	heart	thought of	心		Ncmsc	H	לֵבָב	noun		masculine	singular	construct	common	002004002014		106	003500001002000				
+o370010070062	HAG 1:7!6	pron	כֶ֖ם		 	3641b	הוּא		ὑμῶν	5216	your	you	你们		Sp2mp	H	הוּא	suffix	second	masculine	plural		pronominal	002004002014		106	003500001002000				370010020062
+o370010070071	HAG 1:7!7	prep	עַל	ʿal-	־	5921	עַל		εἰς	1519	on	about	于		R	H	עַל	preposition													
+o370010070081	HAG 1:7!8	noun	דַּרְכֵי			1870	דֶּרֶךְ	1	ὁδοὺς	3598	ways	ways	行为		Ncbpc	H	דֶּרֶךְ	noun		both	plural	construct	common	002002002001		017	001719001005000				
+o370010070082	HAG 1:7!8	pron	כֶֽם		׃	3641b	הוּא		ὑμῶν	5216	your	your	自己		Sp2mp	H	הוּא	suffix	second	masculine	plural		pronominal	002002002001		017	001719001005000				370010020062
+o370010080011	HAG 1:8!1	verb	עֲל֥וּ	ʿălû	 	5927	עָלָה	5	ἀνάβητε	305	go.up	go up	上	qal	Vqv2mp	H	עָלָה	verb	second	masculine	plural		imperative	002002001011			005441001005000		A0:370010020062;	370010020062	
+o370010080021	HAG 1:8!2	art	הָ	hā		1886a	הַ		τὸ	3588	the.hill	the	那		Td	H	הַ	particle					definite article								
+o370010080022	HAG 1:8!2	noun	הָ֛ר	hār	 	2022	הַר	1	ὄρος	3735	country	hills	山		Ncmsa	H	הַר	noun		masculine	singular	absolute	common	001005002002002		115	001868001002000				
+o370010080031	HAG 1:8!3	cj	וַ	wa		2050b	וְ		καὶ	2532	and	and	而		C	H	וְ	conjunction													
+o370010080032	HAG 1:8!3	verb	הֲבֵאתֶ֥ם	hăḇēʾṯem	 	0935	בּוֹא	2	κόψατε		you.will.bring	bring	取	hiphil	Vhq2mp	H	בּוֹא	verb	second	masculine	plural		weqatal						AA:370010020062; A0:370010080041;	370010020062	
+o370010080041	HAG 1:8!4	noun	עֵ֖ץ	ʿēṣ	 	6086	עֵץ	2	χύλα	3586	wood	wood	木材		Ncmsa	H	עֵץ	noun		masculine	singular	absolute	common	001003002			005588001002000				
+o370010080051	HAG 1:8!5	cj	וּ	û		2050b	וְ		καὶ	2532	and	and			C	H	וְ	conjunction													
+o370010080052	HAG 1:8!5	verb	בְנ֣וּ	ḇənû	 	1129	בָּנָה	1	οἰκοδομήσατε	3618	rebuild	build	建造	qal	Vqv2mp	H	בָּנָה	verb	second	masculine	plural		imperative	002002002005		045	001053001001000		A0:370010020062; A1:370010080062;	370010020062	
+o370010080061	HAG 1:8!6	art	הַ	ha		1886a	הַ		τὸν	3588	the	the	这		Td	H	הַ	particle					definite article								
+o370010080062	HAG 1:8!6	noun	בָּ֑יִת	bāyiṯ	 	1004	בַּיִת	1	οἶκον	3624	house	house	殿		Ncmsa	H	בַּיִת	noun		masculine	singular	absolute	common	001005001001		020	000931001001000				
+o370010080071	HAG 1:8!7	cj	וְ	wə		2050b	וְ		καὶ	2532	so	that	就		C	H	וְ	conjunction													
+o370010080072	HAG 1:8!7	verb	אֶרְצֶה	ʾerṣeh-	־	7521	רָצָה	2	εὐδοκήσω		that.I.may.take.pleasure	take pleasure	喜悦	qal	Vqi1cs	H	רָצָה	verb	first	common	singular		yiqtol	002001002028		197	006909001002000		A0:370010070031;	370010070031	
+o370010080081	HAG 1:8!8	prep	בּ֥			0871a	בְּ		ἐν	1722	in	with	因		R	H	בְּ	preposition													
+o370010080082	HAG 1:8!8	pron	וֹ		 	2050c	הוּא		αὐτῷ	846	it	it	此		Sp3ms	H	הוּא	suffix	third	masculine	singular		pronominal								370010080062
+o370010080101	HAG 1:8!10	cj	וְ	**wə		2050b	וְ		καὶ	2532	and	and			C	H	וְ	conjunction													
+o370010080102	HAG 1:8!10	verb	אֶכָּבְדָ֖ה	**ʾekkāḇəḏāh	 	3513	כָּבֵד	1	ἐνδοχασθήσομαι		so.that.I.may.be.honored	glorified	得荣耀	niphal	VNh1cs	H	כָּבֵד	verb	first	common	singular		cohortative	002001002012		170	003220001007000		A0:370010070031;	370010070031	
+o370010080111	HAG 1:8!11	verb	אָמַ֥ר	ʾāmar	 	0559	אָמַר	1	εἶπεν	2036	he.says	says	说	qal	Vqp3ms	H	אָמַר	verb	third	masculine	singular		qatal	002004001009008		041	000512001001000		A0:370010080121;		
+o370010080121	HAG 1:8!12	noun	יְהוָֽה	yəhwāh:	׃	3068	יהוה		κύριος	2962	Yahweh	LORD	耶和华		Np	H	יהוה	noun					proper	003001004			002823001001000				
+o370010090011	HAG 1:9!1	verb	פָּנֹ֤ה	pānōh	 	6437	פָּנָה	2	ἐπεβλέψατε		you.turned.to.look	looked	盼望	qal	Vqa	H	פָּנָה	verb					infinitive absolute	002004002001001		106	005912001016000		A0:370010020062;	370010020062	
+o370010090021	HAG 1:9!2	prep	אֶל	ʾel-	־	0413	אֶל		εἰς	1519	to	for			R	H	אֶל	preposition													
+o370010090031	HAG 1:9!3	adv	הַרְבֵּה֙	harbēh	 	7235b	רָבָה		πολλά	4183	much	much	多	hiphil	Vha	H	רָבָה	verb					infinitive absolute								
+o370010090041	HAG 1:9!4	cj	וְ	wə		2050b	וְ		καὶ	2532	and	but	但		C	H	וְ	conjunction													
+o370010090042	HAG 1:9!4	ij	הִנֵּ֣ה	hinnēh	 	2009	הִנֵּה		ἐγένετο	1096	there!	behold	看		Tm	H	הִנֵּה	particle					demonstrative								
+o370010090051	HAG 1:9!5	prep	לִ	li		3807a	לְ				(into)	to	得		R	H	לְ	preposition													
+o370010090052	HAG 1:9!5	adj	מְעָ֔ט	məʿāṭ	 	4592	מְעַט	2	ὀλίγα	3641	little	little	少		Aamsa	H	מְעַט	adjective		masculine	singular	absolute	adjective	002001001042			004204001001000				
+o370010090061	HAG 1:9!6	cj	וַ	wa		2050b	וְ		καὶ	2532	and	when			C	H	וְ	conjunction													
+o370010090062	HAG 1:9!6	verb	הֲבֵאתֶ֥ם	hăḇēʾṯem	 	0935	בּוֹא	2	εἰσηνέξθη		you.brought.[it]	brought	带回	hiphil	Vhp2mp	H	בּוֹא	verb	second	masculine	plural		qatal						A0:370010020062;	370010020062	
+o370010090071	HAG 1:9!7	art	הַ	ha		1886a	הַ		τὸν	3588	the	the			Td	H	הַ	particle					definite article								
+o370010090072	HAG 1:9!7	noun	בַּ֖יִת	bayiṯ	 	1004	בַּיִת	3	οἶκον	3624	house	home	家		Ncmsa	H	בַּיִת	noun		masculine	singular	absolute	common	001001002003004		062	000931001004000				
+o370010090081	HAG 1:9!8	cj	וְ	wə		2050b	וְ		καὶ	2532	and	indeed	却		C	H	וְ	conjunction													
+o370010090082	HAG 1:9!8	verb	נָפַ֣חְתִּי	nāp̄aḥətî	 	5301	נָפַח	1	ἐχεφύσησα		I.blew	blew ~ away	吹去	qal	Vqp1cs	H	נָפַח	verb	first	common	singular		qatal	002002001002		019	004860001001000		A0:370010080121;	370010080121	
+o370010090091	HAG 1:9!9	prep	ב֑			0871a	בְּ				on	to	把		R	H	בְּ	preposition													
+o370010090092	HAG 1:9!9	pron	וֹ		 	2050c	הוּא		αὐτά	846	it	it	它		Sp3ms	H	הוּא	suffix	third	masculine	singular		pronominal								
+o370010090101	HAG 1:9!10	adv	יַ֣עַן	yaʿan	 	3282	יַעַן				because.of	for	因为		C	H	יַעַן	conjunction													
+o370010090111	HAG 1:9!11	pron	מֶ֗ה	meh	 	4100	מָה		τάδε	3592	what?	why?	什么呢		Ti	H	מָה	particle					interrogative	003001			003745001001000				
+o370010090121	HAG 1:9!12	noun	נְאֻם֙	nəʾum	 	5002	נְאֻם	1	λέγει	3004	the.utterance	declares	说		Ncmsc	H	נְאֻם	noun		masculine	singular	construct	common	002004001009008		041 134	004584001001000				
+o370010090131	HAG 1:9!13	noun	יְהוָ֣ה	yəhwāh	 	3068	יהוה		κύριος	2962	of.Yahweh	LORD	耶和华		Np	H	יהוה	noun					proper	003001004			002823001001000				
+o370010090141	HAG 1:9!14	noun	צְבָא֔וֹת	ṣəḇāʾôṯ	 	6635	צָבָא	1	παντοκράτωρ	3841	of.hosts	hosts	万军		Ncbpa	H	צָבָא	noun		both	plural	absolute	common	001001001		055	006101001007000				
+o370010090151	HAG 1:9!15	adv	יַ֗עַן	yaʿan	 	3282	יַעַן				because.of	because	因为		C	H	יַעַן	conjunction													
+o370010090161	HAG 1:9!16	noun	בֵּיתִ			1004	בַּיִת	1	οἶκός	3624	house	house	殿		Ncmsc	H	בַּיִת	noun		masculine	singular	construct	common	001005001001		020	000931001001000				
+o370010090162	HAG 1:9!16	pron	י֙		 	2967a	הוּא		μού	3450	my	my	我		Sp1cs	H	הוּא	suffix	first	common	singular		pronominal	001005001001		020	000931001001000				370010090131
+o370010090171	HAG 1:9!17	rel	אֲשֶׁר	ʾăšer-	־	0834	אֲשֶׁר				which	which	而		Tr	H	אֲשֶׁר	particle					relative								
+o370010090181	HAG 1:9!18	pron	ה֣וּא	hûʾ	 	1931	הוּא		ἐστιν	2076	it	he	它		Pp3ms	H	הוּא	pronoun	third	masculine	singular		personal								370010090161
+o370010090191	HAG 1:9!19	adj	חָרֵ֔ב	ḥārēḇ	 	2720	חָרֵב	1	ἔρημος	2048	[is].desolate	lies in ruins	荒废		Aamsa	H	חָרֵב	adjective		masculine	singular	absolute	adjective	002001001023		052	002506001002000				
+o370010090201	HAG 1:9!20	cj	וְ	wə		2050b	וְ		δὲ	1161	and	while	却		C	H	וְ	conjunction													
+o370010090202	HAG 1:9!20	pron	אַתֶּ֥ם	ʾattem	 	0859a	אַתֶּם		ὑμεῖς	5210	you	you	你们		Pp2mp	H	אַתֶּם	pronoun	second	masculine	plural		personal								370010020062
+o370010090211	HAG 1:9!21	verb	רָצִ֖ים	rāṣiym	 	7323	רוּץ	1	διώκετε	1377	[are].running	hurry off	忙	qal	Vqrmpa	H	רוּץ	verb		masculine	plural	absolute	participle active	002003002024		200	006731001007000		A0:370010090202;		
+o370010090221	HAG 1:9!22	noun	אִ֥ישׁ	ʾiyš	 	0376	אִישׁ	2	ἕκαστος	1538	each	each	各人		Ncmsa	H	אִישׁ	noun		masculine	singular	absolute	common								370010020062
+o370010090231	HAG 1:9!23	prep	לְ	lə		3807a	לְ		εἰς	1519	to	to	为		R	H	לְ	preposition													
+o370010090232	HAG 1:9!23	noun	בֵיתֽ			1004	בַּיִת	3	οἶκον	3624	his.own	house	房屋		Ncmsc	H	בַּיִת	noun		masculine	singular	construct	common	001001002003004		062	000931001004000				
+o370010090233	HAG 1:9!23	pron	וֹ		׃	2050c	הוּא		αὐτοῦ	846	house	his own	自己		Sp3ms	H	הוּא	suffix	third	masculine	singular		pronominal	001001002003004		062	000931001004000				370010090221
+o370010100011	HAG 1:10!1	prep	עַל		־	5921	עַל		διὰ	1223	therefore	for this	由于		R	H	עַל	preposition													
+o370010100021	HAG 1:10!2	adv	כֵּ֣ן		 	3651	כֵּן		τοῦτο	5124			这种		Tm	H	כֵּן	particle					demonstrative								
+o370010100031	HAG 1:10!3	prep	עֲלֵי			5921	עַל				on	because of	因~的缘故		R	H	עַל	preposition													
+o370010100032	HAG 1:10!3	pron	כֶ֔ם		 	3641b	הוּא				you	you	你们		Sp2mp	H	הוּא	suffix	second	masculine	plural		pronominal								370010020062
+o370010100041	HAG 1:10!4	verb	כָּלְא֥וּ	kālʾû	 	3607	כָּלָא	1	ἀνέχει	430	they.have.withheld	withheld	不	qal	Vqp3cp	H	כָּלָא	verb	third	common	plural		qatal	002003003011			003304001003000		A0:370010100051;		
+o370010100051	HAG 1:10!5	noun	שָמַ֖יִם	s̄āmayim		8064	שָׁמַיִם	1	οὐρανὸς	3772	[the].heavens	heavens	天		Ncmpa	H	שָׁמַיִם	noun		masculine	plural	absolute	common	001005002001		185	007459001001000				
+o370010100061	HAG 1:10!6	prep	מִ	mi		4480	מִן		ἀπὸ	575	from	from	自		R	H	מִן	preposition													
+o370010100062	HAG 1:10!6	noun	טָּ֑ל	ṭṭāl	 	2919	טַל	1	δρόσου		dew	dew	甘露		Ncmsa	H	טַל	noun		masculine	singular	absolute	common	001006011		101	002689001001000				
+o370010100071	HAG 1:10!7	cj	וְ	wə		2050b	וְ		καὶ	2532	and	and			C	H	וְ	conjunction													
+o370010100072	HAG 1:10!7	art	הָ	hā		1886a	הַ		ἡ	3588	the	the			Td	H	הַ	particle					definite article								
+o370010100073	HAG 1:10!7	noun	אָ֖רֶץ	ʾāreṣ	 	0776	אֶרֶץ	1	γῆ	1093	land	earth	地		Ncbsa	H	אֶרֶץ	noun		both	singular	absolute	common	001005002002001		185 097 007	000715001001000				
+o370010100081	HAG 1:10!8	verb	כָּלְאָ֥ה	kālʾāh	 	3607	כָּלָא	1	ὑποστελεῖται		it.has.withheld	withheld	不	qal	Vqp3fs	H	כָּלָא	verb	third	feminine	singular		qatal	002003003011			003304001003000		A0:370010100073; A1:370010100091;		
+o370010100091	HAG 1:10!9	noun	יְבוּלָֽ			2981	יְבוּל	1			produce	produce	土产		Ncmsc	H	יְבוּל	noun		masculine	singular	construct	common	001004003002		125 007 196	002744001001000				
+o370010100092	HAG 1:10!9	pron	הּ		׃	1886d	הוּא		τὰ	3588	its	its	其		Sp3fs	H	הוּא	suffix	third	feminine	singular		pronominal	001004003002		125 007 196	002744001001000				370010100073
+o370010110011	HAG 1:11!1	cj	וָ	wā		2050b	וְ		καὶ	2532	and	and	而		C	H	וְ	conjunction													
+o370010110012	HAG 1:11!1	verb	אֶקְרָ֨א	ʾeqrāʾ	 	7121	קָרָא	8	ἐπάχω	1863	I.have.summoned	called for	呼叫	qal	Vqw1cs	H	קָרָא	verb	first	common	singular		wayyiqtol	002002003003			006556001007000		A0:370010090131; A1:370010110021;	370010090131	
+o370010110021	HAG 1:11!2	noun	חֹ֜רֶב	ḥōreḇ	 	2721	חֹרֶב	2	ῥομφαίαν	4501	a.drought	drought	干旱		Ncmsa	H	חֹרֶב	noun		masculine	singular	absolute	common	002001001031		101 196	002508001003000				
+o370010110031	HAG 1:11!3	prep	עַל	ʿal-	־	5921	עַל		ἐπὶ	1909	on	on	临到		R	H	עַל	preposition													
+o370010110041	HAG 1:11!4	art	הָ	hā		1886a	הַ		τὴν	3588	the	the			Td	H	הַ	particle					definite article								
+o370010110042	HAG 1:11!4	noun	אָ֣רֶץ	ʾāreṣ	 	0776	אֶרֶץ	1	γῆν	1093	land	land	大地		Ncbsa	H	אֶרֶץ	noun		both	singular	absolute	common	001005002002001		185 097 007	000715001001000				
+o370010110051	HAG 1:11!5	cj	וְ	wə		2050b	וְ		καὶ	2532	and	and			C	H	וְ	conjunction													
+o370010110052	HAG 1:11!5	prep	עַל	ʿal-	־	5921	עַל		ἐπὶ	1909	on	on	在		R	H	עַל	preposition													
+o370010110061	HAG 1:11!6	art	הֶ	he		1886a	הַ		τὰ	3588	the	the			Td	H	הַ	particle					definite article								
+o370010110062	HAG 1:11!6	noun	הָרִ֗ים	hāriym	 	2022	הַר	1	ὄρη	3735	mountains	hills	山冈		Ncmpa	H	הַר	noun		masculine	plural	absolute	common	001005002002002		115	001868001001000				
+o370010110071	HAG 1:11!7	cj	וְ	wə		2050b	וְ		καὶ	2532	and	and			C	H	וְ	conjunction													
+o370010110072	HAG 1:11!7	prep	עַל	ʿal-	־	5921	עַל		ἐπὶ	1909	on	on	临到		R	H	עַל	preposition													
+o370010110081	HAG 1:11!8	art	הַ	ha		1886a	הַ		τὸν	3588	the	the			Td	H	הַ	particle					definite article								
+o370010110082	HAG 1:11!8	noun	דָּגָן֙	dāḡān	 	1715	דָּגָן	1	σῖτον	4621	grain	grain	五谷		Ncmsa	H	דָּגָן	noun		masculine	singular	absolute	common	001004003002		069 007	001573001001000				
+o370010110091	HAG 1:11!9	cj	וְ	wə		2050b	וְ		καὶ	2532	and	and			C	H	וְ	conjunction													
+o370010110092	HAG 1:11!9	prep	עַל	ʿal-	־	5921	עַל		ἐπὶ	1909	on	on	在		R	H	עַל	preposition													
+o370010110101	HAG 1:11!10	art	הַ	ha		1886a	הַ		τὸν	3588	the.new	the			Td	H	הַ	particle					definite article								
+o370010110102	HAG 1:11!10	noun	תִּיר֣וֹשׁ	tîrôš	 	8492	תִּירוֹשׁ	1	οἶνον	3631	wine	new wine	新酒		Ncmsa	H	תִּירוֹשׁ	noun		masculine	singular	absolute	common	001006007 001004003005 001004003002		101	007790001001000				
+o370010110111	HAG 1:11!11	cj	וְ	wə		2050b	וְ		καὶ	2532	and	and			C	H	וְ	conjunction													
+o370010110112	HAG 1:11!11	prep	עַל	ʿal-	־	5921	עַל		ἐπὶ	1909	on	on	在		R	H	עַל	preposition													
+o370010110121	HAG 1:11!12	art	הַ	ha		1886a	הַ		τὸ	3588	the.fresh	the			Td	H	הַ	particle					definite article								
+o370010110122	HAG 1:11!12	noun	יִּצְהָ֔ר	yyiṣhār	 	3323	יִצְהָר	1	ἔλαιον	1637	oil	oil	新油		Ncmsa	H	יִצְהָר	noun		masculine	singular	absolute	common	001006007		101	003038001001000				
+o370010110131	HAG 1:11!13	cj	וְ	wə		2050b	וְ				and	and			C	H	וְ	conjunction													
+o370010110132	HAG 1:11!13	prep	עַ֛ל	ʿal	 	5921	עַל		καὶ	2532	on	on	临到		R	H	עַל	preposition													
+o370010110141	HAG 1:11!14	rel	אֲשֶׁ֥ר	ʾăšer	 	0834	אֲשֶׁר		ὅσα	3745	[that].which	what			Tr	H	אֲשֶׁר	particle					relative								
+o370010110151	HAG 1:11!15	verb	תּוֹצִ֖יא	tôṣiyʾ	 	3318	יָצָא	6	ἐκφέρει		it.will.bring.forth	produces	出产	hiphil	Vhi3fs	H	יָצָא	verb	third	feminine	singular		yiqtol	002001001057			003035001044000		A0:370010110162;		
+o370010110161	HAG 1:11!16	art	הָ	hā		1886a	הַ		ἡ	3588	the	the			Td	H	הַ	particle					definite article								
+o370010110162	HAG 1:11!16	noun	אֲדָמָ֑ה	ʾăḏāmāh	 	0127	אֲדָמָה	1	γῆ	1093	ground	ground	地上		Ncfsa	H	אֲדָמָה	noun		feminine	singular	absolute	common	001005002002001		097	000128001001000				
+o370010110171	HAG 1:11!17	cj	וְ	wə		2050b	וְ		καὶ	2532	and	and			C	H	וְ	conjunction													
+o370010110172	HAG 1:11!17	prep	עַל	ʿal-	־	5921	עַל		ἐπὶ	1909	on	on	临到		R	H	עַל	preposition													
+o370010110181	HAG 1:11!18	art	הָֽ	hā		1886a	הַ		τοὺς	3588	(the)	the			Td	H	הַ	particle					definite article								
+o370010110182	HAG 1:11!18	noun	אָדָם֙	ʾāḏām	 	0120	אָדָם	1	ἀνθρώπους	444	humankind	human beings	人		Ncmsa	H	אָדָם	noun		masculine	singular	absolute	common	001001002003			000124001001000				
+o370010110191	HAG 1:11!19	cj	וְ	wə		2050b	וְ		καὶ	2532	and	and			C	H	וְ	conjunction													
+o370010110192	HAG 1:11!19	prep	עַל	ʿal-	־	5921	עַל		ἐπὶ	1909	on	on	在		R	H	עַל	preposition													
+o370010110201	HAG 1:11!20	art	הַ	ha		1886a	הַ		τὰ	3588	the	the			Td	H	הַ	particle					definite article								
+o370010110202	HAG 1:11!20	noun	בְּהֵמָ֔ה	bəhēmāh	 	0929	בְּהֵמָה	1	κτήνη	2934	livestock	cattle	牲畜		Ncfsa	H	בְּהֵמָה	noun		feminine	singular	absolute	common	001001002001		010	000863001001000				
+o370010110211	HAG 1:11!21	cj	וְ	wə		2050b	וְ		καὶ	2532	and	and			C	H	וְ	conjunction													
+o370010110212	HAG 1:11!21	prep	עַ֖ל	ʿal	 	5921	עַל		ἐπὶ	1909	on	on	临到		R	H	עַל	preposition													
+o370010110221	HAG 1:11!22	noun	כָּל	kol-	־	3605	כֹּל		πάντας	3956	all	all	一切		Ncmsc	H	כֹּל	noun		masculine	singular	construct	common								
+o370010110231	HAG 1:11!23	noun	יְגִ֥יעַ	yəḡiyᵃʿ	 	3018	יְגִיעַ	1			[the].toil	labor	劳碌得来的		Ncmsc	H	יְגִיעַ	noun		masculine	singular	construct	common	002003002020			002777001002000				
+o370010110241	HAG 1:11!24	noun	כַּפָּֽיִם	kappāyim:	׃ס	3709	כַּף	1			of.hands	hands	手		Ncfda	H	כַּף	noun		feminine	dual	absolute	common	002002002001			003394001002000				
+o370010120011	HAG 1:12!1	cj	וַ	wa		2050b	וְ		καὶ	2532	and	then	就		C	H	וְ	conjunction													
+o370010120012	HAG 1:12!1	verb	יִּשְׁמַ֣ע	yyišmaʿ	 	8085	שָׁמַע	2	ἤκουσεν	191	he.listened	obeyed	听从	qal	Vqw3ms	H	שָׁמַע	verb	third	masculine	singular		wayyiqtol						A0:370010120021;370010120052;370010120111;		
+o370010120021	HAG 1:12!2	noun	זְרֻבָּבֶ֣ל	zərubbāḇel	׀	2216	זְרֻבָּבֶל		ζοροβαβελ	2216	Zerubbabel	Zerubbabel	所罗巴伯		Np	H	זְרֻבָּבֶל	noun					proper	003001007			002044001001000				
+o370010120031	HAG 1:12!3	noun	בֶּֽן	ben-	־	1121	בֵּן	1			the.son	son	儿子		Ncmsc	H	בֵּן	noun		masculine	singular	construct	common	001001002003012		062 121 129	001040001001000				
+o370010120041	HAG 1:12!4	noun	שַׁלְתִּיאֵ֡ל	šaltîʾēl	 	7597	שְׁאַלְתִּיאֵל		σαλαθιηλ		of.Shealtiel	Shealtiel	撒拉铁		Np	H	שְׁאַלְתִּיאֵל	noun					proper	003001007			007134001001000				
+o370010120051	HAG 1:12!5	cj	וִ	wi		2050b	וְ		καὶ	2532	and	and	和		C	H	וְ	conjunction													
+o370010120052	HAG 1:12!5	noun	יהוֹשֻׁ֣עַ	yhôšuᵃʿ	 	3091	יְהֹושֻׁעַ		ἰησοῦς	2424	Joshua	Joshua	约书亚		Np	H	יְהֹושֻׁעַ	noun					proper	003001007			002839001004000				
+o370010120061	HAG 1:12!6	noun	בֶּן	ben-	־	1121	בֵּן	1			the.son	son	儿子		Ncmsc	H	בֵּן	noun		masculine	singular	construct	common	001001002003012		062 121 129	001040001001000				
+o370010120071	HAG 1:12!7	noun	יְהוֹצָדָק֩	yəhôṣāḏāq	 	3087	יְהוֹצָדָק		ιωσεδεκ		of.Jehozadak	Jehozadak	约撒答		Np	H	יְהוֹצָדָק	noun					proper	003001007			002836001001000				
+o370010120081	HAG 1:12!8	art	הַ	ha		1886a	הַ		ὁ	3588	the	the			Td	H	הַ	particle					definite article								
+o370010120082	HAG 1:12!8	noun	כֹּהֵ֨ן	kōhēn	 	3548	כֹּהֵן	1	ἱερεὺς	2409	priest	priest	祭司		Ncmsa	H	כֹּהֵן	noun		masculine	singular	absolute	common	001001002003008		132	003253001001000				
+o370010120091	HAG 1:12!9	art	הַ	ha		1886a	הַ		ὁ	3588	(the)	the			Td	H	הַ	particle					definite article								
+o370010120092	HAG 1:12!9	adj	גָּד֜וֹל	gāḏôl	 	1419	גָּדוֹל	4	μέγας	3173	great	high	大		Aamsa	H	גָּדוֹל	adjective		masculine	singular	absolute	adjective	002001002012		170	001299001003000				
+o370010120101	HAG 1:12!10	cj	וְ	wə		2050b	וְ		καὶ	2532	and	and	和		C	H	וְ	conjunction													
+o370010120102	HAG 1:12!10	noun	כֹ֣ל	ḵōl	׀	3605	כֹּל		πάντες	3956	all	all	所有		Ncmsc	H	כֹּל	noun		masculine	singular	construct	common								
+o370010120111	HAG 1:12!11	noun	שְׁאֵרִ֣ית	šəʾēriyṯ	 	7611	שְׁאֵרִית	1	κατάλοιποι	2645	the.remnant	remnant	剩下的		Ncfsc	H	שְׁאֵרִית	noun		feminine	singular	construct	common								
+o370010120121	HAG 1:12!12	art	הָ	hā		1886a	הַ		τοῦ	3588	of	the			Td	H	הַ	particle					definite article								
+o370010120122	HAG 1:12!12	noun	עָ֗ם	ʿām	 	5971	עַם	1	λαοῦ	2992	the.people	people	人民		Ncmsa	H	עַם	noun		masculine	singular	absolute	common								
+o370010120131	HAG 1:12!13	prep	בְּ	bə		0871a	בְּ		τῆς	3588	to	to	于		R	H	בְּ	preposition													
+o370010120132	HAG 1:12!13	noun	קוֹל֙	qôl	 	6963	קוֹל	1	φωνῆς	5456	the.voice	voice	话		Ncmsc	H	קוֹל	noun		masculine	singular	construct	common								
+o370010120141	HAG 1:12!14	noun	יְהוָ֣ה	yəhwāh	 	3068	יהוה		κυρίου	2962	of.Yahweh	LORD	耶和华		Np	H	יהוה	noun					proper	003001004			002823001001000				
+o370010120151	HAG 1:12!15	noun	אֱלֹֽהֵי			0430	אֱלֹהִים	1	θεοῦ	2316	God	God	神/上帝		Ncmpc	H	אֱלֹהִים	noun		masculine	plural	construct	common	001001001			000397001002000				
+o370010120152	HAG 1:12!15	pron	הֶ֔ם		 	3963a	הוּא				their	their	他们		Sp3mp	H	הוּא	suffix	third	masculine	plural		pronominal	001001001			000397001002000				370010120021 370010120052 370010120111
+o370010120161	HAG 1:12!16	cj	וְ	wə		2050b	וְ		καὶ	2532	and	and	并		C	H	וְ	conjunction													
+o370010120162	HAG 1:12!16	prep	עַל	ʿal-	־	5921	עַל		τῶν	3588	to	to	于		R	H	עַל	preposition													
+o370010120171	HAG 1:12!17	noun	דִּבְרֵי֙	diḇrê	 	1697	דָּבָר	1	λόγων	3056	the.words	words	话		Ncmpc	H	דָּבָר	noun		masculine	plural	construct	common								
+o370010120181	HAG 1:12!18	noun	חַגַּ֣י	ḥaggay	 	2292	חַגַּי		αγγαιου		of.Haggai	Haggai	哈该		Np	H	חַגַּי	noun					proper	003001007			002121001001000				
+o370010120191	HAG 1:12!19	art	הַ	ha		1886a	הַ		τοῦ	3588	the	the			Td	H	הַ	particle					definite article								
+o370010120192	HAG 1:12!19	noun	נָּבִ֔יא	nnāḇiyʾ	 	5030	נָבִיא	1	προφήτου	4396	prophet	prophet	先知		Ncmsa	H	נָבִיא	noun		masculine	singular	absolute	common	001001002003010		041 134	004611001001000				
+o370010120201	HAG 1:12!20	prep	כַּ	ka		3509a	כְּ				just	because	如		R	H	כְּ	preposition													
+o370010120202	HAG 1:12!20	rel	אֲשֶׁ֥ר	ʾăšer	 	0834	אֲשֶׁר		καθότι	2530	as	that	所~的		Tr	H	אֲשֶׁר	particle					relative								
+o370010120211	HAG 1:12!21	verb	שְׁלָח֖			7971	שָׁלַח	1	ἐχαπέστειλεν	1821	he	sent	差遣	qal	Vqp3ms	H	שָׁלַח	verb	third	masculine	singular		qatal	002002001011		015	007386001001000		A1:370010120212; A0:370010120221;		
+o370010120212	HAG 1:12!21	pron	וֹ		 	2050c	הוּא		αὐτὸν	846	had.sent.him	him	他		Sp3ms	H	הוּא	suffix	third	masculine	singular		pronominal	002002001011		015	007386001001000				370010120181
+o370010120221	HAG 1:12!22	noun	יְהוָ֣ה	yəhwāh	 	3068	יהוה		κύριος	2962	Yahweh	LORD	耶和华		Np	H	יהוה	noun					proper	003001004			002823001001000				
+o370010120231	HAG 1:12!23	noun	אֱלֹהֵי			0430	אֱלֹהִים	1	θεὸς	2316	God	God	神/上帝		Ncmpc	H	אֱלֹהִים	noun		masculine	plural	construct	common	001001001			000397001002000				
+o370010120232	HAG 1:12!23	pron	הֶ֑ם		 	3963a	הוּא				their	their	他们		Sp3mp	H	הוּא	suffix	third	masculine	plural		pronominal	001001001			000397001002000				370010120021 370010120052 370010120111
+o370010120241	HAG 1:12!24	cj	וַ	wa		2050b	וְ		καὶ	2532	and	and			C	H	וְ	conjunction													
+o370010120242	HAG 1:12!24	verb	יִּֽירְא֥וּ	yyiyrəʾû	 	3372	יָרֵא	2	ἐφοβήθη	5399	they.were.afraid	feared	敬畏	qal	Vqw3mp	H	יָרֵא	verb	third	masculine	plural		wayyiqtol	002001002001			003081001001000		A0:370010120252;		
+o370010120251	HAG 1:12!25	art	הָ	hā		1886a	הַ		ὁ	3588	the	the			Td	H	הַ	particle					definite article								
+o370010120252	HAG 1:12!25	noun	עָ֖ם	ʿām	 	5971	עַם	1	λαὸς	2992	people	people	人民		Ncmsa	H	עַם	noun		masculine	singular	absolute	common								
+o370010120261	HAG 1:12!26	prep	מִ	mi		4480	מִן		ἀπὸ	575	of	at	在		R	H	מִן	preposition													
+o370010120262	HAG 1:12!26	noun	פְּנֵ֥י	pənēy	 	6440	פָּנֶה	1	προσώπου	4383		before	面前		Ncbpc	H	פָּנֶה	noun		both	plural	construct	common								
+o370010120271	HAG 1:12!27	noun	יְהוָֽה	yəhwāh:	׃	3068	יהוה		κυρίου	2962	Yahweh	LORD	耶和华		Np	H	יהוה	noun					proper	003001004			002823001001000				
+o370010130011	HAG 1:13!1	cj	וַ֠	wa		2050b	וְ		καὶ	2532	and	then	而		C	H	וְ	conjunction													
+o370010130012	HAG 1:13!1	verb	יֹּאמֶר	yyōʾmer	 	0559	אָמַר	1	εἶπεν	2036	he.said	spoke	说	qal	Vqw3ms	H	אָמַר	verb	third	masculine	singular		wayyiqtol	002004001009008		041	000512001001000		A0:370010130021;		
+o370010130021	HAG 1:13!2	noun	חַגַּ֞י	ḥaggay	 	2292	חַגַּי		αγγαιος		Haggai	Haggai	哈该		Np	H	חַגַּי	noun					proper	003001007			002121001001000				
+o370010130031	HAG 1:13!3	noun	מַלְאַ֧ךְ	malʾaḵ	 	4397	מַלְאָךְ	1	ἄγγελος	32	the.messenger	messenger	使者		Ncmsc	H	מַלְאָךְ	noun		masculine	singular	construct	common	001001002003006		058	004019001001000				
+o370010130041	HAG 1:13!4	noun	יְהוָ֛ה	yəhwāh	 	3068	יהוה		κυρίου	2962	of.Yahweh	LORD’s	耶和华		Np	H	יהוה	noun					proper	003001004			002823001001000				
+o370010130051	HAG 1:13!5	prep	בְּ	bə		0871a	בְּ				by	with	奉		R	H	בְּ	preposition													
+o370010130052	HAG 1:13!5	noun	מַלְאֲכ֥וּת	malʾăḵûṯ	 	4400	מַלְאָכוּת	1			the.message	message	差遣		Ncfsc	H	מַלְאָכוּת	noun		feminine	singular	construct	common	002004002007		041	004021001001000				
+o370010130061	HAG 1:13!6	noun	יְהוָ֖ה	yəhwāh	 	3068	יהוה				of.Yahweh	LORD	耶和华		Np	H	יהוה	noun					proper	003001004			002823001001000				
+o370010130071	HAG 1:13!7	prep	לָ	lā		3807a	לְ		τῷ	3588	to	to	对		Rd	H	לְ	preposition													
+o370010130071ה	HAG 1:13!7	art		–		1886a	הַ				the	the			Td	H	הַ	particle					definite article								
+o370010130072	HAG 1:13!7	noun	עָ֣ם	ʿām	 	5971	עַם	1	λαῷ	2992	people	people	人民		Ncmsa	H	עַם	noun		masculine	singular	absolute	common								
+o370010130081	HAG 1:13!8	prep	לֵ	lē		3807a	לְ				(cmp)	to			R	H	לְ	preposition													
+o370010130082	HAG 1:13!8	verb	אמֹ֑ר	ʾmōr	 	0559	אָמַר	1				saying	说	qal	Vqc	H	אָמַר	verb					infinitive construct	002004001009008		041	000512001001000		A0:370010130021;	370010130021	
+o370010130091	HAG 1:13!9	pron	אֲנִ֥י	ʾăniy	 	0589	אֲנִי		ἐγώ	1473	I	I	我		Pp1cs	H	אֲנִי	pronoun	first	common	singular		personal								370010130061
+o370010130101	HAG 1:13!10	prep	אִתְּ			0854	אֵת				[am].with	with	与~同在		R	H	אֵת	preposition						001004001017		027 007	000792003001000				
+o370010130102	HAG 1:13!10	pron	כֶ֖ם		 	3641b	הוּא		ὑμῶν	5216	you	you	你们		Sp2mp	H	הוּא	suffix	second	masculine	plural		pronominal								370010120252
+o370010130111	HAG 1:13!11	noun	נְאֻם	nəʾum-	־	5002	נְאֻם	1	λέγει	3004	the.utterance	declares	说		Ncmsc	H	נְאֻם	noun		masculine	singular	construct	common	002004001009008		041 134	004584001001000				
+o370010130121	HAG 1:13!12	noun	יְהוָֽה	yəhwāh:	׃	3068	יהוה		κύριος	2962	of.Yahweh	LORD	耶和华		Np	H	יהוה	noun					proper	003001004			002823001001000				
+o370010140011	HAG 1:14!1	cj	וַ	wa		2050b	וְ		καὶ	2532	and	so	又		C	H	וְ	conjunction													
+o370010140012	HAG 1:14!1	verb	יָּ֣עַר	yyāʿar	 	5782	עוּר	1	ἐχήγειρεν	1825	he.stirred.up	stirred up	感动	hiphil	Vhw3ms	H	עוּר	verb	third	masculine	singular		wayyiqtol	002002002001			005308001004000		AA:370010140021; A0:370010140041;370010140111;370010140181;		
+o370010140021	HAG 1:14!2	noun	יְהוָ֡ה	yəhwāh	 	3068	יהוה		κύριος	2962	Yahweh	LORD	耶和华		Np	H	יהוה	noun					proper	003001004			002823001001000				
+o370010140031	HAG 1:14!3	om	אֶת	ʾeṯ-	־	0853	אֵת				(et)				To	H	אֵת	particle					direct object marker	001004001017		027 007	000792003001000				
+o370010140041	HAG 1:14!4	noun	רוּחַ֩	rûḥa	 	7307	רוּחַ	1	πνεῦμα	4151	the.spirit	spirit	心		Ncbsc	H	רוּחַ	noun		both	singular	construct	common	001001002003		106	006718001002000				
+o370010140051	HAG 1:14!5	noun	זְרֻבָּבֶ֨ל	zərubbāḇel	 	2216	זְרֻבָּבֶל		ζοροβαβελ	2216	of.Zerubbabel	Zerubbabel	所罗巴伯		Np	H	זְרֻבָּבֶל	noun					proper	003001007			002044001001000				
+o370010140061	HAG 1:14!6	noun	בֶּן	ben-	־	1121	בֵּן	1	τοῦ	3588	the.son	son	儿子		Ncmsc	H	בֵּן	noun		masculine	singular	construct	common	001001002003012		062 121 129	001040001001000				
+o370010140071	HAG 1:14!7	noun	שַׁלְתִּיאֵ֜ל	šaltîʾēl	 	7597	שְׁאַלְתִּיאֵל		σαλαθιηλ		of.Shealtiel	Shealtiel	撒拉铁		Np	H	שְׁאַלְתִּיאֵל	noun					proper	003001007			007134001001000				
+o370010140081	HAG 1:14!8	noun	פַּחַ֣ת	paḥaṯ	 	6346	פֶּחָה	1	φυλῆς	5443	the.governor	governor	省长		Ncmsc	H	פֶּחָה	noun		masculine	singular	construct	common	001001002003005 001001002003007		015	005828001001000				
+o370010140091	HAG 1:14!9	noun	יְהוּדָ֗ה	yəhûḏāh	 	3063	יְהוּדָה		ιουδα	2448	of.Judah	Judah	犹大		Np	H	יְהוּדָה	noun					proper	003001007 003001006 003001010			002819001001000				
+o370010140101	HAG 1:14!10	cj	וְ	wə		2050b	וְ		καὶ	2532	and	and	和		C	H	וְ	conjunction													
+o370010140102	HAG 1:14!10	om	אֶת	ʾeṯ-	־	0853	אֵת				(et)				To	H	אֵת	particle					direct object marker	001004001017		027 007	000792003001000				
+o370010140111	HAG 1:14!11	noun	ר֨וּחַ֙	rûḥa	 	7307	רוּחַ	1	πνεῦμα	4151	the.spirit	spirit	心		Ncbsc	H	רוּחַ	noun		both	singular	construct	common	001001002003		106	006718001002000				
+o370010140121	HAG 1:14!12	noun	יְהוֹשֻׁ֤עַ	yəhôšuᵃʿ	 	3091	יְהֹושֻׁעַ		ἰησοῦ	2424	of.Joshua	Joshua	约书亚		Np	H	יְהֹושֻׁעַ	noun					proper	003001007			002839001004000				
+o370010140131	HAG 1:14!13	noun	בֶּן	ben-	־	1121	בֵּן	1	τοῦ	3588	the.son	son	儿子		Ncmsc	H	בֵּן	noun		masculine	singular	construct	common	001001002003012		062 121 129	001040001001000				
+o370010140141	HAG 1:14!14	noun	יְהוֹצָדָק֙	yəhôṣāḏāq	 	3087	יְהוֹצָדָק		ιωσεδεκ		of.Jehozadak	Jehozadak	约撒答		Np	H	יְהוֹצָדָק	noun					proper	003001007			002836001001000				
+o370010140151	HAG 1:14!15	art	הַ	ha		1886a	הַ		τοῦ	3588	the	the			Td	H	הַ	particle					definite article								
+o370010140152	HAG 1:14!15	noun	כֹּהֵ֣ן	kōhēn	 	3548	כֹּהֵן	1	ἱερέως	2409	priest	priest	祭司		Ncmsa	H	כֹּהֵן	noun		masculine	singular	absolute	common	001001002003008		132	003253001001000				
+o370010140161	HAG 1:14!16	art	הַ	ha		1886a	הַ		τοῦ	3588	(the)	the			Td	H	הַ	particle					definite article								
+o370010140162	HAG 1:14!16	adj	גָּד֔וֹל	gāḏôl	 	1419	גָּדוֹל	4	μεγάλου	3173	great	high	大		Aamsa	H	גָּדוֹל	adjective		masculine	singular	absolute	adjective	002001002012		170	001299001003000				
+o370010140171	HAG 1:14!17	cj	וְֽ	wə		2050b	וְ		καὶ	2532	and	and	和		C	H	וְ	conjunction													
+o370010140172	HAG 1:14!17	om	אֶת	ʾeṯ-	־	0853	אֵת				(et)				To	H	אֵת	particle					direct object marker	001004001017		027 007	000792003001000				
+o370010140181	HAG 1:14!18	noun	ר֔וּחַ	rûᵃḥ	 	7307	רוּחַ	1	πνεῦμα	4151	the.spirit	spirit	心		Ncbsc	H	רוּחַ	noun		both	singular	construct	common	001001002003		106	006718001002000				
+o370010140191	HAG 1:14!19	noun	כֹּ֖ל	kōl	 	3605	כֹּל				of.all	all	所有		Ncmsc	H	כֹּל	noun		masculine	singular	construct	common								
+o370010140201	HAG 1:14!20	noun	שְׁאֵרִ֣ית	šəʾēriyṯ	 	7611	שְׁאֵרִית	1	καταλοίπων		the.remnant	remnant	剩下的		Ncfsc	H	שְׁאֵרִית	noun		feminine	singular	construct	common								
+o370010140211	HAG 1:14!21	art	הָ	hā		1886a	הַ		τοῦ	3588	of	the			Td	H	הַ	particle					definite article								
+o370010140212	HAG 1:14!21	noun	עָ֑ם	ʿām	 	5971	עַם	1	λαοῦ	2992	the.people	people	人民		Ncmsa	H	עַם	noun		masculine	singular	absolute	common								
+o370010140221	HAG 1:14!22	cj	וַ	wa		2050b	וְ		καὶ	2532	and	and	就		C	H	וְ	conjunction													
+o370010140222	HAG 1:14!22	verb	יָּבֹ֨אוּ֙	yyāḇōʾû	 	0935	בּוֹא	1	εἰσῆλθον	1525	they.came	came	来	qal	Vqw3mp	H	בּוֹא	verb	third	masculine	plural		wayyiqtol						A0:370010140051;370010140121;370010140201;	370010140051 370010140121 370010140201	
+o370010140231	HAG 1:14!23	cj	וַ	wa		2050b	וְ		καὶ	2532	and	and	而		C	H	וְ	conjunction													
+o370010140232	HAG 1:14!23	verb	יַּעֲשׂ֣וּ	yyaʿăśû	 	6213	עָשָׂה	9	ἐποίουν	4160	they.did	did	做	qal	Vqw3mp	H	עָשָׂה	verb	third	masculine	plural		wayyiqtol	002003003010			005698001002000		A0:370010140051;370010140121;370010140201; A1:370010140241;	370010140051 370010140121 370010140201	
+o370010140241	HAG 1:14!24	noun	מְלָאכָ֔ה	məlāʾḵāh	 	4399	מְלָאכָה	1	ἔργα	2041	work	work	工作		Ncfsa	H	מְלָאכָה	noun		feminine	singular	absolute	common	002003002024			004020001001000				
+o370010140251	HAG 1:14!25	prep	בְּ	bə		0871a	בְּ		ἐν	1722	in	on	为		R	H	בְּ	preposition													
+o370010140252	HAG 1:14!25	noun	בֵית	ḇêṯ-	־	1004	בַּיִת	1	οἴκῳ	3624	the.house	house	殿		Ncmsc	H	בַּיִת	noun		masculine	singular	construct	common	001005001001		020	000931001001000				
+o370010140261	HAG 1:14!26	noun	יְהוָ֥ה	yəhwāh	 	3068	יהוה		κυρίου	2962	of.Yahweh	LORD	耶和华		Np	H	יהוה	noun					proper	003001004			002823001001000				
+o370010140271	HAG 1:14!27	noun	צְבָא֖וֹת	ṣəḇāʾôṯ	 	6635	צָבָא	1	παντοκράτορος	3841	of.hosts	hosts	万军		Ncbpa	H	צָבָא	noun		both	plural	absolute	common	001001001		055	006101001007000				
+o370010140281	HAG 1:14!28	noun	אֱלֹהֵי			0430	אֱלֹהִים	1	θεοῦ	2316	God	God	神/上帝		Ncmpc	H	אֱלֹהִים	noun		masculine	plural	construct	common	001001001			000397001002000				
+o370010140282	HAG 1:14!28	pron	הֶֽם		׃פ	3963a	הוּא		αὐτῶν	846	their	their	他们		Sp3mp	H	הוּא	suffix	third	masculine	plural		pronominal	001001001			000397001002000				370010140051 370010140121 370010140201
+o370010150011	HAG 1:15!1	prep	בְּ	bə		0871a	בְּ				on	on	在		R	H	בְּ	preposition													
+o370010150012	HAG 1:15!1	noun	י֨וֹם	yôm	 	3117	יוֹם	1			day	day	日		Ncmsc	H	יוֹם	noun		masculine	singular	construct	common	002002002010		180	002854001002000				
+o370010150021	HAG 1:15!2	num	עֶשְׂרִ֧ים	ʿeśriym	 	6242	עֶשְׂרִים				twenty	twenty	二十		Acbpa	H	עֶשְׂרִים	adjective		both	plural	absolute	cardinal number								
+o370010150031	HAG 1:15!3	cj	וְ	wə		2050b	וְ		καὶ	2532	and	and	又		C	H	וְ	conjunction													
+o370010150032	HAG 1:15!3	num	אַרְבָּעָ֛ה	ʾarbāʿāh	 	0702	אַרְבַּע				four	four	四		Acmsa	H	אַרְבַּע	adjective		masculine	singular	absolute	cardinal number	002001001042 002001003009		138	000649001001000				
+o370010150041	HAG 1:15!4	prep	לַ	la		3807a	לְ		τοῦ	3588	of	of			Rd	H	לְ	preposition													
+o370010150041ה	HAG 1:15!4	art		–		1886a	הַ				the	the			Td	H	הַ	particle					definite article								
+o370010150042	HAG 1:15!4	noun	חֹ֖דֶשׁ	ḥōḏeš	 	2320	חֹדֶשׁ	1	μηνὸς	3376	month	month	月		Ncmsa	H	חֹדֶשׁ	noun		masculine	singular	absolute	common	002002002010		180	002145001001000				
+o370010150051	HAG 1:15!5	prep	בַּ	ba		0871a	בְּ		τοῦ	3588	in	in	在		Rd	H	בְּ	preposition													
+o370010150051ה	HAG 1:15!5	art		–		1886a	הַ				the.sixth	the			Td	H	הַ	particle					definite article								
+o370010150052	HAG 1:15!5	num	שִּׁשִּׁ֑י	ššiššiy	 	8345	שִׁשִּׁי		ἕκτου		[month]	sixth	六		Aomsa	H	שִׁשִּׁי	adjective		masculine	singular	absolute	ordinal number	002001001042 002001003009		138	007659001001000				
+o370010150061	HAG 1:15!6	prep	בִּ	bi		0871a	בְּ				in	in	在		R	H	בְּ	preposition													
+o370010150062	HAG 1:15!6	noun	שְׁנַ֥ת	šənaṯ	 	8141	שָׁנָה	1	τῷ	3588	year	year	年		Ncfsc	H	שָׁנָה	noun		feminine	singular	construct	common								
+o370010150071	HAG 1:15!7	num	שְׁתַּ֖יִם	šətayim	 	8147	שְׁנַיִם		δευτέρῳ	1208	two	second	第二		Acfda	H	שְׁנַיִם	adjective		feminine	dual	absolute	cardinal number	002001001042 002001003009		138	007529001001000				
+o370010150081	HAG 1:15!8	prep	לְ	lə		3807a	לְ		ἐπὶ	1909	of	of	在		R	H	לְ	preposition													
+o370010150082	HAG 1:15!8	noun	דָרְיָ֥וֶשׁ	ḏārəyāweš	 	1867	דָּרְיָוֶשׁ		δαρείου		Darius	Darius	大流士		Np	H	דָּרְיָוֶשׁ	noun					proper	003001007			001717001001000				
+o370010150091	HAG 1:15!9	art	הַ	ha		1886a	הַ		τοῦ	3588	the	the			Td	H	הַ	particle					definite article								
+o370010150092	HAG 1:15!9	noun	מֶּֽלֶךְ	mmeleḵ:	׃	4428	מֶלֶךְ	1	βασιλέως	935	king	king	王		Ncmsa	H	מֶלֶךְ	noun		masculine	singular	absolute	common	001001002003005		015 170 095	004048001001000				
