@@ -16,11 +16,12 @@ on:
 permissions:
   contents: read
 
-# One run per branch: a PR build and a manual publish of the same branch share a group, so the newer run
-# replaces the older one instead of building twice. The deploy job has its own non-cancelling group.
+# Runs of the same kind on the same branch replace each other, but only PR validation builds are ever cancelled:
+# publish (workflow_dispatch) and main-push runs always finish, so a deploy is never lost to a newer PR run.
+# The deploy job has its own non-cancelling group.
 concurrency:
-  group: pages-${{ github.head_ref || github.ref_name }}
-  cancel-in-progress: true
+  group: pages-${{ github.event_name }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 defaults:
   run:
@@ -87,7 +88,7 @@ jobs:
           path: ./site/public
 
   deploy:
-    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && inputs.publish)
+    if: github.repository == 'danzuep/MaculaScripta' && ((github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && inputs.publish))
     concurrency:
       group: github-pages-deployment
       cancel-in-progress: false
