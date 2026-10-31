@@ -106,7 +106,7 @@
       </section>
     <div class="reader-layout">
       <div class="reader-prev-sentinel" aria-hidden="true"></div>
-      <main id="reader" aria-label="{{ $bookInfo.title }} {{ cond (eq $testament "ot") "Hebrew" "Greek" }} text" tabindex="-1" data-book-code="{{ $code }}" data-book-title="{{ $bookInfo.title }}" data-chapter="{{ $chapterNumber }}" data-site-base="{{ "/" | relURL }}" data-catalog="{{ range $index, $entry := $books }}{{ if $index }} {{ end }}{{ $entry.code }}:{{ $entry.chapters }}{{ end }}">
+      <main id="reader" aria-label="{{ $bookInfo.title }} {{ cond (eq $testament "ot") "Hebrew" "Greek" }} text" tabindex="-1" data-book-code="{{ $code }}" data-book-title="{{ $bookInfo.title }}" data-chapter="{{ $chapterNumber }}" data-site-base="{{ site.Home.RelPermalink }}" data-catalog="{{ range $index, $entry := $books }}{{ if $index }} {{ end }}{{ $entry.code }}:{{ $entry.chapters }}{{ end }}">
         {{ partial "reader-chapter.html" (dict "testament" $testament "code" $code "number" $chapterNumber) }}
       </main>
     </div>
