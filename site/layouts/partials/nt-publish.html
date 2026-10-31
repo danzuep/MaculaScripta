@@ -1,14 +1,12 @@
-{{- /* Publishes nt-data/<BOOK>/<chapter>.tsv for client-side loading: the original Macula header and rows, plus
-       part_of_speech and definition columns from site/data. */ -}}
+{{- /* Publishes nt-data/<BOOK>/<chapter>.html: each chapter as a static HTML fragment (same markup as the reader page,
+       with prefixed ids and a heading) for reader.js to insert while scrolling. */ -}}
 {{- $data := partialCached "nt-data.html" "nt" -}}
-{{- $header := $data.fields | append "part_of_speech" "definition" -}}
 {{- range $key, $rows := $data.chapters -}}
-  {{- $lines := slice (delimit $header "\t") -}}
-  {{- range $rows -}}
-    {{- $pos := "" -}}
-    {{- with index hugo.Data.greek_token_details (index . 0) -}}{{- $pos = .part_of_speech -}}{{- end -}}
-    {{- $lines = $lines | append (delimit (. | append $pos (index hugo.Data.greek_lemma_definitions (index . 10) | default "")) "\t") -}}
-  {{- end -}}
-  {{- $file := resources.FromString (printf "nt-data/%s.tsv" $key) (printf "%s\n" (delimit $lines "\n")) -}}
+  {{- $parts := split $key "/" -}}
+  {{- $code := index $parts 0 -}}
+  {{- $number := int (index $parts 1) -}}
+  {{- $title := printf "%s %d" (index (where hugo.Data.nt.catalog "code" $code) 0).title $number -}}
+  {{- $html := partial "reader-chapter.html" (dict "code" $code "number" $number "prefix" (printf "%s.%d." $code $number) "title" $title) -}}
+  {{- $file := resources.FromString (printf "nt-data/%s.html" $key) $html -}}
   {{- $_ := $file.RelPermalink -}}
 {{- end -}}

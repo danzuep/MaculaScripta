@@ -5,7 +5,6 @@ title = "MaculaScripta"
 [params]
 rawManuscriptBaseURL = ""
 buildVersion = "local"
-preloadedBooks = ["JHN"]
 
 [[module.mounts]]
 source = "content"
