@@ -23,12 +23,15 @@
 .reader-toggle-input:checked::before { transform: translateX(1.25rem); background: var(--bg-color); }
 .reader-toggle-input:focus-visible { outline: 2px solid var(--greek-color); outline-offset: 3px; }
 .reader-book-grid[hidden], .reader-chapter-picker[hidden] { display: none; }
+.reader-testament { margin-bottom: 0.75rem; }
+.reader-testament > summary { margin-bottom: 0.5rem; color: var(--text-muted); font-size: 0.9rem; font-weight: 700; cursor: pointer; }
 .reader-picker-instruction { margin: 0 0 0.75rem; color: var(--text-muted); font-size: 0.9rem; }
 .reader-book-grid, .reader-chapter-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(2.75rem, 1fr)); gap: 0.35rem; }
 .reader-book-grid:has(.reader-book-tile[data-full-name="true"]) { grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr)); }
 .reader-grid-tile { display: grid; aspect-ratio: 1; place-items: center; padding: 0.15rem; border: 1px solid var(--border-color); border-radius: 0.5rem; background: var(--card-bg); color: var(--text-primary); font: inherit; font-size: 0.8rem; font-weight: 700; line-height: 1.1; text-align: center; overflow-wrap: anywhere; cursor: pointer; }
 .reader-book-tile[data-full-name="true"] { aspect-ratio: auto; min-height: 3.25rem; padding: 0.4rem 0.5rem; font-size: 0.85rem; }
-.reader-grid-tile:hover, .reader-grid-tile[aria-current="true"] { border-color: var(--greek-color); background: color-mix(in srgb, var(--greek-color) 15%, var(--card-bg)); }
+.reader-book-tile[aria-current="true"] { border-color: color-mix(in srgb, var(--greek-color) 45%, var(--border-color)); background: color-mix(in srgb, var(--greek-color) 7%, var(--card-bg)); }
+.reader-grid-tile:hover, .reader-chapter-grid .reader-grid-tile[aria-current="true"] { border-color: var(--greek-color); background: color-mix(in srgb, var(--greek-color) 15%, var(--card-bg)); }
 .reader-picker-back { min-height: 2.75rem; margin-bottom: 0.75rem; padding: 0.4rem 0.75rem; border: 1px solid var(--border-color); border-radius: 0.5rem; background: var(--card-bg); color: var(--text-primary); font: inherit; cursor: pointer; }
 .reader-chapter-grid a { text-decoration: none; }
 .reader-hint { color: var(--text-muted); font-size: 0.9rem; }
@@ -41,6 +44,7 @@
 .chapter-number a:target, .verse-number a:target { outline: 2px solid var(--greek-color); outline-offset: 3px; }
 .reader-page .dataset-attribution code { overflow-wrap: anywhere; }
 /* Ruby clearance: tall line boxes plus rt padding keep annotations off the base text. */
+.reader-flow[dir="rtl"] { text-align: right; }
 .reader-flow { margin: 0 0 1rem; font: 1.65rem / 1.6 Georgia, "Times New Roman", serif; overflow-wrap: break-word; }
 .reader-token { display: inline-block; max-width: 100%; overflow-wrap: anywhere; }
 .reader-word { ruby-position: over; }

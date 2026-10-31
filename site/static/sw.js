@@ -44,7 +44,7 @@ self.addEventListener("message", (event) => {
   })());
 });
 
-const isChapterData = (url) => /\/nt-data\/[A-Z0-9]{3}\/\d+\.html$/.test(url.pathname);
+const isChapterData = (url) => /\/(?:nt|ot)-data\/[A-Z0-9]{3}\/\d+\.html$/.test(url.pathname);
 
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET" || new URL(event.request.url).origin !== self.location.origin) return;

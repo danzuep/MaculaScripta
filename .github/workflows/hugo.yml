@@ -56,6 +56,18 @@ jobs:
           git -C data/macula-greek sparse-checkout set SBLGNT/tsv
           git -C data/macula-greek fetch -q --depth 1 --filter=blob:none origin "${commit}"
           git -C data/macula-greek checkout -q FETCH_HEAD
+      - name: Check out Macula Hebrew TSV (pinned commit, partial and sparse, LFS)
+        run: |
+          commit="$(git rev-parse HEAD:data/macula-hebrew)"
+          url="$(git config -f .gitmodules submodule.data/macula-hebrew.url)"
+          git init -q data/macula-hebrew
+          git -C data/macula-hebrew remote add origin "${url}"
+          git -C data/macula-hebrew config extensions.partialClone origin
+          git -C data/macula-hebrew sparse-checkout set WLC/tsv
+          git -C data/macula-hebrew fetch -q --depth 1 --filter=blob:none origin "${commit}"
+          GIT_LFS_SKIP_SMUDGE=1 git -C data/macula-hebrew checkout -q FETCH_HEAD
+          git -C data/macula-hebrew lfs install --local
+          git -C data/macula-hebrew lfs pull --include=WLC/tsv/macula-hebrew.tsv
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v6

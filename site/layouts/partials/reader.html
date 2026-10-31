@@ -1,22 +1,29 @@
 {{- $code := .Params.book | default "JHN" -}}
 {{- $chapterNumber := int (.Params.chapter | default 1) -}}
-{{- $bookInfo := index (where hugo.Data.nt.catalog "code" $code) 0 -}}
-{{- $bookPath := printf "nt/%s/" $code -}}
+{{- /* Both testaments in reading order (Old, then New), each entry tagged with its testament. */ -}}
+{{- $books := slice -}}
+{{- range $testament := slice "ot" "nt" -}}
+  {{- range index hugo.Data $testament "catalog" -}}
+    {{- $books = $books | append (merge . (dict "testament" $testament)) -}}
+  {{- end -}}
+{{- end -}}
+{{- $bookIndex := 0 -}}
+{{- range $index, $entry := $books -}}
+  {{- if eq $entry.code $code -}}{{ $bookIndex = $index }}{{ end -}}
+{{- end -}}
+{{- $bookInfo := index $books $bookIndex -}}
+{{- $testament := $bookInfo.testament -}}
 {{- $nextChapterNumber := add $chapterNumber 1 -}}
 {{- $nextChapterPath := "" -}}
 {{- $nextChapterTitle := "" -}}
 {{- if le $nextChapterNumber $bookInfo.chapters -}}
-  {{- $nextChapterPath = printf "%s%d/" $bookPath $nextChapterNumber -}}
+  {{- $nextChapterPath = printf "%s/%s/%d/" $testament $code $nextChapterNumber -}}
   {{- $nextChapterTitle = printf "%s %d" $bookInfo.title $nextChapterNumber -}}
 {{- else -}}
-  {{- $bookIndex := 0 -}}
-  {{- range $index, $entry := hugo.Data.nt.catalog -}}
-    {{- if eq $entry.code $code -}}{{ $bookIndex = $index }}{{ end -}}
-  {{- end -}}
-  {{- $nextBook := first 1 (where (after (add $bookIndex 1) hugo.Data.nt.catalog) "available" true) -}}
+  {{- $nextBook := first 1 (where (after (add $bookIndex 1) $books) "available" true) -}}
   {{- if gt (len $nextBook) 0 -}}
     {{- $nextBookInfo := index $nextBook 0 -}}
-    {{- $nextChapterPath = printf "nt/%s/" $nextBookInfo.code -}}
+    {{- $nextChapterPath = printf "%s/%s/" $nextBookInfo.testament $nextBookInfo.code -}}
     {{- $nextChapterTitle = printf "%s 1" $nextBookInfo.title -}}
   {{- end -}}
 {{- end -}}
@@ -49,11 +56,18 @@
       <section class="reader-picker" id="reader-picker-panel" aria-label="Book picker and settings" hidden>
         <div class="reader-book-picker-view">
           <p class="reader-picker-instruction" id="reader-picker-instruction">1. Choose a book</p>
-          <div class="reader-book-grid" role="group" aria-label="Choose a New Testament book">
-            {{ range hugo.Data.nt.catalog }}
-              {{ if .available }}
-                <button type="button" class="reader-grid-tile reader-book-tile" data-book-code="{{ .code }}" data-book-title="{{ .title }}" data-chapters="{{ .chapters }}" aria-label="{{ .title }}">{{ .code }}</button>
-              {{ end }}
+          <div class="reader-book-list">
+            {{ range $testament := slice "ot" "nt" }}
+              <details class="reader-testament" data-testament="{{ $testament }}"{{ if eq $testament "nt" }} open{{ end }}>
+                <summary>{{ cond (eq $testament "ot") "Old Testament" "New Testament" }}</summary>
+                <div class="reader-book-grid" role="group" aria-label="Choose {{ cond (eq $testament "ot") "an Old" "a New" }} Testament book">
+                  {{ range index hugo.Data $testament "catalog" }}
+                    {{ if .available }}
+                      <button type="button" class="reader-grid-tile reader-book-tile" data-testament="{{ $testament }}" data-book-code="{{ .code }}" data-book-title="{{ .title }}" data-chapters="{{ .chapters }}" aria-label="{{ .title }}"{{ if eq .code $code }} aria-current="true"{{ end }}>{{ .code }}</button>
+                    {{ end }}
+                  {{ end }}
+                </div>
+              </details>
             {{ end }}
           </div>
           <div class="reader-chapter-picker" hidden>
@@ -93,8 +107,8 @@
       </section>
     <div class="reader-layout">
       <div class="reader-prev-sentinel" aria-hidden="true"></div>
-      <main id="reader" aria-label="{{ $bookInfo.title }} Greek text" tabindex="-1" data-book-code="{{ $code }}" data-book-title="{{ $bookInfo.title }}" data-chapter="{{ $chapterNumber }}" data-data-url="{{ "nt-data/" | relURL }}" data-reader-base="{{ "nt/" | relURL }}" data-catalog="{{ range $index, $entry := hugo.Data.nt.catalog }}{{ if $index }} {{ end }}{{ $entry.code }}:{{ $entry.chapters }}{{ end }}">
-        {{ partial "reader-chapter.html" (dict "code" $code "number" $chapterNumber "prefix" "" "title" "") }}
+      <main id="reader" aria-label="{{ $bookInfo.title }} {{ cond (eq $testament "ot") "Hebrew" "Greek" }} text" tabindex="-1" data-book-code="{{ $code }}" data-book-title="{{ $bookInfo.title }}" data-chapter="{{ $chapterNumber }}" data-site-base="{{ "/" | relURL }}" data-catalog="{{ range $index, $entry := $books }}{{ if $index }} {{ end }}{{ $entry.code }}:{{ $entry.chapters }}{{ end }}">
+        {{ partial "reader-chapter.html" (dict "testament" $testament "code" $code "number" $chapterNumber "prefix" "" "title" "") }}
       </main>
     </div>
     {{ with $nextChapterPath }}
@@ -104,12 +118,16 @@
     {{ end }}
     </div>
     <footer class="dataset-attribution">
-      <p>MACULA Greek Linguistic Datasets © Biblica, CC BY 4.0.
+      <p>{{ if eq $testament "ot" }}MACULA Hebrew Linguistic Datasets © Biblica, CC BY 4.0.
+        Westminster Leningrad Codex text via tanach.us; Open Scriptures Hebrew Bible and Groves Center syntax, CC BY 4.0.
+        Cherith glosses © Andi Wu / Cherith Analytics, CC BY 4.0.
+        <a href="https://github.com/Clear-Bible/macula-hebrew/blob/main/LICENSE.md">Upstream licenses and attribution</a>.
+        Source: <code>macula-hebrew</code> WLC TSV, rendered to static HTML at build time.{{ else }}MACULA Greek Linguistic Datasets © Biblica, CC BY 4.0.
         SBLGNT by Michael W. Holmes / Society of Biblical Literature / Logos, CC BY 4.0.
         Cherith glosses © 2023 Andi Wu / Cherith Analytics, CC BY 4.0.
         Berean glosses are public domain.
         <a href="https://github.com/Clear-Bible/macula-greek/blob/main/LICENSE.md">Upstream licenses and attribution</a>.
-        Source: <code>macula-greek</code> SBLGNT TSV, rendered to static HTML at build time.</p>
+        Source: <code>macula-greek</code> SBLGNT TSV, rendered to static HTML at build time.{{ end }}</p>
     </footer>
   </body>
 </html>

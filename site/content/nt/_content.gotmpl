@@ -1,16 +1,1 @@
-{{/* One reader page per available book and chapter, generated from data/nt. */}}
-{{- range hugo.Data.nt.catalog -}}
-  {{- if .available -}}
-    {{- $code := .code -}}
-    {{- $title := .title -}}
-    {{- range $n := seq .chapters -}}
-      {{- $page := dict "title" (printf "%s %d" $title $n) "layout" "reader" "params" (dict "book" $code "chapter" $n) -}}
-      {{- if eq $n 1 -}}
-        {{- $page = merge $page (dict "path" (printf "%s/_index" $code) "kind" "section" "title" $title "url" (printf "/nt/%s/" $code) "aliases" (slice (printf "/nt/%s/1/" $code))) -}}
-      {{- else -}}
-        {{- $page = merge $page (dict "path" (printf "%s/%d" $code $n) "url" (printf "/nt/%s/%d/" $code $n)) -}}
-      {{- end -}}
-      {{- $.AddPage $page -}}
-    {{- end -}}
-  {{- end -}}
-{{- end -}}
+{{ partial "testament-pages.html" (dict "page" . "testament" "nt") }}
