@@ -141,7 +141,7 @@
       if (new URL(link.href).pathname === globalThis.location.pathname) {
         event.preventDefault();
         const target = main.querySelector(`.reader-chapter[data-book-code="${main.dataset.bookCode}"][data-chapter="${main.dataset.chapter}"]`);
-        globalThis.scrollTo(0, target ? target.getBoundingClientRect().top + globalThis.scrollY - 56 : 0);
+        globalThis.scrollTo(0, target ? target.getBoundingClientRect().top + globalThis.scrollY - 72 : 0);
         return;
       }
       try { sessionStorage.setItem("macula-scripta-reader-navigation", new URL(link.href).pathname); } catch { /* resume remains available next visit */ }
@@ -178,7 +178,9 @@
     } catch { /* session storage unavailable */ }
     const sameDestination = navigationIntent === globalThis.location?.pathname;
     const hasHash = globalThis.location?.hash?.length > 1;
-    if (savedPosition && !sameDestination && !hasHash
+    // Resuming only applies on the home page; an explicit book or chapter URL opens at that chapter's start.
+    const onHome = globalThis.location?.pathname === main.dataset.readerBase.replace(/nt\/$/, "");
+    if (savedPosition && onHome && !sameDestination && !hasHash
       && (savedPosition.book !== main.dataset.bookCode || Number(savedPosition.chapter) !== Number(main.dataset.chapter))
       && /^[A-Z0-9]{3}$/.test(savedPosition.book)
       && Number.isInteger(Number(savedPosition.chapter)) && Number(savedPosition.chapter) > 0) {
@@ -221,7 +223,7 @@
   }, { passive: true });
 
   const restorePosition = () => {
-    if (globalThis.location?.hash?.length > 1 || !savedPosition
+    if (globalThis.location?.hash?.length > 1 || !savedPosition || globalThis.location?.pathname !== main?.dataset.readerBase.replace(/nt\/$/, "")
       || savedPosition.book !== main?.dataset.bookCode
       || Number(savedPosition.chapter) !== Number(main?.dataset.chapter)) return;
     const ref = `${savedPosition.book}/${Number(savedPosition.chapter)}:${Number(savedPosition.verse)}`;
