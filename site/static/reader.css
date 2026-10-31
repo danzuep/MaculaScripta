@@ -1,11 +1,11 @@
 .reader-page { max-width: 90rem; overflow-anchor: none; }
 .reader-book-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .reader-picker-bar-wrap { position: relative; z-index: 40; min-height: 2.5rem; margin: 0.5rem 0; }
-.reader-picker-bar { position: sticky; top: 0.5rem; z-index: 40; display: flex; align-items: center; gap: 0.25rem; background: var(--bg-color); }
+.reader-picker-bar { position: sticky; top: 0.5rem; z-index: 40; display: flex; align-items: center; gap: 0.25rem; pointer-events: none; }
 .reader-picker-bar.is-floating { position: fixed; top: 0.5rem; left: 50%; width: min(90rem, calc(100vw - 2rem)); transform: translateX(-50%); }
 .reader-picker-index, .reader-settings-switch, .reader-copy { min-height: 2.5rem; border: 0; border-radius: 0.5rem; background: transparent; color: var(--text-primary); font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-.reader-picker-index { flex: 1; min-width: 0; padding: 0.25rem 0.5rem; text-align: left; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.reader-settings-switch, .reader-copy { flex: none; display: grid; place-items: center; width: 2.5rem; padding: 0; font-size: 1.5rem; line-height: 1; }
+.reader-picker-index { flex: 0 1 auto; margin-right: auto; min-width: 0; pointer-events: auto; padding: 0.25rem 0.5rem; text-align: left; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.reader-settings-switch, .reader-copy { flex: none; pointer-events: auto; display: grid; place-items: center; width: 2.5rem; padding: 0; font-size: 1.5rem; line-height: 1; }
 .reader-picker-index:hover, .reader-settings-switch:hover, .reader-copy:hover { background: var(--card-bg); }
 .reader-picker-index[aria-expanded="true"], .reader-settings-switch[aria-expanded="true"] { background: var(--card-bg); }
 .reader-settings-switch:focus-visible, .reader-picker-index:focus-visible, .reader-copy:focus-visible, .reader-grid-tile:focus-visible, .reader-picker-back:focus-visible { outline: 2px solid var(--greek-color); outline-offset: 3px; }
@@ -16,8 +16,6 @@
 .reader-settings-column { min-width: 0; padding: 0.5rem 1.25rem; }
 .reader-settings-column + .reader-settings-column { border-left: 1px solid var(--border-color); }
 .reader-settings-column h2 { margin: 0 0 1rem; font-size: 1.1rem; }
-.reader-settings-brand { display: inline-flex; flex-direction: column; gap: 0.2rem; color: var(--text-primary); font-weight: 700; text-decoration: none; }
-.reader-settings-brand span { color: var(--text-muted); font-size: 0.85rem; font-weight: 400; }
 .reader-setting-row { display: flex; flex-direction: column; gap: 0.35rem; margin-block: 0.8rem; font-size: 0.9rem; }
 .reader-setting-row select { width: 100%; max-width: 100%; }
 .reader-setting-toggle { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 3.25rem; border-bottom: 1px solid var(--border-color); cursor: pointer; font-size: 0.9rem; }
@@ -53,15 +51,8 @@
 :root:has(#reader-annotation option[value="mandarin"]:checked) .rt-mandarin { display: ruby-text; }
 .reader-word a { color: var(--text-primary); text-decoration: none; }
 .reader-word a:hover, .reader-word a:focus-visible { text-decoration: underline; text-decoration-color: var(--greek-color); outline: none; }
-.reader-ruby-input { position: absolute; opacity: 0; pointer-events: none; }
-:root:has(.reader-ruby-input:not(:checked)) .reader-word rt { display: none; }
+:root:has(#reader-annotation option[value="none"]:checked) .reader-word rt { display: none; }
 .reader-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1rem; }
-.reader-switch { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; cursor: pointer; font-size: 0.85rem; }
-.reader-switch-track { position: relative; width: 2.5rem; height: 1.4rem; border: 1px solid var(--border-color); border-radius: 1rem; background: var(--card-bg); }
-.reader-switch-track::after { content: ""; position: absolute; top: 2px; left: 2px; width: calc(1.4rem - 6px); aspect-ratio: 1; border-radius: 50%; background: var(--text-muted); transition: transform 0.2s; }
-.reader-ruby-input:checked + .reader-switch .reader-switch-track { background: var(--greek-color); }
-.reader-ruby-input:checked + .reader-switch .reader-switch-track::after { transform: translateX(1.1rem); background: var(--bg-color); }
-.reader-ruby-input:focus-visible + .reader-switch { outline: 2px solid var(--greek-color); outline-offset: 3px; }
 
 /* Details pane driven by the URL fragment. */
 .reader-def { display: none; position: fixed; z-index: 20; right: 1rem; bottom: 1rem; left: 1rem; max-width: 28rem; max-height: min(60dvh, 34rem); margin-left: auto; overflow: auto; padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 1rem; background: var(--card-bg); box-shadow: var(--panel-shadow); }
@@ -76,7 +67,7 @@
 .reader-def dt { margin-top: 0.9rem; color: var(--greek-color); font-size: 0.85rem; font-weight: 600; overflow-wrap: anywhere; }
 .reader-def dd { margin: 0.3rem 0 0; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 0.9rem; }
 @media (prefers-reduced-motion: reduce) {
-  .reader-switch-track::after, .reader-toggle-input, .reader-toggle-input::before { transition: none; }
+  .reader-toggle-input, .reader-toggle-input::before { transition: none; }
 }
 @media (max-width: 32rem) {
   .reader-settings-columns { grid-template-columns: minmax(0, 1fr); }

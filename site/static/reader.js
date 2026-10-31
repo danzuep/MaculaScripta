@@ -22,7 +22,7 @@
   }
   if (annotation) {
     const saved = settingValue("macula-scripta-annotation");
-    if (saved === "mandarin") annotation.value = saved;
+    if (saved === "mandarin" || saved === "none") annotation.value = saved;
     annotation.addEventListener("change", () => saveSetting("macula-scripta-annotation", annotation.value));
   }
 
