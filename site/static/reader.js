@@ -25,9 +25,57 @@
   }
   if (annotation) {
     const saved = settingValue("macula-scripta-annotation");
-    if (saved === "mandarin" || saved === "none") annotation.value = saved;
+    if (saved === "mandarin" || saved === "translit" || saved === "none") annotation.value = saved;
     annotation.addEventListener("change", () => saveSetting("macula-scripta-annotation", annotation.value));
   }
+
+  // ISO 843 / ELOT 743 style transliteration adapted to biblical (polytonic) Greek: η→ē, ω→ō, φ→ph, rough breathing→h,
+  // iota subscript→i, γ before a velar→n, and υ→u in diphthongs (au, eu, ēu, ou, ui). Accents are dropped.
+  const greekLetters = { α: "a", β: "b", γ: "g", δ: "d", ε: "e", ζ: "z", η: "ē", θ: "th", ι: "i", κ: "k", λ: "l", μ: "m", ν: "n", ξ: "x", ο: "o", π: "p", ρ: "r", σ: "s", ς: "s", τ: "t", υ: "y", φ: "ph", χ: "ch", ψ: "ps", ω: "ō" };
+  const greekVowels = "αεηιουω";
+  const greekDiphthongs = new Set(["αι", "ει", "οι", "υι", "αυ", "ευ", "ηυ", "ου"]);
+  const transliterateGreek = (text) => {
+    const clusters = [...text.normalize("NFD").matchAll(/(.)([\u0300-\u036f]*)/gsu)].map(([, letter, marks]) => ({
+      raw: letter,
+      base: letter.toLowerCase(),
+      upper: letter !== letter.toLowerCase(),
+      rough: marks.includes("\u0314"),
+      diaeresis: marks.includes("\u0308"),
+      iotaSubscript: marks.includes("\u0345")
+    }));
+    const isLetter = (cluster) => cluster !== undefined && cluster.base in greekLetters;
+    let out = "";
+    clusters.forEach((cluster, i) => {
+      const previous = clusters[i - 1];
+      const next = clusters[i + 1];
+      if (!isLetter(cluster)) { out += cluster.raw; return; }
+      const wordStart = !isLetter(previous);
+      const pair = isLetter(next) && !cluster.diaeresis && !next.diaeresis ? cluster.base + next.base : "";
+      let latin = greekLetters[cluster.base];
+      if (cluster.base === "υ") {
+        const afterVowel = isLetter(previous) && "αεηο".includes(previous.base) && !cluster.diaeresis;
+        const beforeIota = next?.base === "ι" && !next.diaeresis;
+        if (afterVowel || beforeIota) latin = "u";
+      } else if (cluster.base === "γ" && next && "γκξχ".includes(next.base)) {
+        latin = "n";
+      }
+      if (cluster.iotaSubscript) latin += "i";
+      let breathing = "";
+      if (wordStart && greekVowels.includes(cluster.base) && (cluster.rough || (greekDiphthongs.has(pair) && next.rough))) breathing = "h";
+      else if (wordStart && cluster.base === "ρ" && cluster.rough) latin += "h";
+      if (cluster.upper) {
+        if (breathing) breathing = "H"; else latin = latin[0].toUpperCase() + latin.slice(1);
+      }
+      out += breathing + latin;
+    });
+    return out.normalize("NFC");
+  };
+  // Greek words carry no transliteration in the source data, so it is generated from the word itself.
+  const fillTransliteration = (root) => {
+    for (const note of root.querySelectorAll("rt[data-greek]")) {
+      if (!note.textContent) note.textContent = transliterateGreek(note.parentElement.querySelector("a").textContent);
+    }
+  };
 
   const element = (tag, props = {}, ...children) => {
     const node = document.createElement(tag);
@@ -48,9 +96,10 @@
     return books[index + 1] ? { code: books[index + 1][0], number: 1 } : null;
   }
 
-  globalThis.MaculaReader = { nextChapter };
+  globalThis.MaculaReader = { nextChapter, transliterateGreek };
 
   const main = document.querySelector("main#reader[data-catalog]");
+  if (main) fillTransliteration(main);
   const picker = document.querySelector(".reader-picker");
   const pickerButton = document.querySelector(".reader-picker-index");
   const settingsSwitch = document.querySelector(".reader-settings-switch");
@@ -124,9 +173,7 @@
       anchor = null;
       setMode(null);
     });
-    bookGrid.addEventListener("click", (event) => {
-      const button = event.target.closest("[data-book-code]");
-      if (!button) return;
+    const showChapters = (button) => {
       const { bookCode, bookTitle, chapters } = button.dataset;
       bookGrid.hidden = true;
       chapterPicker.hidden = false;
@@ -143,7 +190,28 @@
         });
         return link;
       }), backButton);
+    };
+    // Choosing a book opens it straight away; the next page reopens its chapter list for a later chapter.
+    bookGrid.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-book-code]");
+      if (!button) return;
+      const path = chapterPath(button.dataset.bookCode, 1);
+      if (new URL(path, globalThis.location.href).pathname === globalThis.location.pathname) {
+        showChapters(button);
+        return;
+      }
+      try {
+        sessionStorage.setItem("macula-scripta-open-chapters", button.dataset.bookCode);
+        sessionStorage.setItem("macula-scripta-reader-navigation", path);
+      } catch { /* the chapter list simply stays closed */ }
+      globalThis.location.assign(path);
     });
+    try {
+      const pending = sessionStorage.getItem("macula-scripta-open-chapters");
+      sessionStorage.removeItem("macula-scripta-open-chapters");
+      const button = pending === main.dataset.bookCode && bookGrid.querySelector(`[data-book-code="${pending}"]`);
+      if (button) { setMode("books"); showChapters(button); }
+    } catch { /* storage blocked */ }
     chapterGrid.addEventListener("click", (event) => {
       const link = event.target.closest("a[href]");
       if (!link) return;
@@ -260,6 +328,7 @@
     const section = new DOMParser().parseFromString(await response.text(), "text/html").querySelector(".reader-chapter");
     if (!section) throw new Error("chapter not found");
     section.prepend(element("h2", { class: "reader-chapter-title", text: `${bookTitles.get(code) ?? code} ${number}` }));
+    fillTransliteration(section);
     return document.adoptNode(section);
   };
 

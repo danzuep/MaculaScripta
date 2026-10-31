@@ -158,3 +158,19 @@ test("reader includes the two-step book picker, settings tiles, and verse refere
 test("data-site-base keeps the baseURL subpath so chapter links work on project pages", { skip: !existsSync(root("site/public/nt/JHN/index.html")) }, () => {
   assert.match(page("nt/JHN/index.html"), /data-site-base="?\/MaculaScripta\/"?[ >]/);
 });
+
+test("Greek transliteration follows ISO 843 / ELOT 743 adapted to biblical Greek", () => {
+  const { transliterateGreek } = runScript().context.MaculaReader;
+  const cases = {
+    "Ἐν": "En", "ἀρχῇ": "archēi", "ἦν": "ēn", "ὁ": "ho", "οὗτος": "houtos", "Θεὸν": "Theon",
+    "λόγος": "logos", "ἄγγελος": "angelos", "φῶς": "phōs", "Ῥαββί": "Rhabbi", "υἱός": "huios",
+    "εὐαγγέλιον": "euangelion", "Ἰησοῦς": "Iēsous", "Χριστοῦ": "Christou", "ψυχή": "psychē", "ᾠδή": "ōidē"
+  };
+  for (const [greek, latin] of Object.entries(cases)) assert.equal(transliterateGreek(greek), latin, greek);
+});
+
+test("annotation menu offers transliteration, filled for Greek and sourced from the TSV for Hebrew", { skip: !built && "run hugo --source ./site first" }, () => {
+  assert.match(page("nt/JHN/index.html"), /<option value="?translit"?>Transliteration/);
+  assert.match(page("nt/JHN/index.html"), /<rt class="?rt-translit"? lang="?grc-Latn"? data-greek>/);
+  assert.match(page("ot/HAG/index.html"), /<rt class="?rt-translit"? lang="?hbo-Latn"?>\S+<\/rt>/);
+});
