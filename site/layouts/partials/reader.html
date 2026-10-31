@@ -3,7 +3,7 @@
 {{- /* Both testaments in reading order (Old, then New), each entry tagged with its testament. */ -}}
 {{- $books := slice -}}
 {{- range $testament := slice "ot" "nt" -}}
-  {{- range index hugo.Data $testament "catalog" -}}
+  {{- range partial "testament-catalog.html" $testament -}}
     {{- $books = $books | append (merge . (dict "testament" $testament)) -}}
   {{- end -}}
 {{- end -}}
@@ -61,7 +61,7 @@
               <details class="reader-testament" data-testament="{{ $testament }}"{{ if eq $testament "nt" }} open{{ end }}>
                 <summary>{{ cond (eq $testament "ot") "Old Testament" "New Testament" }}</summary>
                 <div class="reader-book-grid" role="group" aria-label="Choose {{ cond (eq $testament "ot") "an Old" "a New" }} Testament book">
-                  {{ range index hugo.Data $testament "catalog" }}
+                  {{ range partial "testament-catalog.html" $testament }}
                     {{ if .available }}
                       <button type="button" class="reader-grid-tile reader-book-tile" data-testament="{{ $testament }}" data-book-code="{{ .code }}" data-book-title="{{ .title }}" data-chapters="{{ .chapters }}" aria-label="{{ .title }}"{{ if eq .code $code }} aria-current="true"{{ end }}>{{ .code }}</button>
                     {{ end }}
@@ -107,7 +107,7 @@
     <div class="reader-layout">
       <div class="reader-prev-sentinel" aria-hidden="true"></div>
       <main id="reader" aria-label="{{ $bookInfo.title }} {{ cond (eq $testament "ot") "Hebrew" "Greek" }} text" tabindex="-1" data-book-code="{{ $code }}" data-book-title="{{ $bookInfo.title }}" data-chapter="{{ $chapterNumber }}" data-site-base="{{ "/" | relURL }}" data-catalog="{{ range $index, $entry := $books }}{{ if $index }} {{ end }}{{ $entry.code }}:{{ $entry.chapters }}{{ end }}">
-        {{ partial "reader-chapter.html" (dict "testament" $testament "code" $code "number" $chapterNumber "prefix" "" "title" "") }}
+        {{ partial "reader-chapter.html" (dict "testament" $testament "code" $code "number" $chapterNumber) }}
       </main>
     </div>
     {{ with $nextChapterPath }}

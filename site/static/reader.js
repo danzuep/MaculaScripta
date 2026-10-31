@@ -252,13 +252,15 @@
     schedulePositionSave();
   };
 
-  // Each chapter is a static HTML fragment (one <section>, with its word-detail panes) published by Hugo.
+  // Each chapter is its own static page; scrolling inserts that page's chapter section (text plus word-detail panes)
+  // under a heading. Ids are unique across chapters (verses are CODE.chapter.verse, words use the TSV xml:id).
   const fetchChapter = async (code, number) => {
-    const response = await fetch(`${main.dataset.siteBase}${bookTestaments.get(code)}-data/${code}/${number}.html`);
+    const response = await fetch(chapterPath(code, number));
     if (!response.ok) throw new Error(response.statusText);
-    const template = document.createElement("template");
-    template.innerHTML = await response.text();
-    return template.content.firstElementChild;
+    const section = new DOMParser().parseFromString(await response.text(), "text/html").querySelector(".reader-chapter");
+    if (!section) throw new Error("chapter not found");
+    section.prepend(element("h2", { class: "reader-chapter-title", text: `${bookTitles.get(code) ?? code} ${number}` }));
+    return document.adoptNode(section);
   };
 
   // Infinite scroll: the "next chapter" link doubles as the sentinel; as it nears the viewport the following
@@ -332,7 +334,8 @@
 
   const copy = document.querySelector(".reader-copy");
   copy?.addEventListener("click", async () => {
-    const verse = document.getElementById(/^#([\w.]*\d)(?:!\d+)?$/.exec(location.hash)?.[1] ?? "");
+    const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    const verse = target?.dataset.verse ? document.getElementById(target.dataset.verse) : target;
     try {
       const chapter = main.querySelector(`.reader-chapter[data-book-code="${main.dataset.bookCode}"][data-chapter="${main.dataset.chapter}"]`);
       const plain = [...chapter.querySelectorAll(".verse-number a")].map((link) => link.dataset.text).join(" ");

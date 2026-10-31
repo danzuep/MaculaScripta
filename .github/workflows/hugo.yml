@@ -36,6 +36,8 @@ jobs:
     env:
       HUGO_VERSION: 0.169.0
       HUGO_ENVIRONMENT: production
+      # Only main and publish runs build the whole Old Testament; everything else builds a sample of it.
+      HUGO_PARAMS_SAMPLE: ${{ !(github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.publish)) }}
     steps:
       - name: Install Hugo CLI
         run: |

@@ -56,7 +56,7 @@ function createWorker() {
     async fetchChapter(number) {
       let response;
       listeners.get("fetch")({
-        request: new Request(`https://example.test/MaculaScripta/nt-data/JHN/${number}.html`),
+        request: new Request(`https://example.test/MaculaScripta/nt/JHN/${number}/`),
         respondWith(value) { response = value; }
       });
       return response;
@@ -84,22 +84,23 @@ function createWorker() {
   };
 }
 
-test("reader pages and chapter fragments are cached only while offline mode is enabled", async () => {
+test("reader pages and fetched chapters are cached only while offline mode is enabled", async () => {
   const worker = createWorker();
   for (let number = 1; number <= 4; number++) {
     await worker.fetchChapter(number);
     await worker.fetchPage(number);
   }
-  assert.equal(worker.cacheStorage.get("macula-scripta-v13-reader")?.entries.size ?? 0, 0);
+  assert.equal(worker.cacheStorage.get("macula-scripta-v14-reader")?.entries.size ?? 0, 0);
 
   await worker.setOfflineMode(true);
   for (let number = 1; number <= 4; number++) {
     await worker.fetchChapter(number);
     await worker.fetchPage(number);
   }
-  const cache = worker.cacheStorage.get("macula-scripta-v13-reader");
-  assert.equal((await cache.keys()).length, 8);
+  const cache = worker.cacheStorage.get("macula-scripta-v14-reader");
+  // Fetched chapters and navigations share URLs, except /nt/JHN/1/ (fetched) versus /nt/JHN/ (page).
+  assert.equal((await cache.keys()).length, 5);
 
   await worker.setOfflineMode(false);
-  assert.equal(worker.cacheStorage.has("macula-scripta-v13-reader"), false);
+  assert.equal(worker.cacheStorage.has("macula-scripta-v14-reader"), false);
 });

@@ -1,10 +1,7 @@
-{{- /* One chapter as static HTML: the text, plus each word's details pane inside the same section so the whole
-       chapter can be inserted as one unit. Used by reader pages (prefix "") and by the <testament>-data/<BOOK>/<chapter>.html
-       fragments (prefix "<BOOK>.<chapter>." and a heading), which reader.js inserts while scrolling.
-       Expects: testament, code, number, prefix, title. */ -}}
+{{- /* One chapter as static HTML: the text, plus each word's details pane inside the same section so reader.js can fetch
+       a chapter page and insert just this section while scrolling. Expects: testament, code, number. */ -}}
 {{- $code := .code -}}
 {{- $number := .number -}}
-{{- $prefix := .prefix -}}
 {{- $data := partialCached "testament-data.html" .testament .testament -}}
 {{- $hebrew := eq .testament "ot" -}}
 {{- $words := slice -}}
@@ -17,8 +14,7 @@
   {{- $piece := printf "%s%s" $word.text (cond (findRE "\\s$" $word.after) $word.after (printf "%s " $word.after)) -}}
   {{- $verseText.Add (index (split (index (split $word.ref ":") 1) "!") 0) $piece -}}
 {{- end -}}
-<section class="reader-chapter" aria-label="{{ .title | default (printf "Chapter %d" $number) }}" data-book-code="{{ $code }}" data-chapter="{{ $number }}">
-  {{- with .title }}<h2 class="reader-chapter-title">{{ . }}</h2>{{ end }}
+<section class="reader-chapter" aria-label="Chapter {{ $number }}" data-book-code="{{ $code }}" data-chapter="{{ $number }}">
   <p class="reader-flow" lang="{{ cond $hebrew "hbo" "grc" }}"{{ if $hebrew }} dir="rtl"{{ end }}>
     <sup class="chapter-number"><a href="#" aria-label="Chapter {{ $number }}">{{ $number }}</a></sup>
     {{- $previous := 0 -}}
@@ -27,14 +23,14 @@
       {{- $position := index (split .ref "!") 1 -}}
       {{- if ne $verse $previous -}}
         {{- $previous = $verse -}}
-        <sup class="verse-number"><a id="{{ $prefix }}{{ $verse }}" href="#{{ $prefix }}{{ $verse }}" data-ref="{{ $code }}/{{ $number }}:{{ $verse }}" data-text="{{ trim ($verseText.Get (string $verse)) " " }}" aria-label="Chapter {{ $number }}, verse {{ $verse }}">{{ $verse }}</a></sup>
+        <sup class="verse-number"><a id="{{ $code }}.{{ $number }}.{{ $verse }}" href="#{{ $code }}.{{ $number }}.{{ $verse }}" data-ref="{{ $code }}/{{ $number }}:{{ $verse }}" data-text="{{ trim ($verseText.Get (string $verse)) " " }}" aria-label="Chapter {{ $number }}, verse {{ $verse }}">{{ $verse }}</a></sup>
       {{- end -}}
-      <span class="reader-token"><ruby class="reader-word"><a id="w{{ $prefix }}{{ $verse }}!{{ $position }}" href="#{{ $prefix }}{{ $verse }}!{{ $position }}" aria-label="{{ .text }}: {{ .gloss }}">{{ .text }}</a><rt class="rt-gloss" lang="en">{{ .gloss }}</rt><rt class="rt-mandarin" lang="zh-Hans">{{ .mandarin }}</rt></ruby>{{ trim .after " " }}</span>{{ " " }}
+      <span class="reader-token"><ruby class="reader-word"><a id="w{{ index . "xml:id" }}" href="#{{ index . "xml:id" }}" aria-label="{{ .text }}: {{ .gloss }}">{{ .text }}</a><rt class="rt-gloss" lang="en">{{ .gloss }}</rt><rt class="rt-mandarin" lang="zh-Hans">{{ .mandarin }}</rt></ruby>{{ trim .after " " }}</span>{{ " " }}
     {{- end -}}
   </p>
   {{- range $words }}
     {{- $verse := index (split (index (split .ref ":") 1) "!") 0 }}
-  <aside class="reader-def" id="{{ $prefix }}{{ $verse }}!{{ index (split .ref "!") 1 }}" aria-label="Word details for {{ .text }}">
+  <aside class="reader-def" id="{{ index . "xml:id" }}" data-verse="{{ $code }}.{{ $number }}.{{ $verse }}" aria-label="Word details for {{ .text }}">
     <header class="reader-def-head">
       <h2 lang="{{ cond $hebrew "hbo" "grc" }}"{{ if $hebrew }} dir="rtl"{{ end }}>{{ .text }}</h2>
       <a class="reader-close" href="#_" aria-label="Close word details">×</a>
