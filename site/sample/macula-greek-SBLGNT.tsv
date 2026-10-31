@@ -1,0 +1,827 @@
+xml:id	ref	role	class	type	english	mandarin	gloss	text	after	lemma	normalized	strong	morph	person	number	gender	case	tense	voice	mood	degree	domain	ln	frame	subjref	referent
+n43001001001	JHN 1:1!1		prep		in		In [the]	Ἐν	 	ἐν	Ἐν	1722	PREP									067002	67.33			
+n43001001002	JHN 1:1!2		noun	common	beginning	太初	beginning	ἀρχῇ	 	ἀρχή	ἀρχῇ	746	N-DSF		singular	feminine	dative					067003	67.65			
+n43001001003	JHN 1:1!3	vc	verb		was	有	was	ἦν	 	εἰμί	ἦν	2258	V-IAI-3S	third	singular			imperfect	active	indicative		013003	13.69			
+n43001001004	JHN 1:1!4		det		the		the	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001001005	JHN 1:1!5		noun	common	word	道	Word	λόγος	,	λόγος	λόγος	3056	N-NSM		singular	masculine	nominative					033006	33.100			
+n43001001006	JHN 1:1!6		conj		and	而且	and	καὶ	 	καί	καὶ	2532	CONJ									089017	89.93			
+n43001001007	JHN 1:1!7		det		the		the	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001001008	JHN 1:1!8		noun	common	word	道	Word	λόγος	 	λόγος	λόγος	3056	N-NSM		singular	masculine	nominative					033006	33.100			
+n43001001009	JHN 1:1!9	vc	verb		was	在	was	ἦν	 	εἰμί	ἦν	2258	V-IAI-3S	third	singular			imperfect	active	indicative		085001	85.1			
+n43001001010	JHN 1:1!10		prep		with	与~同	with	πρὸς	 	πρός	πρὸς	4314	PREP									089020	89.112			
+n43001001011	JHN 1:1!11		det				-	τὸν	 	ὁ	τὸν	3588	T-ASM		singular	masculine	accusative					092004	92.24			
+n43001001012	JHN 1:1!12		noun	common	God	神	God	θεόν	,	θεός	θεόν	2316	N-ASM		singular	masculine	accusative					012001	12.1			
+n43001001013	JHN 1:1!13		conj		and	而且	and	καὶ	 	καί	καὶ	2532	CONJ									089017	89.92			
+n43001001014	JHN 1:1!14	p	noun	common	God	神	God	θεὸς	 	θεός	θεὸς	2316	N-NSM		singular	masculine	nominative					012001	12.1			
+n43001001015	JHN 1:1!15	vc	verb		was	是	was	ἦν	 	εἰμί	ἦν	2258	V-IAI-3S	third	singular			imperfect	active	indicative		058010	58.67			
+n43001001016	JHN 1:1!16		det		the		the	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001001017	JHN 1:1!17		noun	common	word	道	Word	λόγος	.	λόγος	λόγος	3056	N-NSM		singular	masculine	nominative					033006	33.100			
+n43001002001	JHN 1:2!1	s	pron	demonstrative	he	这	He	οὗτος	 	οὗτος	οὗτος	3778	D-NSM		singular	masculine	nominative					092007	92.29			n43001001017
+n43001002002	JHN 1:2!2	vc	verb		was	在	was	ἦν	 	εἰμί	ἦν	2258	V-IAI-3S	third	singular			imperfect	active	indicative		013003	13.69			
+n43001002003	JHN 1:2!3		prep		in	在	in [the]	ἐν	 	ἐν	ἐν	1722	PREP									067002	67.33			
+n43001002004	JHN 1:2!4		noun	common	beginning	太初	beginning	ἀρχῇ	 	ἀρχή	ἀρχῇ	746	N-DSF		singular	feminine	dative					067003	67.65			
+n43001002005	JHN 1:2!5		prep		with	与~同	with	πρὸς	 	πρός	πρὸς	4314	PREP									089020	89.112			
+n43001002006	JHN 1:2!6		det				-	τὸν	 	ὁ	τὸν	3588	T-ASM		singular	masculine	accusative					092004	92.24			
+n43001002007	JHN 1:2!7		noun	common	God	神	God	θεόν	.	θεός	θεόν	2316	N-ASM		singular	masculine	accusative					012001	12.1			
+n43001003001	JHN 1:3!1	s	adj		all	万物	All things	πάντα	 	πᾶς	πάντα	3956	A-NPN		plural	neuter	nominative					059003	59.23			
+n43001003002	JHN 1:3!2		prep		through	藉着	through	δι	’	διά	δι	1223	PREP									090001	90.4			
+n43001003003	JHN 1:3!3		pron	personal	him	他	Him	αὐτοῦ	 	αὐτός	αὐτοῦ	846	P-GSM		singular	masculine	genitive					092004	92.11			n43001001017
+n43001003004	JHN 1:3!4	v	verb		came into being	造	came into being	ἐγένετο	,	γίνομαι	ἐγένετο	1096	V-2ADI-3S	third	singular			aorist	middle	indicative		013003	13.80	A0:n43001003001		
+n43001003005	JHN 1:3!5		conj		and	而且	and	καὶ	 	καί	καὶ	2532	CONJ									089017	89.92			
+n43001003006	JHN 1:3!6		prep		without	不是	without	χωρὶς	 	χωρίς	χωρὶς	5565	ADV									089021	89.120			
+n43001003007	JHN 1:3!7		pron	personal	him	他	Him	αὐτοῦ	 	αὐτός	αὐτοῦ	846	P-GSM		singular	masculine	genitive					092004	92.11			n43001001017
+n43001003008	JHN 1:3!8	v	verb		came into being	造	came into being	ἐγένετο	 	γίνομαι	ἐγένετο	1096	V-2ADI-3S	third	singular			aorist	middle	indicative		013003	13.80	A0:n43001003010		
+n43001003009	JHN 1:3!9	adv	adv		not	没有	not even	οὐδὲ	 	οὐδέ	οὐδὲ	3761	CONJ-N									069003	69.8			
+n43001003010	JHN 1:3!10		adj		one	一	one [thing]	ἕν	.	εἷς	ἕν	1520	A-NSN		singular	neuter	nominative					092004	92.22			
+n43001003011	JHN 1:3!11	s	pron	relative	that		that	ὃ	 	ὅς	ὃ	3739	R-NSN		singular	neuter	nominative					092006	92.27			n43001003010
+n43001003012	JHN 1:3!12	v	verb		come into being	带来	has come into being	γέγονεν	 	γίνομαι	γέγονεν	1096	V-2RAI-3S	third	singular			perfect	active	indicative		013003	13.80	A0:n43001003011		
+n43001004001	JHN 1:4!1		prep		in	在~里面	In	ἐν	 	ἐν	ἐν	1722	PREP									090001	90.6			
+n43001004002	JHN 1:4!2		pron	personal	him	他	Him	αὐτῷ	 	αὐτός	αὐτῷ	846	P-DSM		singular	masculine	dative					092004	92.11			n43001001017
+n43001004003	JHN 1:4!3	s	noun	common	life	生命	life	ζωὴ	 	ζωή	ζωὴ	2222	N-NSF		singular	feminine	nominative					023007	23.88			
+n43001004004	JHN 1:4!4	vc	verb		was	有	was	ἦν	,	εἰμί	ἦν	2258	V-IAI-3S	third	singular			imperfect	active	indicative		013001	13.1			
+n43001004005	JHN 1:4!5		conj		and	而	and	καὶ	 	καί	καὶ	2532	CONJ									089017	89.93			
+n43001004006	JHN 1:4!6		det		the	这	the	ἡ	 	ὁ	ἡ	3588	T-NSF		singular	feminine	nominative					092004	92.24			
+n43001004007	JHN 1:4!7		noun	common	life	生命	life	ζωὴ	 	ζωή	ζωὴ	2222	N-NSF		singular	feminine	nominative					023007	23.88			
+n43001004008	JHN 1:4!8	vc	verb		was	是	was	ἦν	 	εἰμί	ἦν	2258	V-IAI-3S	third	singular			imperfect	active	indicative		013001	13.4			
+n43001004009	JHN 1:4!9		det		the		the	τὸ	 	ὁ	τὸ	3588	T-NSN		singular	neuter	nominative					092004	92.24			
+n43001004010	JHN 1:4!10		noun	common	light	光	light	φῶς	 	φῶς	φῶς	5457	N-NSN		singular	neuter	nominative					014006	14.36			
+n43001004011	JHN 1:4!11		det				-	τῶν	 	ὁ	τῶν	3588	T-GPM		plural	masculine	genitive					092004	92.24			
+n43001004012	JHN 1:4!12		noun	common	men	人	of men	ἀνθρώπων	·	ἄνθρωπος	ἀνθρώπων	444	N-GPM		plural	masculine	genitive					009001	9.1			
+n43001005001	JHN 1:5!1		conj		and	而	And	καὶ	 	καί	καὶ	2532	CONJ									089017	89.93			
+n43001005002	JHN 1:5!2		det		the	这	the	τὸ	 	ὁ	τὸ	3588	T-NSN		singular	neuter	nominative					092004	92.24			
+n43001005003	JHN 1:5!3		noun	common	light	光	Light	φῶς	 	φῶς	φῶς	5457	N-NSN		singular	neuter	nominative					014006	14.36			
+n43001005004	JHN 1:5!4		prep		in	在~中	in	ἐν	 	ἐν	ἐν	1722	PREP									083003	83.13			
+n43001005005	JHN 1:5!5		det		the		the	τῇ	 	ὁ	τῇ	3588	T-DSF		singular	feminine	dative					092004	92.24			
+n43001005006	JHN 1:5!6		noun	common	darkness	黑暗	darkness	σκοτίᾳ	 	σκοτία	σκοτίᾳ	4653	N-DSF		singular	feminine	dative					088015	88.125			
+n43001005007	JHN 1:5!7	v	verb		shines	照	shines	φαίνει	,	φαίνω	φαίνει	5316	V-PAI-3S	third	singular			present	active	indicative		014006	14.37	A0:n43001005003		
+n43001005008	JHN 1:5!8		conj		and	却	and	καὶ	 	καί	καὶ	2532	CONJ									091002	91.12			
+n43001005009	JHN 1:5!9		det		the		the	ἡ	 	ὁ	ἡ	3588	T-NSF		singular	feminine	nominative					092004	92.24			
+n43001005010	JHN 1:5!10		noun	common	darkness	黑暗	darkness	σκοτία	 	σκοτία	σκοτία	4653	N-NSF		singular	feminine	nominative					088015	88.125			
+n43001005011	JHN 1:5!11	o	pron	personal	it	它	it	αὐτὸ	 	αὐτός	αὐτὸ	846	P-ASN		singular	neuter	accusative					092004	92.11			n43001005003
+n43001005012	JHN 1:5!12	adv	adv		not	没有	not	οὐ	 	οὐ	οὐ	3756	PRT-N									069002	69.3			
+n43001005013	JHN 1:5!13	v	verb		overcome	胜过	overcame	κατέλαβεν	.	καταλαμβάνω	κατέλαβεν	2638	V-2AAI-3S	third	singular			aorist	active	indicative		032002 037001	32.18 37.19	A0:n43001005010 A1:n43001005011		
+n43001006001	JHN 1:6!1	v	verb		was	有	There came	Ἐγένετο	 	γίνομαι	Ἐγένετο	1096	V-2ADI-3S	third	singular			aorist	middle	indicative		091001	91.5	A0:n43001006002		
+n43001006002	JHN 1:6!2		noun	common	man	人	a man	ἄνθρωπος	 	ἄνθρωπος	ἄνθρωπος	444	N-NSM		singular	masculine	nominative					009002	9.24			
+n43001006003	JHN 1:6!3	v	verb		sent	差来	having been sent	ἀπεσταλμένος	 	ἀποστέλλω	ἀπεσταλμένος	649	V-RPP-NSM		singular	masculine	nominative	perfect	passive	participle		015004	15.66	A1:n43001006002	n43001006002	
+n43001006004	JHN 1:6!4		prep		from	从	from	παρὰ	 	παρά	παρὰ	3844	PREP									090003	90.14			
+n43001006005	JHN 1:6!5		noun	common	God	神	God	θεοῦ	,	θεός	θεοῦ	2316	N-GSM		singular	masculine	genitive					012001	12.1			
+n43001006006	JHN 1:6!6	s	noun	common	name	名叫	[the] name	ὄνομα	 	ὄνομα	ὄνομα	3686	N-NSN		singular	neuter	nominative					033009	33.126			
+n43001006007	JHN 1:6!7	adv	pron	personal	whose	他	to Him	αὐτῷ	 	αὐτός	αὐτῷ	846	P-DSM		singular	masculine	dative					092004	92.11			n43001006002
+n43001006008	JHN 1:6!8	p	noun	proper	John	约翰	[was] John	Ἰωάννης	·	Ἰωάννης	Ἰωάννης	2491	N-NSM		singular	masculine	nominative					093001	93.190a			
+n43001007001	JHN 1:7!1	s	pron	demonstrative	he	他	He	οὗτος	 	οὗτος	οὗτος	3778	D-NSM		singular	masculine	nominative					092007	92.29			n43001006002
+n43001007002	JHN 1:7!2	v	verb		came	来	came	ἦλθεν	 	ἔρχομαι	ἦλθεν	2064	V-2AAI-3S	third	singular			aorist	active	indicative		015006	15.81	A0:n43001007001		
+n43001007003	JHN 1:7!3		prep		as	为	as	εἰς	 	εἰς	εἰς	1519	PREP									089009	89.57			
+n43001007004	JHN 1:7!4		noun	common	witness	见证	a witness	μαρτυρίαν	,	μαρτυρία	μαρτυρίαν	3141	N-ASF		singular	feminine	accusative					033020	33.262			
+n43001007005	JHN 1:7!5		conj		to	是	that	ἵνα	 	ἵνα	ἵνα	2443	CONJ									089009	89.59			
+n43001007006	JHN 1:7!6	v	verb		testify	作见证	he might testify	μαρτυρήσῃ	 	μαρτυρέω	μαρτυρήσῃ	3140	V-AAS-3S	third	singular			aorist	active	subjunctive		033020	33.262	A0:n43001006002	n43001006002	
+n43001007007	JHN 1:7!7		prep		about	为	concerning	περὶ	 	περί	περὶ	4012	PREP									090006	90.24			
+n43001007008	JHN 1:7!8		det		the	那	the	τοῦ	 	ὁ	τοῦ	3588	T-GSN		singular	neuter	genitive					092004	92.24			
+n43001007009	JHN 1:7!9		noun	common	light	光	Light	φωτός	,	φῶς	φωτός	5457	N-GSN		singular	neuter	genitive					014006	14.36			
+n43001007010	JHN 1:7!10		conj		so that	使	that	ἵνα	 	ἵνα	ἵνα	2443	CONJ									089009	89.59			
+n43001007011	JHN 1:7!11	s	adj		all	人	all	πάντες	 	πᾶς	πάντες	3956	A-NPM		plural	masculine	nominative					059003	59.23			
+n43001007012	JHN 1:7!12	v	verb		believe	相信	might believe	πιστεύσωσιν	 	πιστεύω	πιστεύσωσιν	4100	V-AAS-3P	third	plural			aorist	active	subjunctive		031010	31.102	A0:n43001007011		
+n43001007013	JHN 1:7!13		prep		through	藉着	through	δι	’	διά	δι	1223	PREP									090001	90.4			
+n43001007014	JHN 1:7!14		pron	personal	him	他	him	αὐτοῦ	.	αὐτός	αὐτοῦ	846	P-GSM		singular	masculine	genitive					092004	92.11			n43001006002
+n43001008001	JHN 1:8!1		adv		not	不	Not	οὐκ	 	οὐ	οὐκ	3756	PRT-N									069002	69.3			
+n43001008002	JHN 1:8!2	vc	verb		was	是	was	ἦν	 	εἰμί	ἦν	2258	V-IAI-3S	third	singular			imperfect	active	indicative		013001	13.4			
+n43001008003	JHN 1:8!3	s	pron	demonstrative	he	他	He	ἐκεῖνος	 	ἐκεῖνος	ἐκεῖνος	1565	D-NSM		singular	masculine	nominative					092007	92.30			n43001006002
+n43001008004	JHN 1:8!4		det		the	那	the	τὸ	 	ὁ	τὸ	3588	T-NSN		singular	neuter	nominative					092004	92.24			
+n43001008005	JHN 1:8!5		noun	common	light	光	Light	φῶς	,	φῶς	φῶς	5457	N-NSN		singular	neuter	nominative					014006	14.36			
+n43001008006	JHN 1:8!6		conj		but	而是	but	ἀλλ	’	ἀλλά	ἀλλ	235	CONJ									089023	89.125			
+n43001008007	JHN 1:8!7		conj		to	要	that	ἵνα	 	ἵνα	ἵνα	2443	CONJ									089009	89.59			
+n43001008008	JHN 1:8!8	v	verb		testify	作见证	he might witness	μαρτυρήσῃ	 	μαρτυρέω	μαρτυρήσῃ	3140	V-AAS-3S	third	singular			aorist	active	subjunctive		033020	33.262	A0:n43001006002	n43001006002	
+n43001008009	JHN 1:8!9		prep		about	为	concerning	περὶ	 	περί	περὶ	4012	PREP									090006	90.24			
+n43001008010	JHN 1:8!10		det		the	那	the	τοῦ	 	ὁ	τοῦ	3588	T-GSN		singular	neuter	genitive					092004	92.24			
+n43001008011	JHN 1:8!11		noun	common	light	光	Light	φωτός	.	φῶς	φωτός	5457	N-GSN		singular	neuter	genitive					014006	14.36			
+n43001009001	JHN 1:9!1		verb		was	是	Was	ἦν	 	εἰμί	ἦν	2258	V-IAI-3S	third	singular			imperfect	active	indicative		013001	13.4			
+n43001009002	JHN 1:9!2		det		the	那	the	τὸ	 	ὁ	τὸ	3588	T-NSN		singular	neuter	nominative					092004	92.24			
+n43001009003	JHN 1:9!3		noun	common	light	光	Light	φῶς	 	φῶς	φῶς	5457	N-NSN		singular	neuter	nominative					014006	14.36			
+n43001009004	JHN 1:9!4		det		the		-	τὸ	 	ὁ	τὸ	3588	T-NSN		singular	neuter	nominative					092004	92.24			
+n43001009005	JHN 1:9!5		adj		true	真	true	ἀληθινὸν	 	ἀληθινός	ἀληθινὸν	228	A-NSN		singular	neuter	nominative					073	73.2			
+n43001009006	JHN 1:9!6	s	pron	relative	which		who	ὃ	 	ὅς	ὃ	3739	R-NSN		singular	neuter	nominative					092006	92.27			n43001009003
+n43001009007	JHN 1:9!7	v	verb		enlightens	照亮	enlightens	φωτίζει	 	φωτίζω	φωτίζει	5461	V-PAI-3S	third	singular			present	active	indicative		028003	28.36	A0:n43001009006 A1:n43001009009		
+n43001009008	JHN 1:9!8		adj		every	所有	every	πάντα	 	πᾶς	πάντα	3956	A-ASM		singular	masculine	accusative					059003	59.23			
+n43001009009	JHN 1:9!9		noun	common	man	人	man	ἄνθρωπον	 	ἄνθρωπος	ἄνθρωπον	444	N-ASM		singular	masculine	accusative					009001	9.1			
+n43001009010	JHN 1:9!10		verb		coming	来	coming	ἐρχόμενον	 	ἔρχομαι	ἐρχόμενον	2064	V-PNP-ASM		singular	masculine	accusative	present	middle	participle		015006	15.81	A0:n43001009003		
+n43001009011	JHN 1:9!11		prep		into	到~上	into	εἰς	 	εἰς	εἰς	1519	PREP									084002	84.22			
+n43001009012	JHN 1:9!12		det		the	这个	the	τὸν	 	ὁ	τὸν	3588	T-ASM		singular	masculine	accusative					092004	92.24			
+n43001009013	JHN 1:9!13		noun	common	world	世界	world	κόσμον	.	κόσμος	κόσμον	2889	N-ASM		singular	masculine	accusative					001006	1.39			
+n43001010001	JHN 1:10!1		prep		in	上	In	Ἐν	 	ἐν	Ἐν	1722	PREP									083003	83.13			
+n43001010002	JHN 1:10!2		det		the	这个	the	τῷ	 	ὁ	τῷ	3588	T-DSM		singular	masculine	dative					092004	92.24			
+n43001010003	JHN 1:10!3		noun	common	world	世界	world	κόσμῳ	 	κόσμος	κόσμῳ	2889	N-DSM		singular	masculine	dative					001006	1.39			
+n43001010004	JHN 1:10!4	vc	verb		was	在	He was	ἦν	,	εἰμί	ἦν	2258	V-IAI-3S	third	singular			imperfect	active	indicative		085001	85.1		n43001009003	
+n43001010005	JHN 1:10!5		conj		and	也	and	καὶ	 	καί	καὶ	2532	CONJ									089017	89.93			
+n43001010006	JHN 1:10!6		det		the	这个	the	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001010007	JHN 1:10!7		noun	common	world	世界	world	κόσμος	 	κόσμος	κόσμος	2889	N-NSM		singular	masculine	nominative					001001	1.1			
+n43001010008	JHN 1:10!8		prep		through	借着	through	δι	’	διά	δι	1223	PREP									090001	90.4			
+n43001010009	JHN 1:10!9		pron	personal	him	他	Him	αὐτοῦ	 	αὐτός	αὐτοῦ	846	P-GSM		singular	masculine	genitive					092004	92.11			n43001009003
+n43001010010	JHN 1:10!10	v	verb		made	造	came into being	ἐγένετο	,	γίνομαι	ἐγένετο	1096	V-2ADI-3S	third	singular			aorist	middle	indicative		013003	13.80	A0:n43001010007		
+n43001010011	JHN 1:10!11		conj		and	却	and	καὶ	 	καί	καὶ	2532	CONJ									091002	91.12			
+n43001010012	JHN 1:10!12		det		the	这个	the	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001010013	JHN 1:10!13		noun	common	world	世界	world	κόσμος	 	κόσμος	κόσμος	2889	N-NSM		singular	masculine	nominative					009001	9.23			
+n43001010014	JHN 1:10!14	o	pron	personal	him	他	Him	αὐτὸν	 	αὐτός	αὐτὸν	846	P-ASM		singular	masculine	accusative					092004	92.11			n43001009003
+n43001010015	JHN 1:10!15	adv	adv		not	不	not	οὐκ	 	οὐ	οὐκ	3756	PRT-N									069002	69.3			
+n43001010016	JHN 1:10!16	v	verb		know	认识	knew	ἔγνω	.	γινώσκω	ἔγνω	1097	V-2AAI-3S	third	singular			aorist	active	indicative		031004	31.27	A0:n43001010013 A1:n43001010014		
+n43001011001	JHN 1:11!1		prep		to	到	To	εἰς	 	εἰς	εἰς	1519	PREP									084002	84.16			
+n43001011002	JHN 1:11!2		det		that	（地方）	the	τὰ	 	ὁ	τὰ	3588	T-APN		plural	neuter	accusative					092004	92.24			
+n43001011003	JHN 1:11!3		adj		his own	自己的	own	ἴδια	 	ἴδιος	ἴδια	2398	A-APN		plural	neuter	accusative					057001	57.4			n43001009003
+n43001011004	JHN 1:11!4	v	verb		came	来	He came	ἦλθεν	,	ἔρχομαι	ἦλθεν	2064	V-2AAI-3S	third	singular			aorist	active	indicative		015006	15.81	A0:n43001009003	n43001009003	
+n43001011005	JHN 1:11!5		conj		and	却	and	καὶ	 	καί	καὶ	2532	CONJ									091002	91.12			
+n43001011006	JHN 1:11!6		det		those	自己的人	the	οἱ	 	ὁ	οἱ	3588	T-NPM		plural	masculine	nominative					092004	92.24			
+n43001011007	JHN 1:11!7		adj		his own	自己的	own	ἴδιοι	 	ἴδιος	ἴδιοι	2398	A-NPM		plural	masculine	nominative					010001	10.12			n43001009003
+n43001011008	JHN 1:11!8	o	pron	personal	him	他	Him	αὐτὸν	 	αὐτός	αὐτὸν	846	P-ASM		singular	masculine	accusative					092004	92.11			n43001009003
+n43001011009	JHN 1:11!9	adv	adv		not	不	not	οὐ	 	οὐ	οὐ	3756	PRT-N									069002	69.3			
+n43001011010	JHN 1:11!10	v	verb		receive	接受	received	παρέλαβον	.	παραλαμβάνω	παρέλαβον	3880	V-2AAI-3P	third	plural			aorist	active	indicative		034007	34.53	A0:n43001011007 A1:n43001011008		
+n43001012001	JHN 1:12!1	s	pron	relative	as many as	凡~的	As many as	ὅσοι	 	ὅσος	ὅσοι	3745	K-NPM		plural	masculine	nominative					059001	59.7			
+n43001012002	JHN 1:12!2		conj		but	不过	however	δὲ	 	δέ	δὲ	1161	CONJ									089023	89.124			
+n43001012003	JHN 1:12!3	v	verb		received	接受	received	ἔλαβον	 	λαμβάνω	ἔλαβον	2983	V-2AAI-3P	third	plural			aorist	active	indicative		031007	31.50	A0:n43001012001 A1:n43001012004		
+n43001012004	JHN 1:12!4	o	pron	personal	him	他	Him	αὐτόν	,	αὐτός	αὐτόν	846	P-ASM		singular	masculine	accusative					092004	92.11			n43001009003
+n43001012005	JHN 1:12!5	v	verb		gave	赐给	He gave	ἔδωκεν	 	δίδωμι	ἔδωκεν	1325	V-AAI-3S	third	singular			aorist	active	indicative		013004	13.142	A0:n43001009003 A1:n43001012007 A2:n43001012006	n43001009003	
+n43001012006	JHN 1:12!6		pron	personal	them	他们	to them	αὐτοῖς	 	αὐτός	αὐτοῖς	846	P-DPM		plural	masculine	dative					092004	92.11			n43001012003
+n43001012007	JHN 1:12!7	o	noun	common	right	权柄	authority	ἐξουσίαν	 	ἐξουσία	ἐξουσίαν	1849	N-ASF		singular	feminine	accusative					030007	30.122			
+n43001012008	JHN 1:12!8		noun	common	children	儿女	children	τέκνα	 	τέκνον	τέκνα	5043	N-NPN		plural	neuter	accusative					058004	58.26			
+n43001012009	JHN 1:12!9		noun	common	God	神	of God	θεοῦ	 	θεός	θεοῦ	2316	N-GSM		singular	masculine	genitive					012001	12.1			
+n43001012010	JHN 1:12!10	vc	verb		become	成为	to be	γενέσθαι	,	γίνομαι	γενέσθαι	1096	V-2ADN					aorist	middle	infinitive		013002	13.48	A0:n43001012003	n43001012003	
+n43001012011	JHN 1:12!11		det		those		to those	τοῖς	 	ὁ	τοῖς	3588	T-DPM		plural	masculine	dative					092004	92.24			
+n43001012012	JHN 1:12!12	v	verb		believe	信	believing	πιστεύουσιν	 	πιστεύω	πιστεύουσιν	4100	V-PAP-DPM		plural	masculine	dative	present	active	participle		031010	31.102	A0:n43001012003	n43001012003	
+n43001012013	JHN 1:12!13		prep		in		in	εἰς	 	εἰς	εἰς	1519	PREP									090006	90.23			
+n43001012014	JHN 1:12!14		det		the		the	τὸ	 	ὁ	τὸ	3588	T-ASN		singular	neuter	accusative					092004	92.24			
+n43001012015	JHN 1:12!15		noun	common	name	名	name	ὄνομα	 	ὄνομα	ὄνομα	3686	N-ASN		singular	neuter	accusative					009001	9.19			
+n43001012016	JHN 1:12!16		pron	personal	his	他	of Him	αὐτοῦ	,	αὐτός	αὐτοῦ	846	P-GSM		singular	masculine	genitive					092004	92.11			n43001009003
+n43001013001	JHN 1:13!1	s	pron	relative	who	他们	who	οἳ	 	ὅς	οἳ	3739	R-NPM		plural	masculine	nominative					092006	92.27			n43001012003
+n43001013002	JHN 1:13!2		adv		not	不是	not	οὐκ	 	οὐ	οὐκ	3756	PRT-N									069002	69.3			
+n43001013003	JHN 1:13!3		prep		of	从~生	of	ἐξ	 	ἐκ	ἐξ	1537	PREP									090002	90.12			
+n43001013004	JHN 1:13!4		noun	common	blood	血	blood	αἱμάτων	 	αἷμα	αἱμάτων	129	N-GPN		plural	neuter	genitive					008002	8.64			
+n43001013005	JHN 1:13!5		conj		nor	不是	nor	οὐδὲ	 	οὐδέ	οὐδὲ	3761	CONJ-N									069003	69.7			
+n43001013006	JHN 1:13!6		prep		of	从~生	of	ἐκ	 	ἐκ	ἐκ	1537	PREP									090003	90.16			
+n43001013007	JHN 1:13!7		noun	common	will	意思	will	θελήματος	 	θέλημα	θελήματος	2307	N-GSN		singular	neuter	genitive					025002	25.29			
+n43001013008	JHN 1:13!8		noun	common	flesh	肉身	of flesh	σαρκὸς	 	σάρξ	σαρκὸς	4561	N-GSF		singular	feminine	genitive					025002	25.29			
+n43001013009	JHN 1:13!9		conj		nor	也不是	nor	οὐδὲ	 	οὐδέ	οὐδὲ	3761	CONJ-N									069003	69.7			
+n43001013010	JHN 1:13!10		prep		of	从~生	of	ἐκ	 	ἐκ	ἐκ	1537	PREP									090003	90.16			
+n43001013011	JHN 1:13!11		noun	common	will	意愿	will	θελήματος	 	θέλημα	θελήματος	2307	N-GSN		singular	neuter	genitive					025001	25.2			
+n43001013012	JHN 1:13!12		noun	common	man	人	of man	ἀνδρὸς	 	ἀνήρ	ἀνδρὸς	435	N-GSM		singular	masculine	genitive					010004	10.53			
+n43001013013	JHN 1:13!13		conj		but	而是	but	ἀλλ	’	ἀλλά	ἀλλ	235	CONJ									089023	89.125			
+n43001013014	JHN 1:13!14		prep		of	从	of	ἐκ	 	ἐκ	ἐκ	1537	PREP									089003	89.3			
+n43001013015	JHN 1:13!15		noun	common	God	神	God	θεοῦ	 	θεός	θεοῦ	2316	N-GSM		singular	masculine	genitive					012001	12.1			
+n43001013016	JHN 1:13!16	v	verb		born	生	were born	ἐγεννήθησαν	.	γεννάω	ἐγεννήθησαν	1080	V-API-3P	third	plural			aorist	passive	indicative		023003	23.52	A1:n43001013001		
+n43001014001	JHN 1:14!1		conj		and	并且	And	Καὶ	 	καί	Καὶ	2532	CONJ									091001	91.1			
+n43001014002	JHN 1:14!2		det		the		the	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001014003	JHN 1:14!3		noun	common	word	道	Word	λόγος	 	λόγος	λόγος	3056	N-NSM		singular	masculine	nominative					033006	33.100			
+n43001014004	JHN 1:14!4	p	noun	common	flesh	肉身	flesh	σὰρξ	 	σάρξ	σὰρξ	4561	N-NSF		singular	feminine	nominative					009001	9.11			
+n43001014005	JHN 1:14!5	vc	verb		became	成	became	ἐγένετο	 	γίνομαι	ἐγένετο	1096	V-2ADI-3S	third	singular			aorist	middle	indicative		013002	13.48			
+n43001014006	JHN 1:14!6		conj		and	而	and	καὶ	 	καί	καὶ	2532	CONJ									089017	89.93			
+n43001014007	JHN 1:14!7	v	verb		dwelt	住	dwelt	ἐσκήνωσεν	 	σκηνόω	ἐσκήνωσεν	4637	V-AAI-3S	third	singular			aorist	active	indicative		085005	85.75	A0:n43001014003	n43001014003	
+n43001014008	JHN 1:14!8		prep		among	在~中间	among	ἐν	 	ἐν	ἐν	1722	PREP									083003	83.9			
+n43001014009	JHN 1:14!9		pron	personal	us	我们	us	ἡμῖν	,	ἐγώ	ἡμῖν	2254	P-1DP		plural		dative					092002	92.4			
+n43001014010	JHN 1:14!10		conj		and	也	and	καὶ	 	καί	καὶ	2532	CONJ									089017	89.93			
+n43001014011	JHN 1:14!11	v	verb		seen	见	we beheld	ἐθεασάμεθα	 	θεάομαι	ἐθεασάμεθα	2300	V-ADI-1P	first	plural			aorist	middle	indicative		024001	24.14	A0:n00000000000 A1:n43001014013		
+n43001014012	JHN 1:14!12		det		the		the	τὴν	 	ὁ	τὴν	3588	T-ASF		singular	feminine	accusative					092004	92.24			
+n43001014013	JHN 1:14!13		noun	common	glory	荣光	glory	δόξαν	 	δόξα	δόξαν	1391	N-ASF		singular	feminine	accusative					079005	79.18			
+n43001014014	JHN 1:14!14		pron	personal	his	他	of Him	αὐτοῦ	,	αὐτός	αὐτοῦ	846	P-GSM		singular	masculine	genitive					092004	92.11			n43001014003
+n43001014015	JHN 1:14!15		noun	common	glory	荣光	a glory	δόξαν	 	δόξα	δόξαν	1391	N-ASF		singular	feminine	accusative					079005	79.18			
+n43001014016	JHN 1:14!16		conj		as	正	as	ὡς	 	ὡς	ὡς	5613	ADV									064	64.12			
+n43001014017	JHN 1:14!17		adj	substantive	one and only	独生子	of an only begotten	μονογενοῦς	 	μονογενής	μονογενοῦς	3439	A-GSM		singular	masculine	genitive					058007	58.52			
+n43001014018	JHN 1:14!18		prep		from	从	from	παρὰ	 	παρά	παρὰ	3844	PREP									084001	84.5			
+n43001014019	JHN 1:14!19		noun	common	father	父	[the] Father	πατρός	,	πατήρ	πατρός	3962	N-GSM		singular	masculine	genitive					012001	12.12			
+n43001014020	JHN 1:14!20		adj		full	充满	full	πλήρης	 	πλήρης	πλήρης	4134	A-NSM		singular	masculine	nominative					059004	59.35			
+n43001014021	JHN 1:14!21		noun	common	grace	恩典	of grace	χάριτος	 	χάρις	χάριτος	5485	N-GSF		singular	feminine	genitive					088009	88.66			
+n43001014022	JHN 1:14!22		conj		and	和	and	καὶ	 	καί	καὶ	2532	CONJ									089017	89.92			
+n43001014023	JHN 1:14!23		noun	common	truth	真理	truth	ἀληθείας	·	ἀλήθεια	ἀληθείας	225	N-GSF		singular	feminine	genitive					072001	72.2			
+n43001015001	JHN 1:15!1	s	noun	proper	John	约翰	John	Ἰωάννης	 	Ἰωάννης	Ἰωάννης	2491	N-NSM		singular	masculine	nominative					093001	93.190a			
+n43001015002	JHN 1:15!2	v	verb		testified	作见证	witnesses	μαρτυρεῖ	 	μαρτυρέω	μαρτυρεῖ	3140	V-PAI-3S	third	singular			present	active	indicative		033020	33.262	A0:n43001015001		
+n43001015003	JHN 1:15!3		prep		about	为	concerning	περὶ	 	περί	περὶ	4012	PREP									090006	90.24			
+n43001015004	JHN 1:15!4		pron	personal	him	他	Him	αὐτοῦ	 	αὐτός	αὐτοῦ	846	P-GSM		singular	masculine	genitive					092004	92.11			n43001014003
+n43001015005	JHN 1:15!5		conj		and	并且	and	καὶ	 	καί	καὶ	2532	CONJ									089017	89.93			
+n43001015006	JHN 1:15!6	v	verb		cried out	呼喊	he cried out	κέκραγεν	 	κράζω	κέκραγεν	2896	V-2RAI-3S	third	singular			perfect	active	indicative		033006	33.83	A0:n43001015001	n43001015001	
+n43001015007	JHN 1:15!7	v	verb		saying	说	saying	λέγων	·	λέγω	λέγων	3004	V-PAP-NSM		singular	masculine	nominative	present	active	participle		033006	33.69	A0:n43001015001	n43001015001	
+n43001015008	JHN 1:15!8	s	pron	demonstrative	this	这	This	Οὗτος	 	οὗτος	Οὗτος	3778	D-NSM		singular	masculine	nominative					092007	92.29			n43001014003
+n43001015009	JHN 1:15!9	vc	verb		was	是	was He	ἦν	 	εἰμί	ἦν	2258	V-IAI-3S	third	singular			imperfect	active	indicative		013001	13.4			
+n43001015010	JHN 1:15!10	adv	pron	relative	whom	所~的	of whom	ὃν	 	ὅς	ὃν	3739	R-ASM		singular	masculine	accusative					092006	92.27			
+n43001015011	JHN 1:15!11	v	verb		said	说	I was saying	εἶπον	·	λέγω	εἶπον	2036	V-2AAI-1S	first	singular			aorist	active	indicative		033006	33.69	A0:n43001015001	n43001015001	
+n43001015012	JHN 1:15!12		det		he	那	The [One]	Ὁ	 	ὁ	Ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001015013	JHN 1:15!13		prep		after	在~以后	after	ὀπίσω	 	ὀπίσω	ὀπίσω	3694	ADV													
+n43001015014	JHN 1:15!14		pron	personal	me	我	me	μου	 	ἐγώ	μου	3450	P-1GS		singular		genitive					092001	92.1			n43001015001
+n43001015015	JHN 1:15!15	v	verb		comes	来	coming	ἐρχόμενος	 	ἔρχομαι	ἐρχόμενος	2064	V-PNP-NSM		singular	masculine	nominative	present	middle	participle		015006	15.81	A0:n00000000000		
+n43001015016	JHN 1:15!16		prep		before	以前	precedence	ἔμπροσθέν	 	ἔμπροσθεν	ἔμπροσθέν	1715	PREP									083006	83.33			
+n43001015017	JHN 1:15!17		pron	personal	me	我	over me	μου	 	ἐγώ	μου	3450	P-1GS		singular		genitive					092001	92.1			n43001015001
+n43001015018	JHN 1:15!18	vc	verb		ranks	存在	has	γέγονεν	,	γίνομαι	γέγονεν	1096	V-2RAI-3S	third	singular			perfect	active	indicative		013001	13.3			
+n43001015019	JHN 1:15!19		conj		because	因为	because	ὅτι	 	ὅτι	ὅτι	3754	CONJ									089007	89.33			
+n43001015020	JHN 1:15!20	p	adj		before	在~之前	before	πρῶτός	 	πρῶτος	πρῶτός	4413	A-NSM-S		singular	masculine	nominative				superlative	067002	67.18			
+n43001015021	JHN 1:15!21	adv	pron	personal	me	我	me	μου	 	ἐγώ	μου	3450	P-1GS		singular		genitive					092001	92.1			n43001015001
+n43001015022	JHN 1:15!22	vc	verb		was	存在	He was	ἦν	·	εἰμί	ἦν	2258	V-IAI-3S	third	singular			imperfect	active	indicative		013001	13.1		n43001015015	
+n43001016001	JHN 1:16!1		conj		for	原来	For	ὅτι	 	ὅτι	ὅτι	3754	CONJ									089007	89.33			
+n43001016002	JHN 1:16!2		prep		from	从~里	from	ἐκ	 	ἐκ	ἐκ	1537	PREP									090003	90.16			
+n43001016003	JHN 1:16!3		det		the		the	τοῦ	 	ὁ	τοῦ	3588	T-GSN		singular	neuter	genitive					092004	92.24			
+n43001016004	JHN 1:16!4		noun	common	fullness	丰盛	fullness	πληρώματος	 	πλήρωμα	πληρώματος	4138	N-GSN		singular	neuter	genitive					059003	59.32			
+n43001016005	JHN 1:16!5		pron	personal	his	他	of Him	αὐτοῦ	 	αὐτός	αὐτοῦ	846	P-GSM		singular	masculine	genitive					092004	92.11			n43001014003
+n43001016006	JHN 1:16!6		pron	personal	we	我们	we	ἡμεῖς	 	ἐγώ	ἡμεῖς	2249	P-1NP		plural		nominative					092002	92.4			
+n43001016007	JHN 1:16!7		adj		all	都	all	πάντες	 	πᾶς	πάντες	3956	A-NPM		plural	masculine	nominative					059003	59.23			
+n43001016008	JHN 1:16!8	v	verb		received	领受	have received	ἐλάβομεν	,	λαμβάνω	ἐλάβομεν	2983	V-2AAI-1P	first	plural			aorist	active	indicative		057009	57.125	A0:n43001016006 A1:n43001016010		
+n43001016009	JHN 1:16!9		adv		and	而且	then	καὶ	 	καί	καὶ	2532	CONJ													
+n43001016010	JHN 1:16!10		noun	common	grace	恩	grace	χάριν	 	χάρις	χάριν	5485	N-ASF		singular	feminine	accusative					057008 088009	57.103 88.66			
+n43001016011	JHN 1:16!11		prep		upon	上	for	ἀντὶ	 	ἀντί	ἀντὶ	473	PREP									057010	57.145			
+n43001016012	JHN 1:16!12		noun	common	grace	恩	grace	χάριτος	·	χάρις	χάριτος	5485	N-GSF		singular	feminine	genitive					057008 088009	57.103 88.66			
+n43001017001	JHN 1:17!1		conj		for	因为	For	ὅτι	 	ὅτι	ὅτι	3754	CONJ									089007	89.33			
+n43001017002	JHN 1:17!2		det		the		the	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001017003	JHN 1:17!3		noun	common	law	律法	law	νόμος	 	νόμος	νόμος	3551	N-NSM		singular	masculine	nominative					033005	33.55			
+n43001017004	JHN 1:17!4		prep		through	藉着	through	διὰ	 	διά	διὰ	1223	PREP									090001	90.4			
+n43001017005	JHN 1:17!5		noun	proper	Moses	摩西	Moses	Μωϋσέως	 	Μωϋσῆς	Μωϋσέως	3475	N-GSM		singular	masculine	genitive					093001	93.266			
+n43001017006	JHN 1:17!6	v	verb		given	颁布	was given	ἐδόθη	,	δίδωμι	ἐδόθη	1325	V-API-3S	third	singular			aorist	passive	indicative		057008	57.71	A1:n43001017003		
+n43001017007	JHN 1:17!7		det		the		-	ἡ	 	ὁ	ἡ	3588	T-NSF		singular	feminine	nominative					092004	92.24			
+n43001017008	JHN 1:17!8		noun	common	grace	恩典	grace	χάρις	 	χάρις	χάρις	5485	N-NSF		singular	feminine	nominative					057008	57.103			
+n43001017009	JHN 1:17!9		conj		and	和	and	καὶ	 	καί	καὶ	2532	CONJ									089017	89.92			
+n43001017010	JHN 1:17!10		det		the		-	ἡ	 	ὁ	ἡ	3588	T-NSF		singular	feminine	nominative					092004	92.24			
+n43001017011	JHN 1:17!11		noun	common	truth	真理	truth	ἀλήθεια	 	ἀλήθεια	ἀλήθεια	225	N-NSF		singular	feminine	nominative					072001	72.2			
+n43001017012	JHN 1:17!12		prep		through	藉着	through	διὰ	 	διά	διὰ	1223	PREP									090001	90.4			
+n43001017013	JHN 1:17!13		noun	proper	Jesus	耶稣	Jesus	Ἰησοῦ	 	Ἰησοῦς	Ἰησοῦ	2424	N-GSM		singular	masculine	genitive					093001	93.169a			
+n43001017014	JHN 1:17!14		noun	proper	Christ	基督	Christ	Χριστοῦ	 	Χριστός	Χριστοῦ	5547	N-GSM		singular	masculine	genitive					093001	93.387			
+n43001017015	JHN 1:17!15	v	verb		came	来	came	ἐγένετο	.	γίνομαι	ἐγένετο	1096	V-2ADI-3S	third	singular			aorist	middle	indicative		013004	13.107	A0:n43001017008;n43001017011		
+n43001018001	JHN 1:18!1	o	noun	common	God	神	God	θεὸν	 	θεός	θεὸν	2316	N-ASM		singular	masculine	accusative					012001	12.1			
+n43001018002	JHN 1:18!2	s	adj		no one	没有	no one	οὐδεὶς	 	οὐδείς	οὐδεὶς	3762	A-NSM-N		singular	masculine	nominative					092004	92.23			
+n43001018003	JHN 1:18!3	v	verb		seen	见	has seen	ἑώρακεν	 	ὁράω	ἑώρακεν	3708	V-RAI-3S-ATT	third	singular			perfect	active	indicative		024001	24.1	A1:n43001018001 A0:n43001018002		
+n43001018004	JHN 1:18!4	adv	adv		ever	从来	ever yet	πώποτε	·	πώποτε	πώποτε	4455	ADV									067001	67.9			
+n43001018005	JHN 1:18!5		adj		one and only	独生子	[the] only begotten	μονογενὴς	 	μονογενής	μονογενὴς	3439	A-NSM		singular	masculine	nominative					058007	58.52			
+n43001018006	JHN 1:18!6		noun	common	God	神	God	θεὸς	 	θεός	θεὸς	2316	N-NSM		singular	masculine	nominative					012001	12.1			
+n43001018007	JHN 1:18!7		det		it	那	the [One]	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001018008	JHN 1:18!8	vc	verb		is	在	being	ὢν	 	εἰμί	ὢν	5607	V-PAP-NSM		singular	masculine	nominative	present	active	participle		034001	34.18		n43001018006	
+n43001018009	JHN 1:18!9		prep		at	里	in	εἰς	 	εἰς	εἰς	1519	PREP									034001	34.18			
+n43001018010	JHN 1:18!10		det		the		the	τὸν	 	ὁ	τὸν	3588	T-ASM		singular	masculine	accusative					034001 092004	34.18 92.24			
+n43001018011	JHN 1:18!11		noun	common	bosom	怀	bosom	κόλπον	 	κόλπος	κόλπον	2859	N-ASM		singular	masculine	accusative					008002 034001	34.18 8.39			
+n43001018012	JHN 1:18!12		det		the		of the	τοῦ	 	ὁ	τοῦ	3588	T-GSM		singular	masculine	genitive					092004	92.24			
+n43001018013	JHN 1:18!13		noun	common	father’s	父	Father	πατρὸς	 	πατήρ	πατρὸς	3962	N-GSM		singular	masculine	genitive					012001	12.12			
+n43001018014	JHN 1:18!14	s	pron	demonstrative	he	他	He	ἐκεῖνος	 	ἐκεῖνος	ἐκεῖνος	1565	D-NSM		singular	masculine	nominative					092007	92.30			n43001018006
+n43001018015	JHN 1:18!15	v	verb		made ~ known	表明	has made [Him] known	ἐξηγήσατο	.	ἐξηγέομαι	ἐξηγήσατο	1834	V-ADI-3S	third	singular			aorist	middle	indicative		028003 033015	28.41 33.201	A0:n43001018014		
+n43001019001	JHN 1:19!1		conj		and	而	And	Καὶ	 	καί	Καὶ	2532	CONJ									091001	91.1			
+n43001019002	JHN 1:19!2	p	pron	demonstrative	this	这	this	αὕτη	 	οὗτος	αὕτη	3778	D-NSF		singular	feminine	nominative					092007	92.29			n43001020013
+n43001019003	JHN 1:19!3	vc	verb		is	是	is	ἐστὶν	 	εἰμί	ἐστὶν	2076	V-PAI-3S	third	singular			present	active	indicative		013001	13.4			
+n43001019004	JHN 1:19!4		det		the		the	ἡ	 	ὁ	ἡ	3588	T-NSF		singular	feminine	nominative					092004	92.24			
+n43001019005	JHN 1:19!5		noun	common	testimony	见证	testimony	μαρτυρία	 	μαρτυρία	μαρτυρία	3141	N-NSF		singular	feminine	nominative					033020	33.264			
+n43001019006	JHN 1:19!6		det				-	τοῦ	 	ὁ	τοῦ	3588	T-GSM		singular	masculine	genitive					092004	92.24			
+n43001019007	JHN 1:19!7		noun	proper	John	约翰	of John	Ἰωάννου	 	Ἰωάννης	Ἰωάννου	2491	N-GSM		singular	masculine	genitive					093001	93.190a			
+n43001019008	JHN 1:19!8		conj		when	当时	when	ὅτε	 	ὅτε	ὅτε	3753	ADV													
+n43001019009	JHN 1:19!9	v	verb		sent	派	sent	ἀπέστειλαν	 	ἀποστέλλω	ἀπέστειλαν	649	V-AAI-3P	third	plural			aorist	active	indicative		015004	15.66	A0:n43001019011 A1:n43001019014;n43001019016		
+n43001019010	JHN 1:19!10		det		the	那些	the	οἱ	 	ὁ	οἱ	3588	T-NPM		plural	masculine	nominative					092004	92.24			
+n43001019011	JHN 1:19!11		adj		jews	犹太人	Jews	Ἰουδαῖοι	 	Ἰουδαῖος	Ἰουδαῖοι	2453	A-NPM		plural	masculine	nominative					093001	93.172			
+n43001019012	JHN 1:19!12		prep		from	从	from	ἐξ	 	ἐκ	ἐξ	1537	PREP									084001	84.4			
+n43001019013	JHN 1:19!13		noun	proper	Jerusalem	耶路撒冷	Jerusalem	Ἱεροσολύμων	 	Ἱεροσόλυμα	Ἱεροσολύμων	2414	N-GPN		plural	neuter	genitive					093002	93.480a			
+n43001019014	JHN 1:19!14		noun	common	priests	祭司	priests	ἱερεῖς	 	ἱερεύς	ἱερεῖς	2409	N-APM		plural	masculine	accusative					053009	53.87			
+n43001019015	JHN 1:19!15		conj		and	和	and	καὶ	 	καί	καὶ	2532	CONJ									089017	89.92			
+n43001019016	JHN 1:19!16		noun	common	Levites	利未人	Levites	Λευίτας	 	Λευίτης	Λευίτας	3019	N-APM		plural	masculine	accusative					053009	53.91			
+n43001019017	JHN 1:19!17		conj		to		that	ἵνα	 	ἵνα	ἵνα	2443	CONJ									089009	89.59			
+n43001019018	JHN 1:19!18	v	verb		ask	问	they might ask	ἐρωτήσωσιν	 	ἐρωτάω	ἐρωτήσωσιν	2065	V-AAS-3P	third	plural			aorist	active	subjunctive		033014	33.180	A0:n43001019014;n43001019016 A1:n43001019019	n43001019014 n43001019016	
+n43001019019	JHN 1:19!19	o	pron	personal	him	他	him	αὐτόν	·	αὐτός	αὐτόν	846	P-ASM		singular	masculine	accusative					092004	92.11			n43001019007
+n43001019020	JHN 1:19!20	s	pron	personal	you	你	You	Σὺ	 	σύ	Σὺ	4771	P-2NS		singular		nominative					092003	92.6			n43001019007
+n43001019021	JHN 1:19!21	p	pron	interrogative	who	谁	who	τίς	 	τίς	τίς	5101	I-NSM		singular	masculine	nominative					092004	92.14			
+n43001019022	JHN 1:19!22	vc	verb		are	是	are	εἶ	;	εἰμί	εἶ	1488	V-PAI-2S	second	singular			present	active	indicative		013001	13.4			
+n43001020001	JHN 1:20!1		conj		and	就	And	καὶ	 	καί	καὶ	2532	CONJ													
+n43001020002	JHN 1:20!2	v	verb		confessed	承认	he confessed	ὡμολόγησεν	 	ὁμολογέω	ὡμολόγησεν	3670	V-AAI-3S	third	singular			aorist	active	indicative		033016	33.221	A0:n43001019007	n43001019007	
+n43001020003	JHN 1:20!3		conj		and	而	and	καὶ	 	καί	καὶ	2532	CONJ									089017	89.92			
+n43001020004	JHN 1:20!4	adv	adv		not	不	not	οὐκ	 	οὐ	οὐκ	3756	PRT-N									069002	69.3			
+n43001020005	JHN 1:20!5	v	verb		deny	否认	denied	ἠρνήσατο	,	ἀρνέομαι	ἠρνήσατο	720	V-ADI-3S	third	singular			aorist	middle	indicative		033022	33.277	A0:n43001019007	n43001019007	
+n43001020006	JHN 1:20!6		conj		but	却	but	καὶ	 	καί	καὶ	2532	CONJ									089017	89.92			
+n43001020007	JHN 1:20!7	v	verb		confessed	承认	confessed	ὡμολόγησεν	 	ὁμολογέω	ὡμολόγησεν	3670	V-AAI-3S	third	singular			aorist	active	indicative		033016 033022	33.221 33.275	A0:n43001019007	n43001019007	
+n43001020008	JHN 1:20!8		conj				-	ὅτι	 	ὅτι	ὅτι	3754	CONJ									090006	90.21			
+n43001020009	JHN 1:20!9	s	pron	personal	I	我	I	Ἐγὼ	 	ἐγώ	Ἐγὼ	1473	P-1NS		singular		nominative					092001	92.1			n43001019007
+n43001020010	JHN 1:20!10	adv	adv		not	不	not	οὐκ	 	οὐ	οὐκ	3756	PRT-N									069002	69.3			
+n43001020011	JHN 1:20!11	vc	verb		am	是	am	εἰμὶ	 	εἰμί	εἰμὶ	1510	V-PAI-1S	first	singular			present	active	indicative		013001	13.4			
+n43001020012	JHN 1:20!12		det		the		the	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001020013	JHN 1:20!13		noun	proper	Christ	基督	Christ	χριστός	.	Χριστός	χριστός	5547	N-NSM		singular	masculine	nominative					053009	53.82			
+n43001021001	JHN 1:21!1		conj		and	又	And	καὶ	 	καί	καὶ	2532	CONJ													
+n43001021002	JHN 1:21!2	v	verb		asked	问	they asked	ἠρώτησαν	 	ἐρωτάω	ἠρώτησαν	2065	V-AAI-3P	third	plural			aorist	active	indicative		033014	33.180	A0:n43001019014;n43001019016 A1:n43001021003	n43001019014 n43001019016	
+n43001021003	JHN 1:21!3	o	pron	personal	him	他	him	αὐτόν	·	αὐτός	αὐτόν	846	P-ASM		singular	masculine	accusative					092004	92.11			n43001019007
+n43001021004	JHN 1:21!4	p	pron	interrogative	what	谁	What	Τί	 	τίς	Τί	5101	I-NSN		singular	neuter	nominative					092004	92.14			
+n43001021005	JHN 1:21!5		conj		then	那么	then	οὖν	;	οὖν	οὖν	3767	CONJ									089008	89.50			
+n43001021006	JHN 1:21!6	s	pron	personal	you	你	You	σὺ	 	σύ	σὺ	4771	P-2NS		singular		nominative					092003	92.6			n43001019007
+n43001021007	JHN 1:21!7	p	noun	proper	Elijah	以利亚	Elijah	Ἠλίας	 	Ἠλίας	Ἠλίας	2243	N-NSM		singular	masculine	nominative					093001	93.142			
+n43001021008	JHN 1:21!8	vc	verb		are	是	are	εἶ	;	εἰμί	εἶ	1488	V-PAI-2S	second	singular			present	active	indicative		013001	13.4			
+n43001021009	JHN 1:21!9		conj		and	而	And	καὶ	 	καί	καὶ	2532	CONJ													
+n43001021010	JHN 1:21!10	v	verb		said	说	he says	λέγει	·	λέγω	λέγει	3004	V-PAI-3S	third	singular			present	active	indicative		033006	33.69	A0:n43001019007	n43001019007	
+n43001021011	JHN 1:21!11	adv	adv		not	不	Not	Οὐκ	 	οὐ	Οὐκ	3756	PRT-N									069002	69.3			
+n43001021012	JHN 1:21!12	vc	verb		am	是	I am	εἰμί	.	εἰμί	εἰμί	1510	V-PAI-1S	first	singular			present	active	indicative		013001	13.4		n43001019007	
+n43001021013	JHN 1:21!13		det		the	那	The	Ὁ	 	ὁ	Ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001021014	JHN 1:21!14		noun	common	prophet	先知	prophet	προφήτης	 	προφήτης	προφήτης	4396	N-NSM		singular	masculine	nominative					053009	53.79			
+n43001021015	JHN 1:21!15	vc	verb		are	是	are	εἶ	 	εἰμί	εἶ	1488	V-PAI-2S	second	singular			present	active	indicative		013001	13.4			
+n43001021016	JHN 1:21!16	s	pron	personal	you	你	you	σύ	;	σύ	σύ	4771	P-2NS		singular		nominative					092003	92.6			n43001019007
+n43001021017	JHN 1:21!17		conj		and	而	And	καὶ	 	καί	καὶ	2532	CONJ													
+n43001021018	JHN 1:21!18	v	verb		answered	回答	he answered	ἀπεκρίθη	·	ἀποκρίνομαι	ἀπεκρίθη	611	V-ADI-3S	third	singular			aorist	passive	indicative		033014	33.184	A1:n43001019007	n43001019007	
+n43001021019	JHN 1:21!19	adv	ptcl		no	不是	No	Οὔ	.	οὔ	Οὔ	3756	PRT-N									069002	69.2			
+n43001022001	JHN 1:22!1	v	verb		said	说	They said	εἶπαν	 	λέγω	εἶπαν	2036	V-2AAI-3P	third	plural			aorist	active	indicative		033006	33.69	A0:n43001019014;n43001019016 A2:n43001022003	n43001019014 n43001019016	
+n43001022002	JHN 1:22!2		conj		then	于是	therefore	οὖν	 	οὖν	οὖν	3767	CONJ													
+n43001022003	JHN 1:22!3	io	pron	personal	him	他	to him	αὐτῷ	·	αὐτός	αὐτῷ	846	P-DSM		singular	masculine	dative					092004	92.11			n43001019007
+n43001022004	JHN 1:22!4	p	pron	interrogative	who	谁	Who	Τίς	 	τίς	Τίς	5101	I-NSM		singular	masculine	nominative					092004	92.14			
+n43001022005	JHN 1:22!5	vc	verb		are	是	are you	εἶ	;	εἰμί	εἶ	1488	V-PAI-2S	second	singular			present	active	indicative		013001	13.4		n43001019007	
+n43001022006	JHN 1:22!6		conj		so that	好	That	ἵνα	 	ἵνα	ἵνα	2443	CONJ									089009	89.59			
+n43001022007	JHN 1:22!7	o	noun	common	answer	回答	an answer	ἀπόκρισιν	 	ἀπόκρισις	ἀπόκρισιν	612	N-ASF		singular	feminine	accusative					033014	33.185			
+n43001022008	JHN 1:22!8	v	verb		give	给	we might give	δῶμεν	 	δίδωμι	δῶμεν	1325	V-2AAS-1P	first	plural			aorist	active	subjunctive		057008	57.71	A0:n43001019014;n43001019016 A1:n43001022007 A2:n43001022010	n43001019014 n43001019016	
+n43001022009	JHN 1:22!9		det		those	那些	to those	τοῖς	 	ὁ	τοῖς	3588	T-DPM		plural	masculine	dative					092004	92.24			
+n43001022010	JHN 1:22!10	v	verb		sent	差	having sent	πέμψασιν	 	πέμπω	πέμψασιν	3992	V-AAP-DPM		plural	masculine	dative	aorist	active	participle		015004	15.66	A0:n43001019011 A1:n43001022011	n43001019011	
+n43001022011	JHN 1:22!11	o	pron	personal	us	我们	us	ἡμᾶς	·	ἐγώ	ἡμᾶς	2248	P-1AP		plural		accusative					092002	92.4			n43001019014 n43001019016
+n43001022012	JHN 1:22!12	o	pron	interrogative	what	谁	what	τί	 	τίς	τί	5101	I-ASN		singular	neuter	accusative					092004	92.14			
+n43001022013	JHN 1:22!13	v	verb		say	说	say you	λέγεις	 	λέγω	λέγεις	3004	V-PAI-2S	second	singular			present	active	indicative		033010	33.140	A0:n43001019007 A1:n43001022012	n43001019007	
+n43001022014	JHN 1:22!14		prep		about	关于	about	περὶ	 	περί	περὶ	4012	PREP									090006	90.24			
+n43001022015	JHN 1:22!15		pron	personal	yourself	你自己	yourself	σεαυτοῦ	;	σεαυτοῦ	σεαυτοῦ	4572	F-2GSM		singular	masculine	genitive					092003	92.10			n43001019007
+n43001023001	JHN 1:23!1	v	verb		said	说	He was saying	ἔφη	·	φημί	ἔφη	5346	V-IAI-3S	third	singular			imperfect	active	indicative		033006	33.69	A0:n43001019007	n43001019007	
+n43001023002	JHN 1:23!2	s	pron	personal	I	我	I [am]	Ἐγὼ	 	ἐγώ	Ἐγὼ	1473	P-1NS		singular		nominative					092001	92.1			n43001019007
+n43001023003	JHN 1:23!3		noun	common	voice	声音	a voice	φωνὴ	 	φωνή	φωνὴ	5456	N-NSF		singular	feminine	nominative					033006	33.103			
+n43001023004	JHN 1:23!4	v	verb		crying out	呼喊	crying	βοῶντος	 	βοάω	βοῶντος	994	V-PAP-GSM		singular	masculine	genitive	present	active	participle		033006	33.81	A0:n00000000000		
+n43001023005	JHN 1:23!5		prep		in	在	in	ἐν	 	ἐν	ἐν	1722	PREP									083003	83.13			
+n43001023006	JHN 1:23!6		det		the	在  里	the	τῇ	 	ὁ	τῇ	3588	T-DSF		singular	feminine	dative					092004	92.24			
+n43001023007	JHN 1:23!7		adj		wilderness	旷野	wilderness	ἐρήμῳ	·	ἔρημος	ἐρήμῳ	2048	A-DSF		singular	feminine	dative					001013	1.86			
+n43001023008	JHN 1:23!8	v	verb		make straight	修直	Make straight	Εὐθύνατε	 	εὐθύνω	Εὐθύνατε	2116	V-AAM-2P	second	plural			aorist	active	imperative		079017	79.89	A0:n00000000000 A1:n43001023010		
+n43001023009	JHN 1:23!9		det		the		the	τὴν	 	ὁ	τὴν	3588	T-ASF		singular	feminine	accusative					092004	92.24			
+n43001023010	JHN 1:23!10		noun	common	way	道路	way	ὁδὸν	 	ὁδός	ὁδὸν	3598	N-ASF		singular	feminine	accusative					041003	41.35			
+n43001023011	JHN 1:23!11		noun	common	Lord	主	of [the] Lord	κυρίου	,	κύριος	κυρίου	2962	N-GSM		singular	masculine	genitive					012001	12.9{N:001}			
+n43001023012	JHN 1:23!12		conj		as	正如	as	καθὼς	 	καθώς	καθὼς	2531	ADV									064	64.14			
+n43001023013	JHN 1:23!13	v	verb		said	说	said	εἶπεν	 	λέγω	εἶπεν	2036	V-2AAI-3S	third	singular			aorist	active	indicative		033006	33.69	A0:n43001023014		
+n43001023014	JHN 1:23!14		noun	proper	Isaiah	以赛亚	Isaiah	Ἠσαΐας	 	Ἠσαΐας	Ἠσαΐας	2268	N-NSM		singular	masculine	nominative					093001	93.147			
+n43001023015	JHN 1:23!15		det		the		the	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001023016	JHN 1:23!16		noun	common	prophet	先知	prophet	προφήτης	.	προφήτης	προφήτης	4396	N-NSM		singular	masculine	nominative					053009	53.79			
+n43001024001	JHN 1:24!1		conj		now	而	And	Καὶ	 	καί	Καὶ	2532	CONJ													
+n43001024002	JHN 1:24!2	v	verb		sent	派来	[those] having been sent	ἀπεσταλμένοι	 	ἀποστέλλω	ἀπεσταλμένοι	649	V-RPP-NPM		plural	masculine	nominative	perfect	passive	participle		015004	15.66	A1:n43001019014;n43001019016	n43001019014 n43001019016	
+n43001024003	JHN 1:24!3	vc	verb		had	是	were	ἦσαν	 	εἰμί	ἦσαν	2258	V-IAI-3P	third	plural			imperfect	active	indicative		058010	58.67			
+n43001024004	JHN 1:24!4		prep		from	来的	out from	ἐκ	 	ἐκ	ἐκ	1537	PREP									063004	63.20			
+n43001024005	JHN 1:24!5		det		the		the	τῶν	 	ὁ	τῶν	3588	T-GPM		plural	masculine	genitive					092004	92.24			
+n43001024006	JHN 1:24!6		noun	proper	Pharisees	法利赛人	Pharisees	Φαρισαίων	.	Φαρισαῖος	Φαρισαίων	5330	N-GPM		plural	masculine	genitive					011002	11.49			
+n43001025001	JHN 1:25!1		conj		and	就	And	καὶ	 	καί	καὶ	2532	CONJ									091001	91.1			
+n43001025002	JHN 1:25!2	v	verb		asked	问	they asked	ἠρώτησαν	 	ἐρωτάω	ἠρώτησαν	2065	V-AAI-3P	third	plural			aorist	active	indicative		033014	33.180	A0:n43001024002 A1:n43001025003	n43001024002	
+n43001025003	JHN 1:25!3	o	pron	personal	him	他	him	αὐτὸν	 	αὐτός	αὐτὸν	846	P-ASM		singular	masculine	accusative					092004	92.11			n43001019007
+n43001025004	JHN 1:25!4		conj		and		and	καὶ	 	καί	καὶ	2532	CONJ									089017	89.92			
+n43001025005	JHN 1:25!5	v	verb		said	说	said	εἶπαν	 	λέγω	εἶπαν	2036	V-2AAI-3P	third	plural			aorist	active	indicative		033006	33.69	A0:n43001024002 A2:n43001025006	n43001024002	
+n43001025006	JHN 1:25!6	io	pron	personal	him	对他	to him	αὐτῷ	·	αὐτός	αὐτῷ	846	P-DSM		singular	masculine	dative					092004	92.11			n43001019007
+n43001025007	JHN 1:25!7	adv	pron	interrogative	why	为什么	Why	Τί	 	τίς	Τί	5101	I-ASN		singular	neuter	accusative					092004	92.15			
+n43001025008	JHN 1:25!8		conj		then	那么	then	οὖν	 	οὖν	οὖν	3767	CONJ									089008	89.50			
+n43001025009	JHN 1:25!9	v	verb		baptizing	施洗	baptize you	βαπτίζεις	 	βαπτίζω	βαπτίζεις	907	V-PAI-2S	second	singular			present	active	indicative		053005	53.41	A0:n43001019007	n43001019007	
+n43001025010	JHN 1:25!10		conj		if	既然	if	εἰ	 	εἰ	εἰ	1487	COND									089010	89.65			
+n43001025011	JHN 1:25!11	s	pron	personal	you	你	you	σὺ	 	σύ	σὺ	4771	P-2NS		singular		nominative					092003	92.6			n43001019007
+n43001025012	JHN 1:25!12	adv	adv		not	不	not	οὐκ	 	οὐ	οὐκ	3756	PRT-N									069002	69.3			
+n43001025013	JHN 1:25!13	vc	verb		are	是	are	εἶ	 	εἰμί	εἶ	1488	V-PAI-2S	second	singular			present	active	indicative		013001	13.4			
+n43001025014	JHN 1:25!14		det		the		the	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001025015	JHN 1:25!15		noun	proper	Christ	基督	Christ	χριστὸς	 	Χριστός	χριστὸς	5547	N-NSM		singular	masculine	nominative					053009	53.82			
+n43001025016	JHN 1:25!16		conj		nor	不是	nor	οὐδὲ	 	οὐδέ	οὐδὲ	3761	CONJ-N									069003	69.7			
+n43001025017	JHN 1:25!17		noun	proper	Elijah	以利亚	Elijah	Ἠλίας	 	Ἠλίας	Ἠλίας	2243	N-NSM		singular	masculine	nominative					093001	93.142			
+n43001025018	JHN 1:25!18		conj		nor	也不是	nor	οὐδὲ	 	οὐδέ	οὐδὲ	3761	CONJ-N									069003	69.7			
+n43001025019	JHN 1:25!19		det		the	那	the	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001025020	JHN 1:25!20		noun	common	prophet	先知	prophet	προφήτης	;	προφήτης	προφήτης	4396	N-NSM		singular	masculine	nominative					053009	53.79			
+n43001026001	JHN 1:26!1	v	verb		answered	回答	Answered	ἀπεκρίθη	 	ἀποκρίνομαι	ἀπεκρίθη	611	V-ADI-3S	third	singular			aorist	passive	indicative		033014	33.184	A2:n43001026002 A0:n43001026004		
+n43001026002	JHN 1:26!2	io	pron	personal	them	他们	them	αὐτοῖς	 	αὐτός	αὐτοῖς	846	P-DPM		plural	masculine	dative					092004	92.11			n43001024002
+n43001026003	JHN 1:26!3		det				-	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001026004	JHN 1:26!4		noun	proper	John	约翰	John	Ἰωάννης	 	Ἰωάννης	Ἰωάννης	2491	N-NSM		singular	masculine	nominative					093001	93.190a			
+n43001026005	JHN 1:26!5	v	verb		saying	说	saying	λέγων	·	λέγω	λέγων	3004	V-PAP-NSM		singular	masculine	nominative	present	active	participle		033006	33.69	A0:n43001026004	n43001026004	
+n43001026006	JHN 1:26!6	s	pron	personal	I	我	I	Ἐγὼ	 	ἐγώ	Ἐγὼ	1473	P-1NS		singular		nominative					092001	92.1			n43001026004
+n43001026007	JHN 1:26!7	v	verb		baptize	施洗	baptize	βαπτίζω	 	βαπτίζω	βαπτίζω	907	V-PAI-1S	first	singular			present	active	indicative		053005	53.41	A0:n43001026006		
+n43001026008	JHN 1:26!8		prep		with	用	with	ἐν	 	ἐν	ἐν	1722	PREP									083003 090002	83.13 90.10			
+n43001026009	JHN 1:26!9		noun	common	water	水	water	ὕδατι	·	ὕδωρ	ὕδατι	5204	N-DSN		singular	neuter	dative					002004	2.7			
+n43001026010	JHN 1:26!10		adj	substantive	among	在~中间	but in [the] midst	μέσος	 	μέσος	μέσος	3319	A-NSM		singular	masculine	nominative					083003	83.9			
+n43001026011	JHN 1:26!11		pron	personal	you	你们	of you	ὑμῶν	 	σύ	ὑμῶν	5216	P-2GP		plural		genitive					092003	92.7			n43001024002
+n43001026012	JHN 1:26!12	v	verb		stands	站		ἕστηκεν	 	ἵστημι	ἕστηκεν	2476	V-RAI-3S	third	singular			perfect	active	indicative		085002	85.40			
+n43001026013	JHN 1:26!13	o	pron	relative	one		whom	ὃν	 	ὅς	ὃν	3739	R-ASM		singular	masculine	accusative					092006	92.27			
+n43001026014	JHN 1:26!14	s	pron	personal	you	你们	you	ὑμεῖς	 	σύ	ὑμεῖς	5210	P-2NP		plural		nominative					092003	92.7			n43001024002
+n43001026015	JHN 1:26!15	adv	adv		not	不	not	οὐκ	 	οὐ	οὐκ	3756	PRT-N									069002	69.3			
+n43001026016	JHN 1:26!16	v	verb		know	认识	know	οἴδατε	,	οἶδα	οἴδατε	1492	V-RAI-2P	second	plural			perfect	active	indicative		028001	28.1	A1:n43001026013 A0:n43001026014		
+n43001027001	JHN 1:27!1		det		he	那	the [One]	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001027002	JHN 1:27!2		prep		after	在~以后	after	ὀπίσω	 	ὀπίσω	ὀπίσω	3694	ADV													
+n43001027003	JHN 1:27!3		pron	personal	me	我	me	μου	 	ἐγώ	μου	3450	P-1GS		singular		genitive					092001	92.1			n43001026004
+n43001027004	JHN 1:27!4	v	verb		comes	来	coming	ἐρχόμενος	,	ἔρχομαι	ἐρχόμενος	2064	V-PNP-NSM		singular	masculine	nominative	present	middle	participle		015001	15.7	A0:n43001026016	n43001026016	
+n43001027005	JHN 1:27!5	adv	pron	relative	whose	他	of whom	οὗ	 	ὅς	οὗ	3739	R-GSM		singular	masculine	genitive					092006	92.27			n43001027004
+n43001027006	JHN 1:27!6	adv	adv		not	不	not	οὐκ	 	οὐ	οὐκ	3756	PRT-N									069002	69.3			
+n43001027007	JHN 1:27!7	vc	verb		am	是	am	εἰμὶ	 	εἰμί	εἰμὶ	1510	V-PAI-1S	first	singular			present	active	indicative		013001	13.1		n43001026004	
+n43001027008	JHN 1:27!8	p	adj		worthy	配	worthy	ἄξιος	 	ἄξιος	ἄξιος	514	A-NSM		singular	masculine	nominative					065002	65.17			
+n43001027009	JHN 1:27!9		conj		to		that	ἵνα	 	ἵνα	ἵνα	2443	CONJ									090006	90.22			
+n43001027010	JHN 1:27!10	v	verb		untie	解	I should untie	λύσω	 	λύω	λύσω	3089	V-AAS-1S	first	singular			aorist	active	subjunctive		018002	18.18	A0:n43001026004 A1:n43001027013	n43001026004	
+n43001027011	JHN 1:27!11		pron	personal	his	他	of Him	αὐτοῦ	 	αὐτός	αὐτοῦ	846	P-GSM		singular	masculine	genitive					092004	92.11			n43001027004
+n43001027012	JHN 1:27!12		det		the		the	τὸν	 	ὁ	τὸν	3588	T-ASM		singular	masculine	accusative					092004	92.24			
+n43001027013	JHN 1:27!13		noun	common	strap	皮带子	strap	ἱμάντα	 	ἱμάς	ἱμάντα	2438	N-ASM		singular	masculine	accusative					006004	6.20			
+n43001027014	JHN 1:27!14		det		of the(his)		of the	τοῦ	 	ὁ	τοῦ	3588	T-GSN		singular	neuter	genitive					092004	92.24			
+n43001027015	JHN 1:27!15		noun	common	sandal	鞋子	sandal	ὑποδήματος	.	ὑπόδημα	ὑποδήματος	5266	N-GSN		singular	neuter	genitive					006017	6.182			
+n43001028001	JHN 1:28!1	s	pron	demonstrative	these	这些	These things	ταῦτα	 	οὗτος	ταῦτα	5023	D-NPN		plural	neuter	nominative					092007	92.29			
+n43001028002	JHN 1:28!2		prep		in	在	in	ἐν	 	ἐν	ἐν	1722	PREP									083003	83.13			
+n43001028003	JHN 1:28!3		noun	proper	Bethany	伯大尼	Bethany	Βηθανίᾳ	 	Βηθανία	Βηθανίᾳ	963	N-DSF		singular	feminine	dative					093002	93.427b			
+n43001028004	JHN 1:28!4	v	verb		took place	发生	took place	ἐγένετο	 	γίνομαι	ἐγένετο	1096	V-2ADI-3S	third	singular			aorist	middle	indicative		013004	13.107	A0:n43001028001		
+n43001028005	JHN 1:28!5		prep		across	对岸	across	πέραν	 	πέραν	πέραν	4008	ADV									083007	83.43			
+n43001028006	JHN 1:28!6		det		the		the	τοῦ	 	ὁ	τοῦ	3588	T-GSM		singular	masculine	genitive					092004	92.24			
+n43001028007	JHN 1:28!7		noun	proper	Jordan	约旦河	Jordan	Ἰορδάνου	,	Ἰορδάνης	Ἰορδάνου	2446	N-GSM		singular	masculine	genitive					093002	93.485			
+n43001028008	JHN 1:28!8	adv	adv		where	地方	where	ὅπου	 	ὅπου	ὅπου	3699	ADV									083002	83.5			n43001028007
+n43001028009	JHN 1:28!9		verb		was	是	was	ἦν	 	εἰμί	ἦν	2258	V-IAI-3S	third	singular			imperfect	active	indicative		013001	13.1			
+n43001028010	JHN 1:28!10		det		the one		-	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001028011	JHN 1:28!11		noun	proper	John	约翰	John	Ἰωάννης	 	Ἰωάννης	Ἰωάννης	2491	N-NSM		singular	masculine	nominative					093001	93.190a			
+n43001028012	JHN 1:28!12		verb		baptizing	施洗	baptizing	βαπτίζων	.	βαπτίζω	βαπτίζων	907	V-PAP-NSM		singular	masculine	nominative	present	active	participle		053005	53.41	A0:n43001028011		
+n43001029001	JHN 1:29!1		det		the		On the	Τῇ	 	ὁ	Τῇ	3588	T-DSF		singular	feminine	dative					092004	92.24			
+n43001029002	JHN 1:29!2		adv		next day	第二天	next day	ἐπαύριον	 	ἐπαύριον	ἐπαύριον	1887	ADV									067010	67.208			
+n43001029003	JHN 1:29!3	v	verb		saw	看见	he sees	βλέπει	 	βλέπω	βλέπει	991	V-PAI-3S	third	singular			present	active	indicative		024001	24.7	A0:n43001028011 A1:n43001029006	n43001028011	
+n43001029004	JHN 1:29!4		det				-	τὸν	 	ὁ	τὸν	3588	T-ASM		singular	masculine	accusative					092004	92.24			
+n43001029005	JHN 1:29!5		noun	proper	Jesus	耶稣	Jesus	Ἰησοῦν	 	Ἰησοῦς	Ἰησοῦν	2424	N-ASM		singular	masculine	accusative					093001	93.169a			
+n43001029006	JHN 1:29!6	v	verb		coming	走来	coming	ἐρχόμενον	 	ἔρχομαι	ἐρχόμενον	2064	V-PNP-ASM		singular	masculine	accusative	present	middle	participle		015006	15.81	A0:n43001029005		
+n43001029007	JHN 1:29!7		prep		toward	向	to	πρὸς	 	πρός	πρὸς	4314	PREP									084002	84.18			
+n43001029008	JHN 1:29!8		pron	personal	him	他	him	αὐτόν	,	αὐτός	αὐτόν	846	P-ASM		singular	masculine	accusative					092004	92.11			n43001028011
+n43001029009	JHN 1:29!9		conj		and	就	and	καὶ	 	καί	καὶ	2532	CONJ													
+n43001029010	JHN 1:29!10	v	verb		said	说	says	λέγει	·	λέγω	λέγει	3004	V-PAI-3S	third	singular			present	active	indicative		033006	33.69	A0:n43001028011	n43001028011	
+n43001029011	JHN 1:29!11	aux	ptcl		behold	看	Behold	Ἴδε	 	ἴδε	Ἴδε	2396	V-2AAM-2S	second	singular			aorist	active	imperative		091003	91.13			
+n43001029012	JHN 1:29!12		det		the		the	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001029013	JHN 1:29!13		noun	common	lamb	羔羊	Lamb	ἀμνὸς	 	ἀμνός	ἀμνὸς	286	N-NSM		singular	masculine	nominative					004001	4.24			
+n43001029014	JHN 1:29!14		det				-	τοῦ	 	ὁ	τοῦ	3588	T-GSM		singular	masculine	genitive					092004	92.24			
+n43001029015	JHN 1:29!15		noun	common	God	神	of God	θεοῦ	 	θεός	θεοῦ	2316	N-GSM		singular	masculine	genitive					012001	12.1			
+n43001029016	JHN 1:29!16		det		the one		-	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001029017	JHN 1:29!17	v	verb		takes away	除去	taking away	αἴρων	 	αἴρω	αἴρων	142	V-PAP-NSM		singular	masculine	nominative	present	active	participle		015024	15.203	A0:n43001029013 A1:n43001029019	n43001029013	
+n43001029018	JHN 1:29!18		det		the		the	τὴν	 	ὁ	τὴν	3588	T-ASF		singular	feminine	accusative					092004	92.24			
+n43001029019	JHN 1:29!19		noun	common	sin	罪孽	sin	ἁμαρτίαν	 	ἁμαρτία	ἁμαρτίαν	266	N-ASF		singular	feminine	accusative					088038	88.310			
+n43001029020	JHN 1:29!20		det		the		of the	τοῦ	 	ὁ	τοῦ	3588	T-GSM		singular	masculine	genitive					092004	92.24			
+n43001029021	JHN 1:29!21		noun	common	world	世人	world	κόσμου	.	κόσμος	κόσμου	2889	N-GSM		singular	masculine	genitive					009001	9.23			
+n43001030001	JHN 1:30!1	s	pron	demonstrative	this	这	He	οὗτός	 	οὗτος	οὗτός	3778	D-NSM		singular	masculine	nominative					092007	92.29			n43001029005
+n43001030002	JHN 1:30!2	vc	verb		is	是	it is	ἐστιν	 	εἰμί	ἐστιν	2076	V-PAI-3S	third	singular			present	active	indicative		013001	13.4			
+n43001030003	JHN 1:30!3		prep		about	关于	concerning	ὑπὲρ	 	ὑπέρ	ὑπὲρ	5228	PREP									090006	90.24			
+n43001030004	JHN 1:30!4		pron	relative	whom	所~的	whom	οὗ	 	ὅς	οὗ	3739	R-GSM		singular	masculine	genitive					092006	92.27			
+n43001030005	JHN 1:30!5	s	pron	personal	I	我	I	ἐγὼ	 	ἐγώ	ἐγὼ	1473	P-1NS		singular		nominative					092001	92.1			n43001028011
+n43001030006	JHN 1:30!6	v	verb		said	说	said	εἶπον	·	λέγω	εἶπον	2036	V-2AAI-1S	first	singular			aorist	active	indicative		033006	33.69	A0:n43001030005		
+n43001030007	JHN 1:30!7		prep		after	在~以后	After	Ὀπίσω	 	ὀπίσω	Ὀπίσω	3694	ADV													
+n43001030008	JHN 1:30!8		pron	personal	me	我	me	μου	 	ἐγώ	μου	3450	P-1GS		singular		genitive					092001	92.1			n43001028011
+n43001030009	JHN 1:30!9	v	verb		comes	来	comes	ἔρχεται	 	ἔρχομαι	ἔρχεται	2064	V-PNI-3S	third	singular			present	middle	indicative		015006	15.81	A0:n43001030010		
+n43001030010	JHN 1:30!10		noun	common	man	人	a man	ἀνὴρ	 	ἀνήρ	ἀνὴρ	435	N-NSM		singular	masculine	nominative					009002	9.24			
+n43001030011	JHN 1:30!11	s	pron	relative	who		who	ὃς	 	ὅς	ὃς	3739	R-NSM		singular	masculine	nominative					092006	92.27			n43001030010
+n43001030012	JHN 1:30!12		prep		ahead of	在~前头	precedence	ἔμπροσθέν	 	ἔμπροσθεν	ἔμπροσθέν	1715	PREP									083006	83.33			
+n43001030013	JHN 1:30!13		pron	personal	me	我	over me	μου	 	ἐγώ	μου	3450	P-1GS		singular		genitive					092001	92.1			n43001028011
+n43001030014	JHN 1:30!14	vc	verb		ranks	位	has	γέγονεν	,	γίνομαι	γέγονεν	1096	V-2RAI-3S	third	singular			perfect	active	indicative		013001	13.3			
+n43001030015	JHN 1:30!15		conj		because	因为	because	ὅτι	 	ὅτι	ὅτι	3754	CONJ									089007	89.33			
+n43001030016	JHN 1:30!16	p	adj		before	在~之前	before	πρῶτός	 	πρῶτος	πρῶτός	4413	A-NSM-S		singular	masculine	nominative				superlative	067002	67.18			
+n43001030017	JHN 1:30!17	adv	pron	personal	me	我	me	μου	 	ἐγώ	μου	3450	P-1GS		singular		genitive					092001	92.1			n43001028011
+n43001030018	JHN 1:30!18	vc	verb		was	存在	He was	ἦν	·	εἰμί	ἦν	2258	V-IAI-3S	third	singular			imperfect	active	indicative		013001	13.1		n43001030010	
+n43001031001	JHN 1:31!1	s	pron	personal	I	我	And I	κἀγὼ	 	κἀγώ	κἀγὼ	2504	P-1NS-K		singular		nominative					092001	92.1			n43001028011
+n43001031002	JHN 1:31!2	adv	adv		not	不	not	οὐκ	 	οὐ	οὐκ	3756	PRT-N									069002	69.3			
+n43001031003	JHN 1:31!3	v	verb		know	认识	knew	ᾔδειν	 	οἶδα	ᾔδειν	1492	V-2LAI-1S	first	singular			pluperfect	active	indicative		028001	28.1	A0:n43001031001 A1:n43001031004		
+n43001031004	JHN 1:31!4	o	pron	personal	him	他	Him	αὐτόν	,	αὐτός	αὐτόν	846	P-ASM		singular	masculine	accusative					092004	92.11			n43001029005
+n43001031005	JHN 1:31!5		conj		but	但是	but	ἀλλ	’	ἀλλά	ἀλλ	235	CONJ									091001	91.2			
+n43001031006	JHN 1:31!6		conj		that	为	that	ἵνα	 	ἵνα	ἵνα	2443	CONJ									089009	89.59			
+n43001031007	JHN 1:31!7	v	verb		revealed	显明	He might be revealed	φανερωθῇ	 	φανερόω	φανερωθῇ	5319	V-APS-3S	third	singular			aorist	passive	subjunctive		028003	28.36	A1:n43001029005 A2:n43001031009	n43001029005	
+n43001031008	JHN 1:31!8		det				-	τῷ	 	ὁ	τῷ	3588	T-DSM		singular	masculine	dative					092004	92.24			
+n43001031009	JHN 1:31!9		noun	proper	Israel	以色列人	to Israel	Ἰσραὴλ	 	Ἰσραήλ	Ἰσραὴλ	2474	N-PRI		singular	masculine	dative					093001	93.182b			
+n43001031010	JHN 1:31!10		prep		because of	因为	because of	διὰ	 	διά	διὰ	1223	PREP													
+n43001031011	JHN 1:31!11		pron	demonstrative	this	这样	this	τοῦτο	 	οὗτος	τοῦτο	5124	D-ASN		singular	neuter	accusative									n43001031007
+n43001031012	JHN 1:31!12	v	verb		came	来	came	ἦλθον	 	ἔρχομαι	ἦλθον	2064	V-2AAI-1S	first	singular			aorist	active	indicative		015006	15.81	A0:n43001031013		
+n43001031013	JHN 1:31!13	s	pron	personal	I	我	I	ἐγὼ	 	ἐγώ	ἐγὼ	1473	P-1NS		singular		nominative					092001	92.1			n43001028011
+n43001031014	JHN 1:31!14		prep		with	用	with	ἐν	 	ἐν	ἐν	1722	PREP									083003 090002	83.13 90.10			
+n43001031015	JHN 1:31!15		noun	common	water	水	water	ὕδατι	 	ὕδωρ	ὕδατι	5204	N-DSN		singular	neuter	dative					002004	2.7			
+n43001031016	JHN 1:31!16	v	verb		baptizing	施洗	baptizing	βαπτίζων	.	βαπτίζω	βαπτίζων	907	V-PAP-NSM		singular	masculine	nominative	present	active	participle		053005	53.41	A0:n43001028011	n43001028011	
+n43001032001	JHN 1:32!1		conj		and	又	And	καὶ	 	καί	καὶ	2532	CONJ									091001	91.1			
+n43001032002	JHN 1:32!2	v	verb		testified	作见证	bore witness	ἐμαρτύρησεν	 	μαρτυρέω	ἐμαρτύρησεν	3140	V-AAI-3S	third	singular			aorist	active	indicative		033020	33.262	A0:n43001032003		
+n43001032003	JHN 1:32!3	s	noun	proper	John	约翰	John	Ἰωάννης	 	Ἰωάννης	Ἰωάννης	2491	N-NSM		singular	masculine	nominative					093001	93.190a			
+n43001032004	JHN 1:32!4	v	verb		saying	说	saying	λέγων	 	λέγω	λέγων	3004	V-PAP-NSM		singular	masculine	nominative	present	active	participle		033006	33.69	A0:n43001032003	n43001032003	
+n43001032005	JHN 1:32!5		conj				-	ὅτι	 	ὅτι	ὅτι	3754	CONJ									090006	90.21			
+n43001032006	JHN 1:32!6	v	verb		saw	看见	I have beheld	Τεθέαμαι	 	θεάομαι	Τεθέαμαι	2300	V-RNI-1S	first	singular			perfect	middle	indicative		024001	24.14	A0:n43001032003 A1:n43001032009	n43001032003	
+n43001032007	JHN 1:32!7		det		the	这	the	τὸ	 	ὁ	τὸ	3588	T-ASN		singular	neuter	accusative					092004	92.24			
+n43001032008	JHN 1:32!8		noun	common	Spirit	圣灵	Spirit	πνεῦμα	 	πνεῦμα	πνεῦμα	4151	N-ASN		singular	neuter	accusative					012001	12.18			
+n43001032009	JHN 1:32!9	v	verb		descending	降下	descending	καταβαῖνον	 	καταβαίνω	καταβαῖνον	2597	V-PAP-ASN		singular	neuter	accusative	present	active	participle		015011	15.107	A0:n43001032008		
+n43001032010	JHN 1:32!10		conj		like	仿佛	as	ὡς	 	ὡς	ὡς	5613	ADV									064	64.12			
+n43001032011	JHN 1:32!11		noun	common	dove	鸽子	a dove	περιστερὰν	 	περιστερά	περιστερὰν	4058	N-ASF		singular	feminine	accusative					004002	4.44			
+n43001032012	JHN 1:32!12		prep		from	从	out of	ἐξ	 	ἐκ	ἐξ	1537	PREP									084001	84.4			
+n43001032013	JHN 1:32!13		noun	common	heaven	天上	heaven	οὐρανοῦ	,	οὐρανός	οὐρανοῦ	3772	N-GSM		singular	masculine	genitive					001002	1.11			
+n43001032014	JHN 1:32!14		conj		and	并且	and	καὶ	 	καί	καὶ	2532	CONJ									089015	89.87			
+n43001032015	JHN 1:32!15	v	verb		remained	停留	it remained	ἔμεινεν	 	μένω	ἔμεινεν	3306	V-AAI-3S	third	singular			aorist	active	indicative		085003	85.55	A0:n43001032008	n43001032008	
+n43001032016	JHN 1:32!16		prep		on	在~上	upon	ἐπ	’	ἐπί	ἐπ	1909	PREP									083008	83.46			
+n43001032017	JHN 1:32!17		pron	personal	him	他	Him	αὐτόν	·	αὐτός	αὐτόν	846	P-ASM		singular	masculine	accusative					092004	92.11			n43001029005
+n43001033001	JHN 1:33!1	s	pron	personal	I	我	And I	κἀγὼ	 	κἀγώ	κἀγὼ	2504	P-1NS-K		singular		nominative					092001	92.1			n43001032003
+n43001033002	JHN 1:33!2	adv	adv		not	不	not	οὐκ	 	οὐ	οὐκ	3756	PRT-N									069002	69.3			
+n43001033003	JHN 1:33!3	v	verb		know	认识	knew	ᾔδειν	 	οἶδα	ᾔδειν	1492	V-2LAI-1S	first	singular			pluperfect	active	indicative		028001	28.1	A0:n43001033001 A1:n43001033004		
+n43001033004	JHN 1:33!4	o	pron	personal	him	他	Him	αὐτόν	,	αὐτός	αὐτόν	846	P-ASM		singular	masculine	accusative					092004	92.11			n43001029005
+n43001033005	JHN 1:33!5		conj		but	但是	but	ἀλλ	’	ἀλλά	ἀλλ	235	CONJ									091001	91.2			
+n43001033006	JHN 1:33!6		det		the one	那	the [One]	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001033007	JHN 1:33!7	v	verb		sent	差	having sent	πέμψας	 	πέμπω	πέμψας	3992	V-AAP-NSM		singular	masculine	nominative	aorist	active	participle		015004	15.66	A0:n43001029015 A1:n43001033008	n43001029015	
+n43001033008	JHN 1:33!8	o	pron	personal	me	我	me	με	 	ἐγώ	με	3165	P-1AS		singular		accusative					092001	92.1			n43001032003
+n43001033009	JHN 1:33!9	v	verb		baptize	施洗	to baptize	βαπτίζειν	 	βαπτίζω	βαπτίζειν	907	V-PAN					present	active	infinitive		053005	53.41	A0:n43001032003	n43001032003	
+n43001033010	JHN 1:33!10		prep		with	用	with	ἐν	 	ἐν	ἐν	1722	PREP									083003 090002	83.13 90.10			
+n43001033011	JHN 1:33!11		noun	common	water	水	water	ὕδατι	 	ὕδωρ	ὕδατι	5204	N-DSN		singular	neuter	dative					002004	2.7			
+n43001033012	JHN 1:33!12	s	pron	demonstrative	he	那位	He	ἐκεῖνός	 	ἐκεῖνος	ἐκεῖνός	1565	D-NSM		singular	masculine	nominative					092007	92.30			n43001033007
+n43001033013	JHN 1:33!13	io	pron	personal	me	我	to me	μοι	 	ἐγώ	μοι	3427	P-1DS		singular		dative					092001	92.1			n43001032003
+n43001033014	JHN 1:33!14	v	verb		said	说	said	εἶπεν	·	λέγω	εἶπεν	2036	V-2AAI-3S	third	singular			aorist	active	indicative		033006	33.69	A0:n43001033012 A2:n43001033013		
+n43001033015	JHN 1:33!15		prep		on	在~上	Upon	Ἐφ	’	ἐπί	Ἐφ	1909	PREP									083008	83.46			
+n43001033016	JHN 1:33!16		pron	relative	whom	谁	whom	ὃν	 	ὅς	ὃν	3739	R-ASM		singular	masculine	accusative					092006	92.27			
+n43001033017	JHN 1:33!17		ptcl		*		-	ἂν	 	ἄν	ἂν	302	PRT									071001	71.8			
+n43001033018	JHN 1:33!18	v	verb		see	看见	you shall see	ἴδῃς	 	ὁράω	ἴδῃς	3708	V-2AAS-2S	second	singular			aorist	active	subjunctive		024001	24.1	A0:n43001032003 A1:n43001033021;n43001033023	n43001032003	
+n43001033019	JHN 1:33!19		det		the	这	the	τὸ	 	ὁ	τὸ	3588	T-ASN		singular	neuter	accusative					092004	92.24			
+n43001033020	JHN 1:33!20		noun	common	Spirit	圣灵	Spirit	πνεῦμα	 	πνεῦμα	πνεῦμα	4151	N-ASN		singular	neuter	accusative					012001	12.18			
+n43001033021	JHN 1:33!21		verb		descending	降下来	descending	καταβαῖνον	 	καταβαίνω	καταβαῖνον	2597	V-PAP-ASN		singular	neuter	accusative	present	active	participle		015011	15.107	A0:n43001033020		
+n43001033022	JHN 1:33!22		conj		and	又	and	καὶ	 	καί	καὶ	2532	CONJ									089015	89.87			
+n43001033023	JHN 1:33!23		verb		remain	停留	abiding	μένον	 	μένω	μένον	3306	V-PAP-ASN		singular	neuter	accusative	present	active	participle		085003	85.55	A0:n43001033020		
+n43001033024	JHN 1:33!24		prep		upon	在~上	on	ἐπ	’	ἐπί	ἐπ	1909	PREP									083008	83.46			
+n43001033025	JHN 1:33!25		pron	personal	him	谁	Him	αὐτόν	,	αὐτός	αὐτόν	846	P-ASM		singular	masculine	accusative					092004	92.11			n43001033016
+n43001033026	JHN 1:33!26	s	pron	demonstrative	this	谁	He	οὗτός	 	οὗτος	οὗτός	3778	D-NSM		singular	masculine	nominative					092007	92.29			n43001033016
+n43001033027	JHN 1:33!27	vc	verb		is	是	is	ἐστιν	 	εἰμί	ἐστιν	2076	V-PAI-3S	third	singular			present	active	indicative		013001	13.4			
+n43001033028	JHN 1:33!28		det		the	那	the [One]	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001033029	JHN 1:33!29	v	verb		baptizes	施洗	baptizing	βαπτίζων	 	βαπτίζω	βαπτίζων	907	V-PAP-NSM		singular	masculine	nominative	present	active	participle		053005	53.41	A0:n00000000000		
+n43001033030	JHN 1:33!30		prep		with	用	with	ἐν	 	ἐν	ἐν	1722	PREP									083003 090002	83.13 90.10			
+n43001033031	JHN 1:33!31		noun	common	Spirit	灵	[the] Spirit	πνεύματι	 	πνεῦμα	πνεύματι	4151	N-DSN		singular	neuter	dative					012001	12.18			
+n43001033032	JHN 1:33!32		adj		Holy	圣	Holy	ἁγίῳ	·	ἅγιος	ἁγίῳ	40	A-DSN		singular	neuter	dative					088003	88.24			
+n43001034001	JHN 1:34!1	s	pron	personal	and I	我	And I	κἀγὼ	 	κἀγώ	κἀγὼ	2504	P-1NS-K		singular		nominative					092001	92.1			n43001032003
+n43001034002	JHN 1:34!2	v	verb		seen	看见	have seen	ἑώρακα	,	ὁράω	ἑώρακα	3708	V-RAI-1S-ATT	first	singular			perfect	active	indicative		024001	24.1	A0:n43001034001		
+n43001034003	JHN 1:34!3		conj		and	就	and	καὶ	 	καί	καὶ	2532	CONJ									089017	89.92			
+n43001034004	JHN 1:34!4	v	verb		testified	作证	have borne witness	μεμαρτύρηκα	 	μαρτυρέω	μεμαρτύρηκα	3140	V-RAI-1S	first	singular			perfect	active	indicative		033020	33.262	A0:n43001032003	n43001032003	
+n43001034005	JHN 1:34!5		conj		that		that	ὅτι	 	ὅτι	ὅτι	3754	CONJ									090006	90.21			
+n43001034006	JHN 1:34!6	s	pron	demonstrative	this	这	this	οὗτός	 	οὗτος	οὗτός	3778	D-NSM		singular	masculine	nominative					092007	92.29			n43001029005
+n43001034007	JHN 1:34!7	vc	verb		is	是	is	ἐστιν	 	εἰμί	ἐστιν	2076	V-PAI-3S	third	singular			present	active	indicative		013001	13.4			
+n43001034008	JHN 1:34!8		det		the		the	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001034009	JHN 1:34!9		adj		chosen one	拣选者		ἐκλεκτὸς	 	ἐκλεκτός	ἐκλεκτὸς	1588	A-NSM		singular	masculine	nominative					030006	30.93			
+n43001034010	JHN 1:34!10		det				-	τοῦ	 	ὁ	τοῦ	3588	T-GSM		singular	masculine	genitive					092004	92.24			
+n43001034011	JHN 1:34!11		noun	common	God	神	of God	θεοῦ	.	θεός	θεοῦ	2316	N-GSM		singular	masculine	genitive					012001	12.15			
+n43001035001	JHN 1:35!1		det		the		On the	Τῇ	 	ὁ	Τῇ	3588	T-DSF		singular	feminine	dative					092004	92.24			
+n43001035002	JHN 1:35!2		adv		next day	第二天	next day	ἐπαύριον	 	ἐπαύριον	ἐπαύριον	1887	ADV									067010	67.208			
+n43001035003	JHN 1:35!3	adv	adv		again	又	again	πάλιν	 	πάλιν	πάλιν	3825	ADV									067002	67.55			
+n43001035004	JHN 1:35!4	v	verb		standing	站	was standing	εἱστήκει	 	ἵστημι	εἱστήκει	2476	V-LAI-3S	third	singular			pluperfect	active	indicative		017001	17.1	A0:n43001035006;n43001035012		
+n43001035005	JHN 1:35!5		det				-	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001035006	JHN 1:35!6		noun	proper	John	约翰	John	Ἰωάννης	 	Ἰωάννης	Ἰωάννης	2491	N-NSM		singular	masculine	nominative					093001	93.190a			
+n43001035007	JHN 1:35!7		conj		with	和	and	καὶ	 	καί	καὶ	2532	CONJ									089017	89.92			
+n43001035008	JHN 1:35!8		prep		of	中	of	ἐκ	 	ἐκ	ἐκ	1537	PREP									063004	63.20			
+n43001035009	JHN 1:35!9		det		the		the	τῶν	 	ὁ	τῶν	3588	T-GPM		plural	masculine	genitive					092004	92.24			
+n43001035010	JHN 1:35!10		noun	common	disciples	门徒	disciples	μαθητῶν	 	μαθητής	μαθητῶν	3101	N-GPM		plural	masculine	genitive					036004	36.38			
+n43001035011	JHN 1:35!11		pron	personal	his	他	of him	αὐτοῦ	 	αὐτός	αὐτοῦ	846	P-GSM		singular	masculine	genitive					092004	92.11			n43001035006
+n43001035012	JHN 1:35!12		num		two	两	two	δύο	,	δύο	δύο	1417	A-NUI									060002	60.11			
+n43001036001	JHN 1:36!1		conj		and	就	And	καὶ	 	καί	καὶ	2532	CONJ									089015	89.87			
+n43001036002	JHN 1:36!2	v	verb		saw	看见	having looked at	ἐμβλέψας	 	ἐμβλέπω	ἐμβλέψας	1689	V-AAP-NSM		singular	masculine	nominative	aorist	active	participle		024001	24.9	A0:n43001035006 A1:n43001036005	n43001035006	
+n43001036003	JHN 1:36!3		det				-	τῷ	 	ὁ	τῷ	3588	T-DSM		singular	masculine	dative					092004	92.24			
+n43001036004	JHN 1:36!4		noun	proper	Jesus	耶稣	Jesus	Ἰησοῦ	 	Ἰησοῦς	Ἰησοῦ	2424	N-DSM		singular	masculine	dative					093001	93.169a			
+n43001036005	JHN 1:36!5	v	verb		passing by	走过	walking	περιπατοῦντι	 	περιπατέω	περιπατοῦντι	4043	V-PAP-DSM		singular	masculine	dative	present	active	participle		015029	15.227	A0:n43001036004		
+n43001036006	JHN 1:36!6	v	verb		said	说	he says	λέγει	·	λέγω	λέγει	3004	V-PAI-3S	third	singular			present	active	indicative		033006	33.69	A0:n43001035006	n43001035006	
+n43001036007	JHN 1:36!7	aux	ptcl		look	看	Behold	Ἴδε	 	ἴδε	Ἴδε	2396	V-2AAM-2S	second	singular			aorist	active	imperative		091003	91.13	A0:n43001035012	n43001035012	
+n43001036008	JHN 1:36!8		det		the		the	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001036009	JHN 1:36!9		noun	common	lamb	羔羊	Lamb	ἀμνὸς	 	ἀμνός	ἀμνὸς	286	N-NSM		singular	masculine	nominative					004001	4.24			
+n43001036010	JHN 1:36!10		det				-	τοῦ	 	ὁ	τοῦ	3588	T-GSM		singular	masculine	genitive					092004	92.24			
+n43001036011	JHN 1:36!11		noun	common	God	神	of God	θεοῦ	.	θεός	θεοῦ	2316	N-GSM		singular	masculine	genitive					012001	12.1			
+n43001037001	JHN 1:37!1		conj		and	一~就	And	καὶ	 	καί	καὶ	2532	CONJ									091001	91.1			
+n43001037002	JHN 1:37!2	v	verb		heard	听见	heard	ἤκουσαν	 	ἀκούω	ἤκουσαν	191	V-AAI-3P	third	plural			aorist	active	indicative		024002	24.52	A0:n43001037005 A1:n43001037007		
+n43001037003	JHN 1:37!3		det		the	那	the	οἱ	 	ὁ	οἱ	3588	T-NPM		plural	masculine	nominative					092004	92.24			
+n43001037004	JHN 1:37!4		num		two	两	two	δύο	 	δύο	δύο	1417	A-NUI									060002	60.11			
+n43001037005	JHN 1:37!5		noun	common	disciples	门徒	disciples	μαθηταὶ	 	μαθητής	μαθηταὶ	3101	N-NPM		plural	masculine	nominative					036004	36.38			
+n43001037006	JHN 1:37!6	s	pron	personal	him	他	him	αὐτοῦ	 	αὐτός	αὐτοῦ	846	P-GSM		singular	masculine	genitive					092004	92.11			n43001035006
+n43001037007	JHN 1:37!7	v	verb		say	话	speaking	λαλοῦντος	 	λαλέω	λαλοῦντος	2980	V-PAP-GSM		singular	masculine	genitive	present	active	participle		033006	33.70	A0:n43001037006		
+n43001037008	JHN 1:37!8		conj		and	就	and	καὶ	 	καί	καὶ	2532	CONJ									089015	89.87			
+n43001037009	JHN 1:37!9	v	verb		followed	跟从	followed	ἠκολούθησαν	 	ἀκολουθέω	ἠκολούθησαν	190	V-AAI-3P	third	plural			aorist	active	indicative		015017	15.144	A0:n43001037005 A1:n43001037011	n43001037005	
+n43001037010	JHN 1:37!10		det				-	τῷ	 	ὁ	τῷ	3588	T-DSM		singular	masculine	dative					092004	92.24			
+n43001037011	JHN 1:37!11		noun	proper	Jesus	耶稣	Jesus	Ἰησοῦ	.	Ἰησοῦς	Ἰησοῦ	2424	N-DSM		singular	masculine	dative					093001	93.169a			
+n43001038001	JHN 1:38!1	v	verb		turned	转过	Having turned	στραφεὶς	 	στρέφω	στραφεὶς	4762	V-2APP-NSM		singular	masculine	nominative	aorist	passive	participle		016	16.14	A1:n43001038004	n43001038004	
+n43001038002	JHN 1:38!2		conj		and	就	then	δὲ	 	δέ	δὲ	1161	CONJ													
+n43001038003	JHN 1:38!3		det				-	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001038004	JHN 1:38!4		noun	proper	Jesus	耶稣	Jesus	Ἰησοῦς	 	Ἰησοῦς	Ἰησοῦς	2424	N-NSM		singular	masculine	nominative					093001	93.169a			
+n43001038005	JHN 1:38!5		conj		and		and	καὶ	 	καί	καὶ	2532	CONJ									089015	89.87			
+n43001038006	JHN 1:38!6	v	verb		saw	看见	having beheld	θεασάμενος	 	θεάομαι	θεασάμενος	2300	V-ADP-NSM		singular	masculine	nominative	aorist	middle	participle		024001	24.14	A0:n43001038004 A1:n43001038008	n43001038004	
+n43001038007	JHN 1:38!7	s	pron	personal	them	他们	them	αὐτοὺς	 	ἑαυτοῦ	αὐτοὺς	848	P-APM		plural	masculine	accusative					092004	92.11			n43001037005
+n43001038008	JHN 1:38!8	v	verb		following	跟着	following	ἀκολουθοῦντας	 	ἀκολουθέω	ἀκολουθοῦντας	190	V-PAP-APM		plural	masculine	accusative	present	active	participle		015017	15.144	A0:n43001038007		
+n43001038009	JHN 1:38!9	v	verb		said	问	He says	λέγει	 	λέγω	λέγει	3004	V-PAI-3S	third	singular			present	active	indicative		033006	33.69	A0:n43001038004 A2:n43001038010		
+n43001038010	JHN 1:38!10	io	pron	personal	them	他们	to them	αὐτοῖς	·	αὐτός	αὐτοῖς	846	P-DPM		plural	masculine	dative					092004	92.11			n43001037005
+n43001038011	JHN 1:38!11	o	pron	interrogative	what	什么	What	Τί	 	τίς	Τί	5101	I-ASN		singular	neuter	accusative					092004	92.14			
+n43001038012	JHN 1:38!12	v	verb		seek	要	seek you	ζητεῖτε	;	ζητέω	ζητεῖτε	2212	V-PAI-2P	second	plural			present	active	indicative		025001	25.9	A0:n43001037005 A1:n43001038011	n43001037005	
+n43001038013	JHN 1:38!13	s	det		they	他们	-	οἱ	 	ὁ	οἱ	3588	T-NPM		plural	masculine	nominative					092004	92.24			n43001037005
+n43001038014	JHN 1:38!14		conj		and	就	And	δὲ	 	δέ	δὲ	1161	CONJ													
+n43001038015	JHN 1:38!15	v	verb		said	说	they said	εἶπαν	 	λέγω	εἶπαν	2036	V-2AAI-3P	third	plural			aorist	active	indicative		033006	33.69	A0:n43001038013 A2:n43001038016		
+n43001038016	JHN 1:38!16	io	pron	personal	him	他	to Him	αὐτῷ	·	αὐτός	αὐτῷ	846	P-DSM		singular	masculine	dative					092004	92.11			n43001038004
+n43001038017	JHN 1:38!17		noun	common	rabbi	拉比	Rabbi	Ῥαββί	 	ῥαββί	Ῥαββί	4461	HEB		singular	masculine	vocative					033017	33.246			
+n43001038018	JHN 1:38!18	s	pron	relative	which	（这词	which	ὃ	 	ὅς	ὃ	3739	R-NSN		singular	neuter	nominative					092006	92.27			n43001038017
+n43001038019	JHN 1:38!19	vc	verb		means	是	is to say	λέγεται	 	λέγω	λέγεται	3004	V-PPI-3S	third	singular			present	passive	indicative		033010	33.138			
+n43001038020	JHN 1:38!20	v	verb		translated	意思	being translated	μεθερμηνευόμενον	 	μεθερμηνεύω	μεθερμηνευόμενον	3177	V-PPP-NSN		singular	neuter	nominative	present	passive	participle		033010	33.145	A1:n43001038017	n43001038017	
+n43001038021	JHN 1:38!21	aux	noun	common	teacher	老师	Teacher	Διδάσκαλε	,	διδάσκαλος	Διδάσκαλε	1320	N-VSM		singular	masculine	vocative					033017	33.243			
+n43001038022	JHN 1:38!22	adv	adv		where	在哪里	where	ποῦ	 	ποῦ	ποῦ	4226	ADV-I									083002	83.6			
+n43001038023	JHN 1:38!23	v	verb		staying	住	are You staying	μένεις	;	μένω	μένεις	3306	V-PAI-2S	second	singular			present	active	indicative		085003	85.55	A0:n43001038017	n43001038017	
+n43001039001	JHN 1:39!1	v	verb		said	说	He says	λέγει	 	λέγω	λέγει	3004	V-PAI-3S	third	singular			present	active	indicative		033006	33.69	A0:n43001038004 A2:n43001039002	n43001038004	
+n43001039002	JHN 1:39!2	io	pron	personal	them	他们	to them	αὐτοῖς	·	αὐτός	αὐτοῖς	846	P-DPM		plural	masculine	dative					092004	92.11			n43001037005
+n43001039003	JHN 1:39!3	v	verb		come	来	Come	Ἔρχεσθε	 	ἔρχομαι	Ἔρχεσθε	2064	V-PNM-2P	second	plural			present	middle	imperative		015006	15.81	A0:n43001037005	n43001037005	
+n43001039004	JHN 1:39!4		conj		and	就	and	καὶ	 	καί	καὶ	2532	CONJ									089015	89.87			
+n43001039005	JHN 1:39!5	v	verb		see	看	you will see	ὄψεσθε	.	ὁράω	ὄψεσθε	3708	V-FDI-2P	second	plural			future	middle	indicative		024001	24.1	A0:n43001037005	n43001037005	
+n43001039006	JHN 1:39!6	v	verb		came	去	They went	ἦλθαν	 	ἔρχομαι	ἦλθαν	2064	V-2AAI-3P	third	plural			aorist	active	indicative		015006	15.81	A0:n43001037005	n43001037005	
+n43001039007	JHN 1:39!7		conj		so	就	therefore	οὖν	 	οὖν	οὖν	3767	CONJ									089008	89.50			
+n43001039008	JHN 1:39!8		conj		and	就	and	καὶ	 	καί	καὶ	2532	CONJ									089015	89.87			
+n43001039009	JHN 1:39!9	v	verb		saw	看	saw	εἶδαν	 	ὁράω	εἶδαν	3708	V-2AAI-3P	third	plural			aorist	active	indicative		024001	24.1	A0:n43001037005 A1:n43001039011	n43001037005	
+n43001039010	JHN 1:39!10	adv	adv		where	地方	where	ποῦ	 	ποῦ	ποῦ	4226	ADV									083002	83.6			
+n43001039011	JHN 1:39!11	v	verb		staying	住	He abides	μένει	,	μένω	μένει	3306	V-PAI-3S	third	singular			present	active	indicative		085003	85.55	A0:n43001038004	n43001038004	
+n43001039012	JHN 1:39!12		conj		and	就	and	καὶ	 	καί	καὶ	2532	CONJ									089015	89.87			
+n43001039013	JHN 1:39!13		prep		with	跟	with	παρ	’	παρά	παρ	3844	PREP									089020	89.111			
+n43001039014	JHN 1:39!14		pron	personal	him	他	Him	αὐτῷ	 	αὐτός	αὐτῷ	846	P-DSM		singular	masculine	dative					092004	92.11			n43001038004
+n43001039015	JHN 1:39!15	v	verb		stayed	住	they stayed	ἔμειναν	 	μένω	ἔμειναν	3306	V-AAI-3P	third	plural			aorist	active	indicative		085003	85.55	A0:n43001037005	n43001037005	
+n43001039016	JHN 1:39!16		det				the	τὴν	 	ὁ	τὴν	3588	T-ASF		singular	feminine	accusative					092004	92.24			
+n43001039017	JHN 1:39!17		noun	common	day	天	day	ἡμέραν	 	ἡμέρα	ἡμέραν	2250	N-ASF		singular	feminine	accusative					067009	67.186			
+n43001039018	JHN 1:39!18		pron	demonstrative	that	那	that	ἐκείνην	·	ἐκεῖνος	ἐκείνην	1565	D-ASF		singular	feminine	accusative					092007	92.30			n43001035002
+n43001039019	JHN 1:39!19	s	noun	common	hour	那时	[The] hour	ὥρα	 	ὥρα	ὥρα	5610	N-NSF		singular	feminine	nominative					067009	67.199			
+n43001039020	JHN 1:39!20	vc	verb		was	是	was	ἦν	 	εἰμί	ἦν	2258	V-IAI-3S	third	singular			imperfect	active	indicative		013001	13.1			
+n43001039021	JHN 1:39!21		prep		about	大约	about	ὡς	 	ὡς	ὡς	5613	ADV									078003	78.42			
+n43001039022	JHN 1:39!22		adj		tenth	第十	[the] tenth	δεκάτη	.	δέκατος	δεκάτη	1182	A-NSF		singular	feminine	nominative					060003	60.57			
+n43001040001	JHN 1:40!1	vc	verb		was	是	Was	ἦν	 	εἰμί	ἦν	2258	V-IAI-3S	third	singular			imperfect	active	indicative		013001	13.4			
+n43001040002	JHN 1:40!2		noun	proper	Andrew	安得烈	Andrew	Ἀνδρέας	 	Ἀνδρέας	Ἀνδρέας	406	N-NSM		singular	masculine	nominative					093001	93.25			
+n43001040003	JHN 1:40!3		det		the		the	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001040004	JHN 1:40!4		noun	common	brother	弟弟	brother	ἀδελφὸς	 	ἀδελφός	ἀδελφὸς	80	N-NSM		singular	masculine	nominative					010003	10.49			
+n43001040005	JHN 1:40!5		noun	proper	Simon	西门	of Simon	Σίμωνος	 	Σίμων	Σίμωνος	4613	N-GSM		singular	masculine	genitive					093001	93.341a			
+n43001040006	JHN 1:40!6		noun	proper	Peter’s	彼得	Peter	Πέτρου	 	Πέτρος	Πέτρου	4074	N-GSM		singular	masculine	genitive					093001	93.296			
+n43001040007	JHN 1:40!7		adj	substantive	one	一	one	εἷς	 	εἷς	εἷς	1520	A-NSM		singular	masculine	nominative					060002	60.10			
+n43001040008	JHN 1:40!8		prep		of	中	of	ἐκ	 	ἐκ	ἐκ	1537	PREP									063004	63.20			
+n43001040009	JHN 1:40!9		det		the	那	the	τῶν	 	ὁ	τῶν	3588	T-GPM		plural	masculine	genitive					092004	92.24			
+n43001040010	JHN 1:40!10		num		two	两	two	δύο	 	δύο	δύο	1417	A-NUI									060002	60.11			
+n43001040011	JHN 1:40!11		det				-	τῶν	 	ὁ	τῶν	3588	T-GPM		plural	masculine	genitive					092004	92.24			
+n43001040012	JHN 1:40!12	v	verb		heard	听见	having heard	ἀκουσάντων	 	ἀκούω	ἀκουσάντων	191	V-AAP-GPM		plural	masculine	genitive	aorist	active	participle		024002	24.52	A0:n43001040010	n43001040010	
+n43001040013	JHN 1:40!13		prep		from	从	from	παρὰ	 	παρά	παρὰ	3844	PREP									090003	90.14			
+n43001040014	JHN 1:40!14		noun	proper	John	约翰	John	Ἰωάννου	 	Ἰωάννης	Ἰωάννου	2491	N-GSM		singular	masculine	genitive					093001	93.190a			
+n43001040015	JHN 1:40!15		conj		and	而	and	καὶ	 	καί	καὶ	2532	CONJ									089015	89.87			
+n43001040016	JHN 1:40!16	v	verb		followed	跟从	having followed	ἀκολουθησάντων	 	ἀκολουθέω	ἀκολουθησάντων	190	V-AAP-GPM		plural	masculine	genitive	aorist	active	participle		015017	15.144	A0:n43001040010 A1:n43001040017	n43001040010	
+n43001040017	JHN 1:40!17	o	pron	personal	him	他（耶稣）	Him	αὐτῷ	·	αὐτός	αὐτῷ	846	P-DSM		singular	masculine	dative					092004	92.11			n43001038004
+n43001041001	JHN 1:41!1	v	verb		found	找到	Finds	εὑρίσκει	 	εὑρίσκω	εὑρίσκει	2147	V-PAI-3S	third	singular			present	active	indicative		027002	27.27	A0:n43001041002 A1:n43001041005		
+n43001041002	JHN 1:41!2	s	pron	demonstrative	he	他	he	οὗτος	 	οὗτος	οὗτος	3778	D-NSM		singular	masculine	nominative					092007	92.29			n43001040002
+n43001041003	JHN 1:41!3	adv	adj		first	先	first	πρῶτον	 	πρῶτος	πρῶτον	4412	ADV-S		singular	neuter	accusative					060003	60.46			
+n43001041004	JHN 1:41!4		det				the	τὸν	 	ὁ	τὸν	3588	T-ASM		singular	masculine	accusative					092004	92.24			
+n43001041005	JHN 1:41!5		noun	common	brother	哥哥	brother	ἀδελφὸν	 	ἀδελφός	ἀδελφὸν	80	N-ASM		singular	masculine	accusative					010003	10.49			
+n43001041006	JHN 1:41!6		det		his		-	τὸν	 	ὁ	τὸν	3588	T-ASM		singular	masculine	accusative					092004	92.24			
+n43001041007	JHN 1:41!7		adj		his own	自己的	own	ἴδιον	 	ἴδιος	ἴδιον	2398	A-ASM		singular	masculine	accusative					057001	57.4			n43001040002
+n43001041008	JHN 1:41!8		noun	proper	Simon	西门	Simon	Σίμωνα	 	Σίμων	Σίμωνα	4613	N-ASM		singular	masculine	accusative					093001	93.341a			
+n43001041009	JHN 1:41!9		conj		and	并且	and	καὶ	 	καί	καὶ	2532	CONJ									089015	89.87			
+n43001041010	JHN 1:41!10	v	verb		said	说	he says	λέγει	 	λέγω	λέγει	3004	V-PAI-3S	third	singular			present	active	indicative		033006	33.69	A0:n43001040002 A2:n43001041011	n43001040002	
+n43001041011	JHN 1:41!11	io	pron	personal	him	他	to him	αὐτῷ	·	αὐτός	αὐτῷ	846	P-DSM		singular	masculine	dative					092004	92.11			n43001041005
+n43001041012	JHN 1:41!12	v	verb		found	遇见	We have found	Εὑρήκαμεν	 	εὑρίσκω	Εὑρήκαμεν	2147	V-RAI-1P	first	plural			perfect	active	indicative		027002	27.27	A0:n43001040010 A1:n43001041014	n43001040010	
+n43001041013	JHN 1:41!13		det		the		the	τὸν	 	ὁ	τὸν	3588	T-ASM		singular	masculine	accusative					092004	92.24			
+n43001041014	JHN 1:41!14		noun	proper	Messiah	弥赛亚	Messiah	Μεσσίαν	 	Μεσσίας	Μεσσίαν	3323	N-ASM		singular	masculine	accusative					053009	53.82			
+n43001041015	JHN 1:41!15	s	pron	relative	which	（这词	which	ὅ	 	ὅς	ὅ	3739	R-NSN		singular	neuter	nominative					092006	92.27			n43001041014
+n43001041016	JHN 1:41!16		verb		is	是	is	ἐστιν	 	εἰμί	ἐστιν	2076	V-PAI-3S	third	singular			present	active	indicative		013001	13.4			
+n43001041017	JHN 1:41!17		verb		translated	意思	translated	μεθερμηνευόμενον	 	μεθερμηνεύω	μεθερμηνευόμενον	3177	V-PPP-NSN		singular	neuter	nominative	present	passive	participle		033010	33.145			
+n43001041018	JHN 1:41!18	p	noun	proper	Christ	基督	Christ	χριστός	.	Χριστός	χριστός	5547	N-NSM		singular	masculine	nominative					053009	53.82			
+n43001042001	JHN 1:42!1	v	verb		brought	带	He led	ἤγαγεν	 	ἄγω	ἤγαγεν	71	V-2AAI-3S	third	singular			aorist	active	indicative		015023	15.165	A0:n43001040002 A1:n43001042002	n43001040002	
+n43001042002	JHN 1:42!2	o	pron	personal	him	他	him	αὐτὸν	 	αὐτός	αὐτὸν	846	P-ASM		singular	masculine	accusative					092004	92.11			n43001041005
+n43001042003	JHN 1:42!3		prep		to	到	to	πρὸς	 	πρός	πρὸς	4314	PREP									084002	84.18			
+n43001042004	JHN 1:42!4		det				-	τὸν	 	ὁ	τὸν	3588	T-ASM		singular	masculine	accusative					092004	92.24			
+n43001042005	JHN 1:42!5		noun	proper	Jesus	耶稣	Jesus	Ἰησοῦν	.	Ἰησοῦς	Ἰησοῦν	2424	N-ASM		singular	masculine	accusative					093001	93.169a			
+n43001042006	JHN 1:42!6	v	verb		looked at	看	Having looked at	ἐμβλέψας	 	ἐμβλέπω	ἐμβλέψας	1689	V-AAP-NSM		singular	masculine	nominative	aorist	active	participle		024001	24.9	A0:n43001042009 A1:n43001042007	n43001042009	
+n43001042007	JHN 1:42!7	o	pron	personal	him	他	him	αὐτῷ	 	αὐτός	αὐτῷ	846	P-DSM		singular	masculine	dative					092004	92.11			n43001041005
+n43001042008	JHN 1:42!8		det				-	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001042009	JHN 1:42!9		noun	proper	Jesus	耶稣	Jesus	Ἰησοῦς	 	Ἰησοῦς	Ἰησοῦς	2424	N-NSM		singular	masculine	nominative					093001	93.169a			
+n43001042010	JHN 1:42!10	v	verb		said	说	said	εἶπεν	·	λέγω	εἶπεν	2036	V-2AAI-3S	third	singular			aorist	active	indicative		033006	33.69	A0:n43001042009		
+n43001042011	JHN 1:42!11	s	pron	personal	you	你	You	Σὺ	 	σύ	Σὺ	4771	P-2NS		singular		nominative					092003	92.6			n43001041005
+n43001042012	JHN 1:42!12	vc	verb		are	是	are	εἶ	 	εἰμί	εἶ	1488	V-PAI-2S	second	singular			present	active	indicative		013001	13.4			
+n43001042013	JHN 1:42!13		noun	proper	Simon	西门	Simon	Σίμων	 	Σίμων	Σίμων	4613	N-NSM		singular	masculine	nominative					093001	93.341a			
+n43001042014	JHN 1:42!14		det		the		the	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001042015	JHN 1:42!15		noun	common	son	儿子	son	υἱὸς	 	υἱός	υἱὸς	5207	N-NSM		singular	masculine	nominative					010002	10.42			
+n43001042016	JHN 1:42!16		noun	proper	John	约翰	of John	Ἰωάννου	,	Ἰωάννης	Ἰωάννου	2491	N-GSM		singular	masculine	genitive					093001	93.190e			
+n43001042017	JHN 1:42!17	s	pron	personal	you	你	You	σὺ	 	σύ	σὺ	4771	P-2NS		singular		nominative					092003	92.6			n43001041005
+n43001042018	JHN 1:42!18	vc	verb		called	称为	will be called	κληθήσῃ	 	καλέω	κληθήσῃ	2564	V-FPI-2S	second	singular			future	passive	indicative		033009	33.131			
+n43001042019	JHN 1:42!19		noun	proper	Cephas	矶法	Cephas	Κηφᾶς	 	Κηφᾶς	Κηφᾶς	2786	N-NSM		singular	masculine	nominative					093001	93.211			
+n43001042020	JHN 1:42!20	s	pron	relative	which	（这词	which	ὃ	 	ὅς	ὃ	3739	R-NSN		singular	neuter	nominative					092006	92.27			n43001042019
+n43001042021	JHN 1:42!21	vc	verb		translated	翻	means	ἑρμηνεύεται	 	ἑρμηνεύω	ἑρμηνεύεται	2059	V-PPI-3S	third	singular			present	passive	indicative		033010	33.145			
+n43001042022	JHN 1:42!22	p	noun	proper	Peter	彼得	Peter	Πέτρος	.	Πέτρος	Πέτρος	4074	N-NSM		singular	masculine	nominative					093001	93.296			
+n43001043001	JHN 1:43!1		det		the		On the	Τῇ	 	ὁ	Τῇ	3588	T-DSF		singular	feminine	dative					092004	92.24			
+n43001043002	JHN 1:43!2		adv		next day	第二天	next day	ἐπαύριον	 	ἐπαύριον	ἐπαύριον	1887	ADV									067010	67.208			
+n43001043003	JHN 1:43!3	v	verb		decided	决定	He desired	ἠθέλησεν	 	θέλω	ἠθέλησεν	2309	V-AAI-3S	third	singular			aorist	active	indicative		025001	25.1	A0:n43001043015 A1:n43001043004	n43001043015	
+n43001043004	JHN 1:43!4	v	verb		go	去	to go forth	ἐξελθεῖν	 	ἐξέρχομαι	ἐξελθεῖν	1831	V-2AAN					aorist	active	infinitive		015004	15.40	A0:n43001043015	n43001043015	
+n43001043005	JHN 1:43!5		prep		for	往	into	εἰς	 	εἰς	εἰς	1519	PREP									084002	84.16			
+n43001043006	JHN 1:43!6		det				-	τὴν	 	ὁ	τὴν	3588	T-ASF		singular	feminine	accusative					092004	92.24			
+n43001043007	JHN 1:43!7		noun	proper	Galilee	加利利	Galilee	Γαλιλαίαν	.	Γαλιλαία	Γαλιλαίαν	1056	N-ASF		singular	feminine	accusative					093002	93.444a			
+n43001043008	JHN 1:43!8		conj		and	而	And	καὶ	 	καί	καὶ	2532	CONJ									089015	89.87			
+n43001043009	JHN 1:43!9	v	verb		found	遇见	He finds	εὑρίσκει	 	εὑρίσκω	εὑρίσκει	2147	V-PAI-3S	third	singular			present	active	indicative		027002	27.27	A0:n43001043015 A1:n43001043010	n43001043015	
+n43001043010	JHN 1:43!10	o	noun	proper	Philip	腓力	Philip	Φίλιππον	 	Φίλιππος	Φίλιππον	5376	N-ASM		singular	masculine	accusative					093001	93.379a			
+n43001043011	JHN 1:43!11		conj		and	就	And	καὶ	 	καί	καὶ	2532	CONJ									089015	89.87			
+n43001043012	JHN 1:43!12	v	verb		said	说	says	λέγει	 	λέγω	λέγει	3004	V-PAI-3S	third	singular			present	active	indicative		033006	33.69	A2:n43001043013 A0:n43001043015		
+n43001043013	JHN 1:43!13	io	pron	personal	him	他	to him	αὐτῷ	 	αὐτός	αὐτῷ	846	P-DSM		singular	masculine	dative					092004	92.11			n43001043010
+n43001043014	JHN 1:43!14		det				-	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001043015	JHN 1:43!15		noun	proper	Jesus	耶稣	Jesus	Ἰησοῦς	·	Ἰησοῦς	Ἰησοῦς	2424	N-NSM		singular	masculine	nominative					093001	93.169a			
+n43001043016	JHN 1:43!16	v	verb		follow	跟从	Follow	Ἀκολούθει	 	ἀκολουθέω	Ἀκολούθει	190	V-PAM-2S	second	singular			present	active	imperative		015020	15.156	A0:n43001043010 A1:n43001043017	n43001043010	
+n43001043017	JHN 1:43!17	o	pron	personal	me	我	Me	μοι	.	ἐγώ	μοι	3427	P-1DS		singular		dative					092001	92.1			n43001043015
+n43001044001	JHN 1:44!1	vc	verb		was	是	Was	ἦν	 	εἰμί	ἦν	2258	V-IAI-3S	third	singular			imperfect	active	indicative		085001	85.1			
+n43001044002	JHN 1:44!2		conj		now	而	now	δὲ	 	δέ	δὲ	1161	CONJ													
+n43001044003	JHN 1:44!3		det			这	-	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001044004	JHN 1:44!4		noun	proper	Philip	腓力	Philip	Φίλιππος	 	Φίλιππος	Φίλιππος	5376	N-NSM		singular	masculine	nominative					093001	93.379a			
+n43001044005	JHN 1:44!5		prep		from	来自	from	ἀπὸ	 	ἀπό	ἀπὸ	575	PREP									084001	84.3			
+n43001044006	JHN 1:44!6		noun	proper	Bethsaida	伯赛大	Bethsaida	Βηθσαϊδά	,	Βηθσαϊδά	Βηθσαϊδά	966	N-PRI		singular	feminine	genitive					093002	93.432			
+n43001044007	JHN 1:44!7		prep		from		from	ἐκ	 	ἐκ	ἐκ	1537	PREP									084001	84.4			
+n43001044008	JHN 1:44!8		det		the	那	the	τῆς	 	ὁ	τῆς	3588	T-GSF		singular	feminine	genitive					092004	92.24			
+n43001044009	JHN 1:44!9		noun	common	city	城	city	πόλεως	 	πόλις	πόλεως	4172	N-GSF		singular	feminine	genitive					001014	1.88			
+n43001044010	JHN 1:44!10		noun	proper	Andrew	安得烈	of Andrew	Ἀνδρέου	 	Ἀνδρέας	Ἀνδρέου	406	N-GSM		singular	masculine	genitive					093001	93.25			
+n43001044011	JHN 1:44!11		conj		and	和	and	καὶ	 	καί	καὶ	2532	CONJ									089017	89.92			
+n43001044012	JHN 1:44!12		noun	proper	Peter	彼得	Peter	Πέτρου	.	Πέτρος	Πέτρου	4074	N-GSM		singular	masculine	genitive					093001	93.296			
+n43001045001	JHN 1:45!1	v	verb		found	找到	Finds	εὑρίσκει	 	εὑρίσκω	εὑρίσκει	2147	V-PAI-3S	third	singular			present	active	indicative		027002	27.27	A0:n43001045002 A1:n43001045004		
+n43001045002	JHN 1:45!2	s	noun	proper	Philip	腓力	Philip	Φίλιππος	 	Φίλιππος	Φίλιππος	5376	N-NSM		singular	masculine	nominative					093001	93.379a			
+n43001045003	JHN 1:45!3		det				-	τὸν	 	ὁ	τὸν	3588	T-ASM		singular	masculine	accusative					092004	92.24			
+n43001045004	JHN 1:45!4		noun	proper	Nathanael	拿但业	Nathanael	Ναθαναὴλ	 	Ναθαναήλ	Ναθαναὴλ	3482	N-PRI		singular	masculine	accusative					093001	93.270			
+n43001045005	JHN 1:45!5		conj		and	就	and	καὶ	 	καί	καὶ	2532	CONJ									089015	89.87			
+n43001045006	JHN 1:45!6	v	verb		said	说	says	λέγει	 	λέγω	λέγει	3004	V-PAI-3S	third	singular			present	active	indicative		033006	33.69	A0:n43001045002 A2:n43001045007	n43001045002	
+n43001045007	JHN 1:45!7	io	pron	personal	him	他	to him	αὐτῷ	·	αὐτός	αὐτῷ	846	P-DSM		singular	masculine	dative					092004	92.11			n43001045004
+n43001045008	JHN 1:45!8	o	pron	relative	whom	所~的	[Him] whom	Ὃν	 	ὅς	Ὃν	3739	R-ASM		singular	masculine	accusative					092006	92.27			
+n43001045009	JHN 1:45!9	v	verb		wrote	写	wrote of	ἔγραψεν	 	γράφω	ἔγραψεν	1125	V-AAI-3S	third	singular			aorist	active	indicative		033005	33.61	A1:n43001045008 A0:n43001045010		
+n43001045010	JHN 1:45!10	s	noun	proper	Moses	摩西	Moses	Μωϋσῆς	 	Μωϋσῆς	Μωϋσῆς	3475	N-NSM		singular	masculine	nominative					093001	93.266			
+n43001045011	JHN 1:45!11		prep		in	在~上	in	ἐν	 	ἐν	ἐν	1722	PREP									083003	83.13			
+n43001045012	JHN 1:45!12		det		the		the	τῷ	 	ὁ	τῷ	3588	T-DSM		singular	masculine	dative					092004	92.24			
+n43001045013	JHN 1:45!13		noun	common	law	律法	Law	νόμῳ	 	νόμος	νόμῳ	3551	N-DSM		singular	masculine	dative					033005	33.55			
+n43001045014	JHN 1:45!14		conj		and	和	also	καὶ	 	καί	καὶ	2532	CONJ									089017	89.92			
+n43001045015	JHN 1:45!15		det		the		the	οἱ	 	ὁ	οἱ	3588	T-NPM		plural	masculine	nominative					092004	92.24			
+n43001045016	JHN 1:45!16		noun	common	prophets	先知	prophets	προφῆται	 	προφήτης	προφῆται	4396	N-NPM		plural	masculine	nominative					053009	53.79			
+n43001045017	JHN 1:45!17	v	verb		found	遇见	we have found	εὑρήκαμεν	,	εὑρίσκω	εὑρήκαμεν	2147	V-RAI-1P	first	plural			perfect	active	indicative		027002	27.27	A0:n43001044010;n43001044012;n43001045002 A1:n43001045009;n43001045016	n43001044010 n43001044012 n43001045002	
+n43001045018	JHN 1:45!18		noun	proper	Jesus	耶稣	Jesus	Ἰησοῦν	 	Ἰησοῦς	Ἰησοῦν	2424	N-ASM		singular	masculine	accusative					093001	93.169a			
+n43001045019	JHN 1:45!19		noun	common	son	儿子	son	υἱὸν	 	υἱός	υἱὸν	5207	N-ASM		singular	masculine	accusative					010002	10.42			
+n43001045020	JHN 1:45!20		det				-	τοῦ	 	ὁ	τοῦ	3588	T-GSM		singular	masculine	genitive					092004	92.24			
+n43001045021	JHN 1:45!21		noun	proper	Joseph	约瑟	of Joseph	Ἰωσὴφ	 	Ἰωσήφ	Ἰωσὴφ	2501	N-PRI		singular	masculine	genitive					093001	93.202b			
+n43001045022	JHN 1:45!22		det			他	-	τὸν	 	ὁ	τὸν	3588	T-ASM		singular	masculine	accusative					092004	92.24			
+n43001045023	JHN 1:45!23		prep		of	来自	of	ἀπὸ	 	ἀπό	ἀπὸ	575	PREP									084001	84.3			
+n43001045024	JHN 1:45!24		noun	proper	Nazareth	拿撒勒	Nazareth	Ναζαρέτ	.	Ναζαρέτ	Ναζαρέτ	3478	N-PRI		singular	feminine	genitive					093002	93.536			
+n43001046001	JHN 1:46!1		conj		and	就	And	καὶ	 	καί	καὶ	2532	CONJ									091001	91.1			
+n43001046002	JHN 1:46!2	v	verb		said	说	said	εἶπεν	 	λέγω	εἶπεν	2036	V-2AAI-3S	third	singular			aorist	active	indicative		033006	33.69	A2:n43001046003 A0:n43001046004		
+n43001046003	JHN 1:46!3	io	pron	personal	him	他	to him	αὐτῷ	 	αὐτός	αὐτῷ	846	P-DSM		singular	masculine	dative					092004	92.11			n43001045002
+n43001046004	JHN 1:46!4	s	noun	proper	Nathanael	拿但业	Nathanael	Ναθαναήλ	·	Ναθαναήλ	Ναθαναήλ	3482	N-PRI		singular	masculine	nominative					093001	93.270			
+n43001046005	JHN 1:46!5		prep		out of	出	Out of	Ἐκ	 	ἐκ	Ἐκ	1537	PREP									084001	84.4			
+n43001046006	JHN 1:46!6		noun	proper	Nazareth	拿撒勒	Nazareth	Ναζαρὲτ	 	Ναζαρέτ	Ναζαρὲτ	3478	N-PRI		singular	feminine	genitive					093002	93.536			
+n43001046007	JHN 1:46!7	v	verb		can	能	is able	δύναταί	 	δύναμαι	δύναταί	1410	V-PNI-3S	third	singular			present	middle	indicative		074	74.5	A1:n43001046006 A0:n43001046009		
+n43001046008	JHN 1:46!8		pron	indefinite	anything	什么	any	τι	 	τις	τι	5100	X-NSN		singular	neuter	nominative					092004	92.12			
+n43001046009	JHN 1:46!9		adj		good	好	good thing	ἀγαθὸν	 	ἀγαθός	ἀγαθὸν	18	A-NSN		singular	neuter	nominative					088001	88.1			
+n43001046010	JHN 1:46!10	vc	verb		come	出	to be	εἶναι	;	εἰμί	εἶναι	1511	V-PAN					present	active	infinitive		071001	71.1		n43001046009	
+n43001046011	JHN 1:46!11	v	verb		said	说	Says	λέγει	 	λέγω	λέγει	3004	V-PAI-3S	third	singular			present	active	indicative		033006	33.69	A2:n43001046012 A0:n43001046014		
+n43001046012	JHN 1:46!12	io	pron	personal	him	他	to him	αὐτῷ	 	αὐτός	αὐτῷ	846	P-DSM		singular	masculine	dative					092004	92.11			n43001046004
+n43001046013	JHN 1:46!13		det				-	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001046014	JHN 1:46!14		noun	proper	Philip	腓力	Philip	Φίλιππος	·	Φίλιππος	Φίλιππος	5376	N-NSM		singular	masculine	nominative					093001	93.379a			
+n43001046015	JHN 1:46!15	v	verb		come	来	Come	Ἔρχου	 	ἔρχομαι	Ἔρχου	2064	V-PNM-2S	second	singular			present	middle	imperative		015006	15.81	A0:n43001046004	n43001046004	
+n43001046016	JHN 1:46!16		conj		and		and	καὶ	 	καί	καὶ	2532	CONJ									089015	89.87			
+n43001046017	JHN 1:46!17	v	verb		see	看	see	ἴδε	.	ὁράω	ἴδε	3708	V-2AAM-2S	second	singular			aorist	active	imperative		090013	90.79	A0:n43001046004	n43001046004	
+n43001047001	JHN 1:47!1	v	verb		saw	看见	Saw	εἶδεν	 	ὁράω	εἶδεν	3708	V-2AAI-3S	third	singular			aorist	active	indicative		024001	24.1	A0:n43001047003 A1:n43001047006		
+n43001047002	JHN 1:47!2		det					ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative									
+n43001047003	JHN 1:47!3		noun	proper	Jesus	耶稣	Jesus	Ἰησοῦς	 	Ἰησοῦς	Ἰησοῦς	2424	N-NSM		singular	masculine	nominative					093001	93.169a			
+n43001047004	JHN 1:47!4		det				-	τὸν	 	ὁ	τὸν	3588	T-ASM		singular	masculine	accusative					092004	92.24			
+n43001047005	JHN 1:47!5		noun	proper	Nathanael	拿但业	Nathanael	Ναθαναὴλ	 	Ναθαναήλ	Ναθαναὴλ	3482	N-PRI		singular	masculine	accusative					093001	93.270			
+n43001047006	JHN 1:47!6	v	verb		coming	走来	coming	ἐρχόμενον	 	ἔρχομαι	ἐρχόμενον	2064	V-PNP-ASM		singular	masculine	accusative	present	middle	participle		015006	15.81	A0:n43001047005		
+n43001047007	JHN 1:47!7		prep		toward	向	to	πρὸς	 	πρός	πρὸς	4314	PREP									084002	84.18			
+n43001047008	JHN 1:47!8		pron	personal	him	他	Him	αὐτὸν	 	αὐτός	αὐτὸν	846	P-ASM		singular	masculine	accusative					092004	92.11			n43001047003
+n43001047009	JHN 1:47!9		conj		and	就	and	καὶ	 	καί	καὶ	2532	CONJ									089015	89.87			
+n43001047010	JHN 1:47!10	v	verb		said	说	He says	λέγει	 	λέγω	λέγει	3004	V-PAI-3S	third	singular			present	active	indicative		033006	33.69	A0:n43001047003	n43001047003	
+n43001047011	JHN 1:47!11		prep		of	指着	concerning	περὶ	 	περί	περὶ	4012	PREP									090006	90.24			
+n43001047012	JHN 1:47!12		pron	personal	him	他	him	αὐτοῦ	·	αὐτός	αὐτοῦ	846	P-GSM		singular	masculine	genitive					092004	92.11			n43001047005
+n43001047013	JHN 1:47!13	aux	ptcl		behold	看	Behold	Ἴδε	 	ἴδε	Ἴδε	2396	V-2AAM-2S	second	singular			aorist	active	imperative		091003	91.13			
+n43001047014	JHN 1:47!14	adv	adv		indeed	真	truly	ἀληθῶς	 	ἀληθῶς	ἀληθῶς	230	ADV									070	70.3			
+n43001047015	JHN 1:47!15		noun	proper	Israelite	以色列人	an Israelite	Ἰσραηλίτης	 	Ἰσραηλίτης	Ἰσραηλίτης	2475	N-NSM		singular	masculine	nominative					093001	93.183			
+n43001047016	JHN 1:47!16		prep		in	里	in	ἐν	 	ἐν	ἐν	1722	PREP									089004	89.5			
+n43001047017	JHN 1:47!17		pron	relative	whom	他	whom	ᾧ	 	ὅς	ᾧ	3739	R-DSM		singular	masculine	dative					092006	92.27			n43001047015
+n43001047018	JHN 1:47!18	s	noun	common	deceit	诡诈	deceit	δόλος	 	δόλος	δόλος	1388	N-NSM		singular	masculine	nominative					088021	88.154			
+n43001047019	JHN 1:47!19	adv	adv		no	毫无	not	οὐκ	 	οὐ	οὐκ	3756	PRT-N									069002	69.3			
+n43001047020	JHN 1:47!20	vc	verb		is	是	there is	ἔστιν	.	εἰμί	ἔστιν	2076	V-PAI-3S	third	singular			present	active	indicative		013003	13.69			
+n43001048001	JHN 1:48!1	v	verb		said	说	Says	λέγει	 	λέγω	λέγει	3004	V-PAI-3S	third	singular			present	active	indicative		033006	33.69	A2:n43001048002 A0:n43001048003		
+n43001048002	JHN 1:48!2	io	pron	personal	him	他	to Him	αὐτῷ	 	αὐτός	αὐτῷ	846	P-DSM		singular	masculine	dative					092004	92.11			n43001047003
+n43001048003	JHN 1:48!3	s	noun	proper	Nathanael	拿但业	Nathanael	Ναθαναήλ	·	Ναθαναήλ	Ναθαναήλ	3482	N-PRI		singular	masculine	nominative					093001	93.270			
+n43001048004	JHN 1:48!4	adv	adv		how	怎么	From where	Πόθεν	 	πόθεν	Πόθεν	4159	ADV-I									089014	89.86			
+n43001048005	JHN 1:48!5	o	pron	personal	me	我	me	με	 	ἐγώ	με	3165	P-1AS		singular		accusative					092001	92.1			n43001048003
+n43001048006	JHN 1:48!6	v	verb		know	认识	know You	γινώσκεις	;	γινώσκω	γινώσκεις	1097	V-PAI-2S	second	singular			present	active	indicative		028001	28.1	A0:n43001047003 A1:n43001048005	n43001047003	
+n43001048007	JHN 1:48!7	v	verb		answered	回答	Answered	ἀπεκρίθη	 	ἀποκρίνομαι	ἀπεκρίθη	611	V-ADI-3S	third	singular			aorist	passive	indicative		033014	33.184	A0:n43001048008		
+n43001048008	JHN 1:48!8	s	noun	proper	Jesus	耶稣	Jesus	Ἰησοῦς	 	Ἰησοῦς	Ἰησοῦς	2424	N-NSM		singular	masculine	nominative					093001	93.169a			
+n43001048009	JHN 1:48!9		conj		and	就	and	καὶ	 	καί	καὶ	2532	CONJ									089017	89.92			
+n43001048010	JHN 1:48!10	v	verb		said	说	said	εἶπεν	 	λέγω	εἶπεν	2036	V-2AAI-3S	third	singular			aorist	active	indicative		033006	33.69	A0:n43001048008 A2:n43001048011	n43001048008	
+n43001048011	JHN 1:48!11	io	pron	personal	him	他	to him	αὐτῷ	·	αὐτός	αὐτῷ	846	P-DSM		singular	masculine	dative					092004	92.11			n43001048003
+n43001048012	JHN 1:48!12		prep		before	以前	Before	Πρὸ	 	πρό	Πρὸ	4253	PREP									067002	67.17			
+n43001048013	JHN 1:48!13		det				-	τοῦ	 	ὁ	τοῦ	3588	T-GSM		singular	neuter	genitive					092004	92.24			
+n43001048014	JHN 1:48!14	o	pron	personal	you	你	you	σε	 	σύ	σε	4571	P-2AS		singular		accusative					092003	92.6			n43001048003
+n43001048015	JHN 1:48!15	s	noun	proper	Philip	腓力	Philip	Φίλιππον	 	Φίλιππος	Φίλιππον	5376	N-ASM		singular	masculine	accusative					093001	93.379a			
+n43001048016	JHN 1:48!16	v	verb		called	招呼	calling	φωνῆσαι	 	φωνέω	φωνῆσαι	5455	V-AAN					aorist	active	infinitive		033029	33.307	A1:n43001048014 A0:n43001048015		
+n43001048017	JHN 1:48!17	vc	verb		were	在	being	ὄντα	 	εἰμί	ὄντα	5607	V-PAP-ASM		singular	masculine	accusative	present	active	participle		085001	85.1			
+n43001048018	JHN 1:48!18		prep		under	底下	under	ὑπὸ	 	ὑπό	ὑπὸ	5259	PREP									083009	83.51			
+n43001048019	JHN 1:48!19		det		the	那	the	τὴν	 	ὁ	τὴν	3588	T-ASF		singular	feminine	accusative					092004	92.24			
+n43001048020	JHN 1:48!20		noun	common	fig tree	无花果树	fig tree	συκῆν	 	συκῆ	συκῆν	4808	N-ASF		singular	feminine	accusative					003002	3.5			
+n43001048021	JHN 1:48!21	v	verb		saw	看见	I saw	εἶδόν	 	ὁράω	εἶδόν	3708	V-2AAI-1S	first	singular			aorist	active	indicative		024001	24.1	A0:n43001048008 A1:n43001048022	n43001048008	
+n43001048022	JHN 1:48!22	s	pron	personal	you	你	you	σε	.	σύ	σε	4571	P-2AS		singular		accusative					092003	92.6			n43001048003
+n43001049001	JHN 1:49!1	v	verb		answered	说	Answered	ἀπεκρίθη	 	ἀποκρίνομαι	ἀπεκρίθη	611	V-ADI-3S	third	singular			aorist	passive	indicative		033004	33.28	A2:n43001049002 A0:n43001049003		
+n43001049002	JHN 1:49!2	io	pron	personal	him	他	Him	αὐτῷ	 	αὐτός	αὐτῷ	846	P-DSM		singular	masculine	dative					092004	92.11			n43001048008
+n43001049003	JHN 1:49!3	s	noun	proper	Nathanael	拿但业	Nathanael	Ναθαναήλ	·	Ναθαναήλ	Ναθαναήλ	3482	N-PRI		singular	masculine	nominative					093001	93.270			
+n43001049004	JHN 1:49!4	aux	noun	common	rabbi	拉比	Rabbi	Ῥαββί	,	ῥαββί	Ῥαββί	4461	HEB		singular	masculine	vocative					033017	33.246			
+n43001049005	JHN 1:49!5	s	pron	personal	you	你	You	σὺ	 	σύ	σὺ	4771	P-2NS		singular		nominative					092003	92.6			n43001049004
+n43001049006	JHN 1:49!6	vc	verb		are	是	are	εἶ	 	εἰμί	εἶ	1488	V-PAI-2S	second	singular			present	active	indicative		013001	13.4			
+n43001049007	JHN 1:49!7		det		the		the	ὁ	 	ὁ	ὁ	3588	T-NSM		singular	masculine	nominative					092004	92.24			
+n43001049008	JHN 1:49!8		noun	common	son	儿子	Son	υἱὸς	 	υἱός	υἱὸς	5207	N-NSM		singular	masculine	nominative					012001	12.15			
+n43001049009	JHN 1:49!9		det				-	τοῦ	 	ὁ	τοῦ	3588	T-GSM		singular	masculine	genitive					092004	92.24			
+n43001049010	JHN 1:49!10		noun	common	God	神	of God	θεοῦ	,	θεός	θεοῦ	2316	N-GSM		singular	masculine	genitive					012001	12.15			
+n43001049011	JHN 1:49!11	s	pron	personal	you	你	You	σὺ	 	σύ	σὺ	4771	P-2NS		singular		nominative					092003	92.6			n43001049004
+n43001049012	JHN 1:49!12		noun	common	king	王	King	βασιλεὺς	 	βασιλεύς	βασιλεὺς	935	N-NSM		singular	masculine	nominative					037004	37.67			
+n43001049013	JHN 1:49!13	vc	verb		are	是	are	εἶ	 	εἰμί	εἶ	1488	V-PAI-2S	second	singular			present	active	indicative		013001	13.4			
+n43001049014	JHN 1:49!14		det		the		-	τοῦ	 	ὁ	τοῦ	3588	T-GSM		singular	masculine	genitive					092004	92.24			
+n43001049015	JHN 1:49!15		noun	proper	Israel	以色列	of Israel	Ἰσραήλ	.	Ἰσραήλ	Ἰσραήλ	2474	N-PRI		singular	masculine	genitive					093001	93.182b			
+n43001050001	JHN 1:50!1	v	verb		answered	回答	Answered	ἀπεκρίθη	 	ἀποκρίνομαι	ἀπεκρίθη	611	V-ADI-3S	third	singular			aorist	passive	indicative		033004	33.28	A0:n43001050002		
+n43001050002	JHN 1:50!2	s	noun	proper	Jesus	耶稣	Jesus	Ἰησοῦς	 	Ἰησοῦς	Ἰησοῦς	2424	N-NSM		singular	masculine	nominative					093001	93.169a			
+n43001050003	JHN 1:50!3		conj		and	就	and	καὶ	 	καί	καὶ	2532	CONJ									089017	89.92			
+n43001050004	JHN 1:50!4	v	verb		said	说	said	εἶπεν	 	λέγω	εἶπεν	2036	V-2AAI-3S	third	singular			aorist	active	indicative		033006	33.69	A0:n43001050002 A2:n43001050005	n43001050002	
+n43001050005	JHN 1:50!5	io	pron	personal	him	他	to him	αὐτῷ	·	αὐτός	αὐτῷ	846	P-DSM		singular	masculine	dative					092004	92.11			n43001049003
+n43001050006	JHN 1:50!6		conj		because	因为	Because	Ὅτι	 	ὅτι	Ὅτι	3754	CONJ									089007	89.33			
+n43001050007	JHN 1:50!7	v	verb		said	说	I said	εἶπόν	 	λέγω	εἶπόν	2036	V-2AAI-1S	first	singular			aorist	active	indicative		033006	33.69	A0:n43001050002 A2:n43001050008	n43001050002	
+n43001050008	JHN 1:50!8	io	pron	personal	you	你	to you	σοι	 	σύ	σοι	4671	P-2DS		singular		dative					092003	92.6			n43001049003
+n43001050009	JHN 1:50!9		conj		that		that	ὅτι	 	ὅτι	ὅτι	3754	CONJ									090006	90.21			
+n43001050010	JHN 1:50!10	v	verb		saw	看见	I saw	εἶδόν	 	ὁράω	εἶδόν	3708	V-2AAI-1S	first	singular			aorist	active	indicative		024001	24.1	A0:n43001050002 A1:n43001050011	n43001050002	
+n43001050011	JHN 1:50!11	o	pron	personal	you	你	you	σε	 	σύ	σε	4571	P-2AS		singular		accusative					092003	92.6			n43001049003
+n43001050012	JHN 1:50!12		prep		under	在~下	under	ὑποκάτω	 	ὑποκάτω	ὑποκάτω	5270	ADV									083009	83.51			
+n43001050013	JHN 1:50!13		det		the		the	τῆς	 	ὁ	τῆς	3588	T-GSF		singular	feminine	genitive					092004	92.24			
+n43001050014	JHN 1:50!14		noun	common	fig tree	无花果树	fig tree	συκῆς	 	συκῆ	συκῆς	4808	N-GSF		singular	feminine	genitive					003002	3.5			
+n43001050015	JHN 1:50!15	v	verb		believe	信	believe you	πιστεύεις	;	πιστεύω	πιστεύεις	4100	V-PAI-2S	second	singular			present	active	indicative		031010	31.102	A0:n43001049003	n43001049003	
+n43001050016	JHN 1:50!16		adj	substantive	greater	更大	Greater things	μείζω	 	μέγας	μείζω	3187	A-APN-C		plural	neuter	accusative				comparative	078001 087003	78.2 87.28			
+n43001050017	JHN 1:50!17		pron	demonstrative	these	这	than these	τούτων	 	οὗτος	τούτων	5130	D-GPN		plural	neuter	genitive					092007	92.29			
+n43001050018	JHN 1:50!18	v	verb		see	看见	You will see	ὄψῃ	.	ὁράω	ὄψῃ	3708	V-FDI-2S	second	singular			future	middle	indicative		024001	24.1	A0:n43001049003 A1:n43001050016	n43001049003	
+n43001051001	JHN 1:51!1		conj		and	又	And	καὶ	 	καί	καὶ	2532	CONJ									091001	91.1			
+n43001051002	JHN 1:51!2	v	verb		said	说	He says	λέγει	 	λέγω	λέγει	3004	V-PAI-3S	third	singular			present	active	indicative		033006	33.69	A0:n43001050002 A2:n43001051003	n43001050002	
+n43001051003	JHN 1:51!3	io	pron	personal	him	他	to him	αὐτῷ	·	αὐτός	αὐτῷ	846	P-DSM		singular	masculine	dative					092004	92.11			n43001049003
+n43001051004	JHN 1:51!4		ptcl		truly	实在	Truly	Ἀμὴν	 	ἀμήν	Ἀμὴν	281	HEB									072001	72.6			
+n43001051005	JHN 1:51!5		ptcl		truly	实话	truly	ἀμὴν	 	ἀμήν	ἀμὴν	281	HEB									072001	72.6			
+n43001051006	JHN 1:51!6	v	verb		say	告诉	I say	λέγω	 	λέγω	λέγω	3004	V-PAI-1S	first	singular			present	active	indicative		033006	33.69	A0:n43001050002 A2:n43001051007	n43001050002	
+n43001051007	JHN 1:51!7	io	pron	personal	you	你们	to all of you	ὑμῖν	,	σύ	ὑμῖν	5213	P-2DP		plural		dative					092003	92.7			n43001044010 n43001044012 n43001046014 n43001049003
+n43001051008	JHN 1:51!8	v	verb		see	看见	you will see	ὄψεσθε	 	ὁράω	ὄψεσθε	3708	V-FDI-2P	second	plural			future	middle	indicative		024001	24.1	A0:n43001044010;n43001044012;n43001046014;n43001049003 A1:n43001051011;n43001051017;n43001051019	n43001044010 n43001044012 n43001046014 n43001049003	
+n43001051009	JHN 1:51!9		det		the		the	τὸν	 	ὁ	τὸν	3588	T-ASM		singular	masculine	accusative					092004	92.24			
+n43001051010	JHN 1:51!10		noun	common	heaven	天	heaven	οὐρανὸν	 	οὐρανός	οὐρανὸν	3772	N-ASM		singular	masculine	accusative					001002	1.11			
+n43001051011	JHN 1:51!11	v	verb		opened	开	opened	ἀνεῳγότα	 	ἀνοίγω	ἀνεῳγότα	455	V-2RAP-ASM		singular	masculine	accusative	perfect	active	participle		079024	79.110	A0:n43001051010		
+n43001051012	JHN 1:51!12		conj		and	而	and	καὶ	 	καί	καὶ	2532	CONJ									089015	89.87			
+n43001051013	JHN 1:51!13		det		the		the	τοὺς	 	ὁ	τοὺς	3588	T-APM		plural	masculine	accusative					092004	92.24			
+n43001051014	JHN 1:51!14		noun	common	angels	使者	angels	ἀγγέλους	 	ἄγγελος	ἀγγέλους	32	N-APM		plural	masculine	accusative					012001	12.28			
+n43001051015	JHN 1:51!15		det				-	τοῦ	 	ὁ	τοῦ	3588	T-GSM		singular	masculine	genitive					092004	92.24			
+n43001051016	JHN 1:51!16		noun	common	God	神	of God	θεοῦ	 	θεός	θεοῦ	2316	N-GSM		singular	masculine	genitive					012001	12.1			
+n43001051017	JHN 1:51!17		verb		ascending	上去	ascending	ἀναβαίνοντας	 	ἀναβαίνω	ἀναβαίνοντας	305	V-PAP-APM		plural	masculine	accusative	present	active	participle		015010	15.101	A0:n43001051014		
+n43001051018	JHN 1:51!18		conj		and	和	and	καὶ	 	καί	καὶ	2532	CONJ									089017	89.92			
+n43001051019	JHN 1:51!19		verb		descending	下来	descending	καταβαίνοντας	 	καταβαίνω	καταβαίνοντας	2597	V-PAP-APM		plural	masculine	accusative	present	active	participle		015011	15.107	A0:n43001051014		
+n43001051020	JHN 1:51!20		prep		on	在~上	on	ἐπὶ	 	ἐπί	ἐπὶ	1909	PREP													
+n43001051021	JHN 1:51!21		det		the		the	τὸν	 	ὁ	τὸν	3588	T-ASM		singular	masculine	accusative					092004	92.24			
+n43001051022	JHN 1:51!22		noun	common	son	子	Son	υἱὸν	 	υἱός	υἱὸν	5207	N-ASM		singular	masculine	accusative					009001	9.3			
+n43001051023	JHN 1:51!23		det				-	τοῦ	 	ὁ	τοῦ	3588	T-GSM		singular	masculine	genitive					092004	92.24			
+n43001051024	JHN 1:51!24		noun	common	man	人	of Man	ἀνθρώπου	.	ἄνθρωπος	ἀνθρώπου	444	N-GSM		singular	masculine	genitive					009001	9.3			

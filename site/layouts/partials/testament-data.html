@@ -1,13 +1,12 @@
-{{- /* Groups a testament's upstream Macula TSV (nt: Greek SBLGNT, ot: Hebrew WLC; mounted under assets/) into "BOOK/chapter" => word rows. Expects "nt" or "ot"; cache per testament. */ -}}
-{{- $file := cond (eq . "ot") "macula-hebrew/macula-hebrew.tsv" "macula/macula-greek-SBLGNT.tsv" -}}
-{{- $rows := resources.Get $file | transform.Unmarshal (dict "format" "csv" "delimiter" "\t") -}}
+{{- /* Groups a testament's upstream Macula TSV (nt: Greek SBLGNT, ot: Hebrew WLC; mounted under assets/) into "BOOK/chapter" => word rows.
+       Sample builds read the committed excerpts in assets/sample instead. Expects "nt" or "ot"; cache per testament. */ -}}
+{{- $name := cond (eq . "ot") "macula-hebrew.tsv" "macula-greek-SBLGNT.tsv" -}}
+{{- $dir := cond site.Params.sample "sample" (cond (eq . "ot") "macula-hebrew" "macula") -}}
+{{- $rows := resources.Get (printf "%s/%s" $dir $name) | transform.Unmarshal (dict "format" "csv" "delimiter" "\t") -}}
 {{- $s := newScratch -}}
-{{- $keep := cond (and site.Params.sample (eq . "ot")) site.Params.sampleBooks slice -}}
 {{- range after 1 $rows -}}
   {{- $parts := split (index . 1) " " -}}
-  {{- if or (not $keep) (in $keep (index $parts 0)) -}}
-    {{- $s.Add (printf "%s/%s" (index $parts 0) (index (split (index $parts 1) ":") 0)) (slice (dict "row" .)) -}}
-  {{- end -}}
+  {{- $s.Add (printf "%s/%s" (index $parts 0) (index (split (index $parts 1) ":") 0)) (slice (dict "row" .)) -}}
 {{- end -}}
 {{- $chapters := dict -}}
 {{- range $key, $entries := $s.Values -}}

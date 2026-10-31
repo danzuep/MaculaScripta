@@ -64,11 +64,26 @@ git -C data/macula-hebrew lfs pull --include=WLC/tsv/macula-hebrew.tsv
 hugo --source ./site --minify
 ```
 
-The full build renders about 1,300 chapters and takes several minutes, mostly the Old Testament. By default
-(local builds and pull requests) only the Old Testament books in `sampleBooks` in `site/hugo.toml`
-(Haggai) are built; the New Testament is always complete. Pushes to `main` and publishing set
-`HUGO_PARAMS_SAMPLE=false` to build everything, and you can do the same locally:
-`HUGO_PARAMS_SAMPLE=false hugo --source ./site --minify`.
+By default (local builds and pull requests) Hugo builds a **sample**: only John 1 and Haggai 1, read from the
+small committed excerpts `site/sample/macula-greek-SBLGNT.tsv` and `site/sample/macula-hebrew.tsv` (the
+`sampleBooks` and `sampleChapters` params in `site/hugo.toml`). It takes about a second and needs no submodule.
+Pushes to `main` and publishing set `HUGO_PARAMS_SAMPLE=false` to build every chapter (about 1,300 pages, several
+minutes); do the same locally with `HUGO_PARAMS_SAMPLE=false hugo --source ./site --minify`. Tests that cover every
+chapter only run against a full build.
+
+### Regenerating the sample and workbench data
+
+After bumping a submodule, with both TSVs checked out (the Hebrew one needs `git lfs pull`):
+
+```sh
+node scripts/extract-sample-tsv.mjs      # copies the John 1 and Haggai 1 rows into site/sample
+node scripts/generate-john-1-1-data.mjs  # rewrites the John 1:1-5 workbench data from the sample
+```
+
+The second script rewrites `site/data/greek_tokens.yaml`, `greek_token_details.yaml` and the Greek stage of
+`john_1_1.yaml` from the TSV (word text, lemma, Strong's number, part of speech). What the TSV lacks (IPA, the
+clause breaks of John 1:1 and editorial grammar tags) is appended from `scripts/john-1-1-extras.json`. The English and
+Cantonese stages and `greek_lemma_definitions.yaml` stay hand-maintained; the script warns about lemmas without a definition.
 
 Dependabot proposes weekly submodule updates (`.github/dependabot.yml`), so the
 published data tracks upstream through reviewed pull requests; the submodule pointer
@@ -258,8 +273,8 @@ hugo --source ./site --minify
 Offline text changes are stored in IndexedDB and can be exported as a JSON patch. The site does not store GitHub credentials or push changes directly.
 
 The alignment page shows Greek beneath each translation using
-`site/data/greek_tokens.yaml`, keyed by Macula source-occurrence ID. Add source tokens there when
-adding overlays for new verses. Dataset attribution appears once in the footer.
+`site/data/greek_tokens.yaml`, keyed by Macula source-occurrence ID (generated; see above). Extend `LAST_VERSE` in
+`scripts/generate-john-1-1-data.mjs` when adding overlays for new verses. Dataset attribution appears once in the footer.
 
 ## Shared translation edits (multi-edit)
 
