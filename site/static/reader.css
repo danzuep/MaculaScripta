@@ -3,13 +3,11 @@
 .reader-picker-bar-wrap { position: relative; z-index: 40; min-height: 2.5rem; margin: 0.5rem 0; }
 .reader-picker-bar { position: sticky; top: 0.5rem; z-index: 40; display: flex; align-items: center; gap: 0.25rem; pointer-events: none; }
 .reader-picker-bar.is-floating { position: fixed; top: 0.5rem; left: 50%; width: min(90rem, calc(100vw - 2rem)); transform: translateX(-50%); }
-.reader-picker-index, .reader-settings-switch, .reader-copy { min-height: 2.5rem; border: 0; border-radius: 0.5rem; background: transparent; color: var(--text-primary); font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-.reader-picker-index { flex: 0 1 auto; margin-right: auto; min-width: 0; pointer-events: auto; padding: 0.25rem 0.5rem; text-align: left; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.reader-picker-index, .reader-settings-switch, .reader-copy { min-height: 2.5rem; border: 1px solid var(--border-color); border-radius: 0.5rem; background: var(--card-bg); color: var(--text-primary); font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.reader-picker-index { flex: 0 1 auto; box-shadow: var(--panel-shadow); margin-right: auto; min-width: 0; pointer-events: auto; padding: 0.25rem 0.5rem; text-align: left; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .reader-settings-switch, .reader-copy { flex: none; pointer-events: auto; display: grid; place-items: center; width: 2.5rem; padding: 0; font-size: 1.5rem; line-height: 1; }
-.reader-picker-index:hover, .reader-settings-switch:hover, .reader-copy:hover { background: var(--card-bg); }
-.reader-picker-index[aria-expanded="true"], .reader-settings-switch[aria-expanded="true"] { background: var(--card-bg); }
 .reader-settings-switch:focus-visible, .reader-picker-index:focus-visible, .reader-copy:focus-visible, .reader-grid-tile:focus-visible, .reader-picker-back:focus-visible { outline: 2px solid var(--greek-color); outline-offset: 3px; }
-.reader-picker { position: relative; z-index: 39; margin: 0 0 1.5rem; padding: 1rem; border: 1px solid var(--border-color); border-radius: 1rem; background: var(--card-bg); box-shadow: var(--panel-shadow); }
+.reader-picker { position: relative; z-index: 39; margin: 0 0 1.5rem; padding: 1rem; border: 1px solid var(--border-color); border-radius: 1rem; background: var(--card-bg); box-shadow: var(--panel-shadow); max-height: calc(100dvh - 4.5rem); overflow: auto; overscroll-behavior: contain; }
 .reader-picker[hidden], .reader-book-picker-view[hidden], .reader-settings-view[hidden] { display: none; }
 .reader-picker.is-floating { position: fixed; top: 3.25rem; left: 50%; width: min(90rem, calc(100vw - 2rem)); max-height: calc(100dvh - 4.5rem); transform: translateX(-50%); overflow: auto; }
 .reader-settings-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -77,3 +75,6 @@
 /* Keep the last lines reachable while the fixed pane is open. */
 body:has(.reader-def:target) .reader-next-chapter { margin-bottom: min(60dvh, 34rem); }
 .reader-loading { margin: 2rem 0; color: var(--text-muted); }
+
+/* Lock the page behind the open header so scrolling stays inside the pane. */
+:root:has(.reader-picker:not([hidden])) { overflow: hidden; }
