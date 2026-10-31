@@ -139,34 +139,23 @@
       applyBookNamePreference();
     });
     const showBooks = () => {
-      bookView.hidden = false;
-      settingsView.hidden = true;
       bookGrid.hidden = false;
       chapterPicker.hidden = true;
       instruction.textContent = "1. Choose a book";
-      settingsSwitch.setAttribute("aria-expanded", "false");
-      settingsSwitch.setAttribute("aria-label", "Open reader settings");
     };
-    pickerButton.addEventListener("click", () => {
-      picker.hidden = !picker.hidden;
-      pickerButton.setAttribute("aria-expanded", String(!picker.hidden));
-      if (!picker.hidden) showBooks();
+    // mode is "books", "settings" or null (reading); tapping the active control collapses back to reading.
+    const setMode = (mode) => {
+      picker.hidden = !mode;
+      bookView.hidden = mode !== "books";
+      settingsView.hidden = mode !== "settings";
+      if (mode === "books") showBooks();
+      pickerButton.setAttribute("aria-expanded", String(mode === "books"));
+      settingsSwitch.setAttribute("aria-expanded", String(mode === "settings"));
       updatePickerPosition();
-    });
-    settingsSwitch.addEventListener("click", () => {
-      const showSettings = settingsView.hidden;
-      picker.hidden = false;
-      if (showSettings) {
-        bookView.hidden = true;
-        settingsView.hidden = false;
-      } else {
-        showBooks();
-      }
-      pickerButton.setAttribute("aria-expanded", "true");
-      settingsSwitch.setAttribute("aria-expanded", String(showSettings));
-      settingsSwitch.setAttribute("aria-label", showSettings ? "Return to book selection" : "Open reader settings");
-      updatePickerPosition();
-    });
+    };
+    const currentMode = () => (picker.hidden ? null : settingsView.hidden ? "books" : "settings");
+    pickerButton.addEventListener("click", () => setMode(currentMode() === "books" ? null : "books"));
+    settingsSwitch.addEventListener("click", () => setMode(currentMode() === "settings" ? null : "settings"));
     bookGrid.addEventListener("click", (event) => {
       const button = event.target.closest("[data-book-code]");
       if (!button) return;
@@ -191,6 +180,7 @@
     chapterGrid.addEventListener("click", (event) => {
       const link = event.target.closest("a[href]");
       if (!link) return;
+      setMode(null);
       try { sessionStorage.setItem("macula-scripta-reader-navigation", new URL(link.href).pathname); } catch { /* resume remains available next visit */ }
     });
   }
@@ -207,6 +197,7 @@
     const chapter = activeSection?.dataset.chapter || main.dataset.chapter;
     const title = bookTitles.get(code) ?? main.dataset.bookTitle ?? code;
     if (readerTitle) readerTitle.textContent = `${title} ${chapter}`;
+    if (pickerButton) pickerButton.textContent = `${title} ${chapter}`;
   };
 
   const updatePickerPosition = () => {
@@ -366,7 +357,11 @@
       await navigator.clipboard.writeText(verse?.dataset.text || copy.dataset.text);
     } catch { return; }
     copy.classList.add("is-copied");
-    setTimeout(() => copy.classList.remove("is-copied"), 1500);
+    copy.firstElementChild.textContent = "✓";
+    setTimeout(() => {
+      copy.classList.remove("is-copied");
+      copy.firstElementChild.textContent = "⧉";
+    }, 1500);
   });
 
   // The close link targets a missing id, so :target clears without scrolling; then the URL is tidied.

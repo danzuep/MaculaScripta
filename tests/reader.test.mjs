@@ -9,7 +9,10 @@ const page = (path) => readFileSync(root(`site/public/${path}`), "utf8");
 const script = readFileSync(root("site/static/reader.js"), "utf8");
 const catalog = [...readFileSync(root("site/data/nt/catalog.yaml"), "utf8").matchAll(/- code: (\w+)\n {2}title: (.+)\n {2}chapters: (\d+)/g)]
   .map(([, code, title, chapters]) => ({ code, title, chapters: Number(chapters) }));
-const tsv = readFileSync(root("data/macula-greek/SBLGNT/tsv/macula-greek-SBLGNT.tsv"), "utf8").replace(/\n$/, "").split("\n");
+const tsvPath = root("data/macula-greek/SBLGNT/tsv/macula-greek-SBLGNT.tsv");
+const hasData = existsSync(tsvPath);
+const noData = !hasData && "run git submodule update --init first";
+const tsv = hasData ? readFileSync(tsvPath, "utf8").replace(/\n$/, "").split("\n") : [""];
 const fields = tsv[0].split("\t");
 const chapterRows = new Map();
 for (const line of tsv.slice(1)) {
@@ -19,7 +22,7 @@ for (const line of tsv.slice(1)) {
   if (!chapterRows.has(key)) chapterRows.set(key, []);
   chapterRows.get(key).push(row);
 }
-const built = existsSync(root("site/public/nt-data/JHN/1.tsv"));
+const built = hasData && existsSync(root("site/public/nt-data/JHN/1.tsv"));
 
 function runScript(stored = new Map(), storageUnavailable = false) {
   const theme = { value: "", events: {}, addEventListener(name, handler) { this.events[name] = handler; } };
@@ -61,7 +64,7 @@ test("theme preference is restored, saved, and tolerates blocked storage", () =>
   assert.equal(blocked.document.documentElement.dataset.theme, "light");
 });
 
-test("the TSV covers every catalog chapter", () => {
+test("the TSV covers every catalog chapter", { skip: noData }, () => {
   assert.equal(catalog.length, 27);
   for (const { code, chapters } of catalog) {
     for (let number = 1; number <= chapters; number++) assert(chapterRows.has(`${code}/${number}`), `${code} ${number}`);
@@ -69,7 +72,7 @@ test("the TSV covers every catalog chapter", () => {
   assert.equal(tsv.length - 1, [...chapterRows.values()].reduce((sum, rows) => sum + rows.length, 0));
 });
 
-test("chapterModel groups published rows by verse and rebuilds the plain text", () => {
+test("chapterModel groups published rows by verse and rebuilds the plain text", { skip: noData }, () => {
   const { chapterModel } = runScript().context.MaculaReader;
   const rows = chapterRows.get("JHN/1");
   const model = chapterModel({ fields, words: rows });
@@ -136,10 +139,10 @@ test("reader includes the two-step book picker, settings tiles, and verse refere
   assert.match(html, />⋯<\/span>/);
   assert.match(html, /class="?reader-settings-columns"?/);
   assert.match(html, /reader-setting-link/);
-  assert.match(html, /class="?reader-picker-index"?/);
   assert.match(html, /id="?reader-full-book-names"?[^>]+class=reader-toggle-input/);
   assert.match(html, /id="?reader-offline"?[^>]+class=reader-toggle-input/);
-  assert.match(html, /class="?reader-book-title"?[^>]*>John 1<\/h1>/);
+  assert.match(html, /class="?reader-picker-index"?[^>]*>John 1<\/button>/);
+  assert.match(html, /class="?reader-copy"?[^>]*aria-label="Copy plain Greek text"/);
   assert.match(html, /class="?reader-picker-bar"?/);
   assert.match(html, /data-ref="?JHN\/1:1"?/);
   assert.match(readFileSync(root("site/static/reader.css"), "utf8"), /\.reader-grid-tile \{[^}]*aspect-ratio: 1;/);
