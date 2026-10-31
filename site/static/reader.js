@@ -89,7 +89,7 @@
         defs.append(element("aside", { class: "reader-def", id: key, "aria-label": `Word details for ${word.text}` },
           element("header", { class: "reader-def-head" }, element("h2", { lang: "grc", text: word.text }),
             element("a", { class: "reader-close", href: "#_", "aria-label": "Close word details", text: "×" })),
-          element("p", { class: "reader-def-ref", text: word.ref }), list));
+          element("div", { class: "reader-def-body" }, element("p", { class: "reader-def-ref", text: word.ref }), list)));
       }
     }
     const section = element("section", { class: "reader-chapter", "aria-label": title || `Chapter ${number}` });
