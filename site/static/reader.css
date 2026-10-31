@@ -32,7 +32,7 @@
 .reader-book-tile[data-full-name="true"] { aspect-ratio: auto; min-height: 3.25rem; padding: 0.4rem 0.5rem; font-size: 0.85rem; }
 .reader-book-tile[aria-current="true"] { border-color: color-mix(in srgb, var(--greek-color) 45%, var(--border-color)); background: color-mix(in srgb, var(--greek-color) 7%, var(--card-bg)); }
 .reader-grid-tile:hover, .reader-chapter-grid .reader-grid-tile[aria-current="true"] { border-color: var(--greek-color); background: color-mix(in srgb, var(--greek-color) 15%, var(--card-bg)); }
-.reader-picker-back { min-height: 2.75rem; margin-bottom: 0.75rem; padding: 0.4rem 0.75rem; border: 1px solid var(--border-color); border-radius: 0.5rem; background: var(--card-bg); color: var(--text-primary); font: inherit; cursor: pointer; }
+.reader-picker-back { grid-column: span 2; aspect-ratio: 2; padding: 0.15rem; border: 1px solid var(--border-color); border-radius: 0.5rem; background: var(--card-bg); color: var(--text-primary); font: inherit; cursor: pointer; }
 .reader-chapter-grid a { text-decoration: none; }
 .reader-hint { color: var(--text-muted); font-size: 0.9rem; }
 .reader-layout { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 2rem; }

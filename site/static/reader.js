@@ -64,6 +64,8 @@
     const bookGrid = picker.querySelector(".reader-book-list");
     const chapterPicker = picker.querySelector(".reader-chapter-picker");
     const chapterGrid = picker.querySelector(".reader-chapter-grid");
+    const backButton = element("button", { type: "button", class: "reader-picker-back", text: "← Books" });
+    backButton.addEventListener("click", () => showBooks());
     const instruction = picker.querySelector(".reader-picker-instruction");
     const fullNameToggle = picker.querySelector("#reader-full-book-names");
     const applyBookNamePreference = () => {
@@ -140,9 +142,8 @@
           text: number
         });
         return link;
-      }));
+      }), backButton);
     });
-    picker.querySelector(".reader-picker-back").addEventListener("click", showBooks);
     chapterGrid.addEventListener("click", (event) => {
       const link = event.target.closest("a[href]");
       if (!link) return;
