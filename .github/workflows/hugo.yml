@@ -16,9 +16,11 @@ on:
 permissions:
   contents: read
 
+# One run per branch: a PR build and a manual publish of the same branch share a group, so the newer run
+# replaces the older one instead of building twice. The deploy job has its own non-cancelling group.
 concurrency:
-  group: pages-${{ github.ref }}
-  cancel-in-progress: false
+  group: pages-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
 
 defaults:
   run:
