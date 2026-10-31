@@ -2,9 +2,12 @@
 {{- $file := cond (eq . "ot") "macula-hebrew/macula-hebrew.tsv" "macula/macula-greek-SBLGNT.tsv" -}}
 {{- $rows := resources.Get $file | transform.Unmarshal (dict "format" "csv" "delimiter" "\t") -}}
 {{- $s := newScratch -}}
+{{- $keep := cond site.Params.sample site.Params.sampleBooks slice -}}
 {{- range after 1 $rows -}}
   {{- $parts := split (index . 1) " " -}}
-  {{- $s.Add (printf "%s/%s" (index $parts 0) (index (split (index $parts 1) ":") 0)) (slice (dict "row" .)) -}}
+  {{- if or (not site.Params.sample) (in $keep (index $parts 0)) -}}
+    {{- $s.Add (printf "%s/%s" (index $parts 0) (index (split (index $parts 1) ":") 0)) (slice (dict "row" .)) -}}
+  {{- end -}}
 {{- end -}}
 {{- $chapters := dict -}}
 {{- range $key, $entries := $s.Values -}}

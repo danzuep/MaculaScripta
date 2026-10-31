@@ -64,6 +64,12 @@ git -C data/macula-hebrew lfs pull --include=WLC/tsv/macula-hebrew.tsv
 hugo --source ./site --minify
 ```
 
+A full build renders about 1,300 chapters and takes several minutes. For a quick preview
+build only a few books: `HUGO_PARAMS_SAMPLE=true hugo --source ./site --minify` (books listed in
+`sampleBooks` in `site/hugo.toml`). Pull request builds use the sample automatically; the
+`sample` input of the workflow does the same for manual runs and can never be published.
+The tests that walk every chapter need a full build.
+
 Dependabot proposes weekly submodule updates (`.github/dependabot.yml`), so the
 published data tracks upstream through reviewed pull requests; the submodule pointer
 pins the exact upstream commit. Review upstream changes and licensing before merging.

@@ -1,7 +1,7 @@
 {{- /* Publishes <testament>-data/<BOOK>/<chapter>.html: each chapter as a static HTML fragment (same markup as the reader page,
        with prefixed ids and a heading) for reader.js to insert while scrolling. */ -}}
 {{- $testament := . -}}
-{{- $catalog := index hugo.Data $testament "catalog" -}}
+{{- $catalog := partial "testament-catalog.html" $testament -}}
 {{- $data := partialCached "testament-data.html" $testament $testament -}}
 {{- range $key, $rows := $data.chapters -}}
   {{- $parts := split $key "/" -}}

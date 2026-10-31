@@ -5,6 +5,9 @@ title = "MaculaScripta"
 [params]
 rawManuscriptBaseURL = ""
 buildVersion = "local"
+# true builds only sampleBooks (set HUGO_PARAMS_SAMPLE=true) for fast previews; the full build is the default.
+sample = false
+sampleBooks = ["JHN", "1JN", "GEN", "RUT"]
 
 [[module.mounts]]
 source = "content"

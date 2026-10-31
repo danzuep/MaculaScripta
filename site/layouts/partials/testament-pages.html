@@ -1,7 +1,7 @@
 {{- /* Content-adapter helper: one reader page per available book and chapter of a testament ("nt" or "ot"),
        generated from data/<testament>/catalog.yaml. Expects: page (the adapter's $), testament. */ -}}
 {{- $testament := .testament -}}
-{{- range index hugo.Data $testament "catalog" -}}
+{{- range partial "testament-catalog.html" $testament -}}
   {{- if .available -}}
     {{- $code := .code -}}
     {{- $title := .title -}}
