@@ -1,7 +1,7 @@
-{{- /* The books of a testament ("nt" or "ot") from data/<testament>/catalog.yaml. With params.sample (HUGO_PARAMS_SAMPLE=true)
-       only the books listed in params.sampleBooks are kept, for quick preview builds. */ -}}
+{{- /* The books of a testament ("nt" or "ot") from data/<testament>/catalog.yaml. With params.sample the Old Testament is
+       cut to params.sampleBooks for quick builds (HUGO_PARAMS_SAMPLE=false builds everything); the New Testament is always whole. */ -}}
 {{- $catalog := index hugo.Data . "catalog" -}}
-{{- if site.Params.sample -}}
+{{- if and site.Params.sample (eq . "ot") -}}
   {{- $catalog = where $catalog "code" "in" site.Params.sampleBooks -}}
 {{- end -}}
 {{- return $catalog -}}

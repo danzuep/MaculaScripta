@@ -5,9 +5,10 @@ title = "MaculaScripta"
 [params]
 rawManuscriptBaseURL = ""
 buildVersion = "local"
-# true builds only sampleBooks (set HUGO_PARAMS_SAMPLE=true) for fast previews; the full build is the default.
-sample = false
-sampleBooks = ["JHN", "1JN", "GEN", "RUT"]
+# The Old Testament is large, so by default only sampleBooks of it are built; the New Testament is always complete.
+# CI sets HUGO_PARAMS_SAMPLE=false for the main branch and for publishing.
+sample = true
+sampleBooks = ["HAG"]
 
 [[module.mounts]]
 source = "content"

@@ -12,11 +12,6 @@ on:
         type: boolean
         required: true
         default: false
-      sample:
-        description: "Build only a few sample books (fast preview; never use with publish)"
-        type: boolean
-        required: false
-        default: false
 
 permissions:
   contents: read
@@ -41,8 +36,8 @@ jobs:
     env:
       HUGO_VERSION: 0.169.0
       HUGO_ENVIRONMENT: production
-      # Pull request builds only validate, so they build the sample books; push to main and publish build everything.
-      HUGO_PARAMS_SAMPLE: ${{ github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.sample) }}
+      # Only main and publish runs build the whole Old Testament; everything else builds a sample of it.
+      HUGO_PARAMS_SAMPLE: ${{ !(github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.publish)) }}
     steps:
       - name: Install Hugo CLI
         run: |
@@ -95,7 +90,7 @@ jobs:
           path: ./site/public
 
   deploy:
-    if: github.repository == 'danzuep/MaculaScripta' && ((github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && inputs.publish && !inputs.sample))
+    if: github.repository == 'danzuep/MaculaScripta' && ((github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && inputs.publish))
     concurrency:
       group: github-pages-deployment
       cancel-in-progress: false
