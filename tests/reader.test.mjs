@@ -151,6 +151,6 @@ test("reader includes the two-step book picker, settings tiles, and verse refere
   assert.match(html, /class="?reader-picker-bar"?/);
   assert.match(html, /data-ref="?JHN\/1:1"?/);
   assert.match(readFileSync(root("site/static/reader.css"), "utf8"), /\.reader-grid-tile \{[^}]*aspect-ratio: 1;/);
-  assert.match(readFileSync(root("site/static/reader.css"), "utf8"), /\.reader-picker-bar\.is-floating/);
+  assert.match(readFileSync(root("site/static/reader.css"), "utf8"), /\.reader-picker-bar \{ position: fixed;/);
   assert.match(readFileSync(root("site/static/sw.js"), "utf8"), /maxCachedChapters = 3/);
 });

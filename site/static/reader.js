@@ -118,8 +118,6 @@
   const pickerButton = document.querySelector(".reader-picker-index");
   const settingsSwitch = document.querySelector(".reader-settings-switch");
   const readerTitle = document.querySelector("#reader-book-title");
-  const pickerBar = document.querySelector(".reader-picker-bar");
-  const pickerBarTop = pickerBar ? pickerBar.getBoundingClientRect().top + globalThis.scrollY : 0;
   const bookTitles = new Map([...document.querySelectorAll(".reader-book-tile")].map((tile) => [tile.dataset.bookCode, tile.dataset.bookTitle]));
   if (picker && main) {
     const bookView = picker.querySelector(".reader-book-picker-view");
@@ -154,11 +152,29 @@
       if (mode === "books") showBooks();
       pickerButton.setAttribute("aria-expanded", String(mode === "books"));
       settingsSwitch.setAttribute("aria-expanded", String(mode === "settings"));
-      updatePickerPosition();
     };
     const currentMode = () => (picker.hidden ? null : settingsView.hidden ? "books" : "settings");
     pickerButton.addEventListener("click", () => setMode(currentMode() === "books" ? null : "books"));
     settingsSwitch.addEventListener("click", () => setMode(currentMode() === "settings" ? null : "settings"));
+    document.addEventListener("click", (event) => {
+      if (!picker.hidden && !event.target.closest(".reader-picker, .reader-picker-bar")) setMode(null);
+    });
+    // Annotation changes reflow the text, so keep the first verse in view at the same offset and close the pane.
+    let anchor = null;
+    const rememberAnchor = () => {
+      for (const link of main.querySelectorAll(".verse-number a")) {
+        const rect = link.getBoundingClientRect();
+        if (rect.bottom > 48) { anchor = { link, top: rect.top }; return; }
+      }
+      anchor = null;
+    };
+    annotation?.addEventListener("pointerdown", rememberAnchor);
+    annotation?.addEventListener("focus", rememberAnchor);
+    annotation?.addEventListener("change", () => {
+      if (anchor) globalThis.scrollBy(0, anchor.link.getBoundingClientRect().top - anchor.top);
+      anchor = null;
+      setMode(null);
+    });
     bookGrid.addEventListener("click", (event) => {
       const button = event.target.closest("[data-book-code]");
       if (!button) return;
@@ -188,7 +204,7 @@
       if (new URL(link.href).pathname === globalThis.location.pathname) {
         event.preventDefault();
         const target = main.querySelector(`.reader-chapter[data-book-code="${main.dataset.bookCode}"][data-chapter="${main.dataset.chapter}"]`);
-        globalThis.scrollTo(0, target ? target.getBoundingClientRect().top + globalThis.scrollY - 8 : 0);
+        globalThis.scrollTo(0, target ? target.getBoundingClientRect().top + globalThis.scrollY - 48 : 0);
         return;
       }
       try { sessionStorage.setItem("macula-scripta-reader-navigation", new URL(link.href).pathname); } catch { /* resume remains available next visit */ }
@@ -210,13 +226,6 @@
     if (pickerButton) pickerButton.textContent = `${title} ${chapter}`;
   };
 
-  const updatePickerPosition = () => {
-    if (!pickerBar) return;
-    const floating = globalThis.scrollY >= pickerBarTop - 8;
-    pickerBar.classList.toggle("is-floating", floating);
-    picker?.classList.toggle("is-floating", floating && !picker.hidden);
-  };
-  updatePickerPosition();
 
   let redirectingToSavedPosition = false;
   let savedPosition = null;
@@ -271,7 +280,6 @@
   };
   globalThis.addEventListener?.("scroll", () => {
     updateStickyIndex();
-    updatePickerPosition();
     schedulePositionSave();
   }, { passive: true });
 
