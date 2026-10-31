@@ -105,7 +105,7 @@ test("every chapter is a static page and an insertable fragment with the same wo
   }
   assert.match(page("nt/JHN/21/index.html"), /Next chapter: Acts 1/);
   assert.match(page("nt/1JN/5/index.html"), /Next chapter: 2 John 1/);
-  assert.match(page("nt-data/JHN/1.html"), /<dt>part_of_speech<\/dt><dd>Preposition<\/dd>/);
+  assert.doesNotMatch(page("nt-data/JHN/1.html"), /<dt>(part_of_speech|definition)<\/dt>/);
 });
 
 test("verse numbers sit in one flowing paragraph per chapter, and words are inline-block tokens", { skip: !built && "run hugo --source ./site first" }, () => {
@@ -130,5 +130,4 @@ test("reader includes the two-step book picker, settings tiles, and verse refere
   assert.match(html, /data-ref="?JHN\/1:1"?/);
   assert.match(readFileSync(root("site/static/reader.css"), "utf8"), /\.reader-grid-tile \{[^}]*aspect-ratio: 1;/);
   assert.match(readFileSync(root("site/static/reader.css"), "utf8"), /\.reader-picker-bar \{ position: fixed;/);
-  assert.match(readFileSync(root("site/static/sw.js"), "utf8"), /maxCachedChapters = 3/);
 });

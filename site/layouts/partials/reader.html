@@ -1,7 +1,6 @@
 {{- $code := .Params.book | default "JHN" -}}
 {{- $chapterNumber := int (.Params.chapter | default 1) -}}
 {{- $bookInfo := index (where hugo.Data.nt.catalog "code" $code) 0 -}}
-{{- $book := dict "title" $bookInfo.title "chapters" (seq $bookInfo.chapters) -}}
 {{- $bookPath := printf "nt/%s/" $code -}}
 {{- $nextChapterNumber := add $chapterNumber 1 -}}
 {{- $nextChapterPath := "" -}}
@@ -27,7 +26,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#0f172a">
-    <title>{{ $book.title }} {{ $chapterNumber }} · {{ .Site.Title }}</title>
+    <title>{{ $bookInfo.title }} {{ $chapterNumber }} · {{ .Site.Title }}</title>
     <script>(function(){var t;try{t=localStorage.getItem("macula-scripta-theme")}catch(e){}if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";document.documentElement.dataset.theme=t})()</script>
     <link rel="manifest" href="{{ "manifest.webmanifest" | relURL }}">
     <link rel="stylesheet" href="{{ "styles.css" | relURL }}">
@@ -37,10 +36,10 @@
   <body class="reader-page" data-worker-url="{{ "sw.js" | relURL }}">
     <a class="skip-link" href="#reader">Skip to Greek text</a>
     <div class="reader-content">
-      <h1 class="reader-book-title" id="reader-book-title">{{ $book.title }} {{ $chapterNumber }}</h1>
+      <h1 class="reader-book-title" id="reader-book-title">{{ $bookInfo.title }} {{ $chapterNumber }}</h1>
       <div class="reader-picker-bar-wrap">
         <div class="reader-picker-bar">
-          <button type="button" class="reader-picker-index" id="reader-picker-reference" aria-controls="reader-picker-panel" aria-expanded="false">{{ $book.title }} {{ $chapterNumber }}</button>
+          <button type="button" class="reader-picker-index" id="reader-picker-reference" aria-controls="reader-picker-panel" aria-expanded="false">{{ $bookInfo.title }} {{ $chapterNumber }}</button>
           <button type="button" class="reader-copy" aria-label="Copy plain Greek text" title="Copy plain text (the selected verse, if any)"><span aria-hidden="true">⧉</span></button>
           <button type="button" class="reader-settings-switch" aria-label="Reader settings" aria-controls="reader-settings-view" aria-expanded="false">
             <span aria-hidden="true">⋯</span>
@@ -94,7 +93,7 @@
       </section>
     <div class="reader-layout">
       <div class="reader-prev-sentinel" aria-hidden="true"></div>
-      <main id="reader" aria-label="{{ $book.title }} Greek text" tabindex="-1" data-book-code="{{ $code }}" data-book-title="{{ $book.title }}" data-chapter="{{ $chapterNumber }}" data-data-url="{{ "nt-data/" | relURL }}" data-reader-base="{{ "nt/" | relURL }}" data-catalog="{{ range $index, $entry := hugo.Data.nt.catalog }}{{ if $index }} {{ end }}{{ $entry.code }}:{{ $entry.chapters }}{{ end }}">
+      <main id="reader" aria-label="{{ $bookInfo.title }} Greek text" tabindex="-1" data-book-code="{{ $code }}" data-book-title="{{ $bookInfo.title }}" data-chapter="{{ $chapterNumber }}" data-data-url="{{ "nt-data/" | relURL }}" data-reader-base="{{ "nt/" | relURL }}" data-catalog="{{ range $index, $entry := hugo.Data.nt.catalog }}{{ if $index }} {{ end }}{{ $entry.code }}:{{ $entry.chapters }}{{ end }}">
         {{ partial "reader-chapter.html" (dict "code" $code "number" $chapterNumber "prefix" "" "title" "") }}
       </main>
     </div>

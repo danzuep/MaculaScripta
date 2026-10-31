@@ -50,7 +50,6 @@
 .reader-word a { color: var(--text-primary); text-decoration: none; }
 .reader-word a:hover, .reader-word a:focus-visible { text-decoration: underline; text-decoration-color: var(--greek-color); outline: none; }
 :root:has(#reader-annotation option[value="none"]:checked) .reader-word rt { display: none; }
-.reader-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1rem; }
 
 /* Details pane driven by the URL fragment. */
 .reader-def { display: none; position: fixed; z-index: 20; right: 1rem; bottom: 1rem; left: 1rem; max-width: 28rem; max-height: min(60dvh, 34rem); margin-left: auto; overflow: hidden; padding: 0; border: 1px solid var(--border-color); border-radius: 1rem; background: var(--card-bg); box-shadow: var(--panel-shadow); }
@@ -76,7 +75,6 @@
 }
 /* Keep the last lines reachable while the fixed pane is open. */
 body:has(.reader-def:target) .reader-next-chapter { margin-bottom: min(60dvh, 34rem); }
-.reader-loading { margin: 2rem 0; color: var(--text-muted); }
 
 /* Lock the page behind the open header so scrolling stays inside the pane. */
 :root { scrollbar-gutter: stable; }

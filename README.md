@@ -32,8 +32,7 @@ There is no import step and no generated data is committed. `site/hugo.toml` mou
 `data/macula-greek/SBLGNT/tsv` (the git submodule) as Hugo assets, and
 `site/layouts/partials/nt-data.html` reads `macula-greek-SBLGNT.tsv` with
 `transform.Unmarshal`, grouping words by book and chapter. `reader-chapter.html` renders a
-chapter (text plus each word's details pane, with `part_of_speech` and `definition` from
-`site/data`); `nt-publish.html` also writes it as `nt-data/<book>/<chapter>.html`. Each word (with its trailing
+chapter (text plus each word's details pane listing every TSV field unchanged); `nt-publish.html` also writes it as `nt-data/<book>/<chapter>.html`. Each word (with its trailing
 punctuation) is an inline-block token, so words stay whole and only wrap when wider than
 the line, while verses still flow together in one paragraph per chapter (the TSV carries
 no paragraph-break data).
