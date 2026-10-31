@@ -81,13 +81,12 @@
         <section class="reader-settings-view" id="reader-settings-view" aria-label="Reader settings" hidden>
           <div class="reader-settings-columns">
             <div class="reader-settings-column">
-              <h2>Reader</h2>
-              <a class="reader-settings-brand" href="{{ .Site.Home.RelPermalink }}">MaculaScripta <span>Greek New Testament</span></a>
               <p class="reader-hint">Select any Greek word to inspect its complete source metadata.</p>
-              <label class="reader-setting-row" for="reader-annotation">Annotation language
+              <label class="reader-setting-row" for="reader-annotation">Annotations
                 <select id="reader-annotation">
                   <option value="gloss">Gloss</option>
                   <option value="mandarin">Chinese (Mandarin)</option>
+                  <option value="none">None</option>
                 </select>
               </label>
               <label class="reader-setting-row" for="reader-theme">Appearance
@@ -96,13 +95,8 @@
                   <option value="light">Light</option>
                 </select>
               </label>
-              <label class="reader-switch" for="reader-ruby">
-                <input type="checkbox" id="reader-ruby" class="reader-ruby-input" checked>
-                <span class="reader-switch-track" aria-hidden="true"></span>Annotations
-              </label>
             </div>
             <div class="reader-settings-column">
-              <h2>Reading</h2>
               <label class="reader-setting-toggle" for="reader-offline">
                 <span>Offline reading</span>
                 <input id="reader-offline" class="reader-toggle-input" type="checkbox">
