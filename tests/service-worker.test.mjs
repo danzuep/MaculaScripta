@@ -39,7 +39,8 @@ function createWorker() {
       async open(name) {
         if (!cacheStorage.has(name)) cacheStorage.set(name, new MemoryCache());
         return cacheStorage.get(name);
-      }
+      },
+      async delete(name) { return cacheStorage.delete(name); }
     },
     self: {
       location: { origin: "https://example.test" },
@@ -55,7 +56,7 @@ function createWorker() {
     async fetchChapter(number) {
       let response;
       listeners.get("fetch")({
-        request: new Request(`https://example.test/MaculaScripta/nt-data/JHN/${number}.tsv`),
+        request: new Request(`https://example.test/MaculaScripta/nt-data/JHN/${number}.html`),
         respondWith(value) { response = value; }
       });
       return response;
@@ -83,26 +84,22 @@ function createWorker() {
   };
 }
 
-test("reader page and chapter caches keep three recent entries unless offline mode is enabled", async () => {
+test("reader pages and chapter fragments are cached only while offline mode is enabled", async () => {
   const worker = createWorker();
   for (let number = 1; number <= 4; number++) {
     await worker.fetchChapter(number);
     await worker.fetchPage(number);
   }
-  let cache = worker.cacheStorage.get("macula-scripta-v12-chapters");
-  assert.deepEqual((await cache.keys()).map((request) => request.url.split("/").at(-1)), ["2.tsv", "3.tsv", "4.tsv"]);
-  let pages = worker.cacheStorage.get("macula-scripta-v12-pages");
-  assert.deepEqual((await pages.keys()).map((request) => request.url.split("/").filter(Boolean).at(-1)), ["2", "3", "4"]);
+  assert.equal(worker.cacheStorage.get("macula-scripta-v13-reader")?.entries.size ?? 0, 0);
 
   await worker.setOfflineMode(true);
-  for (let number = 5; number <= 7; number++) {
+  for (let number = 1; number <= 4; number++) {
     await worker.fetchChapter(number);
     await worker.fetchPage(number);
   }
-  assert.equal((await cache.keys()).length, 6);
-  assert.equal((await pages.keys()).length, 6);
+  const cache = worker.cacheStorage.get("macula-scripta-v13-reader");
+  assert.equal((await cache.keys()).length, 8);
 
   await worker.setOfflineMode(false);
-  assert.deepEqual((await cache.keys()).map((request) => request.url.split("/").at(-1)), ["5.tsv", "6.tsv", "7.tsv"]);
-  assert.deepEqual((await pages.keys()).map((request) => request.url.split("/").filter(Boolean).at(-1)), ["5", "6", "7"]);
+  assert.equal(worker.cacheStorage.has("macula-scripta-v13-reader"), false);
 });
