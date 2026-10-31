@@ -142,12 +142,14 @@
             <h2 lang="grc">{{ .text }}</h2>
             <a class="reader-close" href="#_" aria-label="Close word details">×</a>
           </header>
+          <div class="reader-def-body">
           <p class="reader-def-ref">{{ .ref }}</p>
           <dl>
             {{ with index hugo.Data.greek_token_details $id }}<dt>part_of_speech</dt><dd>{{ .part_of_speech }}</dd>{{ end }}
             {{ with index hugo.Data.greek_lemma_definitions .lemma }}<dt>definition</dt><dd>{{ . }}</dd>{{ end }}
             {{ range $field, $value := . }}{{ if ne $value "" }}<dt>{{ $field }}</dt><dd>{{ $value }}</dd>{{ end }}{{ end }}
           </dl>
+          </div>
         </aside>
       {{- end -}}
     </div>

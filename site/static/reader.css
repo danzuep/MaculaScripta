@@ -54,9 +54,11 @@
 .reader-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1rem; }
 
 /* Details pane driven by the URL fragment. */
-.reader-def { display: none; position: fixed; z-index: 20; right: 1rem; bottom: 1rem; left: 1rem; max-width: 28rem; max-height: min(60dvh, 34rem); margin-left: auto; overflow: auto; padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 1rem; background: var(--card-bg); box-shadow: var(--panel-shadow); }
-.reader-def:target { display: block; }
-.reader-def-head { position: sticky; top: -1.25rem; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin: -1.25rem -1.25rem 0; padding: 0.25rem 0.5rem 0.25rem 1.25rem; background: var(--card-bg); }
+.reader-def { display: none; position: fixed; z-index: 20; right: 1rem; bottom: 1rem; left: 1rem; max-width: 28rem; max-height: min(60dvh, 34rem); margin-left: auto; overflow: hidden; padding: 0; border: 1px solid var(--border-color); border-radius: 1rem; background: var(--card-bg); box-shadow: var(--panel-shadow); }
+.reader-def:target { display: flex; flex-direction: column; }
+.reader-def-head { flex: none; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.5rem 0.5rem 0.25rem 1.25rem; }
+/* Only the body scrolls, so its scrollbar stops below the close button and above the rounded corners. */
+.reader-def-body { min-height: 0; overflow: auto; margin-bottom: 1rem; padding: 0 1.25rem 0 1.25rem; }
 .reader-close { flex: none; display: grid; place-items: center; min-width: 44px; min-height: 44px; font-size: 1.5rem; text-decoration: none; color: var(--text-muted); }
 .reader-def h2 { margin: 0; font: 1.65rem Georgia, serif; overflow-wrap: anywhere; }
 .reader-def-ref { margin: 0.25rem 0; color: var(--text-muted); overflow-wrap: anywhere; }
