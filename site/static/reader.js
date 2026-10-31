@@ -252,19 +252,13 @@
     schedulePositionSave();
   };
 
-  // Each chapter is its own static page; scrolling inserts that page's chapter section (text plus word-detail panes),
-  // with a heading and ids prefixed "<book>.<chapter>." so they stay unique within this page.
+  // Each chapter is its own static page; scrolling inserts that page's chapter section (text plus word-detail panes)
+  // under a heading. Ids are unique across chapters (verses are CODE.chapter.verse, words use the TSV xml:id).
   const fetchChapter = async (code, number) => {
     const response = await fetch(chapterPath(code, number));
     if (!response.ok) throw new Error(response.statusText);
     const section = new DOMParser().parseFromString(await response.text(), "text/html").querySelector(".reader-chapter");
     if (!section) throw new Error("chapter not found");
-    const prefix = `${code}.${number}.`;
-    for (const node of section.querySelectorAll("[id]")) node.id = prefix + node.id;
-    for (const link of section.querySelectorAll('a[href^="#"]')) {
-      const target = link.getAttribute("href").slice(1);
-      if (target && target !== "_") link.setAttribute("href", `#${prefix}${target}`);
-    }
     section.prepend(element("h2", { class: "reader-chapter-title", text: `${bookTitles.get(code) ?? code} ${number}` }));
     return document.adoptNode(section);
   };
@@ -340,7 +334,8 @@
 
   const copy = document.querySelector(".reader-copy");
   copy?.addEventListener("click", async () => {
-    const verse = document.getElementById(/^#([\w.]*\d)(?:!\d+)?$/.exec(location.hash)?.[1] ?? "");
+    const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    const verse = target?.dataset.verse ? document.getElementById(target.dataset.verse) : target;
     try {
       const chapter = main.querySelector(`.reader-chapter[data-book-code="${main.dataset.bookCode}"][data-chapter="${main.dataset.chapter}"]`);
       const plain = [...chapter.querySelectorAll(".verse-number a")].map((link) => link.dataset.text).join(" ");

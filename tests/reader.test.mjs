@@ -99,6 +99,8 @@ test("every chapter is a static page with one flowing paragraph and a pane per w
       assert.equal(count(markup, /<span class="?reader-token"?>/g), rows.length, key);
     }
     assert(!html.includes("data-chapter-url="), key);
+    const ids = [...html.matchAll(/ id="?([^" >]+)/g)].map((m) => m[1]);
+    assert.equal(new Set(ids).size, ids.length, `${key} has duplicate ids`);
   }
   assert.match(page("nt/JHN/21/index.html"), /Next chapter: Acts 1/);
   assert.match(page("nt/1JN/5/index.html"), /Next chapter: 2 John 1/);

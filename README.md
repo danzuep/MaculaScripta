@@ -41,7 +41,7 @@ no paragraph-break data).
 Reading is continuous in both directions: as the "Next chapter" link (or a sentinel above the
 text) nears the viewport, `reader.js` fetches the neighbouring chapter's page and
 inserts its chapter section, continuing into the next book going down and stopping at chapter 1 going up.
-Inserted chapters get a heading and ids prefixed `<book>.<chapter>.`; the link remains a plain
+Inserted chapters get a heading, and word ids are the TSV `xml:id`, so ids stay unique; the link remains a plain
 fallback link without JavaScript. `site/data/nt/catalog.yaml`
 lists the books and chapter counts.
 

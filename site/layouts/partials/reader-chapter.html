@@ -23,14 +23,14 @@
       {{- $position := index (split .ref "!") 1 -}}
       {{- if ne $verse $previous -}}
         {{- $previous = $verse -}}
-        <sup class="verse-number"><a id="{{ $verse }}" href="#{{ $verse }}" data-ref="{{ $code }}/{{ $number }}:{{ $verse }}" data-text="{{ trim ($verseText.Get (string $verse)) " " }}" aria-label="Chapter {{ $number }}, verse {{ $verse }}">{{ $verse }}</a></sup>
+        <sup class="verse-number"><a id="{{ $code }}.{{ $number }}.{{ $verse }}" href="#{{ $code }}.{{ $number }}.{{ $verse }}" data-ref="{{ $code }}/{{ $number }}:{{ $verse }}" data-text="{{ trim ($verseText.Get (string $verse)) " " }}" aria-label="Chapter {{ $number }}, verse {{ $verse }}">{{ $verse }}</a></sup>
       {{- end -}}
-      <span class="reader-token"><ruby class="reader-word"><a id="w{{ $verse }}!{{ $position }}" href="#{{ $verse }}!{{ $position }}" aria-label="{{ .text }}: {{ .gloss }}">{{ .text }}</a><rt class="rt-gloss" lang="en">{{ .gloss }}</rt><rt class="rt-mandarin" lang="zh-Hans">{{ .mandarin }}</rt></ruby>{{ trim .after " " }}</span>{{ " " }}
+      <span class="reader-token"><ruby class="reader-word"><a id="w{{ index . "xml:id" }}" href="#{{ index . "xml:id" }}" aria-label="{{ .text }}: {{ .gloss }}">{{ .text }}</a><rt class="rt-gloss" lang="en">{{ .gloss }}</rt><rt class="rt-mandarin" lang="zh-Hans">{{ .mandarin }}</rt></ruby>{{ trim .after " " }}</span>{{ " " }}
     {{- end -}}
   </p>
   {{- range $words }}
     {{- $verse := index (split (index (split .ref ":") 1) "!") 0 }}
-  <aside class="reader-def" id="{{ $verse }}!{{ index (split .ref "!") 1 }}" aria-label="Word details for {{ .text }}">
+  <aside class="reader-def" id="{{ index . "xml:id" }}" data-verse="{{ $code }}.{{ $number }}.{{ $verse }}" aria-label="Word details for {{ .text }}">
     <header class="reader-def-head">
       <h2 lang="{{ cond $hebrew "hbo" "grc" }}"{{ if $hebrew }} dir="rtl"{{ end }}>{{ .text }}</h2>
       <a class="reader-close" href="#_" aria-label="Close word details">×</a>
