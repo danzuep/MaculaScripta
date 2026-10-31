@@ -252,13 +252,21 @@
     schedulePositionSave();
   };
 
-  // Each chapter is a static HTML fragment (one <section>, with its word-detail panes) published by Hugo.
+  // Each chapter is its own static page; scrolling inserts that page's chapter section (text plus word-detail panes),
+  // with a heading and ids prefixed "<book>.<chapter>." so they stay unique within this page.
   const fetchChapter = async (code, number) => {
-    const response = await fetch(`${main.dataset.siteBase}${bookTestaments.get(code)}-data/${code}/${number}.html`);
+    const response = await fetch(chapterPath(code, number));
     if (!response.ok) throw new Error(response.statusText);
-    const template = document.createElement("template");
-    template.innerHTML = await response.text();
-    return template.content.firstElementChild;
+    const section = new DOMParser().parseFromString(await response.text(), "text/html").querySelector(".reader-chapter");
+    if (!section) throw new Error("chapter not found");
+    const prefix = `${code}.${number}.`;
+    for (const node of section.querySelectorAll("[id]")) node.id = prefix + node.id;
+    for (const link of section.querySelectorAll('a[href^="#"]')) {
+      const target = link.getAttribute("href").slice(1);
+      if (target && target !== "_") link.setAttribute("href", `#${prefix}${target}`);
+    }
+    section.prepend(element("h2", { class: "reader-chapter-title", text: `${bookTitles.get(code) ?? code} ${number}` }));
+    return document.adoptNode(section);
   };
 
   // Infinite scroll: the "next chapter" link doubles as the sentinel; as it nears the viewport the following

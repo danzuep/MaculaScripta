@@ -1,5 +1,5 @@
-const shellCacheName = "macula-scripta-v13-shell";
-const readerCacheName = "macula-scripta-v13-reader";
+const shellCacheName = "macula-scripta-v14-shell";
+const readerCacheName = "macula-scripta-v14-reader";
 let offlineMode = false;
 
 self.addEventListener("install", (event) => {
@@ -22,7 +22,7 @@ self.addEventListener("activate", (event) => {
   })());
 });
 
-// Pages and chapter fragments are cached for offline reading only while offline mode is on.
+// Reader pages are cached for offline reading only while offline mode is on.
 self.addEventListener("message", (event) => {
   if (event.data?.type !== "SET_OFFLINE_MODE") return;
   offlineMode = Boolean(event.data.enabled);
@@ -44,7 +44,7 @@ self.addEventListener("message", (event) => {
   })());
 });
 
-const isChapterData = (url) => /\/(?:nt|ot)-data\/[A-Z0-9]{3}\/\d+\.html$/.test(url.pathname);
+const isChapterData = (url) => /\/(?:nt|ot)\/[A-Z0-9]{3}\/(?:\d+\/)?$/.test(url.pathname);
 
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET" || new URL(event.request.url).origin !== self.location.origin) return;
