@@ -1,6 +1,6 @@
 # MaculaScripta
 
-MaculaScripta is a Hugo Greek New Testament reader with a .NET 10 foundation for Git-native translation overlays aligned to Macula Greek tokens.
+MaculaScripta is a Hugo Greek New Testament and Hebrew Old Testament reader with Git-native translation overlays aligned to Macula Greek tokens.
 
 ## Projects
 
