@@ -184,6 +184,13 @@
       const link = event.target.closest("a[href]");
       if (!link) return;
       setMode(null);
+      // Re-selecting the open chapter would reload the page and restore a scroll offset that included the panel, so jump in place instead.
+      if (new URL(link.href).pathname === globalThis.location.pathname) {
+        event.preventDefault();
+        const target = main.querySelector(`.reader-chapter[data-book-code="${main.dataset.bookCode}"][data-chapter="${main.dataset.chapter}"]`);
+        globalThis.scrollTo(0, target ? target.getBoundingClientRect().top + globalThis.scrollY - 8 : 0);
+        return;
+      }
       try { sessionStorage.setItem("macula-scripta-reader-navigation", new URL(link.href).pathname); } catch { /* resume remains available next visit */ }
     });
   }
