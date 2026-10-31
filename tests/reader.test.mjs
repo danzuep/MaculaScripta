@@ -24,8 +24,8 @@ for (const line of tsv.slice(1)) {
 }
 const built = hasData && existsSync(root("site/public/nt-data/JHN/1.tsv"));
 
-function runScript(stored = new Map(), storageUnavailable = false) {
-  const theme = { value: "", events: {}, addEventListener(name, handler) { this.events[name] = handler; } };
+function runScript(stored = new Map(), storageUnavailable = false, systemLight = false) {
+  const theme = { checked: false, events: {}, addEventListener(name, handler) { this.events[name] = handler; } };
   const document = {
     documentElement: { dataset: {} },
     addEventListener() {},
@@ -40,6 +40,7 @@ function runScript(stored = new Map(), storageUnavailable = false) {
       getItem(key) { if (storageUnavailable) throw new Error("blocked"); return stored.get(key); },
       setItem(key, value) { if (storageUnavailable) throw new Error("blocked"); stored.set(key, value); }
     },
+    matchMedia: () => ({ matches: systemLight }),
     navigator: { serviceWorker: {
       register(url) { workerUrl = url; return Promise.resolve(); },
       ready: Promise.resolve({ active: { postMessage() {} } }),
@@ -52,16 +53,20 @@ function runScript(stored = new Map(), storageUnavailable = false) {
 
 test("theme preference is restored, saved, and tolerates blocked storage", () => {
   const app = runScript(new Map([["macula-scripta-theme", "light"]]));
-  assert.equal(app.theme.value, "light");
+  assert.equal(app.theme.checked, false);
   assert.equal(app.document.documentElement.dataset.theme, "light");
-  app.theme.value = "dark";
+  app.theme.checked = true;
   app.theme.events.change();
   assert.equal(app.stored.get("macula-scripta-theme"), "dark");
   assert.equal(app.workerUrl(), "/MaculaScripta/sw.js");
   const blocked = runScript(new Map(), true);
-  blocked.theme.value = "light";
+  blocked.theme.checked = false;
   blocked.theme.events.change();
   assert.equal(blocked.document.documentElement.dataset.theme, "light");
+  const system = runScript(new Map(), false, true);
+  assert.equal(system.theme.checked, false);
+  assert.equal(system.document.documentElement.dataset.theme, "light");
+  assert.equal(runScript().theme.checked, true);
 });
 
 test("the TSV covers every catalog chapter", { skip: noData }, () => {

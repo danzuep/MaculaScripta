@@ -45,6 +45,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#0f172a">
     <title>{{ $book.title }} {{ $chapterNumber }} · {{ .Site.Title }}</title>
+    <script>(function(){var t;try{t=localStorage.getItem("macula-scripta-theme")}catch(e){}if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";document.documentElement.dataset.theme=t})()</script>
     <link rel="manifest" href="{{ "manifest.webmanifest" | relURL }}">
     <link rel="stylesheet" href="{{ "styles.css" | relURL }}">
     <link rel="stylesheet" href="{{ "reader.css" | relURL }}">
@@ -89,14 +90,12 @@
                   <option value="none">None</option>
                 </select>
               </label>
-              <label class="reader-setting-row" for="reader-theme">Appearance
-                <select id="reader-theme">
-                  <option value="dark">Dark</option>
-                  <option value="light">Light</option>
-                </select>
-              </label>
             </div>
             <div class="reader-settings-column">
+              <label class="reader-setting-toggle" for="reader-theme">
+                <span>Night mode</span>
+                <input id="reader-theme" class="reader-toggle-input" type="checkbox">
+              </label>
               <label class="reader-setting-toggle" for="reader-offline">
                 <span>Offline reading</span>
                 <input id="reader-offline" class="reader-toggle-input" type="checkbox">
@@ -111,6 +110,7 @@
         </section>
       </section>
     <div class="reader-layout">
+      <div class="reader-prev-sentinel" aria-hidden="true"></div>
       <main id="reader" aria-label="{{ $book.title }} Greek text" tabindex="-1" data-book-code="{{ $code }}" data-book-title="{{ $book.title }}" data-chapter="{{ $chapterNumber }}" data-data-url="{{ "nt-data/" | relURL }}" data-reader-base="{{ "nt/" | relURL }}" data-catalog="{{ range $index, $entry := hugo.Data.nt.catalog }}{{ if $index }} {{ end }}{{ $entry.code }}:{{ $entry.chapters }}{{ end }}"{{ if not $preloaded }} data-chapter-url="{{ printf "nt-data/%s/%d.tsv" $code $chapterNumber | relURL }}" data-book="{{ $book.title }}"{{ end }}>
         {{ if $preloaded }}
           <section class="reader-chapter" aria-label="Chapter {{ $chapterNumber }}" data-book-code="{{ $code }}" data-chapter="{{ $chapterNumber }}">
