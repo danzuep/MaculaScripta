@@ -56,10 +56,9 @@
       <h1 class="reader-book-title" id="reader-book-title">{{ $book.title }} {{ $chapterNumber }}</h1>
       <div class="reader-picker-bar-wrap">
         <div class="reader-picker-bar">
-          <button type="button" class="reader-picker-index" aria-controls="reader-picker-panel" aria-expanded="false">
-            Choose book and chapter
-          </button>
-          <button type="button" class="reader-settings-switch" aria-label="Open reader settings" aria-controls="reader-settings-view" aria-expanded="false">
+          <button type="button" class="reader-picker-index" id="reader-picker-reference" aria-controls="reader-picker-panel" aria-expanded="false">{{ $book.title }} {{ $chapterNumber }}</button>
+          <button type="button" class="reader-copy" data-text="{{ $plain }}" aria-label="Copy plain Greek text" title="Copy plain text (the selected verse, if any)"><span aria-hidden="true">⧉</span></button>
+          <button type="button" class="reader-settings-switch" aria-label="Reader settings" aria-controls="reader-settings-view" aria-expanded="false">
             <span aria-hidden="true">⋯</span>
           </button>
         </div>
@@ -101,7 +100,6 @@
                 <input type="checkbox" id="reader-ruby" class="reader-ruby-input" checked>
                 <span class="reader-switch-track" aria-hidden="true"></span>Annotations
               </label>
-              <button type="button" class="reader-copy" data-text="{{ $plain }}" aria-label="Copy plain Greek text" title="Copy plain text (the selected verse, if any)">⧉ <span>Copy</span></button>
             </div>
             <div class="reader-settings-column">
               <h2>Reading</h2>
