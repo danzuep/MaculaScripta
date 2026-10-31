@@ -49,8 +49,10 @@
 .reader-token { display: inline-block; max-width: 100%; overflow-wrap: anywhere; }
 .reader-word { ruby-position: over; }
 .reader-word rt { padding-bottom: 0.35em; color: var(--english-color); font-size: 0.6em; line-height: normal; white-space: nowrap; }
-.reader-word rt.rt-mandarin { display: none; }
-:root:has(#reader-annotation option[value="mandarin"]:checked) .rt-gloss { display: none; }
+.reader-word rt.rt-mandarin, .reader-word rt.rt-translit { display: none; }
+:root:has(#reader-annotation option[value="mandarin"]:checked) .rt-gloss,
+:root:has(#reader-annotation option[value="translit"]:checked) .rt-gloss { display: none; }
+:root:has(#reader-annotation option[value="translit"]:checked) .rt-translit { display: ruby-text; }
 :root:has(#reader-annotation option[value="mandarin"]:checked) .rt-mandarin { display: ruby-text; }
 .reader-word a { color: var(--text-primary); text-decoration: none; }
 .reader-word a:hover, .reader-word a:focus-visible { text-decoration: underline; text-decoration-color: var(--greek-color); outline: none; }

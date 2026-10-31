@@ -25,7 +25,7 @@
         {{- $previous = $verse -}}
         <sup class="verse-number"><a id="{{ $code }}.{{ $number }}.{{ $verse }}" href="#{{ $code }}.{{ $number }}.{{ $verse }}" data-ref="{{ $code }}/{{ $number }}:{{ $verse }}" data-text="{{ trim ($verseText.Get (string $verse)) " " }}" aria-label="Chapter {{ $number }}, verse {{ $verse }}">{{ $verse }}</a></sup>
       {{- end -}}
-      <span class="reader-token"><ruby class="reader-word"><a id="w{{ index . "xml:id" }}" href="#{{ index . "xml:id" }}" aria-label="{{ .text }}: {{ .gloss }}">{{ .text }}</a><rt class="rt-gloss" lang="en">{{ .gloss }}</rt><rt class="rt-mandarin" lang="zh-Hans">{{ .mandarin }}</rt></ruby>{{ trim .after " " }}</span>{{ " " }}
+      <span class="reader-token"><ruby class="reader-word"><a id="w{{ index . "xml:id" }}" href="#{{ index . "xml:id" }}" aria-label="{{ .text }}: {{ .gloss }}">{{ .text }}</a><rt class="rt-gloss" lang="en">{{ .gloss }}</rt><rt class="rt-mandarin" lang="zh-Hans">{{ .mandarin }}</rt>{{ if $hebrew }}<rt class="rt-translit" lang="hbo-Latn">{{ .transliteration }}</rt>{{ else }}<rt class="rt-translit" lang="grc-Latn" data-greek></rt>{{ end }}</ruby>{{ trim .after " " }}</span>{{ " " }}
     {{- end -}}
   </p>
   {{- range $words }}
