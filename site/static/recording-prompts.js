@@ -5,7 +5,6 @@
 
 export const minWords = 2;
 export const maxWords = 3;
-export const topLemmaCount = 2000;
 const secondsPerSyllable = 0.35;
 const secondsPerPrompt = 2.5;
 
@@ -181,11 +180,6 @@ export function buildPromptSet(tokens) {
   }
   flush();
 
-  // Top lemmas by frequency (ties by first appearance), counted over the retained words only.
-  const lemmaCounts = new Map();
-  for (const word of segments.flat()) lemmaCounts.set(word.lemma, (lemmaCounts.get(word.lemma) ?? 0) + 1);
-  const topLemmas = new Set([...lemmaCounts].sort((a, b) => b[1] - a[1]).slice(0, topLemmaCount).map(([lemma]) => lemma));
-
   const targetIds = new Map();
   const targetNames = [];
   const targetId = (name) => {
@@ -207,7 +201,7 @@ export function buildPromptSet(tokens) {
         if (candidates.has(phrase)) continue;
         const phones = group.flatMap((word) => word.phones);
         const diphones = diphonesOf(phones);
-        const lemmas = group.map((word) => word.lemma).filter((lemma) => topLemmas.has(lemma));
+        const lemmas = group.map((word) => word.lemma);
         candidates.set(phrase, {
           phrase, phones, diphones, words: size, order: candidates.size,
           targets: [...new Set([...diphones.map((name) => targetId(`d:${name}`)), ...lemmas.map((name) => targetId(`l:${name}`))])]
@@ -245,7 +239,7 @@ export function buildPromptSet(tokens) {
 // non-proper-noun tokens is covered. Phrases only qualify when they repeat, so they pay for themselves.
 export const cardSecondsBase = 2;
 export const cardSecondsPerWord = 0.7;
-export const coverageTarget = 0.99;
+export const coverageTarget = 1;
 const gospels = ["MAT", "MRK", "LUK", "JHN"];
 
 const cardSeconds = (words) => cardSecondsBase + cardSecondsPerWord * words;
@@ -305,7 +299,8 @@ export function buildCoveragePlan(tokens, { target = coverageTarget, unit = "lem
       return fresh;
     };
     let have = words.reduce((sum, word) => sum + (word.book === book && covered[word.id] ? 1 : 0), 0);
-    const before = (a, b) => a.score !== b.score ? a.score > b.score : a.entry.size < b.entry.size;
+    const before = (a, b) => a.score !== b.score ? a.score > b.score
+      : a.entry.size !== b.entry.size ? a.entry.size < b.entry.size : a.entry.key < b.entry.key;
     const heap = new Heap(before);
     for (const entry of candidatesByBook.get(book)) heap.push({ entry, score: gainOf(entry).size / cardSeconds(entry.size) });
     const picked = [];
