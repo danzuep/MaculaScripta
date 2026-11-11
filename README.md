@@ -136,8 +136,8 @@ Cards use icon buttons ⏮ ● ▶ ⏭: hold ● to record and release to save, 
 recording; ⏮ and ⏭ always step exactly one card. The ● turns grey once a card has a recording but can still re-record.
 The listen panel shows each verse in Greek with its English gloss. Double-click or long-press a verse to open its
 grammar dialog: **Order** mode has ← → arrows and drag-and-drop (`grammar-order.js` learns rules applied via MACULA
-roles, cases and moods) and **Playback** mode swaps them for ● record and ▶ play. ∅ on a card or word leaves it unspoken.
-Settings lists recorded words newest first (searchable, paginated, with re-record) and has a collapsed
+roles, cases and moods) and **Playback** mode lists every word separately with ● record and ▶ play, plus a button to play the whole verse. ∅ on a card or word leaves it unspoken.
+Settings lists recorded words oldest first (searchable, paginated, with re-record) and has a collapsed
 **Clear all saved data** section that erases recordings, state, cookies and caches after two confirmations.
 Clips are kept in IndexedDB; export writes ZIPs of `manifest.json` plus `clips/`, and import merges them without
 overwriting existing clips. Regenerate data with `node scripts/generate-recording-plan.mjs <macula TSV>`.

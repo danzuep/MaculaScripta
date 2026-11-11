@@ -472,9 +472,29 @@ function openGrammar(verse) {
     status.textContent = grammarMode === "order"
       ? (state.seedOrders[verse.verse] ? "✓ Order saved" : "Drag the chunks into your language's order.")
       : "Hold ● to record a word, ▶ to hear it.";
+    const verseLemmas = playbackLemmas(verse.words, state.rules, order, state.unspoken);
+    $("#grammar-play-verse").disabled = !verseLemmas.length || !verseLemmas.every((lemma) => clips.has(lemma));
+    if (grammarMode === "playback") {
+      list.replaceChildren(...order.flatMap((chunkIndex) => chunks[chunkIndex].words).filter((word) => !isProperNoun(word) && !state.unspoken[word.lemma]).map((word) => {
+        const item = el("li", undefined, { className: "grammar-chunk grammar-word-row" });
+        const record = iconButton("\u25CF", `Hold to record ${word.surface}`, `chunk-side record-hold${clips.has(word.lemma) ? " has-clip" : ""}`);
+        attachHold(record, {
+          lemma: () => word.lemma,
+          onState: (text) => { status.textContent = text; },
+          onSaved: () => { renderAfterChange(); draw(); }
+        });
+        const play = iconButton("\u25B6", `Play ${word.surface}`, "chunk-side", () => playBlobs([clips.get(word.lemma).blob]));
+        play.disabled = !clips.has(word.lemma);
+        const body = el("div", undefined, { className: "grammar-body" });
+        body.append(el("span", word.surface, { lang: "grc", className: "grammar-words" }), el("small", word.gloss && word.gloss !== "-" ? word.gloss : ""));
+        item.append(record, body, play);
+        return item;
+      }));
+      return;
+    }
     list.replaceChildren(...order.map((chunkIndex, position) => {
       const chunk = chunks[chunkIndex];
-      const item = el("li", undefined, { draggable: grammarMode === "order", className: "grammar-chunk" });
+      const item = el("li", undefined, { draggable: true, className: "grammar-chunk" });
       const speakable = chunk.words.filter((word) => !isProperNoun(word));
       const allOff = speakable.length > 0 && speakable.every((word) => state.unspoken[word.lemma]);
       item.classList.toggle("unspoken", allOff);
@@ -496,32 +516,14 @@ function openGrammar(verse) {
         }
         wordList.append(wordNode);
       }
-      const spoken = speakable.filter((word) => !state.unspoken[word.lemma]);
-      const target = spoken.find((word) => !clips.has(word.lemma)) ?? spoken[0];
-      let left;
-      let right;
-      if (grammarMode === "order") {
-        left = iconButton("←", "Move earlier", "chunk-side", () => move(position, position - 1));
-        right = iconButton("→", "Move later", "chunk-side", () => move(position, position + 1));
-        left.disabled = position === 0;
-        right.disabled = position === order.length - 1;
-      } else {
-        left = iconButton("\u25CF", target ? `Hold to record ${target.surface}` : "Nothing to record", "chunk-side record-hold", undefined);
-        left.disabled = !target;
-        left.classList.toggle("has-clip", Boolean(target && clips.has(target.lemma)));
-        attachHold(left, {
-          lemma: () => target?.lemma,
-          onState: (text) => { status.textContent = text; },
-          onSaved: () => { renderAfterChange(); draw(); }
-        });
-        const played = spoken.filter((word) => clips.has(word.lemma));
-        right = iconButton("\u25B6", "Play this card", "chunk-side", () => playBlobs(played.map((word) => clips.get(word.lemma).blob)));
-        right.disabled = played.length === 0;
-      }
+      const left = iconButton("←", "Move earlier", "chunk-side", () => move(position, position - 1));
+      const right = iconButton("→", "Move later", "chunk-side", () => move(position, position + 1));
+      left.disabled = position === 0;
+      right.disabled = position === order.length - 1;
       const body = el("div", undefined, { className: "grammar-body" });
       body.append(wordList, el("small", chunk.words.map((word) => word.gloss).filter(Boolean).join(" ")), el("small", chunk.slot, { className: "grammar-slot" }));
       item.append(left, body, right);
-      if (grammarMode === "order") {
+      {
         item.addEventListener("dragstart", (event) => event.dataTransfer.setData("text/plain", String(position)));
         item.addEventListener("dragover", (event) => event.preventDefault());
         item.addEventListener("drop", (event) => {
@@ -533,6 +535,8 @@ function openGrammar(verse) {
     }));
   }
 
+  $("#grammar-play-verse").onclick = () => playBlobs(playbackLemmas(verse.words, state.rules, order, state.unspoken).map((lemma) => clips.get(lemma).blob));
+  $("#grammar-close").onclick = () => dialog.close();
   $("#grammar-confirm").onclick = commit;
   $("#grammar-reset").onclick = async () => {
     order = chunks.map((_, index) => index);
@@ -574,10 +578,10 @@ function renderSettings() {
   const query = $("#word-search").value.trim().toLowerCase();
   const rows = [...clips].map(([lemma, clip]) => ({ lemma, gloss: glosses.get(lemma) ?? "", saved: clip.saved ?? 0 }))
     .filter((row) => !query || row.lemma.toLowerCase().includes(query) || row.gloss.toLowerCase().includes(query))
-    .sort((a, b) => b.saved - a.saved || a.lemma.localeCompare(b.lemma));
+    .sort((a, b) => a.saved - b.saved || a.lemma.localeCompare(b.lemma));
   const pages = Math.max(1, Math.ceil(rows.length / pageSize));
   settingsPage = Math.min(settingsPage, pages - 1);
-  $("#word-summary").textContent = `${rows.length} recorded word${rows.length === 1 ? "" : "s"}, newest first.`;
+  $("#word-summary").textContent = `${rows.length} recorded word${rows.length === 1 ? "" : "s"}, oldest first.`;
   $("#word-page").textContent = `Page ${settingsPage + 1} of ${pages}`;
   $("#word-prev").disabled = settingsPage === 0;
   $("#word-next").disabled = settingsPage >= pages - 1;

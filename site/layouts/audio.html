@@ -95,17 +95,18 @@
         <ul id="listen-list" class="listen-list"></ul>
       </section>
       <dialog id="grammar-dialog" class="grammar-dialog" aria-labelledby="grammar-title">
+        <button type="button" id="grammar-close" class="dialog-close" aria-label="Close" title="Close">✕</button>
         <h2 id="grammar-title"></h2>
         <p role="radiogroup" aria-label="Mode">
           <label><input type="radio" name="grammar-mode" value="order"> Order</label>
           <label><input type="radio" name="grammar-mode" value="playback"> Playback</label>
         </p>
+        <p><button type="button" id="grammar-play-verse">▶ Play whole verse</button></p>
         <p id="grammar-status" role="status"></p>
         <ol id="grammar-chunks" class="grammar-chunks"></ol>
         <form method="dialog">
           <button type="button" id="grammar-confirm">This order is right</button>
           <button type="button" id="grammar-reset">Reset to Greek order</button>
-          <button>Close</button>
         </form>
       </dialog>
       <noscript><p>Enable JavaScript to record audio.</p></noscript>
