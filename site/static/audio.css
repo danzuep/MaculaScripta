@@ -1,0 +1,21 @@
+.audio { max-width: 52rem; margin: 0 auto; padding: 1rem; }
+.crumbs { display: flex; flex-wrap: wrap; gap: .25rem .75rem; list-style: none; margin: .75rem 0 0; padding: 0; }
+.crumbs a { text-decoration: none; padding: .2rem .5rem; border-radius: .4rem; }
+.crumbs a[aria-current="step"] { font-weight: 700; text-decoration: underline; }
+.crumbs .done a { color: #15803d; }
+.recorder { border: 1px solid #94a3b8; border-radius: .75rem; padding: 1rem; margin: 1rem 0; text-align: center; }
+.recorder-greek { font-size: 3rem; margin: .5rem 0; }
+.recorder-gloss { font-size: 1.2rem; margin: 0; }
+.recorder-count, .recorder-note, .recorder-status { margin: .4rem 0; font-size: .9rem; }
+.recorder-actions { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; }
+.recorder-actions button, .grammar-chunk button, .listen-list button { min-height: 2.5rem; padding: 0 .9rem; }
+.grammar-sample { border-top: 1px solid #94a3b8; padding-top: .5rem; }
+.grammar-chunks { display: flex; flex-wrap: wrap; gap: .5rem; list-style: none; padding: 0; }
+.grammar-chunk { display: flex; flex-direction: column; gap: .2rem; border: 1px solid #64748b; border-radius: .5rem; padding: .5rem; cursor: grab; }
+.grammar-chunk span { font-size: 1.3rem; }
+.grammar-slot { opacity: .7; }
+.listen-list { list-style: none; padding: 0; }
+.listen-list li { display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem; padding: .4rem 0; border-bottom: 1px solid #cbd5e1; }
+.listen-list .playing { background: #dbeafe; }
+.listen-list .incomplete { opacity: .65; }
+.listen-order { flex-basis: 100%; }

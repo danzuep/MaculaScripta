@@ -9,7 +9,7 @@ MaculaScripta is a Hugo Greek New Testament and Hebrew Old Testament reader with
 - `source/protos/macula_scripta.proto` is a proposed gRPC contract, not used by the reader or either C# project. There is deliberately no `Grpc.Tools` project or generated client/server until an actual transport implementation needs it.
 - `data/macula-greek` is the pinned [Macula Greek](https://github.com/Clear-Bible/macula-greek) Git submodule.
 - `data/macula-hebrew` is the pinned [Macula Hebrew](https://github.com/Clear-Bible/macula-hebrew) Git submodule (Old Testament, `/ot/`, rendered the same way, right-to-left).
-- `site/` is the Hugo reader, with the original overlay editor and recorder at `/demo/`.
+- `site/` is the Hugo reader, with the original overlay editor and recorder at `/john-1-1/` and the audio workflow at `/audio/`.
 
 Build the C# projects with:
 
@@ -27,7 +27,7 @@ source metadata, hovering shows a gloss tooltip, a switch hides the ruby
 annotations, and a copy button copies the plain Greek text.
 Glosses are word-level aids, not a running Bible translation. The reader reuses
 the workbench's light/dark CSS. The existing John 1:1 workbench remains available
-at `/demo/` and `/john-1-1/`.
+at `/john-1-1/`.
 
 There is no import step and no generated data is committed. `site/hugo.toml` mounts
 `data/macula-greek/SBLGNT/tsv` (the git submodule) as Hugo assets, and
@@ -128,9 +128,20 @@ rendered as Ruby text above Cantonese translation blocks.
 
 Use `MaculaBaseToken.DataAttribution` when publishing Macula identifiers.
 
+## Audio workflow
+
+`/audio/` (formerly `/demo/`) walks through five breadcrumb steps: Language, Sample verses
+(record JHN 3:16, MRK 1:15, 1:17, 10:45 and 12:30), Grammar (drag each verse's chunks into the
+target order; `grammar-order.js` learns rules applied via MACULA roles, cases and moods),
+Books (one lemma card at a time, quickest book first, from `recording-plan.json`) and Export.
+Completed verses can be played back at any time. Clips are kept in IndexedDB; export writes
+ZIPs of `manifest.json` plus `clips/`, and import merges them without overwriting existing clips.
+Regenerate data with `node scripts/generate-recording-plan.mjs <macula TSV>` and
+`node scripts/generate-audio-seeds.mjs <macula TSV>`.
+
 ## Unified language workbench
 
-The `/demo/` page combines the John 1:1 transformation, editable John 1:1–5
+The `/john-1-1/` page combines the John 1:1 transformation, editable John 1:1–5
 translations, and the field recorder in one workspace. Existing `john-1-1/`
 links open the same workspace through a shared Hugo partial.
 

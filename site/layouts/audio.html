@@ -1,0 +1,93 @@
+{{- /* Per-book compact [verse, surface, lemma, pos, type, role, gloss, case, mood] rows, so the listen panel can show every verse of a book. */ -}}
+{{- $data := partial "testament-data.html" "nt" -}}
+{{- $column := dict -}}
+{{- range $index, $name := $data.fields -}}{{- $column = merge $column (dict $name $index) -}}{{- end -}}
+{{- $booksUrl := "" -}}
+{{- range partial "testament-catalog.html" "nt" -}}
+  {{- $code := .code -}}
+  {{- $rows := slice -}}
+  {{- range seq .chapters -}}
+    {{- range index $data.chapters (printf "%s/%d" $code .) -}}
+      {{- $rows = $rows | append (slice (dict "r" (slice (index . $column.ref) (index . $column.text) (index . $column.lemma) (index . $column.class) (index . $column.type) (index . $column.role) (index . $column.english) (index . $column.case) (index . $column.mood)))) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $file := resources.FromString (printf "audio/books/%s.json" $code) ((apply $rows "index" "." "r") | jsonify) -}}
+  {{- $booksUrl = $file.RelPermalink | replaceRE "[A-Z0-9]+\\.json$" "" -}}
+{{- end -}}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0f172a">
+    <title>Audio · {{ .Site.Title }}</title>
+    <link rel="manifest" href="{{ "manifest.webmanifest" | relURL }}">
+    <link rel="stylesheet" href="{{ "styles.css" | relURL }}">
+    <link rel="stylesheet" href="{{ "audio.css" | relURL }}">
+    <script type="module" src="{{ "audio.js" | relURL }}"></script>
+  </head>
+  <body>
+    <header class="workspace-header">
+      <div class="brand-row">
+        <a class="brand" href="{{ .Site.Home.RelPermalink }}">MaculaScripta<span>Language workbench</span></a>
+        <span class="local-badge">Runs in your browser · Works offline</span>
+      </div>
+      <h1>Audio</h1>
+      <p class="workspace-intro">Say each Greek word in your language, show how your grammar orders a few sample verses, then record a book at a time. Recordings stay on this device until you export them.</p>
+      <nav aria-label="Workflow"><ol id="crumbs" class="crumbs"></ol></nav>
+    </header>
+    <main id="audio" class="audio" data-plan="{{ "recording-plan.json" | relURL }}" data-seeds="{{ "audio-seeds.json" | relURL }}" data-books="{{ $booksUrl }}">
+      <p id="audio-status" role="status">Loading…</p>
+
+      <section id="step-language" hidden>
+        <h2>1. Language</h2>
+        <p><label for="language-name">Name of the language you will record in </label><input id="language-name" type="text" autocomplete="off"></p>
+        <p><a href="#seed">Next: record the sample verses</a></p>
+      </section>
+
+      <section id="step-seed" hidden>
+        <h2>2. Sample verses</h2>
+        <p>Record the words of John 3:16 and Mark 1:15, 1:17, 10:45 and 12:30. Proper names keep their original audio.</p>
+        <div id="seed-recorder" class="recorder" hidden></div>
+        <p><a href="#grammar">Next: map the grammar</a></p>
+      </section>
+
+      <section id="step-grammar" hidden>
+        <h2>3. Grammar</h2>
+        <p>Drag the chunks of each sample verse (or use the arrows) into the order your language uses. MACULA's roles, cases and moods then carry that order across the whole New Testament.</p>
+        <p id="grammar-summary" role="status"></p>
+        <div id="grammar-samples"></div>
+        <p><a href="#books">Next: record the books</a></p>
+      </section>
+
+      <section id="step-books" hidden>
+        <h2>4. Books</h2>
+        <p><label for="book-select">Book </label><select id="book-select"></select></p>
+        <p id="book-progress" role="status"></p>
+        <div id="book-recorder" class="recorder" hidden></div>
+        <p><a href="#export">Next: export</a></p>
+      </section>
+
+      <section id="step-export" hidden>
+        <h2>5. Export</h2>
+        <p id="export-summary"></p>
+        <p><button type="button" id="export-button">Export ZIP</button></p>
+        <h3>Import (optional)</h3>
+        <p><label for="import-file">Add recordings from an earlier export </label><input id="import-file" type="file" accept=".zip,application/zip" multiple></p>
+        <p id="export-status" role="status"></p>
+      </section>
+
+      <section id="listen" hidden>
+        <h2>Listen</h2>
+        <p>
+          <select id="listen-chapter" aria-label="Chapter"></select>
+          <label><input type="checkbox" id="listen-complete"> Only verses ready to play</label>
+          <button type="button" id="listen-stop">Stop</button>
+        </p>
+        <p id="listen-summary" role="status"></p>
+        <ul id="listen-list" class="listen-list"></ul>
+      </section>
+      <noscript><p>Enable JavaScript to record audio.</p></noscript>
+    </main>
+  </body>
+</html>
