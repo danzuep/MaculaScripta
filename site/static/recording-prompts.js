@@ -246,12 +246,13 @@ export function buildPromptSet(tokens) {
 export const cardSecondsBase = 2;
 export const cardSecondsPerWord = 0.7;
 export const coverageTarget = 0.99;
+const gospels = ["MAT", "MRK", "LUK", "JHN"];
 
 const cardSeconds = (words) => cardSecondsBase + cardSecondsPerWord * words;
 const cardKey = (surface) => surface.normalize("NFC").toLowerCase();
 
 // unit "lemma" (default): one card per dictionary form covers all its inflections; "surface": one card per exact form.
-export function buildCoveragePlan(tokens, { target = coverageTarget, unit = "lemma", firstBooks = ["MRK", "MAT", "LUK", "JHN"] } = {}) {
+export function buildCoveragePlan(tokens, { target = coverageTarget, unit = "lemma" } = {}) {
   const words = [];
   const segments = [];
   let segment = [];
@@ -278,7 +279,6 @@ export function buildCoveragePlan(tokens, { target = coverageTarget, unit = "lem
   }
   flush();
   const appearance = [...new Set(words.map((word) => word.book))];
-  const bookOrder = [...firstBooks.filter((book) => appearance.includes(book)), ...appearance.filter((book) => !firstBooks.includes(book))];
 
   const occurrences = new Map();
   for (const group of segments) {
@@ -294,27 +294,22 @@ export function buildCoveragePlan(tokens, { target = coverageTarget, unit = "lem
   }
   const candidates = [...occurrences.values()].filter((entry) => entry.size === 1 || entry.spans.length > 1);
 
-  // Books are finished in turn: each is covered to the target using the cards already recorded for earlier books.
-  const covered = new Uint8Array(words.length);
-  const cards = [];
-  const stages = [];
-  let seconds = 0;
-  for (const book of bookOrder) {
-    const own = words.filter((word) => word.book === book);
-    const goal = Math.ceil(own.length * target);
-    let have = own.filter((word) => covered[word.id]).length;
+  // Covers `book` to the target given what is already `covered` (updated in place); returns the picked cards.
+  const candidatesByBook = new Map(appearance.map((book) => [book, []]));
+  for (const entry of candidates) for (const book of new Set(entry.spans.map((span) => span[0].book))) candidatesByBook.get(book).push(entry);
+  const planBook = (book, covered) => {
+    const goal = Math.ceil(words.filter((word) => word.book === book).length * target);
     const gainOf = (entry) => {
       const fresh = new Set();
       for (const span of entry.spans) for (const word of span) if (word.book === book && !covered[word.id]) fresh.add(word.id);
       return fresh;
     };
+    let have = words.reduce((sum, word) => sum + (word.book === book && covered[word.id] ? 1 : 0), 0);
     const before = (a, b) => a.score !== b.score ? a.score > b.score : a.entry.size < b.entry.size;
     const heap = new Heap(before);
-    for (const entry of candidates) {
-      if (!entry.spans.some((span) => span[0].book === book)) continue;
-      heap.push({ entry, score: gainOf(entry).size / cardSeconds(entry.size) });
-    }
-    let added = 0;
+    for (const entry of candidatesByBook.get(book)) heap.push({ entry, score: gainOf(entry).size / cardSeconds(entry.size) });
+    const picked = [];
+    let time = 0;
     while (heap.size && have < goal) {
       const { entry } = heap.pop();
       const fresh = gainOf(entry);
@@ -327,20 +322,40 @@ export function buildCoveragePlan(tokens, { target = coverageTarget, unit = "lem
       have += fresh.size;
       // A recorded card also fills every other occurrence in the New Testament.
       for (const span of entry.spans) for (const word of span) covered[word.id] = 1;
-      seconds += cardSeconds(entry.size);
-      added += 1;
-      cards.push({
-        card_id: cards.length + 1, book, greek: entry.spans[0].map((word) => word.surface).join(" "), words: entry.size,
-        occurrences: entry.spans.length, new_tokens: fresh.size, example_ref: entry.spans[0][0].verse, audio_action: "RECORD_TRANSLATION"
-      });
+      time += cardSeconds(entry.size);
+      picked.push({ book, greek: entry.spans[0].map((word) => word.surface).join(" "), words: entry.size,
+        occurrences: entry.spans.length, new_tokens: fresh.size, example_ref: entry.spans[0][0].verse, audio_action: "RECORD_TRANSLATION" });
     }
+    return { picked, time };
+  };
+
+  // Recording order: the gospel that is quickest to record on its own, then always the remaining book that is
+  // quickest to finish given the cards already recorded.
+  const covered = new Uint8Array(words.length);
+  const cards = [];
+  const stages = [];
+  const remaining = new Set(appearance);
+  let seconds = 0;
+  while (remaining.size) {
+    const pool = !stages.length && gospels.some((book) => remaining.has(book)) ? gospels.filter((book) => remaining.has(book)) : [...remaining];
+    let next;
+    for (const book of pool) {
+      const { time } = planBook(book, covered.slice());
+      if (!next || time < next.time) next = { book, time };
+    }
+    const { book } = next;
+    remaining.delete(book);
+    const { picked, time } = planBook(book, covered);
+    for (const card of picked) cards.push({ card_id: cards.length + 1, ...card });
+    seconds += time;
+    const own = words.filter((word) => word.book === book);
     const recordedTokens = covered.reduce((sum, flag) => sum + flag, 0);
     const round = (value) => Math.round(1000 * value) / 1000;
     stages.push({
-      book, tokens: own.length, new_cards: added, cumulative_cards: cards.length,
+      book, tokens: own.length, new_cards: picked.length, cumulative_cards: cards.length,
       book_coverage: round(own.filter((word) => covered[word.id]).length / own.length),
       cumulative_coverage: round(recordedTokens / words.length),
-      book_minutes: Math.round(cards.filter((card) => card.book === book).reduce((sum, card) => sum + cardSeconds(card.words), 0) / 6) / 10,
+      book_minutes: Math.round(time / 6) / 10,
       cumulative_minutes: Math.round(seconds / 6) / 10
     });
   }
