@@ -246,7 +246,16 @@ const cardSeconds = (words) => cardSecondsBase + cardSecondsPerWord * words;
 const cardKey = (surface) => surface.normalize("NFC").toLowerCase();
 
 // unit "lemma" (default): one card per dictionary form covers all its inflections; "surface": one card per exact form.
-export function buildCoveragePlan(tokens, { target = coverageTarget, unit = "lemma" } = {}) {
+function commonGloss(entry) {
+  const counts = new Map();
+  for (const span of entry.spans) {
+    const gloss = span.map((word) => word.gloss).filter(Boolean).join(" ");
+    if (gloss) counts.set(gloss, (counts.get(gloss) ?? 0) + 1);
+  }
+  return [...counts].sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1))[0]?.[0] ?? "";
+}
+
+export function buildCoveragePlan(tokens, { target = coverageTarget, unit = "lemma", maxPhrase = maxWords } = {}) {
   const words = [];
   const segments = [];
   let segment = [];
@@ -267,7 +276,7 @@ export function buildCoveragePlan(tokens, { target = coverageTarget, unit = "lem
       verse = token.verse;
     }
     const shown = unit === "surface" ? token.surface : token.lemma;
-    const word = { key: cardKey(shown), surface: shown, verse: token.verse, book: token.verse.split(" ")[0], id: words.length };
+    const word = { key: cardKey(shown), surface: shown, verse: token.verse, book: token.verse.split(" ")[0], gloss: token.gloss ?? "", id: words.length };
     words.push(word);
     segment.push(word);
   }
@@ -276,7 +285,7 @@ export function buildCoveragePlan(tokens, { target = coverageTarget, unit = "lem
 
   const occurrences = new Map();
   for (const group of segments) {
-    for (let size = 1; size <= maxWords; size += 1) {
+    for (let size = 1; size <= maxPhrase; size += 1) {
       for (let start = 0; start + size <= group.length; start += 1) {
         const span = group.slice(start, start + size);
         const key = span.map((word) => word.key).join(" ");
@@ -318,7 +327,7 @@ export function buildCoveragePlan(tokens, { target = coverageTarget, unit = "lem
       // A recorded card also fills every other occurrence in the New Testament.
       for (const span of entry.spans) for (const word of span) covered[word.id] = 1;
       time += cardSeconds(entry.size);
-      picked.push({ book, greek: entry.spans[0].map((word) => word.surface).join(" "), words: entry.size,
+      picked.push({ book, greek: entry.spans[0].map((word) => word.surface).join(" "), gloss: commonGloss(entry), words: entry.size,
         occurrences: entry.spans.length, new_tokens: fresh.size, example_ref: entry.spans[0][0].verse, audio_action: "RECORD_TRANSLATION" });
     }
     return { picked, time };
