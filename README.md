@@ -130,14 +130,17 @@ Use `MaculaBaseToken.DataAttribution` when publishing Macula identifiers.
 
 ## Audio workflow
 
-`/audio/` (formerly `/demo/`) walks through five breadcrumb steps: Language, Sample verses
-(record JHN 3:16, MRK 1:15, 1:17, 10:45 and 12:30), Grammar (drag each verse's chunks into the
-target order; `grammar-order.js` learns rules applied via MACULA roles, cases and moods),
-Books (one lemma card at a time, quickest book first, from `recording-plan.json`) and Export.
-Completed verses can be played back at any time. Clips are kept in IndexedDB; export writes
-ZIPs of `manifest.json` plus `clips/`, and import merges them without overwriting existing clips.
-Regenerate data with `node scripts/generate-recording-plan.mjs <macula TSV>` and
-`node scripts/generate-audio-seeds.mjs <macula TSV>`.
+`/audio/` (formerly `/demo/`) walks through four breadcrumb steps: Language, Books (one lemma card at a time,
+quickest book first, from `recording-plan.json`, ordered chapter by chapter), Export and Settings.
+Cards use icon buttons ⏮ ● ▶ ⏭: hold ● to record and release to save, which jumps to the next card without a
+recording; ⏮ and ⏭ always step exactly one card. The ● turns grey once a card has a recording but can still re-record.
+The listen panel shows each verse in Greek with its English gloss. Double-click or long-press a verse to open its
+grammar dialog: **Order** mode has ← → arrows and drag-and-drop (`grammar-order.js` learns rules applied via MACULA
+roles, cases and moods) and **Playback** mode lists every word separately with ● record and ▶ play, plus a button to play the whole verse. ∅ on a card or word leaves it unspoken.
+Settings lists recorded words oldest first (searchable, paginated, with re-record) and has a collapsed
+**Clear all saved data** section that erases recordings, state, cookies and caches after two confirmations.
+Clips are kept in IndexedDB; export writes ZIPs of `manifest.json` plus `clips/`, and import merges them without
+overwriting existing clips. Regenerate data with `node scripts/generate-recording-plan.mjs <macula TSV>`.
 
 ## Unified language workbench
 

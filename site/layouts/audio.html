@@ -33,35 +33,20 @@
         <span class="local-badge">Runs in your browser · Works offline</span>
       </div>
       <h1>Audio</h1>
-      <p class="workspace-intro">Say each Greek word in your language, show how your grammar orders a few sample verses, then record a book at a time. Recordings stay on this device until you export them.</p>
+      <p class="workspace-intro">Say each Greek word in your language, then record a book at a time. Double-click or long-press any verse to set its word order or record its words. Recordings stay on this device until you export them.</p>
       <nav aria-label="Workflow"><ol id="crumbs" class="crumbs"></ol></nav>
     </header>
-    <main id="audio" class="audio" data-plan="{{ "recording-plan.json" | relURL }}" data-seeds="{{ "audio-seeds.json" | relURL }}" data-books="{{ $booksUrl }}">
+    <main id="audio" class="audio" data-plan="{{ "recording-plan.json" | relURL }}" data-books="{{ $booksUrl }}">
       <p id="audio-status" role="status">Loading…</p>
 
       <section id="step-language" hidden>
         <h2>1. Language</h2>
         <p><label for="language-name">Name of the language you will record in </label><input id="language-name" type="text" autocomplete="off"></p>
-        <p><a href="#seed">Next: record the sample verses</a></p>
-      </section>
-
-      <section id="step-seed" hidden>
-        <h2>2. Sample verses</h2>
-        <p>Record the words of John 3:16 and Mark 1:15, 1:17, 10:45 and 12:30. Proper names keep their original audio.</p>
-        <div id="seed-recorder" class="recorder" hidden></div>
-        <p><a href="#grammar">Next: map the grammar</a></p>
-      </section>
-
-      <section id="step-grammar" hidden>
-        <h2>3. Grammar</h2>
-        <p>Drag the chunks of each sample verse (or use the arrows) into the order your language uses. MACULA's roles, cases and moods then carry that order across the whole New Testament.</p>
-        <p id="grammar-summary" role="status"></p>
-        <div id="grammar-samples"></div>
         <p><a href="#books">Next: record the books</a></p>
       </section>
 
       <section id="step-books" hidden>
-        <h2>4. Books</h2>
+        <h2>2. Books</h2>
         <p><label for="book-select">Book </label><select id="book-select"></select></p>
         <p id="book-progress" role="status"></p>
         <div id="book-recorder" class="recorder" hidden></div>
@@ -69,12 +54,33 @@
       </section>
 
       <section id="step-export" hidden>
-        <h2>5. Export</h2>
+        <h2>3. Export</h2>
         <p id="export-summary"></p>
         <p><button type="button" id="export-button">Export ZIP</button></p>
         <h3>Import (optional)</h3>
         <p><label for="import-file">Add recordings from an earlier export </label><input id="import-file" type="file" accept=".zip,application/zip" multiple></p>
         <p id="export-status" role="status"></p>
+        <p><a href="#settings">Next: settings</a></p>
+      </section>
+
+      <section id="step-settings" hidden>
+        <h2>Settings</h2>
+        <h3>Recorded words</h3>
+        <p><label for="word-search">Search </label><input id="word-search" type="search" autocomplete="off" placeholder="Greek or English"></p>
+        <p id="word-summary" role="status"></p>
+        <ul id="word-list" class="word-list"></ul>
+        <p id="word-status" role="status"></p>
+        <p>
+          <button type="button" id="word-prev">Previous page</button>
+          <span id="word-page"></span>
+          <button type="button" id="word-next">Next page</button>
+        </p>
+        <details class="danger-zone">
+          <summary>Clear all saved data</summary>
+          <p>Deletes every recording, your language and grammar settings, cookies, cached files and offline data stored by this site in this browser. Export first if you need a copy.</p>
+          <p><button type="button" id="clear-all">Clear ALL data…</button></p>
+          <p id="clear-status" role="status"></p>
+        </details>
       </section>
 
       <section id="listen" hidden>
@@ -85,8 +91,24 @@
           <button type="button" id="listen-stop">Stop</button>
         </p>
         <p id="listen-summary" role="status"></p>
+        <p class="listen-hint">Double-click or long-press a verse to arrange its word order or record its words.</p>
         <ul id="listen-list" class="listen-list"></ul>
       </section>
+      <dialog id="grammar-dialog" class="grammar-dialog" aria-labelledby="grammar-title">
+        <button type="button" id="grammar-close" class="dialog-close" aria-label="Close" title="Close">✕</button>
+        <h2 id="grammar-title"></h2>
+        <p role="radiogroup" aria-label="Mode">
+          <label><input type="radio" name="grammar-mode" value="order"> Order</label>
+          <label><input type="radio" name="grammar-mode" value="playback"> Playback</label>
+        </p>
+        <p><button type="button" id="grammar-play-verse">▶ Play whole verse</button></p>
+        <p id="grammar-status" role="status"></p>
+        <ol id="grammar-chunks" class="grammar-chunks"></ol>
+        <form method="dialog">
+          <button type="button" id="grammar-confirm">This order is right</button>
+          <button type="button" id="grammar-reset">Reset to Greek order</button>
+        </form>
+      </dialog>
       <noscript><p>Enable JavaScript to record audio.</p></noscript>
     </main>
   </body>
