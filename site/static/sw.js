@@ -1,12 +1,12 @@
-const shellCacheName = "macula-scripta-v15-shell";
-const readerCacheName = "macula-scripta-v15-reader";
+const shellCacheName = "macula-scripta-v16-shell";
+const readerCacheName = "macula-scripta-v16-reader";
 let offlineMode = false;
 
 self.addEventListener("install", (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(shellCacheName);
     const shell = ["", "demo/", "recording-prompts/", "recording-prompts/tokens.json", "nt/JHN/", "john-1-1/", "reader.css", "reader.js", "styles.css", "transformation.css", "app.js",
-      "transformation.js", "audio-recorder.js", "verse-clipper.js", "audio-coverage.js", "lift-exchange.js", "recording-prompts.js", "recording-prompts-page.js", "prompts.css", "manifest.webmanifest"];
+      "transformation.js", "audio-recorder.js", "verse-clipper.js", "audio-coverage.js", "lift-exchange.js", "recording-prompts.js", "recording-plan.json", "recording-prompts-page.js", "prompts.css", "manifest.webmanifest"];
     await cache.addAll(shell.map((path) => new URL(path, self.registration.scope).href));
     await self.skipWaiting();
   })());

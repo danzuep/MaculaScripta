@@ -28,9 +28,24 @@
         <span class="local-badge">Runs in your browser · Works offline</span>
       </div>
       <h1>Recording prompt set</h1>
-      <p class="workspace-intro">The fewest 2–3 word Koine phrases that cover every diphone and the 2,000 most frequent lemmas. Proper nouns keep their original audio.</p>
+      <p class="workspace-intro">The Greek is shown card by card and you speak its translation. A short session covers 99% of the New Testament, one book at a time, gospels first. Below, the fewest 2–3 word Koine phrases that cover every diphone and the 2,000 most frequent lemmas. Proper nouns keep their original audio.</p>
     </header>
-    <main class="prompts" id="prompts" data-tokens="{{ $tokens.RelPermalink }}">
+    <main class="prompts" id="prompts" data-tokens="{{ $tokens.RelPermalink }}" data-plan="{{ "recording-plan.json" | relURL }}">
+      <section id="plan" aria-labelledby="plan-title">
+        <h2 id="plan-title">New Testament translation cards</h2>
+        <p id="plan-status" role="status">Loading the plan…</p>
+        <dl class="prompts-summary" id="plan-summary" hidden></dl>
+        <table class="prompts-table" id="plan-stages" hidden>
+          <caption>Progress by book (cards are recorded in the first book that uses them)</caption>
+          <thead><tr><th scope="col">Book</th><th scope="col">New cards</th><th scope="col">Book covered</th><th scope="col">NT covered</th><th scope="col">Total time</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <div id="plan-cards" hidden>
+          <label for="plan-book">Cards for </label><select id="plan-book"></select>
+          <ol class="plan-card-list" lang="grc"></ol>
+        </div>
+      </section>
+      <h2>Phonetically balanced phrase set <small>(from this build's dataset)</small></h2>
       <p id="prompts-status" role="status">Building the prompt set…</p>
       <dl class="prompts-summary" id="prompts-summary" hidden></dl>
       <p><button type="button" id="prompts-download" hidden>Download JSON</button></p>

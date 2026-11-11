@@ -41,6 +41,44 @@ function render(result) {
   status.textContent = `${summary.prompts_generated} prompts cover ${summary.total_unique_diphones} diphones.`;
 }
 
+function renderPlan(plan) {
+  const { summary } = plan;
+  const summaryList = document.querySelector("#plan-summary");
+  for (const [label, value] of [["Cards", summary.cards], ["NT tokens covered", `${Math.round(summary.coverage * 1000) / 10}%`],
+    ["Estimated recording time", `${Math.round(summary.estimated_recording_time_minutes / 6) / 10} h`]]) {
+    const group = document.createElement("div");
+    group.append(cell("dt", label), cell("dd", value));
+    summaryList.append(group);
+  }
+  const percent = (value) => `${Math.round(value * 1000) / 10}%`;
+  const body = document.querySelector("#plan-stages tbody");
+  const select = document.querySelector("#plan-book");
+  for (const stage of plan.stages) {
+    const row = document.createElement("tr");
+    row.append(cell("th", stage.book, { scope: "row" }), cell("td", stage.new_cards), cell("td", percent(stage.book_coverage)),
+      cell("td", percent(stage.cumulative_coverage)), cell("td", `${stage.cumulative_minutes} min`));
+    body.append(row);
+    select.append(cell("option", `${stage.book} (${stage.new_cards})`, { value: stage.book }));
+  }
+  const list = document.querySelector("#plan-cards ol");
+  const showBook = () => {
+    list.replaceChildren(...plan.cards.filter((card) => card.book === select.value)
+      .map((card) => cell("li", card.words > 1 ? card.greek : `${card.greek} · ×${card.occurrences}`)));
+  };
+  select.addEventListener("change", showBook);
+  showBook();
+  for (const selector of ["#plan-summary", "#plan-stages", "#plan-cards"]) document.querySelector(selector).hidden = false;
+  document.querySelector("#plan-status").textContent = `${summary.cards} cards cover ${percent(summary.coverage)} of the New Testament.`;
+}
+
+try {
+  const planResponse = await fetch(root.dataset.plan);
+  if (!planResponse.ok) throw new Error(`HTTP ${planResponse.status}`);
+  renderPlan(await planResponse.json());
+} catch (error) {
+  document.querySelector("#plan-status").textContent = `Could not load the plan: ${error.message}`;
+}
+
 try {
   const response = await fetch(root.dataset.tokens);
   if (!response.ok) throw new Error(`HTTP ${response.status}`);

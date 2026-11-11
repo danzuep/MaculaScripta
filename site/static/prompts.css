@@ -6,3 +6,4 @@
 .prompts-table caption { text-align: left; font-weight: 600; padding: 0.5rem 0; }
 .prompts-table th, .prompts-table td { text-align: left; vertical-align: top; padding: 0.4rem 0.6rem; border-bottom: 1px solid rgba(128, 128, 128, 0.3); }
 .prompts-table td:last-child { font-size: 0.85rem; opacity: 0.8; overflow-wrap: anywhere; }
+.plan-card-list { columns: 12rem; padding-left: 1.5rem; }

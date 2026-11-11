@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { buildPromptSet, diphonesOf, koineIpa } from "../site/static/recording-prompts.js";
+import { buildCoveragePlan, buildPromptSet, diphonesOf, koineIpa } from "../site/static/recording-prompts.js";
 
 const word = (surface, lemma = surface, extra = {}) => ({ surface, lemma, pos: "noun", type: "common", verse: "V1", ...extra });
 
@@ -51,4 +51,26 @@ test("prompts cover every diphone exactly once and are numbered from 1", () => {
 test("phrases do not cross verse boundaries", () => {
   const result = buildPromptSet([word("λόγος", "λόγος", { verse: "V1" }), word("θεός", "θεός", { verse: "V2" })]);
   assert.equal(result.recording_queue.length, 0);
+});
+
+test("coverage plan reaches the target using the fewest cards, repeated phrases and per-book stages", () => {
+  const book = (name, lemmas) => lemmas.map((lemma, index) => word(lemma, lemma, { verse: `${name} 1:1` }));
+  const tokens = [
+    ...book("MAT", ["ὁ", "ὁ", "ὁ", "ὁ", "καί", "καί", "θεός", "ἀγάπη"]),
+    ...book("MRK", ["ὁ", "καί", "θεός", "ἀγάπη", "ὁ", "ὁ"]),
+    word("Ἰησοῦ", "Ἰησοῦς", { type: "proper", verse: "MRK 1:1" })
+  ];
+  const plan = buildCoveragePlan(tokens, { target: 0.8 });
+  assert.equal(plan.summary.proper_nouns_excluded, 1);
+  assert.ok(plan.summary.coverage >= 0.8);
+  assert.equal(plan.cards[0].greek, "ὁ");
+  assert.deepEqual(plan.stages.map((stage) => stage.book), ["MAT", "MRK"]);
+  assert.ok(plan.cards.every((card) => card.audio_action === "RECORD_TRANSLATION"));
+  assert.equal(plan.stages.at(-1).cumulative_cards, plan.cards.length);
+});
+
+test("lemma cards cover every inflected form", () => {
+  const plan = buildCoveragePlan([word("λόγος", "λόγος"), word("λόγου", "λόγος"), word("λόγον", "λόγος")], { target: 1 });
+  assert.equal(plan.cards.length, 1);
+  assert.equal(plan.summary.coverage, 1);
 });

@@ -82,7 +82,7 @@ function ipaString(phones) {
 }
 
 // Max-heap on [gain desc, words asc, order asc]; entries are re-scored lazily as targets get covered.
-class Heap {
+export class Heap {
   constructor(before) {
     this.items = [];
     this.before = before;
@@ -237,5 +237,131 @@ export function buildPromptSet(tokens) {
     },
     recording_queue: queue,
     proper_nouns_excluded: [...excluded.values()]
+  };
+}
+
+// Translation cards: each card shows a Greek word or phrase and the speaker records its translation.
+// Cards are picked greedily by newly covered text per second of recording, until `target` of all
+// non-proper-noun tokens is covered. Phrases only qualify when they repeat, so they pay for themselves.
+export const cardSecondsBase = 2;
+export const cardSecondsPerWord = 0.7;
+export const coverageTarget = 0.99;
+
+const cardSeconds = (words) => cardSecondsBase + cardSecondsPerWord * words;
+const cardKey = (surface) => surface.normalize("NFC").toLowerCase();
+
+// unit "lemma" (default): one card per dictionary form covers all its inflections; "surface": one card per exact form.
+export function buildCoveragePlan(tokens, { target = coverageTarget, unit = "lemma" } = {}) {
+  const words = [];
+  const segments = [];
+  let segment = [];
+  let verse;
+  let proper = 0;
+  const flush = () => {
+    if (segment.length) segments.push(segment);
+    segment = [];
+  };
+  for (const token of tokens) {
+    if (isProper(token)) {
+      proper += 1;
+      flush();
+      continue;
+    }
+    if (token.verse !== verse) {
+      flush();
+      verse = token.verse;
+    }
+    const shown = unit === "surface" ? token.surface : token.lemma;
+    const word = { key: cardKey(shown), surface: shown, verse: token.verse, book: token.verse.split(" ")[0], id: words.length };
+    words.push(word);
+    segment.push(word);
+  }
+  flush();
+  const bookOrder = [...new Set(words.map((word) => word.book))];
+
+  const occurrences = new Map();
+  for (const group of segments) {
+    for (let size = 1; size <= maxWords; size += 1) {
+      for (let start = 0; start + size <= group.length; start += 1) {
+        const span = group.slice(start, start + size);
+        const key = span.map((word) => word.key).join(" ");
+        const entry = occurrences.get(key);
+        if (entry) entry.spans.push(span);
+        else occurrences.set(key, { key, size, spans: [span] });
+      }
+    }
+  }
+  const candidates = [...occurrences.values()].filter((entry) => entry.size === 1 || entry.spans.length > 1);
+
+  const covered = new Uint8Array(words.length);
+  const gainOf = (entry) => {
+    const fresh = new Set();
+    for (const span of entry.spans) for (const word of span) if (!covered[word.id]) fresh.add(word.id);
+    return fresh;
+  };
+  const before = (a, b) => a.score !== b.score ? a.score > b.score : a.entry.size < b.entry.size;
+  const heap = new Heap(before);
+  for (const entry of candidates) heap.push({ entry, score: gainOf(entry).size / cardSeconds(entry.size) });
+  const goal = Math.ceil(words.length * target);
+  let total = 0;
+  const picks = [];
+  while (heap.size && total < goal) {
+    const { entry } = heap.pop();
+    const fresh = gainOf(entry);
+    if (!fresh.size) continue;
+    const current = { entry, score: fresh.size / cardSeconds(entry.size) };
+    if (heap.size && before(heap.peek(), current)) {
+      heap.push(current);
+      continue;
+    }
+    for (const id of fresh) covered[id] = 1;
+    total += fresh.size;
+    picks.push({ entry, fresh: fresh.size });
+  }
+
+  // Each card is recorded in the first book that uses it, most-used first, so every book is finished in turn.
+  const bookTokens = new Map(bookOrder.map((book) => [book, words.filter((word) => word.book === book).length]));
+  const cards = picks.map(({ entry, fresh }) => {
+    const book = bookOrder.find((name) => entry.spans.some((span) => span[0].book === name));
+    return {
+      book, greek: entry.spans[0].map((word) => word.surface).join(" "), words: entry.size,
+      occurrences: entry.spans.length, new_tokens: fresh, example_ref: entry.spans[0][0].verse,
+      uses: new Set(entry.spans.flat().map((word) => word.id)), audio_action: "RECORD_TRANSLATION"
+    };
+  });
+  cards.sort((a, b) => bookOrder.indexOf(a.book) - bookOrder.indexOf(b.book) || b.new_tokens - a.new_tokens);
+  cards.forEach((card, index) => { card.card_id = index + 1; });
+
+  const recorded = new Uint8Array(words.length);
+  let seconds = 0;
+  let recordedTokens = 0;
+  let recordedCards = 0;
+  const stages = bookOrder.map((book) => {
+    const added = cards.filter((card) => card.book === book);
+    recordedCards += added.length;
+    for (const card of added) {
+      seconds += cardSeconds(card.words);
+      for (const id of card.uses) if (!recorded[id]) { recorded[id] = 1; recordedTokens += 1; }
+    }
+    const own = words.filter((word) => word.book === book);
+    return {
+      book, tokens: own.length, new_cards: added.length, cumulative_cards: recordedCards,
+      book_coverage: Math.round(1000 * own.filter((word) => recorded[word.id]).length / own.length) / 1000,
+      cumulative_coverage: Math.round(1000 * recordedTokens / words.length) / 1000,
+      cumulative_minutes: Math.round(seconds / 6) / 10
+    };
+  });
+  for (const card of cards) delete card.uses;
+
+  return {
+    summary: {
+      tokens: words.length, proper_nouns_excluded: proper, unit, target_coverage: target,
+      coverage: Math.round(1000 * recordedTokens / words.length) / 1000, cards: cards.length,
+      single_word_cards: cards.filter((card) => card.words === 1).length,
+      estimated_recording_time_minutes: Math.round(seconds / 6) / 10,
+      time_model: `${cardSecondsBase}s + ${cardSecondsPerWord}s per Greek word per card`
+    },
+    stages,
+    cards
   };
 }
