@@ -1,11 +1,11 @@
-{{- /* Compact [verse, surface, lemma, pos, type] rows of the Greek dataset in reading order (the sample excerpt unless built with sample=false). */ -}}
+{{- /* Compact [verse, surface, lemma, pos, type, role, gloss, case, mood] rows of the Greek dataset in reading order (the sample excerpt unless built with sample=false). */ -}}
 {{- $data := partial "testament-data.html" "nt" -}}
 {{- $column := dict -}}
 {{- range $index, $name := $data.fields -}}{{- $column = merge $column (dict $name $index) -}}{{- end -}}
 {{- $rows := slice -}}
 {{- range $key, $chapter := $data.chapters -}}
   {{- range $chapter -}}
-    {{- $rows = $rows | append (slice (dict "r" (slice (index . $column.ref) (index . $column.text) (index . $column.lemma) (index . $column.class) (index . $column.type)))) -}}
+    {{- $rows = $rows | append (slice (dict "r" (slice (index . $column.ref) (index . $column.text) (index . $column.lemma) (index . $column.class) (index . $column.type) (index . $column.role) (index . $column.english) (index . $column.case) (index . $column.mood)))) -}}
   {{- end -}}
 {{- end -}}
 {{- $tokens := resources.FromString "recording-prompts/tokens.json" ((apply $rows "index" "." "r") | jsonify) -}}
@@ -28,7 +28,7 @@
         <span class="local-badge">Runs in your browser · Works offline</span>
       </div>
       <h1>Recording prompt set</h1>
-      <p class="workspace-intro">The Greek is shown card by card and you speak its translation. A short session covers 99% of the New Testament, one book at a time, gospels first. Below, the fewest 2–3 word Koine phrases that cover every diphone and the 2,000 most frequent lemmas. Proper nouns keep their original audio.</p>
+      <p class="workspace-intro">The Greek is shown card by card and you speak its translation. A short session covers 99% of the New Testament, one book at a time, starting with Mark. Below, the fewest 2–3 word Koine phrases that cover every diphone and the 2,000 most frequent lemmas. Proper nouns keep their original audio.</p>
     </header>
     <main class="prompts" id="prompts" data-tokens="{{ $tokens.RelPermalink }}" data-plan="{{ "recording-plan.json" | relURL }}">
       <section id="plan" aria-labelledby="plan-title">
@@ -37,7 +37,7 @@
         <dl class="prompts-summary" id="plan-summary" hidden></dl>
         <table class="prompts-table" id="plan-stages" hidden>
           <caption>Progress by book (cards are recorded in the first book that uses them)</caption>
-          <thead><tr><th scope="col">Book</th><th scope="col">New cards</th><th scope="col">Book covered</th><th scope="col">NT covered</th><th scope="col">Total time</th></tr></thead>
+          <thead><tr><th scope="col">Book</th><th scope="col">New cards</th><th scope="col">Book covered</th><th scope="col">NT covered</th><th scope="col">Book time</th><th scope="col">Total time</th></tr></thead>
           <tbody></tbody>
         </table>
         <div id="plan-cards" hidden>

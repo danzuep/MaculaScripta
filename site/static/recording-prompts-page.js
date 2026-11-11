@@ -56,7 +56,7 @@ function renderPlan(plan) {
   for (const stage of plan.stages) {
     const row = document.createElement("tr");
     row.append(cell("th", stage.book, { scope: "row" }), cell("td", stage.new_cards), cell("td", percent(stage.book_coverage)),
-      cell("td", percent(stage.cumulative_coverage)), cell("td", `${stage.cumulative_minutes} min`));
+      cell("td", percent(stage.cumulative_coverage)), cell("td", `${stage.book_minutes} min`), cell("td", `${stage.cumulative_minutes} min`));
     body.append(row);
     select.append(cell("option", `${stage.book} (${stage.new_cards})`, { value: stage.book }));
   }
@@ -68,7 +68,7 @@ function renderPlan(plan) {
   select.addEventListener("change", showBook);
   showBook();
   for (const selector of ["#plan-summary", "#plan-stages", "#plan-cards"]) document.querySelector(selector).hidden = false;
-  document.querySelector("#plan-status").textContent = `${summary.cards} cards cover ${percent(summary.coverage)} of the New Testament.`;
+  document.querySelector("#plan-status").textContent = `${summary.cards} cards cover ${percent(summary.coverage)} of the New Testament; ${plan.stages[0].book} alone takes ${plan.stages[0].book_minutes} minutes.`;
 }
 
 try {

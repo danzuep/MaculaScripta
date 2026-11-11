@@ -64,7 +64,7 @@ test("coverage plan reaches the target using the fewest cards, repeated phrases 
   assert.equal(plan.summary.proper_nouns_excluded, 1);
   assert.ok(plan.summary.coverage >= 0.8);
   assert.equal(plan.cards[0].greek, "ὁ");
-  assert.deepEqual(plan.stages.map((stage) => stage.book), ["MAT", "MRK"]);
+  assert.deepEqual(plan.stages.map((stage) => stage.book), ["MRK", "MAT"]);
   assert.ok(plan.cards.every((card) => card.audio_action === "RECORD_TRANSLATION"));
   assert.equal(plan.stages.at(-1).cumulative_cards, plan.cards.length);
 });
@@ -73,4 +73,12 @@ test("lemma cards cover every inflected form", () => {
   const plan = buildCoveragePlan([word("λόγος", "λόγος"), word("λόγου", "λόγος"), word("λόγον", "λόγος")], { target: 1 });
   assert.equal(plan.cards.length, 1);
   assert.equal(plan.summary.coverage, 1);
+});
+
+test("each book is covered in turn, starting with Mark", () => {
+  const plan = buildCoveragePlan([word("ὁ", "ὁ", { verse: "MAT 1:1" }), word("λόγος", "λόγος", { verse: "MAT 1:1" }),
+    word("ὁ", "ὁ", { verse: "MRK 1:1" }), word("θεός", "θεός", { verse: "MRK 1:1" })], { target: 1 });
+  assert.deepEqual(plan.stages.map((stage) => stage.book), ["MRK", "MAT"]);
+  assert.equal(plan.stages[0].book_coverage, 1);
+  assert.equal(plan.cards.filter((card) => card.book === "MAT").length, 1);
 });

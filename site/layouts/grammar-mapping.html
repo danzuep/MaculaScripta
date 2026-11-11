@@ -1,0 +1,54 @@
+{{- /* Same compact token rows as the recording prompts page, so the learned rules can be applied to this build's dataset. */ -}}
+{{- $data := partial "testament-data.html" "nt" -}}
+{{- $column := dict -}}
+{{- range $index, $name := $data.fields -}}{{- $column = merge $column (dict $name $index) -}}{{- end -}}
+{{- $rows := slice -}}
+{{- range $key, $chapter := $data.chapters -}}
+  {{- range $chapter -}}
+    {{- $rows = $rows | append (slice (dict "r" (slice (index . $column.ref) (index . $column.text) (index . $column.lemma) (index . $column.class) (index . $column.type) (index . $column.role) (index . $column.english) (index . $column.case) (index . $column.mood)))) -}}
+  {{- end -}}
+{{- end -}}
+{{- $tokens := resources.FromString "grammar-mapping/tokens.json" ((apply $rows "index" "." "r") | jsonify) -}}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0f172a">
+    <title>Grammar mapping · {{ .Site.Title }}</title>
+    <link rel="manifest" href="{{ "manifest.webmanifest" | relURL }}">
+    <link rel="stylesheet" href="{{ "styles.css" | relURL }}">
+    <link rel="stylesheet" href="{{ "prompts.css" | relURL }}">
+    <script type="module" src="{{ "grammar-page.js" | relURL }}"></script>
+  </head>
+  <body>
+    <header class="workspace-header">
+      <div class="brand-row">
+        <a class="brand" href="{{ .Site.Home.RelPermalink }}">MaculaScripta<span>Language workbench</span></a>
+        <span class="local-badge">Runs in your browser · Works offline</span>
+      </div>
+      <h1>Grammar mapping</h1>
+      <p class="workspace-intro">Drag the words of a few famous Mark verses into your language's order. The rules learned from them reorder every verse of the dataset using MACULA's roles, cases and moods.</p>
+    </header>
+    <main class="prompts grammar" id="grammar" data-samples="{{ "grammar-samples.json" | relURL }}" data-tokens="{{ $tokens.RelPermalink }}">
+      <p><label for="grammar-language">Target language </label><input id="grammar-language" type="text" value="My language" autocomplete="off"></p>
+      <p id="grammar-status" role="status">Loading sample verses…</p>
+      <div id="grammar-samples"></div>
+      <section id="grammar-rules-section" hidden>
+        <h2>Learned rules</h2>
+        <p id="grammar-rules-summary"></p>
+        <p>
+          <button type="button" id="grammar-apply">Apply to dataset</button>
+          <button type="button" id="grammar-export">Download rules</button>
+        </p>
+        <table class="prompts-table" id="grammar-preview" hidden>
+          <caption>Target order preview</caption>
+          <thead><tr><th scope="col">Verse</th><th scope="col">Greek</th><th scope="col">Target order (glosses)</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <p><button type="button" id="grammar-download" hidden>Download reordered dataset</button></p>
+      </section>
+      <noscript><p>Enable JavaScript to rearrange the sample verses.</p></noscript>
+    </main>
+  </body>
+</html>
