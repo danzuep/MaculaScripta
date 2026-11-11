@@ -5,7 +5,7 @@ let offlineMode = false;
 self.addEventListener("install", (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(shellCacheName);
-    const shell = ["", "audio/", "nt/JHN/", "john-1-1/", "reader.css", "reader.js", "styles.css", "audio.css", "audio.js", "audio-store.js", "audio-workflow.js", "audio-seeds.json",
+    const shell = ["", "audio/", "nt/JHN/", "john-1-1/", "reader.css", "reader.js", "styles.css", "audio.css", "audio.js", "audio-store.js", "audio-workflow.js",
       "lift-exchange.js", "recording-prompts.js", "recording-plan.json", "grammar-order.js", "transformation.css", "app.js", "transformation.js", "audio-recorder.js", "verse-clipper.js", "audio-coverage.js", "manifest.webmanifest"];
     await cache.addAll(shell.map((path) => new URL(path, self.registration.scope).href));
     await self.skipWaiting();

@@ -1,18 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { buildExportParts, chapterOrder, parseManifest, playbackLemmas, seedCards, verseStatus } from "../site/static/audio-workflow.js";
+import { buildExportParts, chapterOrder, parseManifest, bookCards, playbackLemmas, playbackWords, verseStatus } from "../site/static/audio-workflow.js";
 
 const w = (lemma, extra = {}) => ({ surface: lemma, lemma, pos: "noun", type: "common", role: "", gloss: lemma, ...extra });
 const clip = (type = "audio/webm") => ({ blob: new Blob(["x"], { type }), mime: type });
-
-test("seed cards are shared across verses and skip proper nouns", () => {
-  const cards = seedCards([
-    { verse: "A 1:1", words: [w("λόγος"), w("Ἰησοῦς", { type: "proper" })] },
-    { verse: "B 2:2", words: [w("λόγος"), w("θεός")] }
-  ]);
-  assert.deepEqual(cards.map((card) => card.greek), ["λόγος", "θεός"]);
-  assert.deepEqual(cards[0].verses, ["A 1:1", "B 2:2"]);
-});
 
 test("a verse is playable once all its non-proper lemmas are recorded", () => {
   const words = [w("a"), w("Ἰησοῦς", { type: "proper" }), w("b")];
@@ -49,9 +40,11 @@ test("unspoken lemmas need no card and are not played", () => {
     { verse: "A 1:1", surface: "λόγος", lemma: "λόγος", pos: "noun", type: "common", gloss: "word" }
   ];
   const unspoken = { ὁ: true };
-  assert.deepEqual(seedCards([{ verse: "A 1:1", words }], unspoken).map((card) => card.greek), ["λόγος"]);
+  const plan = { cards: [{ book: "A", greek: "ὁ" }, { book: "A", greek: "λόγος" }] };
+  assert.deepEqual(bookCards(plan, "A", unspoken).map((card) => card.greek), ["λόγος"]);
   assert.equal(verseStatus(words, new Map([["λόγος", {}]]), unspoken).complete, true);
   assert.deepEqual(playbackLemmas(words, {}, undefined, unspoken), ["λόγος"]);
+  assert.deepEqual(playbackWords(words, {}, undefined, unspoken).map((word) => word.gloss), ["word"]);
   assert.deepEqual(parseManifest(JSON.stringify({ format: "macula-scripta-audio", version: 1, clips: [], unspoken: ["ὁ"] })).unspoken, unspoken);
 });
 

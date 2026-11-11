@@ -26,7 +26,7 @@ async function run(store, mode, action) {
 
 export async function loadClips() {
   const rows = await run("clips", "readonly", (store) => store.getAll());
-  return new Map(rows.map(({ lemma, blob, mime }) => [lemma, { blob, mime }]));
+  return new Map(rows.map(({ lemma, blob, mime, saved }) => [lemma, { blob, mime, saved }]));
 }
 
 export const saveClip = (lemma, blob) => run("clips", "readwrite", (store) => store.put({ lemma, blob, mime: blob.type, saved: Date.now() }));
@@ -37,3 +37,13 @@ export async function loadState() {
 }
 
 export const saveState = (state) => run("state", "readwrite", (store) => store.put(state, "main"));
+
+// Deletes every IndexedDB database of this origin (clips, state and any other tool's data).
+export async function wipe() {
+  (await databasePromise).close();
+  const names = (await indexedDB.databases?.())?.map((entry) => entry.name) ?? [databaseName];
+  await Promise.all(names.map((name) => new Promise((resolve) => {
+    const request = indexedDB.deleteDatabase(name);
+    request.onsuccess = request.onerror = request.onblocked = () => resolve();
+  })));
+}

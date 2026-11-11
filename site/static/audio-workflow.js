@@ -4,10 +4,9 @@ import { chunkWords, reorderChunks } from "./grammar-order.js";
 
 export const steps = [
   { id: "language", label: "Language" },
-  { id: "seed", label: "Sample verses" },
-  { id: "grammar", label: "Grammar" },
   { id: "books", label: "Books" },
-  { id: "export", label: "Export" }
+  { id: "export", label: "Export" },
+  { id: "settings", label: "Settings" }
 ];
 
 export const manifestFormat = "macula-scripta-audio";
@@ -29,19 +28,6 @@ export function verseLemmas(words, unspoken = {}) {
     lemmas.push({ lemma: word.lemma, gloss: word.gloss ?? "" });
   }
   return lemmas;
-}
-
-// Cards for the sample verses, de-duplicated across verses, with the verses that use them.
-export function seedCards(seeds, unspoken = {}) {
-  const cards = new Map();
-  for (const seed of seeds) {
-    for (const { lemma, gloss } of verseLemmas(seed.words, unspoken)) {
-      const card = cards.get(lemma) ?? { greek: lemma, gloss, verses: [] };
-      card.verses.push(seed.verse);
-      cards.set(lemma, card);
-    }
-  }
-  return [...cards.values()];
 }
 
 export function bookCards(plan, book, unspoken = {}) {
@@ -82,14 +68,16 @@ export function verseStatus(words, clips, unspoken = {}) {
   return { complete: missing.length === 0 && words.some((word) => !isProperNoun(word)), missing };
 }
 
-// Lemmas to play for a verse, in the target order: the hand-made chunk order for sample verses, otherwise the learned rules.
-export function playbackLemmas(words, rules, explicitOrder, unspoken = {}) {
+// Words to play for a verse, in the target order: the hand-made chunk order when set, otherwise the learned rules.
+export function playbackWords(words, rules, explicitOrder, unspoken = {}) {
   const chunks = chunkWords(words);
   const valid = Array.isArray(explicitOrder) && explicitOrder.length === chunks.length
     && new Set(explicitOrder).size === chunks.length && explicitOrder.every((index) => chunks[index]);
   const order = valid ? explicitOrder : reorderChunks(chunks, rules ?? {});
-  return order.flatMap((index) => chunks[index].words).filter((word) => !isProperNoun(word) && !unspoken[word.lemma]).map((word) => word.lemma);
+  return order.flatMap((index) => chunks[index].words).filter((word) => !isProperNoun(word) && !unspoken[word.lemma]);
 }
+
+export const playbackLemmas = (...args) => playbackWords(...args).map((word) => word.lemma);
 
 export function groupVerses(tokens) {
   const verses = [];
