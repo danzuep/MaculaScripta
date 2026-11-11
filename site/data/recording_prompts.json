@@ -1,0 +1,1298 @@
+{
+  "summary": {
+    "total_unique_diphones": 248,
+    "prompts_generated": 117,
+    "estimated_recording_time_minutes": 8.5
+  },
+  "recording_queue": [
+    {
+      "prompt_id": 1,
+      "phrase_greek": "λέγεται μεθερμηνευόμενον Διδάσκαλε",
+      "phonemes_ipa": "/leʝetemeθerminevomenonðiðaskale/",
+      "new_diphones_covered": [
+        "l-e",
+        "e-ʝ",
+        "ʝ-e",
+        "e-t",
+        "t-e",
+        "e-m",
+        "m-e",
+        "e-θ",
+        "θ-e",
+        "e-r",
+        "r-m",
+        "m-i",
+        "i-n",
+        "n-e",
+        "e-v",
+        "v-o",
+        "o-m",
+        "e-n",
+        "n-o",
+        "o-n",
+        "n-ð",
+        "ð-i",
+        "i-ð",
+        "ð-a",
+        "a-s",
+        "s-k",
+        "k-a",
+        "a-l"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 2,
+      "phrase_greek": "ἄνθρωπος ἀπεσταλμένος παρὰ",
+      "phonemes_ipa": "/anθroposapestalmenospara/",
+      "new_diphones_covered": [
+        "a-n",
+        "n-θ",
+        "θ-r",
+        "r-o",
+        "o-p",
+        "p-o",
+        "o-s",
+        "s-a",
+        "a-p",
+        "p-e",
+        "e-s",
+        "s-t",
+        "t-a",
+        "l-m",
+        "s-p",
+        "p-a",
+        "a-r",
+        "r-a"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 3,
+      "phrase_greek": "ἔδωκεν αὐτοῖς ἐξουσίαν",
+      "phonemes_ipa": "/eðokenaftyseksusian/",
+      "new_diphones_covered": [
+        "e-ð",
+        "ð-o",
+        "o-k",
+        "k-e",
+        "n-a",
+        "a-f",
+        "f-t",
+        "t-y",
+        "y-s",
+        "s-e",
+        "e-k",
+        "k-s",
+        "s-u",
+        "u-s",
+        "s-i",
+        "i-a"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 4,
+      "phrase_greek": "ἠρνήσατο καὶ ὡμολόγησεν",
+      "phonemes_ipa": "/irnisatokeomoloʝisen/",
+      "new_diphones_covered": [
+        "i-r",
+        "r-n",
+        "n-i",
+        "i-s",
+        "a-t",
+        "t-o",
+        "e-o",
+        "m-o",
+        "o-l",
+        "l-o",
+        "o-ʝ",
+        "ʝ-i"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 5,
+      "phrase_greek": "Τῇ ἐπαύριον βλέπει",
+      "phonemes_ipa": "/tiepavrionvlepi/",
+      "new_diphones_covered": [
+        "t-i",
+        "i-e",
+        "e-p",
+        "a-v",
+        "v-r",
+        "r-i",
+        "i-o",
+        "n-v",
+        "v-l",
+        "p-i"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 6,
+      "phrase_greek": "μαθηταὶ αὐτοῦ λαλοῦντος",
+      "phonemes_ipa": "/maθiteaftulaluntos/",
+      "new_diphones_covered": [
+        "m-a",
+        "a-θ",
+        "θ-i",
+        "i-t",
+        "e-a",
+        "t-u",
+        "u-l",
+        "l-a",
+        "l-u",
+        "u-n",
+        "n-t"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 7,
+      "phrase_greek": "θελήματος σαρκὸς οὐδὲ",
+      "phonemes_ipa": "/θelimatossarkosuðe/",
+      "new_diphones_covered": [
+        "e-l",
+        "l-i",
+        "i-m",
+        "s-s",
+        "r-k",
+        "k-o",
+        "u-ð",
+        "ð-e"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 8,
+      "phrase_greek": "ἔμπροσθέν μου γέγονεν",
+      "phonemes_ipa": "/emprosθenmuʝeɣonen/",
+      "new_diphones_covered": [
+        "m-p",
+        "p-r",
+        "s-θ",
+        "n-m",
+        "m-u",
+        "u-ʝ",
+        "e-ɣ",
+        "ɣ-o"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 9,
+      "phrase_greek": "ὁδὸν κυρίου καθὼς",
+      "phonemes_ipa": "/oðonkyriukaθos/",
+      "new_diphones_covered": [
+        "o-ð",
+        "n-k",
+        "k-y",
+        "y-r",
+        "i-u",
+        "u-k",
+        "θ-o"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 10,
+      "phrase_greek": "βαπτίζω ἐν ὕδατι",
+      "phonemes_ipa": "/vaptizoenyðati/",
+      "new_diphones_covered": [
+        "v-a",
+        "p-t",
+        "i-z",
+        "z-o",
+        "o-e",
+        "n-y",
+        "y-ð"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 11,
+      "phrase_greek": "ὄψεσθε ἦλθαν οὖν",
+      "phonemes_ipa": "/opsesθeilθanun/",
+      "new_diphones_covered": [
+        "p-s",
+        "e-i",
+        "i-l",
+        "l-θ",
+        "θ-a",
+        "n-u"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 12,
+      "phrase_greek": "ἀληθινὸν ὃ φωτίζει",
+      "phonemes_ipa": "/aliθinonofotizi/",
+      "new_diphones_covered": [
+        "i-θ",
+        "o-f",
+        "f-o",
+        "o-t",
+        "z-i"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 13,
+      "phrase_greek": "θεοῦ σὺ βασιλεὺς",
+      "phonemes_ipa": "/θeusyvasilefs/",
+      "new_diphones_covered": [
+        "e-u",
+        "s-y",
+        "y-v",
+        "e-f",
+        "f-s"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 14,
+      "phrase_greek": "πατρός πλήρης χάριτος",
+      "phonemes_ipa": "/patrosplirisxaritos/",
+      "new_diphones_covered": [
+        "t-r",
+        "p-l",
+        "s-x",
+        "x-a"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 15,
+      "phrase_greek": "πνεῦμα καταβαῖνον ὡς",
+      "phonemes_ipa": "/pnevmakatavenonos/",
+      "new_diphones_covered": [
+        "p-n",
+        "v-m",
+        "a-k",
+        "v-e"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 16,
+      "phrase_greek": "μεμαρτύρηκα ὅτι οὗτός",
+      "phonemes_ipa": "/memartyrikaotiutos/",
+      "new_diphones_covered": [
+        "r-t",
+        "i-k",
+        "a-o",
+        "u-t"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 17,
+      "phrase_greek": "δύναταί τι ἀγαθὸν",
+      "phonemes_ipa": "/ðynatetiaɣaθon/",
+      "new_diphones_covered": [
+        "ð-y",
+        "y-n",
+        "a-ɣ",
+        "ɣ-a"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 18,
+      "phrase_greek": "συκῆς πιστεύεις μείζω",
+      "phonemes_ipa": "/sykispistevismizo/",
+      "new_diphones_covered": [
+        "y-k",
+        "k-i",
+        "v-i",
+        "s-m"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 19,
+      "phrase_greek": "εἶ ἵνα ἀπόκρισιν",
+      "phonemes_ipa": "/iinaapokrisin/",
+      "new_diphones_covered": [
+        "i-i",
+        "a-a",
+        "k-r"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 20,
+      "phrase_greek": "θεασάμενος αὐτοὺς ἀκολουθοῦντας",
+      "phonemes_ipa": "/θeasamenosaftusakoluθuntas/",
+      "new_diphones_covered": [
+        "a-m",
+        "u-θ",
+        "θ-u"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 21,
+      "phrase_greek": "ἀρχῇ πρὸς",
+      "phonemes_ipa": "/arxipros/",
+      "new_diphones_covered": [
+        "r-x",
+        "x-i",
+        "i-p"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 22,
+      "phrase_greek": "ἀνδρὸς ἀλλ ἐκ",
+      "phonemes_ipa": "/anðrosallek/",
+      "new_diphones_covered": [
+        "ð-r",
+        "l-l"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 23,
+      "phrase_greek": "εἶδαν ποῦ μένει",
+      "phonemes_ipa": "/iðanpumeni/",
+      "new_diphones_covered": [
+        "n-p",
+        "p-u",
+        "u-m"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 24,
+      "phrase_greek": "οἱ προφῆται εὑρήκαμεν",
+      "phonemes_ipa": "/yprofiteevrikamen/",
+      "new_diphones_covered": [
+        "y-p",
+        "f-i",
+        "e-e"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 25,
+      "phrase_greek": "καὶ χωρὶς",
+      "phonemes_ipa": "/kexoris/",
+      "new_diphones_covered": [
+        "e-x",
+        "x-o",
+        "o-r"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 26,
+      "phrase_greek": "οὐ παρέλαβον",
+      "phonemes_ipa": "/uparelavon/",
+      "new_diphones_covered": [
+        "u-p",
+        "r-e"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 27,
+      "phrase_greek": "φωνὴ βοῶντος",
+      "phonemes_ipa": "/fonivoontos/",
+      "new_diphones_covered": [
+        "i-v",
+        "o-o"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 28,
+      "phrase_greek": "ἐρήμῳ Εὐθύνατε",
+      "phonemes_ipa": "/erimoefθynate/",
+      "new_diphones_covered": [
+        "f-θ",
+        "θ-y"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 29,
+      "phrase_greek": "λύσω αὐτοῦ",
+      "phonemes_ipa": "/lysoaftu/",
+      "new_diphones_covered": [
+        "l-y",
+        "s-o",
+        "o-a"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 30,
+      "phrase_greek": "οὐρανὸν ἀνεῳγότα",
+      "phonemes_ipa": "/uranonaneoɣota/",
+      "new_diphones_covered": [
+        "u-r",
+        "o-ɣ"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 31,
+      "phrase_greek": "καὶ οἱ ἴδιοι",
+      "phonemes_ipa": "/keyiðiy/",
+      "new_diphones_covered": [
+        "e-y",
+        "y-i",
+        "i-y"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 32,
+      "phrase_greek": "ἐκ θεοῦ ἐγεννήθησαν",
+      "phonemes_ipa": "/ekθeueʝenniθisan/",
+      "new_diphones_covered": [
+        "k-θ",
+        "u-e",
+        "n-n"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 33,
+      "phrase_greek": "ἤκουσαν οἱ δύο",
+      "phonemes_ipa": "/ikusanyðyo/",
+      "new_diphones_covered": [
+        "k-u",
+        "y-o"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 34,
+      "phrase_greek": "πρῶτον τὸν ἀδελφὸν",
+      "phonemes_ipa": "/protontonaðelfon/",
+      "new_diphones_covered": [
+        "a-ð",
+        "l-f"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 35,
+      "phrase_greek": "ἀμὴν λέγω ὑμῖν",
+      "phonemes_ipa": "/aminleɣoymin/",
+      "new_diphones_covered": [
+        "n-l",
+        "o-y",
+        "y-m"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 36,
+      "phrase_greek": "αὐτῷ ζωὴ",
+      "phonemes_ipa": "/aftozoi/",
+      "new_diphones_covered": [
+        "o-z",
+        "o-i"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 37,
+      "phrase_greek": "σκοτίᾳ φαίνει",
+      "phonemes_ipa": "/skotiafeni/",
+      "new_diphones_covered": [
+        "f-e"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 38,
+      "phrase_greek": "κόσμος δι",
+      "phonemes_ipa": "/kosmosði/",
+      "new_diphones_covered": [
+        "s-ð"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 39,
+      "phrase_greek": "ἐκεῖνος ἐξηγήσατο",
+      "phonemes_ipa": "/ekinoseksiʝisato/",
+      "new_diphones_covered": [
+        "i-ʝ"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 40,
+      "phrase_greek": "ἵνα φανερωθῇ",
+      "phonemes_ipa": "/inafaneroθi/",
+      "new_diphones_covered": [
+        "f-a",
+        "o-θ"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 41,
+      "phrase_greek": "ὁ ἐκλεκτὸς",
+      "phonemes_ipa": "/oeklektos/",
+      "new_diphones_covered": [
+        "k-l",
+        "k-t"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 42,
+      "phrase_greek": "ἤγαγεν αὐτὸν",
+      "phonemes_ipa": "/iɣaʝenafton/",
+      "new_diphones_covered": [
+        "i-ɣ",
+        "a-ʝ"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 43,
+      "phrase_greek": "τοὺς ἀγγέλους",
+      "phonemes_ipa": "/tusaŋelus/",
+      "new_diphones_covered": [
+        "a-ŋ",
+        "ŋ-e"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 44,
+      "phrase_greek": "περὶ τοῦ φωτός",
+      "phonemes_ipa": "/peritufotos/",
+      "new_diphones_covered": [
+        "u-f"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 45,
+      "phrase_greek": "ὅσοι δὲ ἔλαβον",
+      "phonemes_ipa": "/osyðeelavon/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 46,
+      "phrase_greek": "εἰς τὸν κόλπον",
+      "phonemes_ipa": "/istonkolpon/",
+      "new_diphones_covered": [
+        "l-p"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 47,
+      "phrase_greek": "Λευίτας ἵνα ἐρωτήσωσιν",
+      "phonemes_ipa": "/levitasinaerotisosin/",
+      "new_diphones_covered": [
+        "a-e"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 48,
+      "phrase_greek": "αὐτόν Σὺ τίς",
+      "phonemes_ipa": "/aftonsytis/",
+      "new_diphones_covered": [
+        "n-s",
+        "y-t"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 49,
+      "phrase_greek": "ἱμάντα τοῦ ὑποδήματος",
+      "phonemes_ipa": "/imantatuypoðimatos/",
+      "new_diphones_covered": [
+        "u-y"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 50,
+      "phrase_greek": "Ἴδε ὁ ἀμνὸς",
+      "phonemes_ipa": "/iðeoamnos/",
+      "new_diphones_covered": [
+        "m-n"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 51,
+      "phrase_greek": "κἀγὼ οὐκ ᾔδειν",
+      "phonemes_ipa": "/kaɣoukiðin/",
+      "new_diphones_covered": [
+        "o-u"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 52,
+      "phrase_greek": "φωνῆσαι ὄντα ὑπὸ",
+      "phonemes_ipa": "/foniseontaypo/",
+      "new_diphones_covered": [
+        "a-y"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 53,
+      "phrase_greek": "θεοῦ ὄνομα",
+      "phonemes_ipa": "/θeuonoma/",
+      "new_diphones_covered": [
+        "u-o"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 54,
+      "phrase_greek": "οὐκ ἔγνω",
+      "phonemes_ipa": "/ukeɣno/",
+      "new_diphones_covered": [
+        "ɣ-n"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 55,
+      "phrase_greek": "ἐξουσίαν τέκνα",
+      "phonemes_ipa": "/eksusiantekna/",
+      "new_diphones_covered": [
+        "k-n"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 56,
+      "phrase_greek": "ἀντὶ χάριτος",
+      "phonemes_ipa": "/antixaritos/",
+      "new_diphones_covered": [
+        "i-x"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 57,
+      "phrase_greek": "πώποτε μονογενὴς",
+      "phonemes_ipa": "/popotemonoʝenis/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 58,
+      "phrase_greek": "Ἰουδαῖοι ἐξ",
+      "phonemes_ipa": "/iuðeyeks/",
+      "new_diphones_covered": [
+        "y-e"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 59,
+      "phrase_greek": "ἀπεκρίθη Οὔ",
+      "phonemes_ipa": "/apekriθiu/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 60,
+      "phrase_greek": "ὅπου ἦν",
+      "phonemes_ipa": "/opuin/",
+      "new_diphones_covered": [
+        "u-i"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 61,
+      "phrase_greek": "ὑπὲρ οὗ",
+      "phonemes_ipa": "/yperu/",
+      "new_diphones_covered": [
+        "r-u"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 62,
+      "phrase_greek": "πάλιν εἱστήκει",
+      "phonemes_ipa": "/palinistiki/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 63,
+      "phrase_greek": "καὶ ἐμβλέψας",
+      "phonemes_ipa": "/keemvlepsas/",
+      "new_diphones_covered": [
+        "m-v"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 64,
+      "phrase_greek": "αὐτῷ Ῥαββί",
+      "phonemes_ipa": "/aftoravvi/",
+      "new_diphones_covered": [
+        "v-v"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 65,
+      "phrase_greek": "ὥρα ἦν",
+      "phonemes_ipa": "/orain/",
+      "new_diphones_covered": [
+        "a-i"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 66,
+      "phrase_greek": "ἠθέλησεν ἐξελθεῖν",
+      "phonemes_ipa": "/iθelisenekselθin/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 67,
+      "phrase_greek": "Ὃν ἔγραψεν",
+      "phonemes_ipa": "/oneɣrapsen/",
+      "new_diphones_covered": [
+        "ɣ-r"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 68,
+      "phrase_greek": "θεοῦ ἀναβαίνοντας",
+      "phonemes_ipa": "/θeuanavenontas/",
+      "new_diphones_covered": [
+        "u-a"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 69,
+      "phrase_greek": "εἰ σὺ οὐκ",
+      "phonemes_ipa": "/isyuk/",
+      "new_diphones_covered": [
+        "y-u"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 70,
+      "phrase_greek": "αἴρων τὴν ἁμαρτίαν",
+      "phonemes_ipa": "/erontinamartian/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 71,
+      "phrase_greek": "Ὀπίσω μου ἔρχεται",
+      "phonemes_ipa": "/opisomuerxete/",
+      "new_diphones_covered": [
+        "x-e"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 72,
+      "phrase_greek": "μοι εἶπεν Ἐφ",
+      "phonemes_ipa": "/myipenef/",
+      "new_diphones_covered": [
+        "m-y"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 73,
+      "phrase_greek": "ὁ λόγος",
+      "phonemes_ipa": "/oloɣos/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 74,
+      "phrase_greek": "πάντα δι",
+      "phonemes_ipa": "/pantaði/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 75,
+      "phrase_greek": "οὐδὲ ἕν",
+      "phonemes_ipa": "/uðeen/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 76,
+      "phrase_greek": "οὐ κατέλαβεν",
+      "phonemes_ipa": "/ukatelaven/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 77,
+      "phrase_greek": "εἰς μαρτυρίαν",
+      "phonemes_ipa": "/ismartyrian/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 78,
+      "phrase_greek": "ἴδιοι αὐτὸν",
+      "phonemes_ipa": "/iðiyafton/",
+      "new_diphones_covered": [
+        "y-a"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 79,
+      "phrase_greek": "τοῖς πιστεύουσιν",
+      "phonemes_ipa": "/tyspistevusin/",
+      "new_diphones_covered": [
+        "v-u"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 80,
+      "phrase_greek": "ἐξ αἱμάτων",
+      "phonemes_ipa": "/eksematon/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 81,
+      "phrase_greek": "καὶ ἐσκήνωσεν",
+      "phonemes_ipa": "/keeskinosen/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 82,
+      "phrase_greek": "τὴν δόξαν",
+      "phonemes_ipa": "/tinðoksan/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 83,
+      "phrase_greek": "καὶ ἀληθείας",
+      "phonemes_ipa": "/kealiθias/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 84,
+      "phrase_greek": "καὶ κέκραγεν",
+      "phonemes_ipa": "/kekekraʝen/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 85,
+      "phrase_greek": "τοῦ πληρώματος",
+      "phonemes_ipa": "/tupliromatos/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 86,
+      "phrase_greek": "ὁ νόμος",
+      "phonemes_ipa": "/onomos/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 87,
+      "phrase_greek": "θεὸν οὐδεὶς",
+      "phonemes_ipa": "/θeonuðis/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 88,
+      "phrase_greek": "ὅτε ἀπέστειλαν",
+      "phonemes_ipa": "/oteapestilan/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 89,
+      "phrase_greek": "ἱερεῖς καὶ",
+      "phonemes_ipa": "/ieriske/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 90,
+      "phrase_greek": "τοῖς πέμψασιν",
+      "phonemes_ipa": "/tyspempsasin/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 91,
+      "phrase_greek": "περὶ σεαυτοῦ",
+      "phonemes_ipa": "/periseaftu/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 92,
+      "phrase_greek": "ἔφη Ἐγὼ",
+      "phonemes_ipa": "/efieɣo/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 93,
+      "phrase_greek": "Ἐγὼ βαπτίζω",
+      "phonemes_ipa": "/eɣovaptizo/",
+      "new_diphones_covered": [
+        "o-v"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 94,
+      "phrase_greek": "ὕδατι μέσος",
+      "phonemes_ipa": "/yðatimesos/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 95,
+      "phrase_greek": "οὗ οὐκ",
+      "phonemes_ipa": "/uuk/",
+      "new_diphones_covered": [
+        "u-u"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 96,
+      "phrase_greek": "εἰμὶ ἄξιος",
+      "phonemes_ipa": "/imiaksios/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 97,
+      "phrase_greek": "ἐγένετο πέραν",
+      "phonemes_ipa": "/eʝenetoperan/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 98,
+      "phrase_greek": "ὡς περιστερὰν",
+      "phonemes_ipa": "/osperisteran/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 99,
+      "phrase_greek": "ὃν ἂν",
+      "phonemes_ipa": "/onan/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 100,
+      "phrase_greek": "πνεύματι ἁγίῳ",
+      "phonemes_ipa": "/pnevmatiaʝio/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 101,
+      "phrase_greek": "περιπατοῦντι λέγει",
+      "phonemes_ipa": "/peripatuntileʝi/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 102,
+      "phrase_greek": "στραφεὶς δὲ",
+      "phonemes_ipa": "/strafisðe/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 103,
+      "phrase_greek": "ἀκολουθοῦντας λέγει",
+      "phonemes_ipa": "/akoluθuntasleʝi/",
+      "new_diphones_covered": [
+        "s-l"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 104,
+      "phrase_greek": "Τί ζητεῖτε",
+      "phonemes_ipa": "/tizitite/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 105,
+      "phrase_greek": "τὴν ἡμέραν",
+      "phonemes_ipa": "/tinimeran/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 106,
+      "phrase_greek": "ὡς δεκάτη",
+      "phonemes_ipa": "/osðekati/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 107,
+      "phrase_greek": "ὁ υἱὸς",
+      "phonemes_ipa": "/oyos/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 108,
+      "phrase_greek": "σὺ κληθήσῃ",
+      "phonemes_ipa": "/sykliθisi/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 109,
+      "phrase_greek": "ὃ ἑρμηνεύεται",
+      "phonemes_ipa": "/oerminevete/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 110,
+      "phrase_greek": "τῆς πόλεως",
+      "phonemes_ipa": "/tispoleos/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 111,
+      "phrase_greek": "τὸν ἀπὸ",
+      "phonemes_ipa": "/tonapo/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 112,
+      "phrase_greek": "Ἔρχου καὶ",
+      "phonemes_ipa": "/erxuke/",
+      "new_diphones_covered": [
+        "x-u"
+      ],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 113,
+      "phrase_greek": "Ἴδε ἀληθῶς",
+      "phonemes_ipa": "/iðealiθos/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 114,
+      "phrase_greek": "ᾧ δόλος",
+      "phonemes_ipa": "/oðolos/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 115,
+      "phrase_greek": "Πόθεν με",
+      "phonemes_ipa": "/poθenme/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 116,
+      "phrase_greek": "αὐτῷ Πρὸ",
+      "phonemes_ipa": "/aftopro/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    },
+    {
+      "prompt_id": 117,
+      "phrase_greek": "σε ὑποκάτω",
+      "phonemes_ipa": "/seypokato/",
+      "new_diphones_covered": [],
+      "audio_action": "RECORD_PROMPT"
+    }
+  ],
+  "proper_nouns_excluded": [
+    {
+      "surface": "Ἰωάννης",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Μωϋσέως",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Ἰησοῦ",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Χριστοῦ",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Ἰωάννου",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Ἱεροσολύμων",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "χριστός",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Ἠλίας",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Ἠσαΐας",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Φαρισαίων",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "χριστὸς",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Βηθανίᾳ",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Ἰορδάνου",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Ἰησοῦν",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Ἰσραὴλ",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Ἰησοῦς",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Ἀνδρέας",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Σίμωνος",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Πέτρου",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Σίμωνα",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Μεσσίαν",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Σίμων",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Κηφᾶς",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Πέτρος",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Γαλιλαίαν",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Φίλιππον",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Φίλιππος",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Βηθσαϊδά",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Ἀνδρέου",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Ναθαναὴλ",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Μωϋσῆς",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Ἰωσὴφ",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Ναζαρέτ",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Ναθαναήλ",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Ναζαρὲτ",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Ἰσραηλίτης",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    },
+    {
+      "surface": "Ἰσραήλ",
+      "audio_action": "USE_ORIGINAL_PRONUNCIATION"
+    }
+  ]
+}
