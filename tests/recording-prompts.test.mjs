@@ -77,8 +77,8 @@ test("lemma cards cover every inflected form", () => {
 
 test("the quickest gospel is recorded first, then the quickest remaining book", () => {
   const plan = buildCoveragePlan([word("ὁ", "ὁ", { verse: "MAT 1:1" }), word("λόγος", "λόγος", { verse: "MAT 1:1" }),
-    word("ὁ", "ὁ", { verse: "MRK 1:1" }), word("θεός", "θεός", { verse: "MRK 1:1" })], { target: 1 });
+    word("ἀγάπη", "ἀγάπη", { verse: "MAT 1:1" }), word("ὁ", "ὁ", { verse: "MRK 1:1" }), word("θεός", "θεός", { verse: "MRK 1:1" })], { target: 1 });
   assert.deepEqual(plan.stages.map((stage) => stage.book), ["MRK", "MAT"]);
   assert.equal(plan.stages[0].book_coverage, 1);
-  assert.equal(plan.cards.filter((card) => card.book === "MAT").length, 1);
+  assert.equal(plan.cards.filter((card) => card.book === "MAT").length, 2);
 });
