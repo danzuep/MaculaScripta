@@ -33,7 +33,7 @@ export const saveClip = (lemma, blob) => run("clips", "readwrite", (store) => st
 
 export async function loadState() {
   const saved = await run("state", "readonly", (store) => store.get("main"));
-  return { language: "", rules: {}, seedOrders: {}, ...saved };
+  return { language: "", rules: {}, seedOrders: {}, unspoken: {}, ...saved };
 }
 
 export const saveState = (state) => run("state", "readwrite", (store) => store.put(state, "main"));

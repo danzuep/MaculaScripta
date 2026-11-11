@@ -19,3 +19,14 @@
 .listen-list .playing { background: #dbeafe; }
 .listen-list .incomplete { opacity: .65; }
 .listen-order { flex-basis: 100%; }
+.recorder-actions button { font-size: 1.4rem; min-width: 3.2rem; }
+.record-hold { color: #dc2626; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.record-hold.recording { background: #dc2626; color: #fff; animation: record-pulse 1s ease-in-out infinite; }
+@keyframes record-pulse { 50% { opacity: .7; } }
+.grammar-chunk { position: relative; padding-right: 2.2rem; }
+.grammar-words { display: flex; flex-wrap: wrap; gap: .25rem; font-size: 1.3rem; }
+.grammar-word { display: inline-flex; align-items: center; gap: .15rem; }
+.grammar-chunk button.unspoken-card { position: absolute; top: .25rem; right: .25rem; min-height: 1.8rem; min-width: 1.8rem; padding: 0; }
+.grammar-chunk button.unspoken-word { min-height: 1.5rem; min-width: 1.5rem; padding: 0; font-size: .8rem; }
+.grammar-chunk button[aria-pressed="true"] { background: #fee2e2; }
+.grammar-word.unspoken > span:first-child, .grammar-chunk.unspoken .grammar-words { text-decoration: line-through; opacity: .5; }

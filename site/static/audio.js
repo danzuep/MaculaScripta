@@ -2,7 +2,7 @@
 import { chunkWords, learnRules } from "./grammar-order.js";
 import { makeZip, readZip } from "./lift-exchange.js";
 import {
-  steps, seedCards, bookCards, nextBook, verseStatus, playbackLemmas, groupVerses, toToken, buildExportParts, parseManifest
+  steps, seedCards, isProperNoun, bookCards, chapterOrder, nextBook, verseStatus, playbackLemmas, groupVerses, toToken, buildExportParts, parseManifest
 } from "./audio-workflow.js";
 import * as store from "./audio-store.js";
 
@@ -115,15 +115,16 @@ function createRecorder(container, onSaved) {
     note: el("p", undefined, { className: "recorder-note" }),
     status: el("p", undefined, { className: "recorder-status", role: "status" })
   };
-  const button = (label, handler) => {
-    const node = el("button", label, { type: "button" });
-    node.addEventListener("click", handler);
+  const button = (label, name, handler) => {
+    const node = el("button", label, { type: "button", ariaLabel: name, title: name });
+    if (handler) node.addEventListener("click", handler);
     return node;
   };
-  const previous = button("Previous", () => move(-1));
-  const record = button("Record", () => toggle());
-  const play = button("Play", () => playBlobs([clips.get(cards[index].greek).blob]));
-  const next = button("Next", () => move(1));
+  const previous = button("\u23EE\uFE0E", "Previous card", () => move(-1));
+  const record = button("\u25CF", "Hold to record, release to stop", undefined);
+  record.classList.add("record-hold");
+  const play = button("\u25B6", "Play recording", () => playBlobs([clips.get(cards[index].greek).blob]));
+  const next = button("\u23ED\uFE0E", "Next card without a recording", () => move(1));
   const actions = el("div", undefined, { className: "recorder-actions" });
   actions.append(previous, record, play, next);
   container.replaceChildren(parts.count, parts.greek, parts.gloss, parts.note, actions, parts.status);
@@ -136,6 +137,13 @@ function createRecorder(container, onSaved) {
     return -1;
   };
 
+  // Going forward skips cards that already have a recording; only when none are left ahead does it step one card.
+  const forwardTarget = () => {
+    const missing = cards.findIndex((card, position) => position > index && !clips.has(card.greek));
+    if (missing >= 0) return missing;
+    return index < cards.length - 1 ? index + 1 : -1;
+  };
+
   function render() {
     const card = cards[index];
     container.hidden = !card;
@@ -146,56 +154,102 @@ function createRecorder(container, onSaved) {
     parts.greek.textContent = card.greek;
     parts.gloss.textContent = card.gloss && card.gloss !== "-" ? `“${card.gloss}”` : "";
     parts.note.textContent = card.verses ? `Used in ${card.verses.join(", ")}` : "";
-    record.textContent = recording ? "Stop and save" : clips.has(card.greek) ? "Re-record" : "Record";
+    record.classList.toggle("recording", recording);
+    record.title = clips.has(card.greek) ? "Hold to re-record, release to stop" : "Hold to record, release to stop";
     record.setAttribute("aria-pressed", String(recording));
     play.disabled = recording || !clips.has(card.greek);
     previous.disabled = recording || index === 0;
-    next.disabled = recording || index === cards.length - 1;
-    parts.status.textContent = message || (left === 0 ? "All cards recorded." : "Say the word in your language. Press Space to start and stop.");
+    next.disabled = recording || forwardTarget() < 0;
+    parts.status.textContent = message || (left === 0 ? "All cards recorded." : "Hold ● (or Space) while you say the word, then let go.");
   }
 
   function move(delta) {
-    index = Math.max(0, Math.min(cards.length - 1, index + delta));
+    const target = delta > 0 ? forwardTarget() : index + delta;
+    if (target < 0 || target >= cards.length) return;
+    index = target;
     message = "";
     render();
   }
 
-  async function toggle() {
+  let holding = false;
+  let pending = null;
+
+  async function finish() {
     const card = cards[index];
-    if (!card) return;
     try {
-      if (!recording) {
-        await startCapture();
-        recording = true;
-        message = "Recording…";
+      const blob = await stopCapture();
+      recording = false;
+      if (blob.size) {
+        await store.saveClip(card.greek, blob);
+        clips.set(card.greek, { blob, mime: blob.type });
+        message = `Saved “${card.greek}”.`;
+        const upcoming = missingFrom(index);
+        if (upcoming >= 0) index = upcoming;
+        onSaved();
       } else {
-        const blob = await stopCapture();
-        recording = false;
-        if (blob.size) {
-          await store.saveClip(card.greek, blob);
-          clips.set(card.greek, { blob, mime: blob.type });
-          message = `Saved “${card.greek}”.`;
-          const upcoming = missingFrom(index);
-          if (upcoming >= 0) index = upcoming;
-          onSaved();
-        } else {
-          message = "Nothing was recorded. Try again.";
-        }
+        message = "Nothing was recorded. Hold the button a little longer.";
       }
     } catch (error) {
       recording = false;
-      message = `Microphone unavailable: ${error.message}`;
+      message = `Could not save: ${error.message}`;
     }
     render();
   }
 
+  // Press and hold: recording runs while the button (or Space) is held down and is saved on release.
+  async function press() {
+    if (holding || recording || !cards[index]) return;
+    holding = true;
+    pending = (async () => {
+      try {
+        await startCapture();
+        recording = true;
+        message = "Recording…";
+        render();
+        if (!holding) await finish();
+      } catch (error) {
+        recording = false;
+        holding = false;
+        message = `Microphone unavailable: ${error.message}`;
+        render();
+      }
+    })();
+    await pending;
+  }
+
+  async function release() {
+    if (!holding) return;
+    holding = false;
+    await pending;
+    if (recording) await finish();
+  }
+
+  record.addEventListener("pointerdown", (event) => {
+    if (event.button) return;
+    event.preventDefault();
+    record.setPointerCapture?.(event.pointerId);
+    press();
+  });
+  for (const type of ["pointerup", "pointercancel"]) record.addEventListener(type, release);
+  record.addEventListener("contextmenu", (event) => event.preventDefault());
+  record.addEventListener("keydown", (event) => {
+    if (event.key !== " " && event.key !== "Enter") return;
+    event.preventDefault();
+    if (!event.repeat) press();
+  });
+  record.addEventListener("keyup", (event) => {
+    if (event.key === " " || event.key === "Enter") release();
+  });
+
   return {
     render,
-    toggle,
+    press,
+    release,
     get recording() { return recording; },
     setCards(list) {
       cards = list;
       recording = false;
+      holding = false;
       message = "";
       const first = cards.findIndex((card) => !clips.has(card.greek));
       index = first >= 0 ? first : 0;
@@ -207,16 +261,19 @@ function createRecorder(container, onSaved) {
 document.addEventListener("keydown", (event) => {
   if (event.key !== " " || !activeRecorder || event.target.closest("input, select, textarea, button, a")) return;
   event.preventDefault();
-  activeRecorder.toggle();
+  if (!event.repeat) activeRecorder.press();
+});
+document.addEventListener("keyup", (event) => {
+  if (event.key === " " && activeRecorder) activeRecorder.release();
 });
 
 // ---- Progress and breadcrumbs ---------------------------------------------------------------------------------
 
 const done = {
   language: () => Boolean(state.language.trim()),
-  seed: () => seedCards(seeds).length > 0 && seedCards(seeds).every((card) => clips.has(card.greek)),
+  seed: () => seedCards(seeds, state.unspoken).length > 0 && seedCards(seeds, state.unspoken).every((card) => clips.has(card.greek)),
   grammar: () => seeds.length > 0 && seeds.every((seed) => state.seedOrders[seed.verse]),
-  books: () => Boolean(plan) && plan.cards.every((card) => clips.has(card.greek)),
+  books: () => Boolean(plan) && plan.cards.every((card) => state.unspoken[card.greek] || clips.has(card.greek)),
   export: () => false
 };
 
@@ -264,7 +321,7 @@ async function renderListen() {
     chapterSelect.replaceChildren(...chapters.map((chapter) => el("option", `Chapter ${chapter}`, { value: String(chapter) })));
     if (chapters.includes(Number(previous))) chapterSelect.value = previous;
     else {
-      const firstReady = chapters.find((chapter) => verses.some((verse) => chapterOf(verse.verse) === chapter && verseStatus(verse.words, clips).complete));
+      const firstReady = chapters.find((chapter) => verses.some((verse) => chapterOf(verse.verse) === chapter && verseStatus(verse.words, clips, state.unspoken).complete));
       chapterSelect.value = String(firstReady ?? chapters[0] ?? "");
     }
     chapterSelect.hidden = false;
@@ -274,14 +331,14 @@ async function renderListen() {
     verses = seeds;
   }
   const onlyComplete = $("#listen-complete").checked;
-  const ready = verses.filter((verse) => verseStatus(verse.words, clips).complete);
+  const ready = verses.filter((verse) => verseStatus(verse.words, clips, state.unspoken).complete);
   $("#listen-summary").textContent = verses.length
     ? `${ready.length} of ${verses.length} verses can be played.`
     : "This build has no verses for this selection.";
   $("#listen-list").replaceChildren(...(onlyComplete ? ready : verses).map((verse) => {
-    const status = verseStatus(verse.words, clips);
+    const status = verseStatus(verse.words, clips, state.unspoken);
     const item = el("li", undefined, { className: status.complete ? "" : "incomplete" });
-    const lemmas = playbackLemmas(verse.words, state.rules, state.seedOrders[verse.verse]);
+    const lemmas = playbackLemmas(verse.words, state.rules, state.seedOrders[verse.verse], state.unspoken);
     const play = el("button", `▶ ${verse.verse}`, { type: "button", disabled: !status.complete });
     play.addEventListener("click", () => {
       item.classList.add("playing");
@@ -299,7 +356,7 @@ let seedRecorder;
 let bookRecorder;
 
 function renderSeed() {
-  seedRecorder.setCards(seedCards(seeds));
+  seedRecorder.setCards(seedCards(seeds, state.unspoken));
   activeRecorder = seedRecorder;
 }
 
@@ -309,9 +366,9 @@ function renderBooks() {
     $("#book-progress").textContent = "The recording plan could not be loaded.";
     return;
   }
-  const preferred = select.value || state.book || nextBook(plan, clips);
+  const preferred = select.value || state.book || nextBook(plan, clips, state.unspoken);
   select.replaceChildren(...plan.stages.map((stage) => {
-    const cards = bookCards(plan, stage.book);
+    const cards = bookCards(plan, stage.book, state.unspoken);
     const recorded = cards.filter((card) => clips.has(card.greek)).length;
     return el("option", `${stage.book} · ${recorded}/${cards.length} cards`, { value: stage.book });
   }));
@@ -319,11 +376,13 @@ function renderBooks() {
   showBook();
 }
 
-function showBook() {
+async function showBook() {
   const code = $("#book-select").value;
   state.book = code;
   saveSoon();
-  const cards = bookCards(plan, code);
+  const verses = await bookVerses(code);
+  if (code !== $("#book-select").value) return;
+  const cards = chapterOrder(bookCards(plan, code, state.unspoken), verses);
   const left = cards.filter((card) => !clips.has(card.greek)).length;
   $("#book-progress").textContent = cards.length
     ? `${left} of ${cards.length} cards left for ${code}, about ${Math.ceil(left * secondsPerCard / 60)} minutes. Words already recorded in earlier books are skipped.`
@@ -343,6 +402,17 @@ function renderGrammar() {
     $("#grammar-summary").textContent = `${examples.length} of ${seeds.length} verses arranged · ${Object.keys(state.rules).length} word-order rules learned.`;
     renderCrumbs();
     renderListen();
+  };
+  const redraws = [];
+  const setUnspoken = (lemmas, off) => {
+    for (const lemma of lemmas) {
+      if (off) state.unspoken[lemma] = true;
+      else delete state.unspoken[lemma];
+    }
+    saveSoon();
+    renderCrumbs();
+    renderListen();
+    for (const redraw of redraws) redraw();
   };
   container.replaceChildren(...seeds.map((seed) => {
     const chunks = chunkWords(seed.words);
@@ -367,9 +437,33 @@ function renderGrammar() {
       list.replaceChildren(...order.map((chunkIndex, position) => {
         const chunk = chunks[chunkIndex];
         const item = el("li", undefined, { draggable: true, className: "grammar-chunk" });
-        item.append(el("span", chunk.words.map((word) => word.surface).join(" "), { lang: "grc" }),
+        const speakable = chunk.words.filter((word) => !isProperNoun(word));
+        const allOff = speakable.length > 0 && speakable.every((word) => state.unspoken[word.lemma]);
+        const unspokenButton = (label, name, pressed, handler, className) => {
+          const node = el("button", label, { type: "button", ariaLabel: name, title: name, className });
+          node.setAttribute("aria-pressed", String(pressed));
+          node.addEventListener("click", handler);
+          return node;
+        };
+        if (speakable.length) {
+          item.append(unspokenButton("\u2205", allOff ? "Speak every word in this card" : "Leave out every word in this card", allOff,
+            () => setUnspoken(speakable.map((word) => word.lemma), !allOff), "unspoken-card"));
+        }
+        const wordList = el("span", undefined, { lang: "grc", className: "grammar-words" });
+        for (const word of chunk.words) {
+          const off = Boolean(state.unspoken[word.lemma]);
+          const wordNode = el("span", undefined, { className: off ? "grammar-word unspoken" : "grammar-word" });
+          wordNode.append(el("span", word.surface));
+          if (speakable.length > 1 && !isProperNoun(word)) {
+            wordNode.append(unspokenButton("\u2205", off ? `Speak ${word.surface}` : `Leave out ${word.surface}`, off,
+              () => setUnspoken([word.lemma], !off), "unspoken-word"));
+          }
+          wordList.append(wordNode);
+        }
+        item.append(wordList,
           el("small", chunk.words.map((word) => word.gloss).filter(Boolean).join(" ")),
           el("small", chunk.slot, { className: "grammar-slot" }));
+        item.classList.toggle("unspoken", allOff);
         for (const [label, delta] of [["←", -1], ["→", 1]]) {
           const arrow = el("button", label, { type: "button", ariaLabel: delta < 0 ? "Move earlier" : "Move later", disabled: position + delta < 0 || position + delta >= order.length });
           arrow.addEventListener("click", () => move(position, position + delta));
@@ -392,6 +486,7 @@ function renderGrammar() {
       draw();
     });
     section.append(el("h3", seed.verse), list, confirmation, confirm, reset);
+    redraws.push(draw);
     draw();
     return section;
   }));
@@ -416,7 +511,7 @@ function download(blob, name) {
 async function exportAll() {
   const status = $("#export-status");
   try {
-    const parts = buildExportParts({ language: state.language, rules: state.rules, seedOrders: state.seedOrders, clips });
+    const parts = buildExportParts({ language: state.language, rules: state.rules, seedOrders: state.seedOrders, unspoken: state.unspoken, clips });
     for (const [index, part] of parts.entries()) {
       const files = new Map(part.files);
       files.set("manifest.json", new Blob([JSON.stringify(part.manifest, null, 1)], { type: "application/json" }));
@@ -454,6 +549,7 @@ async function importFiles(files) {
         state.seedOrders = manifest.seedOrders;
         state.rules = manifest.rules;
       }
+      state.unspoken = { ...manifest.unspoken, ...state.unspoken };
     }
     await saveSoon();
     status.textContent = `Imported ${added} new words; ${skipped} skipped (already recorded or unusable).`;
@@ -495,7 +591,7 @@ async function initialize() {
     renderCrumbs();
     renderListen();
     const option = $("#book-select").selectedOptions[0];
-    const cards = bookCards(plan, $("#book-select").value);
+    const cards = bookCards(plan, $("#book-select").value, state.unspoken);
     option.textContent = `${option.value} · ${cards.filter((card) => clips.has(card.greek)).length}/${cards.length} cards`;
   });
   const languageInput = $("#language-name");

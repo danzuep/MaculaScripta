@@ -131,9 +131,11 @@ Use `MaculaBaseToken.DataAttribution` when publishing Macula identifiers.
 ## Audio workflow
 
 `/audio/` (formerly `/demo/`) walks through five breadcrumb steps: Language, Sample verses
-(record JHN 3:16, MRK 1:15, 1:17, 10:45 and 12:30), Grammar (drag each verse's chunks into the
-target order; `grammar-order.js` learns rules applied via MACULA roles, cases and moods),
-Books (one lemma card at a time, quickest book first, from `recording-plan.json`) and Export.
+(record JHN 1:1, 1:4, 1:12, 1:14 and 1:29), Grammar (drag each verse's chunks into the
+target order; tap ∅ on a card or word to leave it unspoken; `grammar-order.js` learns rules applied via MACULA roles, cases and moods),
+Books (one lemma card at a time, quickest book first, from `recording-plan.json`, ordered chapter by chapter) and Export.
+Cards use icon buttons ⏮ ● ▶ ⏭: hold ● to record and release to save, which jumps to the next card; ⏭ skips cards
+that already have a recording, ⏮ always steps back one.
 Completed verses can be played back at any time. Clips are kept in IndexedDB; export writes
 ZIPs of `manifest.json` plus `clips/`, and import merges them without overwriting existing clips.
 Regenerate data with `node scripts/generate-recording-plan.mjs <macula TSV>` and

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { buildExportParts, parseManifest, playbackLemmas, seedCards, verseStatus } from "../site/static/audio-workflow.js";
+import { buildExportParts, chapterOrder, parseManifest, playbackLemmas, seedCards, verseStatus } from "../site/static/audio-workflow.js";
 
 const w = (lemma, extra = {}) => ({ surface: lemma, lemma, pos: "noun", type: "common", role: "", gloss: lemma, ...extra });
 const clip = (type = "audio/webm") => ({ blob: new Blob(["x"], { type }), mime: type });
@@ -41,4 +41,27 @@ test("export splits into parts and the manifest round-trips", () => {
 test("imports reject foreign or malformed manifests", () => {
   assert.throws(() => parseManifest("nope"), /valid JSON/);
   assert.throws(() => parseManifest(JSON.stringify({ format: "other", version: 1, clips: [] })), /not a MaculaScripta/);
+});
+
+test("unspoken lemmas need no card and are not played", () => {
+  const words = [
+    { verse: "A 1:1", surface: "ὁ", lemma: "ὁ", pos: "det", type: "", gloss: "the" },
+    { verse: "A 1:1", surface: "λόγος", lemma: "λόγος", pos: "noun", type: "common", gloss: "word" }
+  ];
+  const unspoken = { ὁ: true };
+  assert.deepEqual(seedCards([{ verse: "A 1:1", words }], unspoken).map((card) => card.greek), ["λόγος"]);
+  assert.equal(verseStatus(words, new Map([["λόγος", {}]]), unspoken).complete, true);
+  assert.deepEqual(playbackLemmas(words, {}, undefined, unspoken), ["λόγος"]);
+  assert.deepEqual(parseManifest(JSON.stringify({ format: "macula-scripta-audio", version: 1, clips: [], unspoken: ["ὁ"] })).unspoken, unspoken);
+});
+
+test("chapterOrder lists each chapter's new cards first, most frequent first", () => {
+  const cards = ["a", "b", "c", "d"].map((greek) => ({ greek }));
+  const word = (lemma) => ({ lemma });
+  const ordered = chapterOrder(cards, [
+    { verse: "X 2:1", words: [word("c"), word("b"), word("b")] },
+    { verse: "X 1:1", words: [word("a"), word("b")] }
+  ]);
+  assert.deepEqual(ordered.map((card) => card.greek), ["a", "b", "c", "d"]);
+  assert.deepEqual(ordered.map((card) => card.chapter), [1, 1, 2, undefined]);
 });
