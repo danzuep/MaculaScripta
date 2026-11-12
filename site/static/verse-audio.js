@@ -2,7 +2,17 @@
 // The sample maths is pure (Float32Array in, Float32Array out); decoding and compression use the browser's Web Audio.
 
 export const verseSampleRate = 16000;
-const gapSeconds = 0.08;
+const overlapSeconds = 0.03;
+
+// Scales to a common loudness so words recorded at different levels (and computer-voice words) sit together.
+export function rmsNormalize(samples, target = 0.12) {
+  let sum = 0;
+  for (const value of samples) sum += value * value;
+  const rms = Math.sqrt(sum / (samples.length || 1));
+  if (!rms) return samples;
+  const gain = Math.min(target / rms, 8);
+  return samples.map((value) => Math.max(-1, Math.min(1, value * gain)));
+}
 
 export function peakNormalize(samples, target = 0.8) {
   let peak = 0;
@@ -21,20 +31,38 @@ export function trimSilence(samples, rate = verseSampleRate, threshold = 0.02) {
   let end = samples.length;
   while (start < end && Math.abs(samples[start]) <= limit) start += 1;
   while (end > start && Math.abs(samples[end - 1]) <= limit) end -= 1;
-  const margin = Math.round(rate * 0.02);
+  const margin = Math.round(rate * 0.04);
   return samples.slice(Math.max(0, start - margin), Math.min(samples.length, end + margin));
 }
 
+// Joins words with an equal-power crossfade over their (already quiet) edges, so there are no clicks or abrupt cuts.
 export function joinSamples(parts, rate = verseSampleRate) {
-  const gap = Math.round(rate * gapSeconds);
-  const total = parts.reduce((sum, part) => sum + part.length, 0) + gap * Math.max(0, parts.length - 1);
+  const overlap = Math.round(rate * overlapSeconds);
+  const lengths = parts.map((part) => part.length);
+  const fade = (index) => Math.min(overlap, Math.floor(lengths[index] / 2), Math.floor(lengths[index + 1] / 2));
+  const total = lengths.reduce((sum, length) => sum + length, 0) - lengths.slice(1).reduce((sum, _, index) => sum + fade(index), 0);
   const joined = new Float32Array(total);
   let offset = 0;
-  for (const part of parts) {
-    joined.set(part, offset);
-    offset += part.length + gap;
-  }
+  parts.forEach((part, index) => {
+    const into = index > 0 ? fade(index - 1) : 0;
+    const out = index < parts.length - 1 ? fade(index) : 0;
+    for (let i = 0; i < part.length; i += 1) {
+      let gain = 1;
+      if (i < into) gain = Math.sin(Math.PI / 2 * i / into);
+      else if (i >= part.length - out) gain = Math.cos(Math.PI / 2 * (i - (part.length - out)) / out);
+      joined[offset + i] += part[i] * gain;
+    }
+    offset += part.length - out;
+  });
   return joined;
+}
+
+// Mixes the neural output into the original: `wet` is the neural share. Both are peak-normalised first.
+export function blendSamples(dry, wet, mix) {
+  const length = Math.min(dry.length, wet.length);
+  const a = peakNormalize(dry);
+  const b = peakNormalize(wet);
+  return Float32Array.from({ length }, (_, i) => a[i] * (1 - mix) + b[i] * mix);
 }
 
 export function encodeWav(samples, rate = verseSampleRate) {

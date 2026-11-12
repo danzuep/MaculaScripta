@@ -8,7 +8,7 @@ import * as store from "./audio-store.js";
 const { transliterateGreek } = globalThis.MaculaGreek;
 import { synthesizeGreek } from "./greek-tts.js";
 import { resynthesize, resynthError } from "./neural-resynth.js";
-import { compressSamples, decodeBlob, encodeWav, extensionForType, joinSamples, peakNormalize, trimSilence, verseSampleRate } from "./verse-audio.js";
+import { blendSamples, compressSamples, decodeBlob, encodeWav, extensionForType, joinSamples, rmsNormalize, trimSilence, verseSampleRate } from "./verse-audio.js";
 
 const root = document.querySelector("#audio");
 const $ = (selector) => document.querySelector(selector);
@@ -81,9 +81,36 @@ const canPlayWord = (lemma) => clips.has(lemma) || state.autoVoice;
 
 // ---- Whole-verse audio ----------------------------------------------------------------------------------------
 
+const neuralShare = 0.35;
+const verseCache = new Map();
+
+// The neural step applies unless it is off globally or for this verse.
+const neuralFor = (verse) => state.neuralAudio && !state.neuralOff?.[verse];
+
+// Everything the audio depends on: the words in play order, each recording's save time, and the voice/neural options.
+const verseKey = (verse, words, order) => JSON.stringify([
+  playbackWords(words, state.rules, order, state.unspoken).map((word) => [word.lemma, word.surface, clips.get(word.lemma)?.saved ?? 0]),
+  state.autoVoice, neuralFor(verse)
+]);
+
+// Cached per verse: the audio is rebuilt only when a recording or option it depends on changed.
+async function verseAudio(verse, words, order, token, report) {
+  const key = verseKey(verse, words, order);
+  const cached = verseCache.get(verse);
+  if (cached?.key === key && cached.result) {
+    report(cached.note);
+    return cached;
+  }
+  const entry = await buildVerseAudio(verse, words, order, token, report);
+  if (!entry) return null;
+  const stored = { key, ...entry };
+  verseCache.set(verse, stored);
+  return stored;
+}
+
 // Builds one signal for a verse in its playback order: recordings, with a computer voice for unrecorded words, then
 // optional neural resynthesis. Resolves to null when stopped (token changed) or when there is nothing to play.
-async function verseAudio(words, order, token, report) {
+async function buildVerseAudio(verse, words, order, token, report) {
   const parts = [];
   let synthesized = 0;
   let skipped = 0;
@@ -100,7 +127,7 @@ async function verseAudio(words, order, token, report) {
       continue;
     }
     try {
-      parts.push(trimSilence(peakNormalize(await decodeBlob(blob))));
+      parts.push(trimSilence(rmsNormalize(await decodeBlob(blob))));
     } catch {
       skipped += 1;
     }
@@ -112,17 +139,18 @@ async function verseAudio(words, order, token, report) {
   }
   let samples = joinSamples(parts);
   const notes = [];
-  if (state.neuralAudio) {
+  if (neuralFor(verse)) {
     report("Smoothing the verse with neural resynthesis…");
     const smoothed = await resynthesize(samples);
     if (token !== playToken) return null;
-    if (smoothed) samples = peakNormalize(smoothed);
+    if (smoothed) samples = blendSamples(samples, smoothed, neuralShare);
     else notes.push(`Neural smoothing is off for this play (${resynthError() || "unavailable"}); the original audio was used. You can turn it off in Settings.`);
   }
   if (synthesized) notes.push(`${synthesized} word${synthesized === 1 ? " was" : "s were"} read by computer voice.`);
   if (skipped) notes.push(`${skipped} word${skipped === 1 ? " was" : "s were"} skipped (no recording).`);
-  report(notes.join(" "));
-  return { samples, rate: verseSampleRate };
+  const note = notes.join(" ");
+  report(note);
+  return { result: { samples, rate: verseSampleRate }, wav: encodeWav(samples, verseSampleRate), note };
 }
 
 function setPlaying(button, playing) {
@@ -143,8 +171,8 @@ async function playVerse(verse, order, button, report) {
   const token = playToken;
   button.dataset.busy = "true";
   try {
-    const result = await verseAudio(verse.words, order, token, report);
-    if (result && token === playToken) await playBlobs([encodeWav(result.samples, result.rate)], () => setPlaying(button, true), token);
+    const audio = await verseAudio(verse.verse, verse.words, order, token, report);
+    if (audio && token === playToken) await playBlobs([audio.wav], () => setPlaying(button, true), token);
   } catch (error) {
     report(`Could not play: ${error.message}`);
   } finally {
@@ -159,10 +187,13 @@ async function downloadVerse(verse, order, button, report) {
   button.textContent = "Preparing…";
   stopPlayback();
   try {
-    const result = await verseAudio(verse.words, order, playToken, report);
-    if (!result) return;
-    report("Compressing…");
-    const blob = await compressSamples(result.samples, result.rate);
+    const audio = await verseAudio(verse.verse, verse.words, order, playToken, report);
+    if (!audio) return;
+    if (!audio.compressed) {
+      report("Compressing…");
+      audio.compressed = await compressSamples(audio.result.samples, audio.result.rate);
+    }
+    const blob = audio.compressed;
     download(blob, `${slug()}-${verse.verse.replace(/[^\p{L}\p{N}]+/gu, "-")}.${extensionForType(blob.type)}`);
     report(`Downloaded ${verse.verse} (${Math.ceil(blob.size / 1024)} KB).`);
   } catch (error) {
@@ -673,6 +704,16 @@ function openGrammar(verse) {
   }
 
   const report = (text) => { status.textContent = text; };
+  const neural = $("#grammar-neural");
+  neural.checked = !state.neuralOff?.[verse.verse];
+  neural.disabled = !state.neuralAudio;
+  neural.title = state.neuralAudio ? "" : "Neural resynthesis is turned off in Settings";
+  neural.onchange = () => {
+    state.neuralOff ??= {};
+    if (neural.checked) delete state.neuralOff[verse.verse];
+    else state.neuralOff[verse.verse] = true;
+    saveSoon();
+  };
   $("#grammar-play-verse").onclick = () => playVerse(verse, order, $("#grammar-play-verse"), report);
   $("#grammar-download").onclick = () => downloadVerse(verse, order, $("#grammar-download"), report);
   $("#grammar-close").onclick = () => dialog.close();
