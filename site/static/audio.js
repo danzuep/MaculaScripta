@@ -70,6 +70,15 @@ async function playBlobs(blobs, onStart, claimed) {
   }
 }
 
+// Plays a word's recording, or the eSpeak-NG reading of `text` when it has none.
+async function playWord(lemma, text) {
+  stopPlayback();
+  const token = playToken;
+  const blob = clips.get(lemma)?.blob ?? await synthesizeGreek(text);
+  if (blob && token === playToken) await playBlobs([blob], undefined, token);
+}
+const canPlayWord = (lemma) => clips.has(lemma) || state.autoVoice;
+
 // ---- Whole-verse audio ----------------------------------------------------------------------------------------
 
 // Builds one signal for a verse in its playback order: recordings, with a computer voice for unrecorded words, then
@@ -327,7 +336,7 @@ function createRecorder(container, onSaved) {
   const previous = button("\u23EE\uFE0E", "Previous card", () => move(-1));
   const record = button("\u25CF", "Hold to record, release to stop");
   record.classList.add("record-hold");
-  const play = button("\u25B6", "Play recording", () => playBlobs([clips.get(cards[index].greek).blob]));
+  const play = button("\u25B6", "Play recording, or the computer voice if none", () => playWord(cards[index].greek, cards[index].greek));
   const next = button("\u23ED\uFE0E", "Next card", () => move(1));
   const actions = el("div", undefined, { className: "recorder-actions" });
   actions.append(previous, record, play, next);
@@ -363,7 +372,7 @@ function createRecorder(container, onSaved) {
     record.classList.toggle("has-clip", clips.has(card.greek));
     record.title = clips.has(card.greek) ? "Hold to re-record, release to stop" : "Hold to record, release to stop";
     record.setAttribute("aria-pressed", String(recording));
-    play.disabled = recording || !clips.has(card.greek);
+    play.disabled = recording || !canPlayWord(card.greek);
     previous.disabled = recording || index === 0;
     next.disabled = recording || index === cards.length - 1;
     parts.status.textContent = message || (left === 0 ? "All cards recorded." : "Hold ● (or Space) while you say the word, then let go.");
@@ -611,8 +620,8 @@ function openGrammar(verse) {
           onState: (text) => { status.textContent = text; },
           onSaved: () => { renderAfterChange(); draw(); }
         });
-        const play = iconButton("\u25B6", `Play ${word.surface}`, "chunk-side", () => playBlobs([clips.get(word.lemma).blob]));
-        play.disabled = !clips.has(word.lemma);
+        const play = iconButton("\u25B6", `Play ${word.surface}`, "chunk-side", () => playWord(word.lemma, word.surface));
+        play.disabled = !canPlayWord(word.lemma);
         const body = el("div", undefined, { className: "grammar-body" });
         body.append(el("span", word.surface, { lang: "grc", className: "grammar-words" }), el("small", word.gloss && word.gloss !== "-" ? word.gloss : ""));
         item.append(record, body, play);
