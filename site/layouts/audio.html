@@ -24,6 +24,7 @@
     <link rel="manifest" href="{{ "manifest.webmanifest" | relURL }}">
     <link rel="stylesheet" href="{{ "styles.css" | relURL }}">
     <link rel="stylesheet" href="{{ "audio.css" | relURL }}">
+    <script src="{{ "greek-translit.js" | relURL }}"></script>
     <script type="module" src="{{ "audio.js" | relURL }}"></script>
   </head>
   <body>
@@ -41,12 +42,8 @@
 
       <section id="step-language" hidden>
         <h2>1. Language</h2>
-        <p><label for="language-name">Name of the language you will record in </label><input id="language-name" type="text" autocomplete="off"> <small>Press Enter to hear John 1:1.</small></p>
-        <p id="language-preview" class="verse-preview" hidden>
-          <button type="button" id="preview-play" class="verse-play">▶ John 1:1</button>
-          <span id="preview-greek" lang="grc"></span>
-          <span id="preview-status" role="status"></span>
-        </p>
+        <p><label for="language-name">Name of the language you will record in </label><input id="language-name" type="text" autocomplete="off"></p>
+        <p><small>Press Enter to open John 1:1 in playback mode.</small></p>
         <p><a href="#books">Next: record the books</a></p>
       </section>
 

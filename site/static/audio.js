@@ -5,9 +5,9 @@ import {
   steps, isProperNoun, isUnspoken, unspokenKey, bookCards, chapterOrder, nextBook, verseStatus, playbackLemmas, playbackWords, groupVerses, toToken, buildExportParts, parseManifest
 } from "./audio-workflow.js";
 import * as store from "./audio-store.js";
-import { transliterateGreek } from "./greek-translit.js";
+const { transliterateGreek } = globalThis.MaculaGreek;
 import { synthesizeGreek } from "./greek-tts.js";
-import { resynthesize } from "./neural-resynth.js";
+import { resynthesize, resynthError } from "./neural-resynth.js";
 import { compressSamples, decodeBlob, encodeWav, extensionForType, joinSamples, peakNormalize, trimSilence, verseSampleRate } from "./verse-audio.js";
 
 const root = document.querySelector("#audio");
@@ -108,7 +108,7 @@ async function verseAudio(words, order, token, report) {
     const smoothed = await resynthesize(samples);
     if (token !== playToken) return null;
     if (smoothed) samples = peakNormalize(smoothed);
-    else notes.push("Neural smoothing was unavailable, so the original audio is used.");
+    else notes.push(`Neural smoothing is off for this play (${resynthError() || "unavailable"}); the original audio was used. You can turn it off in Settings.`);
   }
   if (synthesized) notes.push(`${synthesized} word${synthesized === 1 ? " was" : "s were"} read by computer voice.`);
   if (skipped) notes.push(`${skipped} word${skipped === 1 ? " was" : "s were"} skipped (no recording).`);
@@ -123,21 +123,23 @@ function setPlaying(button, playing) {
   else button.textContent = button.dataset.idle;
 }
 
-// The button turns into Stop while the verse is prepared and played; pressing it again stops.
+// The button stays a play button while the verse is prepared and becomes Stop once audio starts; pressing it while
+// busy or playing stops.
 async function playVerse(verse, order, button, report) {
-  if (button.classList.contains("playing")) {
+  if (button.dataset.busy) {
     stopPlayback();
     return;
   }
   stopPlayback();
   const token = playToken;
-  setPlaying(button, true);
+  button.dataset.busy = "true";
   try {
     const result = await verseAudio(verse.words, order, token, report);
-    if (result && token === playToken) await playBlobs([encodeWav(result.samples, result.rate)], undefined, token);
+    if (result && token === playToken) await playBlobs([encodeWav(result.samples, result.rate)], () => setPlaying(button, true), token);
   } catch (error) {
     report(`Could not play: ${error.message}`);
   } finally {
+    delete button.dataset.busy;
     setPlaying(button, false);
   }
 }
@@ -868,16 +870,15 @@ async function initialize() {
       saveSoon();
     });
   }
-  // Enter in the language box reveals a John 1:1 control, so the verse can be heard before any book is recorded.
+  // Enter in the language box opens John 1:1 in the verse dialog's playback mode, so it can be heard and recorded
+  // before any book is started.
   languageInput.addEventListener("keydown", async (event) => {
     if (event.key !== "Enter" || !languageInput.value.trim()) return;
     event.preventDefault();
     const verse = (await bookVerses("JHN")).find((item) => item.verse === "JHN 1:1");
     if (!verse) return;
-    $("#preview-greek").textContent = verse.words.map((word) => word.surface).join(" ");
-    $("#language-preview").hidden = false;
-    $("#preview-play").onclick = () => playVerse(verse, state.seedOrders[verse.verse], $("#preview-play"), (text) => { $("#preview-status").textContent = text; });
-    $("#preview-play").focus();
+    grammarMode = "playback";
+    openGrammar(verse);
   });
   $("#book-select").addEventListener("change", showBook);
   $("#listen-chapter").addEventListener("change", renderListen);

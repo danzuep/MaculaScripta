@@ -2,7 +2,7 @@ const shellCacheName = "macula-scripta-v19-shell";
 const readerCacheName = "macula-scripta-v19-reader";
 const modelCacheName = "macula-scripta-v19-models";
 // Speech and vocoder runtimes/models for the audio page come from these CDNs and are kept after the first download.
-const modelPrefixes = ["https://cdn.jsdelivr.net/npm/espeak-ng@", "https://cdn.jsdelivr.net/npm/onnxruntime-web@", "https://huggingface.co/Xenova/speecht5_hifigan/"];
+const modelPrefixes = ["https://cdn.jsdelivr.net/npm/espeak-ng@", "https://cdn.jsdelivr.net/npm/onnxruntime-web@", "https://unpkg.com/onnxruntime-web@", "https://huggingface.co/Xenova/speecht5_hifigan/"];
 let offlineMode = false;
 
 self.addEventListener("install", (event) => {

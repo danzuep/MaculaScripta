@@ -46,9 +46,7 @@
 .dialog-close { position: absolute; top: .5rem; right: .5rem; min-width: 2.5rem; min-height: 2.5rem; }
 .grammar-word-row { padding-top: .5rem; }
 .listen-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
-.stop-icon { display: inline-block; width: .8em; height: .8em; background: #fff; vertical-align: -.05em; }
-button.stop-button, button.verse-play.playing { background: #dc2626; color: #fff; border-color: #b91c1c; }
-.verse-preview { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.stop-icon { display: inline-block; width: .8em; height: .8em; background: #fff; border: 1.5px solid currentColor; vertical-align: -.05em; box-sizing: border-box; }
 .word-row { position: relative; }
 .word-gloss { flex: 1 1 8rem; }
 .word-actions { display: flex; gap: .5rem; margin-left: auto; }

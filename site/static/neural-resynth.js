@@ -2,7 +2,7 @@
 // spectrogram, which smooths the joins between separately recorded words. The runtime and model are downloaded the
 // first time they are needed and kept by the service worker. The mel features follow SpeechT5's front end (16 kHz,
 // 80 bands, 1024-sample window, 256 hop, 80-7600 Hz) that Xenova/speecht5_hifigan was trained with.
-const runtimeBase = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/";
+const runtimeBases = ["https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/", "https://unpkg.com/onnxruntime-web@1.20.1/dist/"];
 const modelUrl = "https://huggingface.co/Xenova/speecht5_hifigan/resolve/main/onnx/model.onnx";
 
 export const resynthRate = 16000;
@@ -91,14 +91,30 @@ export function logMel(samples) {
 }
 
 let sessionPromise;
+let lastError = "";
+
+// The runtime is tried from each CDN in turn.
+async function loadOrt() {
+  let failure;
+  for (const base of runtimeBases) {
+    try {
+      const ort = await import(`${base}ort.min.mjs`);
+      ort.env.wasm.wasmPaths = base;
+      ort.env.wasm.numThreads = 1;
+      ort.env.wasm.proxy = false;
+      return ort;
+    } catch (error) {
+      failure = error;
+    }
+  }
+  throw failure;
+}
 
 function loadSession() {
   sessionPromise ??= (async () => {
-    const ort = await import(`${runtimeBase}ort.min.mjs`);
-    ort.env.wasm.wasmPaths = runtimeBase;
-    ort.env.wasm.numThreads = 1;
+    const ort = await loadOrt();
     const response = await fetch(modelUrl);
-    if (!response.ok) throw new Error(`Model download failed (HTTP ${response.status})`);
+    if (!response.ok) throw new Error(`model download failed (HTTP ${response.status})`);
     return { ort, session: await ort.InferenceSession.create(new Uint8Array(await response.arrayBuffer()), { executionProviders: ["wasm"] }) };
   })().catch((error) => {
     sessionPromise = undefined;
@@ -107,16 +123,30 @@ function loadSession() {
   return sessionPromise;
 }
 
-// Resynthesises 16 kHz mono samples. Resolves to null when the runtime or model is unavailable, so callers can play
-// the original audio instead.
+export const resynthError = () => lastError;
+
+// Resynthesises 16 kHz mono samples. Resolves to null when the runtime or model is unavailable (resynthError() says
+// why), so callers can play the original audio instead.
 export async function resynthesize(samples) {
   try {
     const { ort, session } = await loadSession();
     const { mel, frames } = logMel(samples);
-    const output = await session.run({ spectrogram: new ort.Tensor("float32", mel, [1, frames, bands]) });
+    let output;
+    // Exports differ in whether the spectrogram carries a batch dimension.
+    for (const dims of [[1, frames, bands], [frames, bands]]) {
+      try {
+        output = await session.run({ [session.inputNames[0]]: new ort.Tensor("float32", mel, dims) });
+        break;
+      } catch (error) {
+        if (dims.length === 2) throw error;
+      }
+    }
     const waveform = Object.values(output)[0].data;
-    return waveform.length ? Float32Array.from(waveform) : null;
+    if (!waveform.length) throw new Error("the model returned no audio");
+    lastError = "";
+    return Float32Array.from(waveform);
   } catch (error) {
+    lastError = error?.message ?? String(error);
     console.warn("Neural resynthesis is unavailable", error);
     return null;
   }
