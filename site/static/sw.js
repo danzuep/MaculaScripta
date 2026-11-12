@@ -1,12 +1,15 @@
-const shellCacheName = "macula-scripta-v18-shell";
-const readerCacheName = "macula-scripta-v18-reader";
+const shellCacheName = "macula-scripta-v19-shell";
+const readerCacheName = "macula-scripta-v19-reader";
+const modelCacheName = "macula-scripta-v19-models";
+// Speech and vocoder runtimes/models for the audio page come from these CDNs and are kept after the first download.
+const modelPrefixes = ["https://cdn.jsdelivr.net/npm/espeak-ng@", "https://cdn.jsdelivr.net/npm/onnxruntime-web@", "https://huggingface.co/Xenova/speecht5_hifigan/"];
 let offlineMode = false;
 
 self.addEventListener("install", (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(shellCacheName);
     const shell = ["", "audio/", "nt/JHN/", "john-1-1/", "reader.css", "reader.js", "styles.css", "audio.css", "audio.js", "audio-store.js", "audio-workflow.js",
-      "lift-exchange.js", "recording-prompts.js", "recording-plan.json", "grammar-order.js", "transformation.css", "app.js", "transformation.js", "audio-recorder.js", "verse-clipper.js", "audio-coverage.js", "manifest.webmanifest"];
+      "lift-exchange.js", "recording-prompts.js", "recording-plan.json", "grammar-order.js", "greek-translit.js", "greek-tts.js", "neural-resynth.js", "verse-audio.js", "transformation.css", "app.js", "transformation.js", "audio-recorder.js", "verse-clipper.js", "audio-coverage.js", "manifest.webmanifest"];
     await cache.addAll(shell.map((path) => new URL(path, self.registration.scope).href));
     await self.skipWaiting();
   })());
@@ -14,7 +17,7 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
   event.waitUntil((async () => {
-    const activeCaches = new Set([shellCacheName, readerCacheName]);
+    const activeCaches = new Set([shellCacheName, readerCacheName, modelCacheName]);
     const names = await caches.keys();
     await Promise.all(names.filter((name) => name.startsWith("macula-scripta-") && !activeCaches.has(name))
       .map((name) => caches.delete(name)));
@@ -47,6 +50,17 @@ self.addEventListener("message", (event) => {
 const isChapterData = (url) => /\/(?:nt|ot)\/[A-Z0-9]{3}\/(?:\d+\/)?$/.test(url.pathname);
 
 self.addEventListener("fetch", (event) => {
+  if (event.request.method === "GET" && modelPrefixes.some((prefix) => event.request.url.startsWith(prefix))) {
+    event.respondWith((async () => {
+      const cache = await caches.open(modelCacheName);
+      const cached = await cache.match(event.request);
+      if (cached) return cached;
+      const response = await fetch(event.request);
+      if (response.ok) await cache.put(event.request, response.clone());
+      return response;
+    })());
+    return;
+  }
   if (event.request.method !== "GET" || new URL(event.request.url).origin !== self.location.origin) return;
   const url = new URL(event.request.url);
   if (isChapterData(url) || event.request.mode === "navigate") {

@@ -45,3 +45,14 @@
 .grammar-dialog { position: relative; }
 .dialog-close { position: absolute; top: .5rem; right: .5rem; min-width: 2.5rem; min-height: 2.5rem; }
 .grammar-word-row { padding-top: .5rem; }
+.listen-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.stop-icon { display: inline-block; width: .8em; height: .8em; background: #fff; vertical-align: -.05em; }
+button.stop-button, button.verse-play.playing { background: #dc2626; color: #fff; border-color: #b91c1c; }
+.verse-preview { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.word-row { position: relative; }
+.word-gloss { flex: 1 1 8rem; }
+.word-actions { display: flex; gap: .5rem; margin-left: auto; }
+.word-row::after { content: attr(data-saved); position: absolute; left: 0; bottom: 100%; padding: .2rem .5rem; border-radius: .3rem;
+  background: #0f172a; color: #fff; font-size: .8rem; pointer-events: none; opacity: 0; transition: opacity .15s; }
+.word-row:hover::after, .word-row:active::after { opacity: 1; transition-delay: .6s; }
+.card-details { display: flex; flex-wrap: wrap; justify-content: center; gap: .25rem .75rem; margin: .4rem 0; font-size: .95rem; }

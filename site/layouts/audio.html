@@ -1,4 +1,4 @@
-{{- /* Per-book compact [verse, surface, lemma, pos, type, role, gloss, case, mood] rows, so the listen panel can show every verse of a book. */ -}}
+{{- /* Per-book compact [verse, surface, lemma, pos, type, role, gloss, case, mood, mandarin, morph] rows, so the listen panel can show every verse of a book. */ -}}
 {{- $data := partial "testament-data.html" "nt" -}}
 {{- $column := dict -}}
 {{- range $index, $name := $data.fields -}}{{- $column = merge $column (dict $name $index) -}}{{- end -}}
@@ -8,7 +8,7 @@
   {{- $rows := slice -}}
   {{- range seq .chapters -}}
     {{- range index $data.chapters (printf "%s/%d" $code .) -}}
-      {{- $rows = $rows | append (slice (dict "r" (slice (index . $column.ref) (index . $column.text) (index . $column.lemma) (index . $column.class) (index . $column.type) (index . $column.role) (index . $column.english) (index . $column.case) (index . $column.mood)))) -}}
+      {{- $rows = $rows | append (slice (dict "r" (slice (index . $column.ref) (index . $column.text) (index . $column.lemma) (index . $column.class) (index . $column.type) (index . $column.role) (index . $column.english) (index . $column.case) (index . $column.mood) (index . $column.mandarin) (index . $column.morph)))) -}}
     {{- end -}}
   {{- end -}}
   {{- $file := resources.FromString (printf "audio/books/%s.json" $code) ((apply $rows "index" "." "r") | jsonify) -}}
@@ -41,7 +41,12 @@
 
       <section id="step-language" hidden>
         <h2>1. Language</h2>
-        <p><label for="language-name">Name of the language you will record in </label><input id="language-name" type="text" autocomplete="off"></p>
+        <p><label for="language-name">Name of the language you will record in </label><input id="language-name" type="text" autocomplete="off"> <small>Press Enter to hear John 1:1.</small></p>
+        <p id="language-preview" class="verse-preview" hidden>
+          <button type="button" id="preview-play" class="verse-play">▶ John 1:1</button>
+          <span id="preview-greek" lang="grc"></span>
+          <span id="preview-status" role="status"></span>
+        </p>
         <p><a href="#books">Next: record the books</a></p>
       </section>
 
@@ -65,6 +70,9 @@
 
       <section id="step-settings" hidden>
         <h2>Settings</h2>
+        <h3>Verse playback</h3>
+        <p><label><input type="checkbox" id="setting-neural"> Smooth whole-verse audio with neural resynthesis (HiFi-GAN; downloads a model the first time)</label></p>
+        <p><label><input type="checkbox" id="setting-voice"> Read unrecorded words with a computer voice (eSpeak-NG; downloads the first time)</label></p>
         <h3>Recorded words</h3>
         <p><label for="word-search">Search </label><input id="word-search" type="search" autocomplete="off" placeholder="Greek or English"></p>
         <p id="word-summary" role="status"></p>
@@ -85,11 +93,11 @@
 
       <section id="listen" hidden>
         <h2>Listen</h2>
-        <p>
+        <p class="listen-toolbar">
           <select id="listen-chapter" aria-label="Chapter"></select>
-          <label><input type="checkbox" id="listen-complete"> Only verses ready to play</label>
-          <button type="button" id="listen-stop">Stop</button>
+          <button type="button" id="listen-stop" class="stop-button"><span class="stop-icon" aria-hidden="true"></span> Stop</button>
         </p>
+        <p><label><input type="checkbox" id="listen-complete"> Only verses ready to play</label></p>
         <p id="listen-summary" role="status"></p>
         <p class="listen-hint">Double-click or long-press a verse to arrange its word order or record its words.</p>
         <ul id="listen-list" class="listen-list"></ul>
@@ -101,7 +109,10 @@
           <label><input type="radio" name="grammar-mode" value="order"> Order</label>
           <label><input type="radio" name="grammar-mode" value="playback"> Playback</label>
         </p>
-        <p><button type="button" id="grammar-play-verse">▶ Play whole verse</button></p>
+        <p>
+          <button type="button" id="grammar-play-verse" class="verse-play">▶ Play whole verse</button>
+          <button type="button" id="grammar-download" title="Download this verse as a compressed audio file">⬇ Download</button>
+        </p>
         <p id="grammar-status" role="status"></p>
         <ol id="grammar-chunks" class="grammar-chunks"></ol>
         <form method="dialog">

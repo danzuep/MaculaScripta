@@ -2,9 +2,13 @@
 import { chunkWords, learnRules } from "./grammar-order.js";
 import { makeZip, readZip } from "./lift-exchange.js";
 import {
-  steps, isProperNoun, bookCards, chapterOrder, nextBook, verseStatus, playbackLemmas, playbackWords, groupVerses, toToken, buildExportParts, parseManifest
+  steps, isProperNoun, isUnspoken, unspokenKey, bookCards, chapterOrder, nextBook, verseStatus, playbackLemmas, playbackWords, groupVerses, toToken, buildExportParts, parseManifest
 } from "./audio-workflow.js";
 import * as store from "./audio-store.js";
+import { transliterateGreek } from "./greek-translit.js";
+import { synthesizeGreek } from "./greek-tts.js";
+import { resynthesize } from "./neural-resynth.js";
+import { compressSamples, decodeBlob, encodeWav, extensionForType, joinSamples, peakNormalize, trimSilence, verseSampleRate } from "./verse-audio.js";
 
 const root = document.querySelector("#audio");
 const $ = (selector) => document.querySelector(selector);
@@ -40,9 +44,11 @@ function stopPlayback() {
   player.pause();
 }
 
-async function playBlobs(blobs, onStart) {
-  stopPlayback();
-  const token = playToken;
+// Plays blobs in turn. A caller that already claimed a playback slot (stopPlayback, then playToken) passes its token.
+async function playBlobs(blobs, onStart, claimed) {
+  if (claimed === undefined) stopPlayback();
+  else player.pause();
+  const token = claimed ?? playToken;
   for (const [index, blob] of blobs.entries()) {
     if (token !== playToken) return;
     const url = URL.createObjectURL(blob);
@@ -61,6 +67,98 @@ async function playBlobs(blobs, onStart) {
     } finally {
       URL.revokeObjectURL(url);
     }
+  }
+}
+
+// ---- Whole-verse audio ----------------------------------------------------------------------------------------
+
+// Builds one signal for a verse in its playback order: recordings, with a computer voice for unrecorded words, then
+// optional neural resynthesis. Resolves to null when stopped (token changed) or when there is nothing to play.
+async function verseAudio(words, order, token, report) {
+  const parts = [];
+  let synthesized = 0;
+  let skipped = 0;
+  for (const word of playbackWords(words, state.rules, order, state.unspoken)) {
+    let blob = clips.get(word.lemma)?.blob;
+    if (!blob && state.autoVoice) {
+      report(`Reading “${word.surface}”…`);
+      blob = await synthesizeGreek(word.surface);
+      if (blob) synthesized += 1;
+    }
+    if (token !== playToken) return null;
+    if (!blob) {
+      skipped += 1;
+      continue;
+    }
+    try {
+      parts.push(trimSilence(peakNormalize(await decodeBlob(blob))));
+    } catch {
+      skipped += 1;
+    }
+    if (token !== playToken) return null;
+  }
+  if (!parts.length) {
+    report("There is no audio for this verse yet. Record some of its words.");
+    return null;
+  }
+  let samples = joinSamples(parts);
+  const notes = [];
+  if (state.neuralAudio) {
+    report("Smoothing the verse with neural resynthesis…");
+    const smoothed = await resynthesize(samples);
+    if (token !== playToken) return null;
+    if (smoothed) samples = peakNormalize(smoothed);
+    else notes.push("Neural smoothing was unavailable, so the original audio is used.");
+  }
+  if (synthesized) notes.push(`${synthesized} word${synthesized === 1 ? " was" : "s were"} read by computer voice.`);
+  if (skipped) notes.push(`${skipped} word${skipped === 1 ? " was" : "s were"} skipped (no recording).`);
+  report(notes.join(" "));
+  return { samples, rate: verseSampleRate };
+}
+
+function setPlaying(button, playing) {
+  button.dataset.idle ??= button.textContent;
+  button.classList.toggle("playing", playing);
+  if (playing) button.replaceChildren(el("span", undefined, { className: "stop-icon", ariaHidden: "true" }), " Stop");
+  else button.textContent = button.dataset.idle;
+}
+
+// The button turns into Stop while the verse is prepared and played; pressing it again stops.
+async function playVerse(verse, order, button, report) {
+  if (button.classList.contains("playing")) {
+    stopPlayback();
+    return;
+  }
+  stopPlayback();
+  const token = playToken;
+  setPlaying(button, true);
+  try {
+    const result = await verseAudio(verse.words, order, token, report);
+    if (result && token === playToken) await playBlobs([encodeWav(result.samples, result.rate)], undefined, token);
+  } catch (error) {
+    report(`Could not play: ${error.message}`);
+  } finally {
+    setPlaying(button, false);
+  }
+}
+
+async function downloadVerse(verse, order, button, report) {
+  const idle = button.textContent;
+  button.disabled = true;
+  button.textContent = "Preparing…";
+  stopPlayback();
+  try {
+    const result = await verseAudio(verse.words, order, playToken, report);
+    if (!result) return;
+    report("Compressing…");
+    const blob = await compressSamples(result.samples, result.rate);
+    download(blob, `${slug()}-${verse.verse.replace(/[^\p{L}\p{N}]+/gu, "-")}.${extensionForType(blob.type)}`);
+    report(`Downloaded ${verse.verse} (${Math.ceil(blob.size / 1024)} KB).`);
+  } catch (error) {
+    report(`Could not download: ${error.message}`);
+  } finally {
+    button.disabled = false;
+    button.textContent = idle;
   }
 }
 
@@ -110,12 +208,15 @@ function attachHold(node, { lemma, onState, onSaved }) {
   let pending = null;
   let target = null;
   let settling = false;
+  let discard = false;
 
   async function finish() {
     try {
       const blob = await stopCapture();
       recording = false;
-      if (blob.size) {
+      if (discard) {
+        onState("Cancelled: you let go far from the button, so nothing was saved.");
+      } else if (blob.size) {
         const saved = Date.now();
         await store.saveClip(target, blob);
         clips.set(target, { blob, mime: blob.type, saved });
@@ -135,6 +236,7 @@ function attachHold(node, { lemma, onState, onSaved }) {
     if (holding || recording || !wanted || capturing) return;
     holding = true;
     capturing = true;
+    discard = false;
     target = wanted;
     pending = (async () => {
       try {
@@ -164,9 +266,17 @@ function attachHold(node, { lemma, onState, onSaved }) {
     settling = false;
   }
 
-  async function release() {
+  // Letting go more than twice the button's size away from its centre cancels the take.
+  const farAway = (event) => {
+    if (event?.type !== "pointerup") return false;
+    const box = node.getBoundingClientRect();
+    return Math.hypot(event.clientX - (box.left + box.width / 2), event.clientY - (box.top + box.height / 2)) > 2 * Math.max(box.width, box.height);
+  };
+
+  async function release(event) {
     if (!holding) return;
     holding = false;
+    discard = farAway(event);
     await pending;
     await settle();
   }
@@ -185,7 +295,7 @@ function attachHold(node, { lemma, onState, onSaved }) {
     if (!event.repeat) press();
   });
   node.addEventListener("keyup", (event) => {
-    if (event.key === " " || event.key === "Enter") release();
+    if (event.key === " " || event.key === "Enter") release(event);
   });
   return { press, release, get recording() { return recording; }, reset() { recording = false; holding = false; capturing = false; node.classList.remove("recording"); } };
 }
@@ -196,12 +306,14 @@ let activeRecorder = null;
 
 function createRecorder(container, onSaved) {
   let cards = [];
+  let details = new Map();
   let index = 0;
   let message = "";
   const parts = {
     count: el("p", undefined, { className: "recorder-count" }),
     greek: el("p", undefined, { className: "recorder-greek", lang: "grc" }),
     gloss: el("p", undefined, { className: "recorder-gloss" }),
+    details: el("p", undefined, { className: "card-details" }),
     note: el("p", undefined, { className: "recorder-note" }),
     status: el("p", undefined, { className: "recorder-status", role: "status" })
   };
@@ -217,7 +329,7 @@ function createRecorder(container, onSaved) {
   const next = button("\u23ED\uFE0E", "Next card", () => move(1));
   const actions = el("div", undefined, { className: "recorder-actions" });
   actions.append(previous, record, play, next);
-  container.replaceChildren(parts.count, parts.greek, parts.gloss, parts.note, actions, parts.status);
+  container.replaceChildren(parts.count, parts.greek, parts.gloss, parts.details, parts.note, actions, parts.status);
 
   const missingFrom = (from) => {
     for (let offset = 1; offset <= cards.length; offset += 1) {
@@ -237,6 +349,14 @@ function createRecorder(container, onSaved) {
     parts.count.textContent = `Card ${index + 1} of ${cards.length} · ${recorded} recorded · about ${Math.ceil(left * secondsPerCard / 60)} min left`;
     parts.greek.textContent = card.greek;
     parts.gloss.textContent = card.gloss && card.gloss !== "-" ? `“${card.gloss}”` : "";
+    const detail = details.get(card.greek);
+    parts.details.replaceChildren(...[
+      ["English", card.gloss && card.gloss !== "-" ? card.gloss : detail?.gloss],
+      ["Mandarin", detail?.mandarin],
+      ["Transliteration", transliterateGreek(card.greek)],
+      ["Class", detail?.pos],
+      ["Morph", detail?.morph]
+    ].filter(([, value]) => value && value !== "-").map(([label, value]) => el("span", `${label}: ${value}`)));
     parts.note.textContent = card.verses ? `Used in ${card.verses.join(", ")}` : "";
     record.classList.toggle("has-clip", clips.has(card.greek));
     record.title = clips.has(card.greek) ? "Hold to re-record, release to stop" : "Hold to record, release to stop";
@@ -272,8 +392,9 @@ function createRecorder(container, onSaved) {
     render,
     press: hold.press,
     release: hold.release,
-    setCards(list) {
+    setCards(list, lemmaDetails = new Map()) {
       cards = list;
+      details = lemmaDetails;
       hold.reset();
       message = "";
       const first = cards.findIndex((card) => !clips.has(card.greek));
@@ -349,20 +470,23 @@ async function renderListen() {
   const onlyComplete = $("#listen-complete").checked;
   const ready = verses.filter((verse) => verseStatus(verse.words, clips, state.unspoken).complete);
   $("#listen-summary").textContent = verses.length
-    ? `${ready.length} of ${verses.length} verses can be played.`
+    ? `${ready.length} of ${verses.length} verses are fully recorded.`
     : "This build has no verses for this selection.";
   $("#listen-list").replaceChildren(...(onlyComplete ? ready : verses).map((verse) => {
     const status = verseStatus(verse.words, clips, state.unspoken);
     const item = el("li", undefined, { className: status.complete ? "" : "incomplete" });
     const lemmas = playbackLemmas(verse.words, state.rules, state.seedOrders[verse.verse], state.unspoken);
-    const play = el("button", `▶ ${verse.verse}`, { type: "button", disabled: !status.complete });
+    const play = el("button", `▶ ${verse.verse}`, { type: "button", className: "verse-play", disabled: !lemmas.length });
+    const report = (text) => { $("#listen-summary").textContent = text; };
     play.addEventListener("click", () => {
       item.classList.add("playing");
-      playBlobs(lemmas.map((lemma) => clips.get(lemma).blob)).finally(() => item.classList.remove("playing"));
+      playVerse(verse, state.seedOrders[verse.verse], play, report).finally(() => item.classList.remove("playing"));
     });
+    const save = el("button", "\u2B07", { type: "button", ariaLabel: `Download ${verse.verse}`, title: "Download this verse as compressed audio", disabled: !lemmas.length });
+    save.addEventListener("click", () => downloadVerse(verse, state.seedOrders[verse.verse], save, report));
     const english = playbackWords(verse.words, state.rules, state.seedOrders[verse.verse], state.unspoken).map((word) => word.gloss).filter((gloss) => gloss && gloss !== "-").join(" ");
-    item.append(play, el("span", verse.words.map((word) => word.surface).join(" "), { lang: "grc", className: "listen-greek" }),
-      el("small", `${english}${status.complete ? "" : ` · ${status.missing.length} word(s) still to record`}`, { className: "listen-order" }));
+    item.append(play, save, el("span", verse.words.map((word) => word.surface).join(" "), { lang: "grc", className: "listen-greek" }),
+      el("small", `${english}${status.complete ? "" : ` · ${status.missing.length} word(s) still to record${state.autoVoice ? " (read by computer voice meanwhile)" : ""}`}`, { className: "listen-order" }));
     openOnHold(item, () => openGrammar(verse));
     return item;
   }));
@@ -414,7 +538,9 @@ async function showBook() {
   $("#book-progress").textContent = cards.length
     ? `${left} of ${cards.length} cards left for ${code}, about ${Math.ceil(left * secondsPerCard / 60)} minutes. Words already recorded in earlier books are skipped.`
     : `${code} needs no new cards.`;
-  bookRecorder.setCards(cards);
+  const details = new Map();
+  for (const verse of verses) for (const word of verse.words) if (!details.has(word.lemma)) details.set(word.lemma, word);
+  bookRecorder.setCards(cards, details);
   activeRecorder = bookRecorder;
   renderListen();
 }
@@ -451,10 +577,10 @@ function openGrammar(verse) {
     order.splice(to, 0, moved);
     commit();
   };
-  const setUnspoken = (lemmas, off) => {
-    for (const lemma of lemmas) {
-      if (off) state.unspoken[lemma] = true;
-      else delete state.unspoken[lemma];
+  const setUnspoken = (words, off) => {
+    for (const word of words) {
+      if (off) state.unspoken[unspokenKey(word)] = true;
+      else delete state.unspoken[unspokenKey(word)];
     }
     saveSoon();
     renderAfterChange();
@@ -472,10 +598,10 @@ function openGrammar(verse) {
     status.textContent = grammarMode === "order"
       ? (state.seedOrders[verse.verse] ? "✓ Order saved" : "Drag the chunks into your language's order.")
       : "Hold ● to record a word, ▶ to hear it.";
-    const verseLemmas = playbackLemmas(verse.words, state.rules, order, state.unspoken);
-    $("#grammar-play-verse").disabled = !verseLemmas.length || !verseLemmas.every((lemma) => clips.has(lemma));
+    const nothingToPlay = !playbackWords(verse.words, state.rules, order, state.unspoken).length;
+    $("#grammar-play-verse").disabled = $("#grammar-download").disabled = nothingToPlay;
     if (grammarMode === "playback") {
-      list.replaceChildren(...order.flatMap((chunkIndex) => chunks[chunkIndex].words).filter((word) => !isProperNoun(word) && !state.unspoken[word.lemma]).map((word) => {
+      list.replaceChildren(...order.flatMap((chunkIndex) => chunks[chunkIndex].words).filter((word) => !isProperNoun(word) && !isUnspoken(word, state.unspoken)).map((word) => {
         const item = el("li", undefined, { className: "grammar-chunk grammar-word-row" });
         const record = iconButton("\u25CF", `Hold to record ${word.surface}`, `chunk-side record-hold${clips.has(word.lemma) ? " has-clip" : ""}`);
         attachHold(record, {
@@ -496,21 +622,21 @@ function openGrammar(verse) {
       const chunk = chunks[chunkIndex];
       const item = el("li", undefined, { draggable: true, className: "grammar-chunk" });
       const speakable = chunk.words.filter((word) => !isProperNoun(word));
-      const allOff = speakable.length > 0 && speakable.every((word) => state.unspoken[word.lemma]);
+      const allOff = speakable.length > 0 && speakable.every((word) => isUnspoken(word, state.unspoken));
       item.classList.toggle("unspoken", allOff);
       if (speakable.length) {
         const card = iconButton("\u2205", allOff ? "Speak every word in this card" : "Leave out every word in this card", "unspoken-card",
-          () => setUnspoken(speakable.map((word) => word.lemma), !allOff));
+          () => setUnspoken(speakable, !allOff));
         card.setAttribute("aria-pressed", String(allOff));
         item.append(card);
       }
       const wordList = el("span", undefined, { lang: "grc", className: "grammar-words" });
       for (const word of chunk.words) {
-        const off = Boolean(state.unspoken[word.lemma]);
+        const off = isUnspoken(word, state.unspoken);
         const wordNode = el("span", undefined, { className: off ? "grammar-word unspoken" : "grammar-word" });
         wordNode.append(el("span", word.surface));
         if (speakable.length > 1 && !isProperNoun(word)) {
-          const toggle = iconButton("\u2205", off ? `Speak ${word.surface}` : `Leave out ${word.surface}`, "unspoken-word", () => setUnspoken([word.lemma], !off));
+          const toggle = iconButton("\u2205", off ? `Speak ${word.surface}` : `Leave out ${word.surface}`, "unspoken-word", () => setUnspoken([word], !off));
           toggle.setAttribute("aria-pressed", String(off));
           wordNode.append(toggle);
         }
@@ -535,7 +661,9 @@ function openGrammar(verse) {
     }));
   }
 
-  $("#grammar-play-verse").onclick = () => playBlobs(playbackLemmas(verse.words, state.rules, order, state.unspoken).map((lemma) => clips.get(lemma).blob));
+  const report = (text) => { status.textContent = text; };
+  $("#grammar-play-verse").onclick = () => playVerse(verse, order, $("#grammar-play-verse"), report);
+  $("#grammar-download").onclick = () => downloadVerse(verse, order, $("#grammar-download"), report);
   $("#grammar-close").onclick = () => dialog.close();
   $("#grammar-confirm").onclick = commit;
   $("#grammar-reset").onclick = async () => {
@@ -596,9 +724,10 @@ function renderSettings() {
       onState: (text) => { message.textContent = text; },
       onSaved: () => renderSettings()
     });
-    const when = row.saved ? new Date(row.saved).toLocaleString() : "unknown time";
-    item.append(el("span", row.lemma, { lang: "grc", className: "word-greek" }), el("span", row.gloss ? `“${row.gloss}”` : "", { className: "word-gloss" }),
-      el("small", when), play, record);
+    item.dataset.saved = `Recorded ${row.saved ? new Date(row.saved).toLocaleString() : "at an unknown time"}`;
+    const actions = el("span", undefined, { className: "word-actions" });
+    actions.append(record, play);
+    item.append(el("span", row.lemma, { lang: "grc", className: "word-greek" }), el("span", row.gloss ? `“${row.gloss}”` : "", { className: "word-gloss" }), actions);
     return item;
   }));
 }
@@ -730,6 +859,25 @@ async function initialize() {
     state.language = languageInput.value;
     saveSoon();
     renderCrumbs();
+  });
+  for (const [id, key] of [["#setting-neural", "neuralAudio"], ["#setting-voice", "autoVoice"]]) {
+    const box = $(id);
+    box.checked = state[key];
+    box.addEventListener("change", () => {
+      state[key] = box.checked;
+      saveSoon();
+    });
+  }
+  // Enter in the language box reveals a John 1:1 control, so the verse can be heard before any book is recorded.
+  languageInput.addEventListener("keydown", async (event) => {
+    if (event.key !== "Enter" || !languageInput.value.trim()) return;
+    event.preventDefault();
+    const verse = (await bookVerses("JHN")).find((item) => item.verse === "JHN 1:1");
+    if (!verse) return;
+    $("#preview-greek").textContent = verse.words.map((word) => word.surface).join(" ");
+    $("#language-preview").hidden = false;
+    $("#preview-play").onclick = () => playVerse(verse, state.seedOrders[verse.verse], $("#preview-play"), (text) => { $("#preview-status").textContent = text; });
+    $("#preview-play").focus();
   });
   $("#book-select").addEventListener("change", showBook);
   $("#listen-chapter").addEventListener("change", renderListen);
