@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { buildExportParts, chapterOrder, parseManifest, bookCards, playbackLemmas, playbackWords, verseStatus } from "../site/static/audio-workflow.js";
+import { buildExportParts, chapterOrder, parseManifest, bookCards, playbackLemmas, playbackWords, unspokenKey, verseStatus } from "../site/static/audio-workflow.js";
 
 const w = (lemma, extra = {}) => ({ surface: lemma, lemma, pos: "noun", type: "common", role: "", gloss: lemma, ...extra });
 const clip = (type = "audio/webm") => ({ blob: new Blob(["x"], { type }), mime: type });
@@ -57,4 +57,11 @@ test("chapterOrder lists each chapter's new cards first, most frequent first", (
   ]);
   assert.deepEqual(ordered.map((card) => card.greek), ["a", "b", "c", "d"]);
   assert.deepEqual(ordered.map((card) => card.chapter), [1, 1, 2, undefined]);
+});
+
+test("silencing τὸν leaves ὁ spoken", () => {
+  const words = [w("ὁ", { pos: "det" }), w("λόγος", { surface: "τὸν", lemma: "ὁ", pos: "det" }), w("λόγος", { surface: "λόγον" })];
+  assert.equal(unspokenKey(words[1]), "τὸν");
+  assert.deepEqual(playbackLemmas(words, {}, undefined, { "τὸν": true }), ["ὁ", "λόγος"]);
+  assert.deepEqual(playbackWords(words, {}, undefined, { "ὁ": true }).map((word) => word.surface), ["τὸν", "λόγον"]);
 });

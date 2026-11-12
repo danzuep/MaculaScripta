@@ -7,6 +7,7 @@ import vm from "node:vm";
 const root = (path) => fileURLToPath(new URL(`../${path}`, import.meta.url));
 const page = (path) => readFileSync(root(`site/public/${path}`), "utf8");
 const script = readFileSync(root("site/static/reader.js"), "utf8");
+const translitScript = readFileSync(root("site/static/greek-translit.js"), "utf8");
 const catalog = [...readFileSync(root("site/data/nt/catalog.yaml"), "utf8").matchAll(/- code: (\w+)\n {2}title: (.+)\n {2}chapters: (\d+)/g)]
   .map(([, code, title, chapters]) => ({ code, title, chapters: Number(chapters) }));
 // A full build (HUGO_PARAMS_SAMPLE=false) covers every chapter of the submodule TSV; the default sample build only
@@ -49,6 +50,7 @@ function runScript(stored = new Map(), storageUnavailable = false, systemLight =
       addEventListener() {}
     } }
   };
+  vm.runInNewContext(translitScript, context);
   vm.runInNewContext(script, context);
   return { theme, document, stored, context, workerUrl: () => workerUrl };
 }

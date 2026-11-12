@@ -1,5 +1,5 @@
 // Pure logic for the audio workflow: which cards to record, which verses are complete, how to play a verse in the
-// target language's order, and the export manifest. Tokens are { verse, surface, lemma, pos, type, role, gloss, case, mood }.
+// target language's order, and the export manifest. Tokens are { verse, surface, lemma, pos, type, role, gloss, case, mood, mandarin, morph }.
 import { chunkWords, reorderChunks } from "./grammar-order.js";
 
 export const steps = [
@@ -11,19 +11,24 @@ export const steps = [
 
 export const manifestFormat = "macula-scripta-audio";
 
-export function toToken([verse, surface, lemma, pos, type, role, gloss, grammaticalCase, mood]) {
-  return { verse: verse.split("!")[0], surface, lemma, pos, type, role, gloss, case: grammaticalCase, mood };
+export function toToken([verse, surface, lemma, pos, type, role, gloss, grammaticalCase, mood, mandarin, morph]) {
+  return { verse: verse.split("!")[0], surface, lemma, pos, type, role, gloss, case: grammaticalCase, mood, mandarin, morph };
 }
 
 export const isProperNoun = (token) => token.type === "proper" || token.pos === "proper_noun";
 
+// Words the target language leaves out are flagged per spoken form (τὸν) rather than per lemma, so silencing
+// τὸν does not also silence ὁ. A word whose form equals its lemma is keyed by that lemma.
+export const unspokenKey = (word) => word.surface && word.surface !== word.lemma ? word.surface : word.lemma;
+export const isUnspoken = (word, unspoken = {}) => Boolean(unspoken[unspokenKey(word)]);
+
 // Distinct lemmas of a verse in reading order; proper nouns keep their original audio and need no card, and
-// `unspoken` lemmas (words the target language leaves out) are neither recorded nor played.
+// `unspoken` words (see unspokenKey) are neither recorded nor played.
 export function verseLemmas(words, unspoken = {}) {
   const seen = new Set();
   const lemmas = [];
   for (const word of words) {
-    if (isProperNoun(word) || unspoken[word.lemma] || seen.has(word.lemma)) continue;
+    if (isProperNoun(word) || isUnspoken(word, unspoken) || seen.has(word.lemma)) continue;
     seen.add(word.lemma);
     lemmas.push({ lemma: word.lemma, gloss: word.gloss ?? "" });
   }
@@ -74,7 +79,7 @@ export function playbackWords(words, rules, explicitOrder, unspoken = {}) {
   const valid = Array.isArray(explicitOrder) && explicitOrder.length === chunks.length
     && new Set(explicitOrder).size === chunks.length && explicitOrder.every((index) => chunks[index]);
   const order = valid ? explicitOrder : reorderChunks(chunks, rules ?? {});
-  return order.flatMap((index) => chunks[index].words).filter((word) => !isProperNoun(word) && !unspoken[word.lemma]);
+  return order.flatMap((index) => chunks[index].words).filter((word) => !isProperNoun(word) && !isUnspoken(word, unspoken));
 }
 
 export const playbackLemmas = (...args) => playbackWords(...args).map((word) => word.lemma);

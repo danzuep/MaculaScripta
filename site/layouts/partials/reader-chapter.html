@@ -37,6 +37,10 @@
     </header>
     <div class="reader-def-body">
       <p class="reader-def-ref">{{ .ref }}</p>
+      {{- if not $hebrew }}
+      <p class="reader-def-speak"><button type="button" class="reader-speak" data-text="{{ .text }}" aria-label="Hear {{ .text }} read by computer voice" title="Hear {{ .text }} (eSpeak-NG)">▶</button></p>
+      <p class="reader-def-translit" lang="grc-Latn" data-text="{{ .text }}"></p>
+      {{- end }}
       <dl>
         {{ range $field, $value := . }}{{ if ne $value "" }}<dt>{{ $field }}</dt><dd>{{ $value }}</dd>{{ end }}{{ end }}
       </dl>

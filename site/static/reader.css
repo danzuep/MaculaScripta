@@ -86,3 +86,5 @@ body:has(.reader-def:target) .reader-next-chapter { margin-bottom: min(60dvh, 34
 /* Lock the page behind the open header so scrolling stays inside the pane. */
 :root { scrollbar-gutter: stable; }
 :root:has(.reader-picker:not([hidden])) { overflow: hidden; }
+.reader-def-speak, .reader-def-translit { margin: 0.25rem 0; }
+.reader-speak { min-width: 2.5rem; min-height: 2.5rem; cursor: pointer; }
