@@ -1,0 +1,68 @@
+name: Build and test C#, generate USFM
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      full:
+        description: "Generate USFM for the whole Greek New Testament instead of the committed sample"
+        type: boolean
+        required: true
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: usfm-${{ github.event_name }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  usfm:
+    runs-on: ubuntu-latest
+    env:
+      FULL: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.full) }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v7
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - name: Build
+        run: dotnet build MaculaScripta.slnx -c Release
+      - name: Test
+        run: dotnet test MaculaScripta.slnx -c Release --no-build
+      - name: Check out Macula Greek TSV (pinned commit, partial and sparse)
+        if: env.FULL == 'true'
+        run: |
+          commit="$(git rev-parse HEAD:data/macula-greek)"
+          url="$(git config -f .gitmodules submodule.data/macula-greek.url)"
+          git init -q data/macula-greek
+          git -C data/macula-greek remote add origin "${url}"
+          git -C data/macula-greek config extensions.partialClone origin
+          git -C data/macula-greek sparse-checkout set SBLGNT/tsv
+          git -C data/macula-greek fetch -q --depth 1 --filter=blob:none origin "${commit}"
+          git -C data/macula-greek checkout -q FETCH_HEAD
+      - name: Generate USFM
+        run: |
+          if [[ "${FULL}" == "true" ]]; then
+            tsv=data/macula-greek/SBLGNT/tsv/macula-greek-SBLGNT.tsv
+          else
+            tsv=site/sample/macula-greek-SBLGNT.tsv
+          fi
+          dotnet run --project source/MaculaScripta.Usfm.Cli -c Release --no-build -- \
+            "${tsv}" "${RUNNER_TEMP}/usfm" --zip "${RUNNER_TEMP}/macula-greek-usfm.zip"
+      - name: Upload USFM zip
+        uses: actions/upload-artifact@v7
+        with:
+          name: macula-greek-usfm
+          path: ${{ runner.temp }}/macula-greek-usfm.zip
+          archive: false

@@ -6,6 +6,7 @@ MaculaScripta is a Hugo Greek New Testament and Hebrew Old Testament reader with
 
 - `source/MaculaScripta.Contracts` contains dependency-free domain records.
 - `source/MaculaScripta.Core` contains gloss resolution, lemma frequency ranking, and lemma audio binding.
+- `source/MaculaScripta.Usfm` converts Macula Greek TSV to USFM 3 (library); `source/MaculaScripta.Usfm.Cli` is its command line and `tests/MaculaScripta.Usfm.Tests` its xUnit tests.
 - `source/protos/macula_scripta.proto` is a proposed gRPC contract, not used by the reader or either C# project. There is deliberately no `Grpc.Tools` project or generated client/server until an actual transport implementation needs it.
 - `data/macula-greek` is the pinned [Macula Greek](https://github.com/Clear-Bible/macula-greek) Git submodule.
 - `data/macula-hebrew` is the pinned [Macula Hebrew](https://github.com/Clear-Bible/macula-hebrew) Git submodule (Old Testament, `/ot/`, rendered the same way, right-to-left).
@@ -16,6 +17,18 @@ Build the C# projects with:
 ```sh
 dotnet build MaculaScripta.slnx
 ```
+
+## USFM export
+
+```sh
+dotnet run --project source/MaculaScripta.Usfm.Cli -- data/macula-greek/SBLGNT/tsv/macula-greek-SBLGNT.tsv out/usfm --zip out/macula-greek-usfm.zip
+```
+
+writes one file per book (`44JHN.usfm`, ...) and optionally a zip. Each word is
+`\w \+rb Ἐν|gloss="In [the]"\+rb*|lemma="ἐν" strong="1722" x-morph="PREP" … x-translit="En"\w*`:
+the English gloss is the only ruby text, and every other TSV column plus the transliteration
+(the C# port of `site/static/greek-translit.js`) is a `\w` attribute (`x-` prefixed except the standard `lemma` and `strong`).
+The `usfm.yml` workflow builds, tests and uploads the zip as the `macula-greek-usfm` artifact (the committed John 1 sample on pull requests, the whole New Testament on `main` or a manual run with `full`).
 
 ## Greek New Testament reader
 
