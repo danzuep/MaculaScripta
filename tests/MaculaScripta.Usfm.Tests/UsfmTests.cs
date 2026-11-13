@@ -60,6 +60,21 @@ public class UsfmTests
     }
 
     [Fact]
+    public void Hebrew_rows_use_their_own_transliteration_and_old_testament_numbering()
+    {
+        var words = MaculaTsvReader.Read(new StringReader(
+            "xml:id\tref\ttext\ttransliteration\tafter\tgloss\n" +
+            "o1\tHAG 1:1!1\tבִּ\tbi\t\tin\n")).ToList();
+
+        var usfm = UsfmWriter.WriteBook("HAG", words);
+
+        Assert.StartsWith("\\id HAG Macula Hebrew WLC", usfm);
+        Assert.Contains("x-translit=\"bi\"", usfm);
+        Assert.DoesNotContain("x-transliteration", usfm);
+        Assert.Equal("37HAG", UsfmBooks.FileStem("HAG"));
+    }
+
+    [Fact]
     public void Zip_holds_one_numbered_file_per_book()
     {
         var path = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.zip");

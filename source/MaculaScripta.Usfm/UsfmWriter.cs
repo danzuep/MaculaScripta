@@ -24,7 +24,7 @@ public static class UsfmWriter
     {
         var name = UsfmBooks.Name(code);
         var sb = new StringBuilder();
-        sb.Append("\\id ").Append(code).Append(" Macula Greek SBLGNT\n")
+        sb.Append("\\id ").Append(code).Append(UsfmBooks.IsOldTestament(code) ? " Macula Hebrew WLC\n" : " Macula Greek SBLGNT\n")
             .Append("\\usfm 3.0\n")
             .Append("\\ide UTF-8\n")
             .Append("\\h ").Append(name).Append('\n')
@@ -72,14 +72,21 @@ public static class UsfmWriter
         var attributes = new List<string>();
         foreach (var (column, value) in word.Fields)
         {
-            if (value.Length > 0 && !Consumed.Contains(column))
+            if (value.Length > 0 && !Consumed.Contains(column) && column != "transliteration")
             {
                 var name = StandardAttributes.Contains(column) ? column : $"x-{column.Replace(':', '-')}";
                 attributes.Add($"{name}=\"{EscapeValue(value)}\"");
             }
         }
 
-        attributes.Add($"x-translit=\"{EscapeValue(GreekTransliterator.Transliterate(word.Get("text")))}\"");
+        // Hebrew rows already carry a transliteration column; Greek rows get ours.
+        var translit = word.Get("transliteration");
+        if (translit.Length == 0)
+        {
+            translit = GreekTransliterator.Transliterate(word.Get("text"));
+        }
+
+        attributes.Add($"x-translit=\"{EscapeValue(translit)}\"");
         return sb.Append('|').AppendJoin(' ', attributes).Append("\\w*").ToString();
     }
 

@@ -3,12 +3,10 @@ name: Build and test C#, generate USFM
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
   workflow_dispatch:
     inputs:
       full:
-        description: "Generate USFM for the whole Greek New Testament instead of the committed sample"
+        description: "Generate USFM for the whole Greek New Testament and Hebrew Old Testament instead of the committed sample"
         type: boolean
         required: true
         default: false
@@ -17,8 +15,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: usfm-${{ github.event_name }}-${{ github.head_ref || github.ref_name }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  group: usfm-${{ github.event_name }}-${{ github.ref_name }}
+  cancel-in-progress: false
 
 defaults:
   run:
@@ -51,18 +49,40 @@ jobs:
           git -C data/macula-greek sparse-checkout set SBLGNT/tsv
           git -C data/macula-greek fetch -q --depth 1 --filter=blob:none origin "${commit}"
           git -C data/macula-greek checkout -q FETCH_HEAD
+      - name: Check out Macula Hebrew TSV (pinned commit, partial and sparse, LFS)
+        if: env.FULL == 'true'
+        run: |
+          commit="$(git rev-parse HEAD:data/macula-hebrew)"
+          url="$(git config -f .gitmodules submodule.data/macula-hebrew.url)"
+          git init -q data/macula-hebrew
+          git -C data/macula-hebrew remote add origin "${url}"
+          git -C data/macula-hebrew config extensions.partialClone origin
+          git -C data/macula-hebrew sparse-checkout set WLC/tsv
+          git -C data/macula-hebrew fetch -q --depth 1 --filter=blob:none origin "${commit}"
+          GIT_LFS_SKIP_SMUDGE=1 git -C data/macula-hebrew checkout -q FETCH_HEAD
+          git -C data/macula-hebrew lfs install --local
+          git -C data/macula-hebrew lfs pull --include=WLC/tsv/macula-hebrew.tsv
       - name: Generate USFM
         run: |
           if [[ "${FULL}" == "true" ]]; then
-            tsv=data/macula-greek/SBLGNT/tsv/macula-greek-SBLGNT.tsv
+            greek=data/macula-greek/SBLGNT/tsv/macula-greek-SBLGNT.tsv
+            hebrew=data/macula-hebrew/WLC/tsv/macula-hebrew.tsv
           else
-            tsv=site/sample/macula-greek-SBLGNT.tsv
+            greek=site/sample/macula-greek-SBLGNT.tsv
+            hebrew=site/sample/macula-hebrew.tsv
           fi
-          dotnet run --project source/MaculaScripta.Usfm.Cli -c Release --no-build -- \
-            "${tsv}" "${RUNNER_TEMP}/usfm" --zip "${RUNNER_TEMP}/macula-greek-usfm.zip"
-      - name: Upload USFM zip
+          cli=(dotnet run --project source/MaculaScripta.Usfm.Cli -c Release --no-build --)
+          "${cli[@]}" "${greek}" "${RUNNER_TEMP}/usfm-greek" --zip "${RUNNER_TEMP}/macula-greek-usfm.zip"
+          "${cli[@]}" "${hebrew}" "${RUNNER_TEMP}/usfm-hebrew" --zip "${RUNNER_TEMP}/macula-hebrew-usfm.zip"
+      - name: Upload Greek USFM zip
         uses: actions/upload-artifact@v7
         with:
           name: macula-greek-usfm
           path: ${{ runner.temp }}/macula-greek-usfm.zip
+          archive: false
+      - name: Upload Hebrew USFM zip
+        uses: actions/upload-artifact@v7
+        with:
+          name: macula-hebrew-usfm
+          path: ${{ runner.temp }}/macula-hebrew-usfm.zip
           archive: false
