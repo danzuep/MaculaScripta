@@ -71,22 +71,25 @@ public class UsfmTests
         Assert.StartsWith("\\id HAG Macula Hebrew WLC", usfm);
         Assert.Contains("x-translit=\"bi\"", usfm);
         Assert.DoesNotContain("x-transliteration", usfm);
-        Assert.Equal("37HAG", UsfmBooks.FileStem("HAG"));
+        Assert.Equal("37-HAG", UsfmBooks.FileStem("HAG"));
     }
 
     [Fact]
-    public void Zip_holds_one_numbered_file_per_book()
+    public void Zip_holds_one_numbered_file_per_book_plus_attribution_files()
     {
         var path = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.zip");
+        var licence = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.md");
         try
         {
-            UsfmWriter.WriteZip(UsfmWriter.WriteBooks(Words()), path);
+            File.WriteAllText(licence, "CC BY 4.0");
+            UsfmWriter.WriteZip(UsfmWriter.WriteBooks(Words()), path, [("LICENSE-test.md", licence)]);
             using var zip = ZipFile.OpenRead(path);
-            Assert.Equal(["44JHN.usfm"], zip.Entries.Select(e => e.FullName));
+            Assert.Equal(["44-JHN.usfm", "LICENSE-test.md"], zip.Entries.Select(e => e.FullName));
         }
         finally
         {
             File.Delete(path);
+            File.Delete(licence);
         }
     }
 }

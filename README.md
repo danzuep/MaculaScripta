@@ -21,14 +21,20 @@ dotnet build MaculaScripta.slnx
 ## USFM export
 
 ```sh
-dotnet run --project source/MaculaScripta.Usfm.Cli -- data/macula-greek/SBLGNT/tsv/macula-greek-SBLGNT.tsv out/usfm --zip out/macula-greek-usfm.zip
+dotnet run --project source/MaculaScripta.Usfm.Cli -- out/usfm --zip out/macula-usfm.zip \
+  --include LICENSE-macula-greek.md=data/macula-greek/LICENSE.md \
+  --include LICENSE-macula-hebrew.md=data/macula-hebrew/LICENSE.md \
+  data/macula-hebrew/WLC/tsv/macula-hebrew.tsv data/macula-greek/SBLGNT/tsv/macula-greek-SBLGNT.tsv
 ```
 
-also accepts `data/macula-hebrew/WLC/tsv/macula-hebrew.tsv` (Hebrew keeps its own `transliteration` column as `x-translit`). It writes one file per book (`44JHN.usfm`, ...) and optionally a zip. Each word is
+writes one file per book (`01-GEN.usfm` ... `39-MAL.usfm`, `41-MAT.usfm` ... `67-REV.usfm`) plus the upstream CC BY 4.0
+licence files that exist, and optionally bundles them into one zip. Each word is
 `\w \+rb Ἐν|gloss="In [the]"\+rb*|lemma="ἐν" strong="1722" x-morph="PREP" … x-translit="En"\w*`:
 the English gloss is the only ruby text, and every other TSV column plus the transliteration
-(the C# port of `site/static/greek-translit.js`) is a `\w` attribute (`x-` prefixed except the standard `lemma` and `strong`).
-The `usfm.yml` workflow builds, tests and uploads the `macula-greek-usfm` and `macula-hebrew-usfm` zip artifacts (it does not run on pull requests) (the committed John 1 / Haggai 1 samples on a manual run, the whole Bible on `main` or a manual run with `full`).
+(Greek: the C# port of `site/static/greek-translit.js`; Hebrew: its own `transliteration` column) is a `\w` attribute
+(`x-` prefixed except the standard `lemma` and `strong`).
+The `usfm.yml` workflow builds, tests and uploads the single `macula-usfm` zip artifact (it does not run on pull requests):
+the committed John 1 / Haggai 1 samples on a manual run, the whole Bible on `main` or a manual run with `full`.
 
 ## Greek New Testament reader
 

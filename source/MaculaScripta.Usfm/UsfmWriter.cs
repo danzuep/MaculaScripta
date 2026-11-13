@@ -90,7 +90,10 @@ public static class UsfmWriter
         return sb.Append('|').AppendJoin(' ', attributes).Append("\\w*").ToString();
     }
 
-    public static void WriteZip(IEnumerable<(string Book, string Usfm)> books, string zipPath)
+    public static void WriteZip(
+        IEnumerable<(string Book, string Usfm)> books,
+        string zipPath,
+        IEnumerable<(string EntryName, string Path)>? extraFiles = null)
     {
         using var archive = ZipFile.Open(zipPath, ZipArchiveMode.Create);
         foreach (var (book, usfm) in books)
@@ -98,6 +101,11 @@ public static class UsfmWriter
             var entry = archive.CreateEntry($"{UsfmBooks.FileStem(book)}.usfm", CompressionLevel.Optimal);
             using var stream = new StreamWriter(entry.Open(), new UTF8Encoding(false));
             stream.Write(usfm);
+        }
+
+        foreach (var (entryName, path) in extraFiles ?? [])
+        {
+            archive.CreateEntryFromFile(path, entryName, CompressionLevel.Optimal);
         }
     }
 

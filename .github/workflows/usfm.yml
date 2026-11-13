@@ -71,18 +71,16 @@ jobs:
             greek=site/sample/macula-greek-SBLGNT.tsv
             hebrew=site/sample/macula-hebrew.tsv
           fi
-          cli=(dotnet run --project source/MaculaScripta.Usfm.Cli -c Release --no-build --)
-          "${cli[@]}" "${greek}" "${RUNNER_TEMP}/usfm-greek" --zip "${RUNNER_TEMP}/macula-greek-usfm.zip"
-          "${cli[@]}" "${hebrew}" "${RUNNER_TEMP}/usfm-hebrew" --zip "${RUNNER_TEMP}/macula-hebrew-usfm.zip"
-      - name: Upload Greek USFM zip
+          # Greek books are 41-67 and Hebrew 01-39, so both sets share one flat zip. Upstream licences are included when checked out.
+          dotnet run --project source/MaculaScripta.Usfm.Cli -c Release --no-build -- \
+            "${RUNNER_TEMP}/usfm" \
+            --zip "${RUNNER_TEMP}/macula-usfm.zip" \
+            --include "LICENSE-macula-greek.md=data/macula-greek/LICENSE.md" \
+            --include "LICENSE-macula-hebrew.md=data/macula-hebrew/LICENSE.md" \
+            "${hebrew}" "${greek}"
+      - name: Upload USFM zip
         uses: actions/upload-artifact@v7
         with:
-          name: macula-greek-usfm
-          path: ${{ runner.temp }}/macula-greek-usfm.zip
-          archive: false
-      - name: Upload Hebrew USFM zip
-        uses: actions/upload-artifact@v7
-        with:
-          name: macula-hebrew-usfm
-          path: ${{ runner.temp }}/macula-hebrew-usfm.zip
+          name: macula-usfm
+          path: ${{ runner.temp }}/macula-usfm.zip
           archive: false
