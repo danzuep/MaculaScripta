@@ -1,8 +1,6 @@
 name: Build and test C#, generate USFM
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
     inputs:
       full:
@@ -15,7 +13,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: usfm-${{ github.event_name }}-${{ github.ref_name }}
+  group: usfm-${{ github.ref_name }}
   cancel-in-progress: false
 
 defaults:
@@ -26,7 +24,7 @@ jobs:
   usfm:
     runs-on: ubuntu-latest
     env:
-      FULL: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.full) }}
+      FULL: ${{ inputs.full }}
     steps:
       - name: Checkout source
         uses: actions/checkout@v7

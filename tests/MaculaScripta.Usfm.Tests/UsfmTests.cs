@@ -29,7 +29,7 @@ public class UsfmTests
     [Fact]
     public void Word_wraps_gloss_ruby_inside_w_and_keeps_other_columns_as_attributes()
     {
-        var usfm = UsfmWriter.WriteWord(Words()[0]);
+        var usfm = UsfmWordWriter.Write(Words()[0]);
 
         Assert.Equal(
             "\\w \\+rb Ἐν|gloss=\"In [the]\"\\+rb*|x-xml-id=\"n1\" x-class=\"prep\" lemma=\"ἐν\" strong=\"1722\" x-morph=\"PREP\" x-english=\"in\" x-translit=\"En\"\\w*",
@@ -39,7 +39,7 @@ public class UsfmTests
     [Fact]
     public void Word_without_gloss_falls_back_to_english_and_escapes_quotes()
     {
-        var usfm = UsfmWriter.WriteWord(Words()[2]);
+        var usfm = UsfmWordWriter.Write(Words()[2]);
 
         Assert.Contains("\\+rb οὗτος|gloss=\"this \\\"one\\\"\"\\+rb*", usfm);
         Assert.DoesNotContain("lemma=", usfm);
@@ -48,7 +48,7 @@ public class UsfmTests
     [Fact]
     public void Book_has_header_chapters_verses_and_trailing_punctuation()
     {
-        var book = UsfmWriter.WriteBook("JHN", Words());
+        var book = UsfmBookWriter.Write("JHN", Words());
         var lines = book.Split('\n');
 
         Assert.Equal("\\id JHN Macula Greek SBLGNT", lines[0]);
@@ -66,7 +66,7 @@ public class UsfmTests
             "xml:id\tref\ttext\ttransliteration\tafter\tgloss\n" +
             "o1\tHAG 1:1!1\tבִּ\tbi\t\tin\n")).ToList();
 
-        var usfm = UsfmWriter.WriteBook("HAG", words);
+        var usfm = UsfmBookWriter.Write("HAG", words);
 
         Assert.StartsWith("\\id HAG Macula Hebrew WLC", usfm);
         Assert.Contains("x-translit=\"bi\"", usfm);
@@ -82,7 +82,7 @@ public class UsfmTests
         try
         {
             File.WriteAllText(licence, "CC BY 4.0");
-            UsfmWriter.WriteZip(UsfmWriter.WriteBooks(Words()), path, [("LICENSE-test.md", licence)]);
+            UsfmPackager.WriteZip(UsfmBookWriter.WriteAll(Words()), path, [("LICENSE-test.md", licence)]);
             using var zip = ZipFile.OpenRead(path);
             Assert.Equal(["44-JHN.usfm", "LICENSE-test.md"], zip.Entries.Select(e => e.FullName));
         }

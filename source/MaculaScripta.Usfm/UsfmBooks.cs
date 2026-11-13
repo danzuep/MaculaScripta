@@ -33,5 +33,8 @@ public static class UsfmBooks
 
     public static bool IsOldTestament(string code) => Order(code) is var i and >= 0 && i < OldTestamentCount;
 
+    /// <summary>The source dataset named in the USFM <c>\id</c> line.</summary>
+    public static string Source(string code) => IsOldTestament(code) ? "Macula Hebrew WLC" : "Macula Greek SBLGNT";
+
     private const int OldTestamentCount = 39;
 }
