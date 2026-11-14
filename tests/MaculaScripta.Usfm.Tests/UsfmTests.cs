@@ -27,36 +27,48 @@ public class UsfmTests
         Assert.Equal(expected, GreekTransliterator.Transliterate(greek));
 
     [Fact]
-    public void Word_wraps_gloss_ruby_inside_w_and_keeps_other_columns_as_attributes()
+    public void Word_is_plain_gloss_ruby_with_other_columns_in_a_note_entry()
     {
-        var usfm = UsfmWordWriter.Write(Words()[0]);
+        var word = Words()[0];
 
+        Assert.Equal("\\rb Ἐν|In [the]\\rb*", UsfmWordWriter.WriteRuby(word));
         Assert.Equal(
-            "\\w \\+rb Ἐν|In [the]\\+rb*|x-xml-id=\"n1\" x-class=\"prep\" lemma=\"ἐν\" strong=\"1722\" x-morph=\"PREP\" x-english=\"in\" x-translit=\"En\"\\w*",
-            usfm);
+            "\\fk Ἐν \\ft translit: En; xml:id: n1; class: prep; lemma: ἐν; strong: 1722; morph: PREP; english: in",
+            UsfmWordWriter.WriteNoteEntry(word));
     }
 
     [Fact]
-    public void Word_without_gloss_falls_back_to_english_and_escapes_quotes()
+    public void Word_without_gloss_falls_back_to_english_and_strips_markup_characters()
     {
-        var usfm = UsfmWordWriter.Write(Words()[2]);
+        var ruby = UsfmWordWriter.WriteRuby(MaculaTsvReader.Read(new StringReader(
+            "ref\ttext\tgloss\tenglish\nJHN 1:2!1\tοὗτος\t\tthis|one\\\n")).Single());
 
-        Assert.Contains("\\+rb οὗτος|this \"one\"\\+rb*", usfm);
-        Assert.DoesNotContain("lemma=", usfm);
+        Assert.Equal("\\rb οὗτος|thisone\\rb*", ruby);
     }
 
     [Fact]
-    public void Book_has_header_chapters_verses_and_trailing_punctuation()
+    public void Verse_level_notes_end_each_verse_and_chapters_and_verses_are_marked()
     {
-        var book = UsfmBookWriter.Write("JHN", Words());
-        var lines = book.Split('\n');
+        var lines = UsfmBookWriter.Write("JHN", Words()).Split('\n');
 
         Assert.Equal("\\id JHN Macula Greek SBLGNT", lines[0]);
         Assert.Contains("\\h John", lines);
         Assert.Contains("\\c 1", lines);
         Assert.Contains("\\c 2", lines);
-        Assert.Contains(lines, l => l.StartsWith("\\v 1 \\w ") && l.EndsWith("\\w* \\w \\+rb ἀρχῇ|beginning\\+rb*|x-xml-id=\"n2\" x-class=\"noun\" lemma=\"ἀρχή\" strong=\"746\" x-morph=\"N-DSF\" x-english=\"beginning\" x-translit=\"archēi\"\\w*"));
-        Assert.Contains(lines, l => l.StartsWith("\\v 2 ") && l.EndsWith("\\w*."));
+        var verse1 = lines.First(l => l.StartsWith("\\v 1 "));
+        Assert.StartsWith("\\v 1 \\rb Ἐν|In [the]\\rb* \\rb ἀρχῇ|beginning\\rb* \\f + \\fr 1:1 \\fk Ἐν \\ft translit: En;", verse1);
+        Assert.Equal(2, verse1.Split("\\f + ").Length);
+        Assert.EndsWith("english: beginning\\f*", verse1);
+        Assert.Contains(lines, l => l.StartsWith("\\v 2 \\rb οὗτος|this \"one\"\\rb*.") && l.EndsWith("\\f*"));
+    }
+
+    [Fact]
+    public void Word_level_notes_follow_each_word()
+    {
+        var verse1 = UsfmBookWriter.Write("JHN", Words(), UsfmNoteLevel.Word).Split('\n').First(l => l.StartsWith("\\v 1 "));
+
+        Assert.Equal(2, verse1.Split("\\f + ").Length - 1);
+        Assert.StartsWith("\\v 1 \\rb Ἐν|In [the]\\rb*\\f + \\fr 1:1 \\fk Ἐν \\ft translit: En;", verse1);
     }
 
     [Fact]
@@ -69,8 +81,8 @@ public class UsfmTests
         var usfm = UsfmBookWriter.Write("HAG", words);
 
         Assert.StartsWith("\\id HAG Macula Hebrew WLC", usfm);
-        Assert.Contains("x-translit=\"bi\"", usfm);
-        Assert.DoesNotContain("x-transliteration", usfm);
+        Assert.Contains("translit: bi", usfm);
+        Assert.DoesNotContain("transliteration:", usfm);
         Assert.Equal("37-HAG", UsfmBooks.FileStem("HAG"));
     }
 

@@ -2,16 +2,18 @@ using System.Text;
 
 namespace MaculaScripta.Usfm;
 
-/// <summary>Writes the words of one book as a USFM 3 document (headers, chapters, verses).</summary>
+/// <summary>Writes the words of one book as a USFM 3 document (headers, chapters, verses, ruby glosses, footnotes).</summary>
 public static class UsfmBookWriter
 {
     /// <summary>Groups words by book and writes each book, in canonical order.</summary>
-    public static IEnumerable<(string Book, string Usfm)> WriteAll(IEnumerable<MaculaWord> words) =>
+    public static IEnumerable<(string Book, string Usfm)> WriteAll(
+        IEnumerable<MaculaWord> words,
+        UsfmNoteLevel noteLevel = UsfmNoteLevel.Verse) =>
         words.GroupBy(w => w.Book)
             .OrderBy(g => UsfmBooks.Order(g.Key) is var o and >= 0 ? o : int.MaxValue)
-            .Select(g => (g.Key, Write(g.Key, g)));
+            .Select(g => (g.Key, Write(g.Key, g, noteLevel)));
 
-    public static string Write(string code, IEnumerable<MaculaWord> words)
+    public static string Write(string code, IEnumerable<MaculaWord> words, UsfmNoteLevel noteLevel = UsfmNoteLevel.Verse)
     {
         var name = UsfmBooks.Name(code);
         var sb = new StringBuilder();
@@ -24,11 +26,24 @@ public static class UsfmBookWriter
 
         var chapter = 0;
         string? verse = null;
+        var verseNotes = new List<string>();
+
+        void EndVerse()
+        {
+            TrimLineEnd(sb);
+            if (verseNotes.Count > 0)
+            {
+                sb.Append(" \\f + \\fr ").Append(chapter).Append(':').Append(verse).Append(' ')
+                    .AppendJoin(' ', verseNotes).Append("\\f*");
+                verseNotes.Clear();
+            }
+        }
+
         foreach (var word in words)
         {
             if (word.Chapter != chapter)
             {
-                TrimLineEnd(sb);
+                EndVerse();
                 chapter = word.Chapter;
                 verse = null;
                 sb.Append(sb[^1] == '\n' ? "" : "\n").Append("\\c ").Append(chapter).Append("\n\\p");
@@ -36,15 +51,26 @@ public static class UsfmBookWriter
 
             if (word.Verse != verse)
             {
-                TrimLineEnd(sb);
+                EndVerse();
                 verse = word.Verse;
                 sb.Append("\n\\v ").Append(verse).Append(' ');
             }
 
-            sb.Append(UsfmWordWriter.Write(word)).Append(word.Get("after"));
+            sb.Append(UsfmWordWriter.WriteRuby(word));
+            var entry = UsfmWordWriter.WriteNoteEntry(word);
+            if (noteLevel == UsfmNoteLevel.Word)
+            {
+                sb.Append("\\f + \\fr ").Append(chapter).Append(':').Append(verse).Append(' ').Append(entry).Append("\\f*");
+            }
+            else
+            {
+                verseNotes.Add(entry);
+            }
+
+            sb.Append(word.Get("after"));
         }
 
-        TrimLineEnd(sb);
+        EndVerse();
         return sb.Append('\n').ToString();
     }
 

@@ -21,18 +21,18 @@ dotnet build MaculaScripta.slnx
 ## USFM export
 
 ```sh
-dotnet run --project source/MaculaScripta.Usfm.Cli -- out/usfm --zip out/macula-usfm.zip \
+dotnet run --project source/MaculaScripta.Usfm.Cli -- out/usfm --zip out/macula-usfm.zip [--notes word] \
   --include LICENSE-macula-greek.md=data/macula-greek/LICENSE.md \
   --include LICENSE-macula-hebrew.md=data/macula-hebrew/LICENSE.md \
   data/macula-hebrew/WLC/tsv/macula-hebrew.tsv data/macula-greek/SBLGNT/tsv/macula-greek-SBLGNT.tsv
 ```
 
 writes one file per book (`01-GEN.usfm` ... `39-MAL.usfm`, `41-MAT.usfm` ... `67-REV.usfm`) plus the upstream CC BY 4.0
-licence files that exist, and optionally bundles them into one zip. Each word is
-`\w \+rb Ἐν|In [the]\+rb*|lemma="ἐν" strong="1722" x-morph="PREP" … x-translit="En"\w*`:
-the English gloss is the only ruby text, and every other TSV column plus the transliteration
-(Greek: the C# port of `site/static/greek-translit.js`; Hebrew: its own `transliteration` column) is a `\w` attribute
-(`x-` prefixed except the standard `lemma` and `strong`).
+licence files that exist, and optionally bundles them into one zip. Words are plain USFM so any reader can show them:
+the English gloss is the only ruby text (`\rb Ἐν|In [the]\rb*`), and every other TSV column plus the transliteration
+(Greek: the C# port of `site/static/greek-translit.js`; Hebrew: its own `transliteration` column) goes in footnotes
+(`\f + \fr 1:1 \fk Ἐν \ft translit: En; lemma: ἐν; strong: 1722; … \f*`).
+`--notes verse` (default) writes one footnote per verse listing all of its words; `--notes word` puts a footnote right after each word.
 The `usfm.yml` workflow builds, tests and uploads the single `macula-usfm` zip artifact (manual runs only):
 the committed John 1 / Haggai 1 samples by default, the whole Bible with the `full` input.
 
