@@ -3,42 +3,39 @@ using System.Text;
 namespace MaculaScripta.Usfm;
 
 /// <summary>
-/// Writes one Macula word as <c>\w \+rb text|gloss\+rb*|attributes\w*</c>: the English gloss is the only ruby text (the ruby
-/// reading is the unquoted default attribute, as in USFM 3 <c>\rb base|reading\rb*</c>) and
-/// every other TSV column (plus <c>x-translit</c>) is a <c>\w</c> attribute.
+/// Writes one Macula word as plain USFM: the text with its English gloss as ruby (<c>\rb text|gloss\rb*</c>), and every
+/// other TSV column (plus the transliteration) as a footnote entry (<c>\fk text \ft name: value; …</c>).
 /// </summary>
 public static class UsfmWordWriter
 {
-    // Columns with a standard \w attribute name; all others get an x- prefix (USFM 3 custom attributes).
-    private static readonly HashSet<string> StandardAttributes = ["lemma", "strong"];
+    // Columns that are rendered elsewhere or replaced by the transliteration entry.
+    private static readonly HashSet<string> NotNoted = ["ref", "text", "after", "gloss", "transliteration"];
 
-    // Columns that are rendered elsewhere or replaced by x-translit, so they are not repeated as attributes.
-    private static readonly HashSet<string> NotAttributes = ["ref", "text", "after", "gloss", "transliteration"];
-
-    public static string Write(MaculaWord word)
+    public static string WriteRuby(MaculaWord word)
     {
-        var text = EscapeText(word.Get("text"));
+        var text = Clean(word.Get("text"));
         var gloss = word.Get("gloss");
         if (gloss.Length == 0)
         {
             gloss = word.Get("english");
         }
 
-        var sb = new StringBuilder("\\w ");
-        sb.Append(gloss.Length > 0 ? $"\\+rb {text}|{EscapeText(gloss)}\\+rb*" : text);
+        return gloss.Length > 0 ? $"\\rb {text}|{Clean(gloss)}\\rb*" : text;
+    }
 
-        var attributes = new List<string>();
+    /// <summary>The footnote body for a word, e.g. <c>\fk Ἐν \ft translit: En; lemma: ἐν</c>.</summary>
+    public static string WriteNoteEntry(MaculaWord word)
+    {
+        var fields = new List<string> { $"translit: {Clean(Transliteration(word))}" };
         foreach (var (column, value) in word.Fields)
         {
-            if (value.Length > 0 && !NotAttributes.Contains(column))
+            if (value.Length > 0 && !NotNoted.Contains(column))
             {
-                var name = StandardAttributes.Contains(column) ? column : $"x-{column.Replace(':', '-')}";
-                attributes.Add($"{name}=\"{EscapeValue(value)}\"");
+                fields.Add($"{column}: {Clean(value)}");
             }
         }
 
-        attributes.Add($"x-translit=\"{EscapeValue(Transliteration(word))}\"");
-        return sb.Append('|').AppendJoin(' ', attributes).Append("\\w*").ToString();
+        return new StringBuilder("\\fk ").Append(Clean(word.Get("text"))).Append(" \\ft ").AppendJoin("; ", fields).ToString();
     }
 
     // Hebrew rows already carry a transliteration column; Greek rows get ours.
@@ -47,8 +44,6 @@ public static class UsfmWordWriter
             ? existing
             : GreekTransliterator.Transliterate(word.Get("text"));
 
-    // Backslashes and pipes would start markup or attributes inside a word.
-    private static string EscapeText(string value) => value.Replace("\\", "").Replace("|", "");
-
-    private static string EscapeValue(string value) => value.Replace("\\", "\\\\").Replace("\"", "\\\"");
+    // Backslashes start markup and pipes start ruby readings or attributes.
+    private static string Clean(string value) => value.Replace("\\", "").Replace("|", "");
 }
