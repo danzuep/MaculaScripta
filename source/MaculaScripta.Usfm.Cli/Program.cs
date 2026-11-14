@@ -20,7 +20,7 @@ foreach (var tsvPath in options.TsvPaths)
     words.AddRange(MaculaTsvReader.Read(reader));
 }
 
-var books = UsfmBookWriter.WriteAll(words).ToList();
+var books = UsfmBookWriter.WriteAll(words, options.NoteLevel).ToList();
 
 // Attribution files are optional: skip any that the checkout does not have.
 var includes = options.Includes.Where(f => File.Exists(f.Path)).ToList();
