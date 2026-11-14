@@ -29,7 +29,7 @@ dotnet run --project source/MaculaScripta.Usfm.Cli -- out/usfm --zip out/macula-
 
 writes one file per book (`01-GEN.usfm` ... `39-MAL.usfm`, `41-MAT.usfm` ... `67-REV.usfm`) plus the upstream CC BY 4.0
 licence files that exist, and optionally bundles them into one zip. Each word is
-`\w \+rb Ἐν|gloss="In [the]"\+rb*|lemma="ἐν" strong="1722" x-morph="PREP" … x-translit="En"\w*`:
+`\w \+rb Ἐν|In [the]\+rb*|lemma="ἐν" strong="1722" x-morph="PREP" … x-translit="En"\w*`:
 the English gloss is the only ruby text, and every other TSV column plus the transliteration
 (Greek: the C# port of `site/static/greek-translit.js`; Hebrew: its own `transliteration` column) is a `\w` attribute
 (`x-` prefixed except the standard `lemma` and `strong`).
