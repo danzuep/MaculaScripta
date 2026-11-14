@@ -3,7 +3,8 @@ using System.Text;
 namespace MaculaScripta.Usfm;
 
 /// <summary>
-/// Writes one Macula word as <c>\w \+rb text|gloss="…"\+rb*|attributes\w*</c>: the English gloss is the only ruby text and
+/// Writes one Macula word as <c>\w \+rb text|gloss\+rb*|attributes\w*</c>: the English gloss is the only ruby text (the ruby
+/// reading is the unquoted default attribute, as in USFM 3 <c>\rb base|reading\rb*</c>) and
 /// every other TSV column (plus <c>x-translit</c>) is a <c>\w</c> attribute.
 /// </summary>
 public static class UsfmWordWriter
@@ -24,7 +25,7 @@ public static class UsfmWordWriter
         }
 
         var sb = new StringBuilder("\\w ");
-        sb.Append(gloss.Length > 0 ? $"\\+rb {text}|gloss=\"{EscapeValue(gloss)}\"\\+rb*" : text);
+        sb.Append(gloss.Length > 0 ? $"\\+rb {text}|{EscapeText(gloss)}\\+rb*" : text);
 
         var attributes = new List<string>();
         foreach (var (column, value) in word.Fields)

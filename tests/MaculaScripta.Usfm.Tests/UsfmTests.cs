@@ -32,7 +32,7 @@ public class UsfmTests
         var usfm = UsfmWordWriter.Write(Words()[0]);
 
         Assert.Equal(
-            "\\w \\+rb Ἐν|gloss=\"In [the]\"\\+rb*|x-xml-id=\"n1\" x-class=\"prep\" lemma=\"ἐν\" strong=\"1722\" x-morph=\"PREP\" x-english=\"in\" x-translit=\"En\"\\w*",
+            "\\w \\+rb Ἐν|In [the]\\+rb*|x-xml-id=\"n1\" x-class=\"prep\" lemma=\"ἐν\" strong=\"1722\" x-morph=\"PREP\" x-english=\"in\" x-translit=\"En\"\\w*",
             usfm);
     }
 
@@ -41,7 +41,7 @@ public class UsfmTests
     {
         var usfm = UsfmWordWriter.Write(Words()[2]);
 
-        Assert.Contains("\\+rb οὗτος|gloss=\"this \\\"one\\\"\"\\+rb*", usfm);
+        Assert.Contains("\\+rb οὗτος|this \"one\"\\+rb*", usfm);
         Assert.DoesNotContain("lemma=", usfm);
     }
 
@@ -55,7 +55,7 @@ public class UsfmTests
         Assert.Contains("\\h John", lines);
         Assert.Contains("\\c 1", lines);
         Assert.Contains("\\c 2", lines);
-        Assert.Contains(lines, l => l.StartsWith("\\v 1 \\w ") && l.EndsWith("\\w* \\w \\+rb ἀρχῇ|gloss=\"beginning\"\\+rb*|x-xml-id=\"n2\" x-class=\"noun\" lemma=\"ἀρχή\" strong=\"746\" x-morph=\"N-DSF\" x-english=\"beginning\" x-translit=\"archēi\"\\w*"));
+        Assert.Contains(lines, l => l.StartsWith("\\v 1 \\w ") && l.EndsWith("\\w* \\w \\+rb ἀρχῇ|beginning\\+rb*|x-xml-id=\"n2\" x-class=\"noun\" lemma=\"ἀρχή\" strong=\"746\" x-morph=\"N-DSF\" x-english=\"beginning\" x-translit=\"archēi\"\\w*"));
         Assert.Contains(lines, l => l.StartsWith("\\v 2 ") && l.EndsWith("\\w*."));
     }
 
