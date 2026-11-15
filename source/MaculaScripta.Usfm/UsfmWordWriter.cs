@@ -14,19 +14,20 @@ public static class UsfmWordWriter
     public static string WriteRuby(MaculaWord word)
     {
         var text = Clean(word.Get("text"));
-        var gloss = word.Get("gloss");
-        if (gloss.Length == 0)
-        {
-            gloss = word.Get("english");
-        }
-
-        return gloss.Length > 0 ? $"\\rb {text}|{Clean(gloss)}\\rb*" : text;
+        var gloss = Gloss(word);
+        // Ruby needs a non-empty base; textless rows (e.g. some Hebrew prefixes) keep their gloss in the note instead.
+        return text.Length == 0 ? "" : gloss.Length > 0 ? $"\\rb {text}|{Clean(gloss)}\\rb*" : text;
     }
 
     /// <summary>The footnote body for a word, e.g. <c>\fk Ἐν \ft translit: En; lemma: ἐν</c>.</summary>
     public static string WriteNoteEntry(MaculaWord word)
     {
         var fields = new List<string> { $"translit: {Clean(Transliteration(word))}" };
+        if (word.Get("text").Length == 0 && Gloss(word) is { Length: > 0 } textlessGloss)
+        {
+            fields.Add($"gloss: {Clean(textlessGloss)}");
+        }
+
         foreach (var (column, value) in word.Fields)
         {
             if (value.Length > 0 && !NotNoted.Contains(column))
@@ -35,8 +36,12 @@ public static class UsfmWordWriter
             }
         }
 
-        return new StringBuilder("\\fk ").Append(Clean(word.Get("text"))).Append(" \\ft ").AppendJoin("; ", fields).ToString();
+        var key = Clean(word.Get("text")) is { Length: > 0 } t ? t : word.Get("xml:id");
+        return new StringBuilder("\\fk ").Append(key).Append(" \\ft ").AppendJoin("; ", fields).ToString();
     }
+
+    private static string Gloss(MaculaWord word) =>
+        word.Get("gloss") is { Length: > 0 } g ? g : word.Get("english");
 
     // Hebrew rows already carry a transliteration column; Greek rows get ours.
     private static string Transliteration(MaculaWord word) =>
