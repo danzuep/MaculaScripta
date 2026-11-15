@@ -47,6 +47,16 @@ public class UsfmTests
     }
 
     [Fact]
+    public void Textless_word_has_no_empty_ruby_and_keeps_its_gloss_in_the_note()
+    {
+        var word = MaculaTsvReader.Read(new StringReader(
+            "xml:id\tref\ttext\ttransliteration\tgloss\no9\tHAG 1:1!1\t\t\tthe\n")).Single();
+
+        Assert.Equal("", UsfmWordWriter.WriteRuby(word));
+        Assert.Equal("\\fk o9 \\ft translit: ; gloss: the; xml:id: o9", UsfmWordWriter.WriteNoteEntry(word));
+    }
+
+    [Fact]
     public void Verse_level_notes_end_each_verse_and_chapters_and_verses_are_marked()
     {
         var lines = UsfmBookWriter.Write("JHN", Words()).Split('\n');
